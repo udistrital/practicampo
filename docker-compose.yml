@@ -42,7 +42,7 @@ services:
     #  - ./vendor:/var/www/html/practicampo/vendor
     #  - ./node_modules:/var/www/html/practicampo/node_modules
     depends_on:
-      - db
+      - dbpracticampo
     #command: sh -c "php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan config:cache && php artisan cache:clear && php artisan key:generate"
 
   dbpracticampo:
