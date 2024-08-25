@@ -21,7 +21,7 @@ class Kernel extends HttpKernel
         \PractiCampoUD\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         // \PractiCampoUD\Http\Middleware\Admin::class,
-        // \PractiCampoUD\Http\Middleware\ForceHttps::class,
+        \PractiCampoUD\Http\Middleware\ForceHttps::class,
     ];
 
     /**
