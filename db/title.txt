@@ -1,0 +1,219 @@
+<i class="fas fa-question-circle" 
+     data-toggle="tooltip" data-placement="left" 
+     data-title="Seleccione el programa académico asociado a la 
+     salida de práctica académica" style="font-size: 0.813rem"></i> 
+
+Seleccione el espacio académico asociado a la salida de práctica académica
+
+Indique el semestre de la asignatura, año y período académico asociados a la salida de práctica académica. Ej. V - 2022 - I
+
+Indique si la salida de práctica académica es una práctica integrada con más de un espacio académico asociado
+
+Indique la cantidad de espacios académicos asociados a la salida de práctica académica
+
+Seleccione el espacio académico asociado a la salida de práctica académica
+
+Seleccione el docente a cargo del espacio académico asociado a la salida de práctica académica
+
+Indique el número aproximado de estudiantes que participarán de la salida de práctica académica
+
+Indique la cantidad aproximada de grupos asociados a la salida de práctica académica
+
+Indique el número aproximado del personal de apoyo que participará en la salida de práctica académica
+
+Busque en su computador el soporte de autorización para el personal de apoyo que participará en la salida de práctica académica
+
+Indique el número del grupo que tiene a cargo
+
+Indique el nombre de la persona de apoyo que participará en la salida de práctica académica
+
+----------------------------------------------------------------------------------
+
+Indique el nombre del destino de la ruta principal asociada a la salida de práctica académica
+
+Indique el nombre del destino de la ruta de contingencia asociada a la salida de práctica académica
+
+Indique la cantidad de URL que se requieren en la ruta principal asociada a la salida de práctica académica
+
+Indique la cantidad de URL que se requieren en la ruta de contingencia asociada a la salida de práctica académica
+
+Ingrese la(s) URL obtenida(s) de Google Maps
+
+Ingrese el detalle del recorrido para la ruta principal
+
+Ingrese el detalle del recorrido para la ruta de contingencia
+
+Seleccione la sede para el punto de encuentro de salida
+
+Seleccione la fecha de salida para la ruta principal
+
+Seleccione la fecha de salida para la ruta de contingencia
+
+Seleccione la sede para el punto de encuentro de regreso
+
+Seleccione la fecha de regreso para la ruta principal
+
+Seleccione la fecha de regreso para la ruta de contingencia
+
+Seleccione la fecha/hora de salida para la ruta principal. Ej-hora. 8:30AM
+
+Seleccione la fecha/hora de salida para la ruta de contingencia. Ej-hora. 8:30AM
+
+Seleccione la hora de regreso para la ruta principal. Ej-hora. 5:50PM
+
+Seleccione la hora de regreso para la ruta de contingencia. Ej-hora. 5:50PM
+
+Indique la cantidad de vehículos requeridos para la ruta principal
+
+Indique la cantidad de vehículos requeridos para la ruta de contingencia
+
+Seleccione el tipo de vehículo requerido para la ruta principal
+
+Seleccione el tipo de vehículo requerido para la ruta de contingencia
+
+Indique la capacidad de asientos requeridos para el tipo de vehículo previamente seleccionado
+
+Indique los detalles o especificaciones que debe tener el vehículo
+
+Indique si requiere disponibilidad permanente del vehículo
+
+Indique la cantidad de vehículos locales requeridos
+
+Indique el tipo de vehículo para el transporte menor o local requerido
+
+Indique valor aproximado del transporte menor o local requerido
+
+Indique los materiales requeridos para la realización de la práctica académica
+
+Indique valor aproximado de los materiales requeridos
+
+Indique las guías y/o baquianos requeridos para la realización de la práctica académica
+
+Indique valor aproximado de las guías y/o baquianos requeridos
+
+Indique las boletas y/u otros requeridos para la realización de la práctica académica
+
+Indique valor aproximado de las boletas y/u otros requeridos
+
+Indique Si o No según el caso
+
+
+
+------------------------------------------------------------------------------------
+Indique las observaciones asociadas a la salida de práctica académica
+
+Asigne uno de los estados a la salida de práctica académica
+
+
+
+---------------------------------------------------------------------------------------
+Indique el valor estimado para el transporte requerido para la ruta principal
+
+Indique el valor estimado para el transporte requerido para la ruta de contingencia
+
+Indique el número de acta de consejo de facultad asociado a la salida de práctica académica. Ej. 7658
+
+Seleccione la fecha del acta de consejo de facultad asociado a la salida de práctica académica
+
+Indique si cuenta con SiCapital
+
+Indique el número de solicitud de necesidad asociado a la salida de práctica académica. Ej. 7658-2021
+
+Indique el número de resolución asociado a la salida de práctica académica. Ej. 1234
+
+Seleccione la fecha de la resolución asociada a la salida de práctica académica
+
+Indique el número de CDP asociado a la salida de práctica académica. Ej. 8536
+
+Indique el número de de radicado en tesorería asociado a la salida de práctica académica. Ej. 8263
+
+Seleccione la fecha del radicado en tesorería asociado a la salida de práctica académica
+
+--------------------------------------------------------------------------------
+
+Valor de los viáticos a los docentes, equivalen a la duración de la práctica menos el 0.5
+
+Indique si se requiere solicitar este certificado a los estudiantes que participarán en la salida de práctica académica
+
+Indique si se requiere solicitar un certificado adicional a de los estudiantes que participarán en la salida de práctica académica
+
+Indique el nombre del certificado adicional solicitado a los estudiantes que participarán en la salida de práctica académica
+
+Indique el cronograma a detalle del recorrido que realizará en la salida de práctica académica
+
+Indique el las observaciones frente a la salida de práctica académica
+
+Indique justificación para la salida de práctica académica
+
+Indique el objetivo general de la salida de práctica académica
+
+Indique metodología de evaluación que se usará en la salida de práctica académica
+
+-----------------------------------------------------------------------------------
+
+Indique el nombre del conductor a cargo del vehículo
+
+Indique el número de celular del conductor a cargo del vehículo
+
+Indique el correo electrónico del conductor a cargo del vehículo
+
+Indique la placa del vehículo
+
+
+-------------------------------------------------------------------------------------
+
+Seleccione el tipo de identificación
+
+Indique el número de identificación
+
+Seleccione la fecha de nacimiento
+
+Indique un número de celular
+
+Indique la EPS a la que pertenece
+
+Busque en su computador el certificado requerido para la salida de práctica académica
+
+--------------------------------------------------------------------------------------
+Indique el primer nombre
+
+Indique el segundo nombre
+
+Indique el primer apellido
+
+Indique el segundo apellido
+
+Seleccione el tipo de identificación
+
+Indique el número de identificación
+
+Indique el lugar de expedición del documento de identificación
+
+Indique el correo electrónico institucional
+
+Indique un número de teléfono
+
+Indique un número de celular
+
+Seleccione el tipo de usuario
+
+Seleccione el tipo de vinculación
+
+Seleccione el programa académico de coordinación
+
+Asigne uno de los estados al usuario
+
+Indique la cantidad de espacios académicos asociados al usuario
+
+Seleccione el programa académico
+
+Indique el código de la asignatura
+
+Indique el código de la asignatura. Para N/A es el 0
+
+Indique una contraseña segura, con mínimo de 8 caracteres
+
+Confirme la contraseña
+
+
+

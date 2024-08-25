@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  #traefik:
+  #  image: traefik
+  #  container_name: traefik
+  #  restart: always
+  #  ports:
+  #    - "80:80"
+  #    - "443:443"
+  #    - "8080:8080"
+  #  volumes:
+  #    - "/var/run/docker.sock:/var/run/docker.sock"
+  #    - "./traefik/traefik.toml:/etc/traefik/traefik.toml"
+  #    - "./traefik/acme.json:/acme.json"
+
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: practicampoud
+    container_name: practicampoud
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    #labels:
+    #  - "traefik.enable=true"
+    #  - "traefik.http.routers.app.rule=Host(`practicampo.localhost`)"
+    #  - "traefik.http.routers.app.entrypoints=web"
+    #  - "traefik.http.routers.app-secure.rule=Host(`practicampo.localhost`)"
+    #  - "traefik.http.routers.app-secure.entrypoints=websecure"
+    #  - "traefik.http.routers.app-secure.tls=true"
+    #  - "traefik.http.services.app.loadbalancer.server.port=80"
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/html/practicampo/
+    volumes:
+      - ./:/var/www/html/practicampo/
+      - ./vendor:/var/www/html/practicampo/vendor
+      - ./node_modules:/var/www/html/practicampo/node_modules
+    depends_on:
+      - db
+    #command: sh -c "php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan config:cache && php artisan cache:clear && php artisan key:generate"
+
+  dbpracticampo:
+    image: mariadb:latest
+    container_name: dbpracticampo
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: DBvivUSER.2021$
+      MYSQL_DATABASE: udpracticampo
+      MYSQL_USER: viverouser
+      MYSQL_PASSWORD: DBvivUSER.2021$
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db_backup:/docker-entrypoint-initdb.d
+
+volumes:
+  db_data:
+    driver: local

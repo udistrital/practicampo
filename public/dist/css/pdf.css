@@ -1,0 +1,22 @@
+.margenGral {
+  margin-left: 47.45pt;
+  margin-right: 47.45pt;
+}
+
+.margenParrJust {
+  margin-top: 0cm;
+  margin-bottom: 0.0001pt;
+  text-align: justify;
+  line-height: 115%;
+}
+
+.margenParrCent {
+  margin-top: 0cm;
+  margin-right: 107.45pt;
+  margin-left: 107.45pt;
+  margin-bottom: 0.0001pt;
+  text-align: center;
+  line-height: 115%;
+}
+
+/*# sourceMappingURL=pdf.css.map */

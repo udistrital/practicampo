@@ -1,0 +1,5 @@
+#86b18d --->footer
+
+
+background-color: #98c0a1;
+background-image: linear-gradient(180deg, #28371294 10%, rgb(135, 178, 142) 100%);

@@ -1,0 +1,12 @@
+sudo systemctl status apache2
+sudo mysql -u name_user -p 
+create database practicampoud;
+create user 'practicampo'@'localhost' identified by 'practicampo';
+grant all privileges on practicampoud.* to 'practicapo'@'localhost';
+sudo chmod -R 755 /storage
+sudo chmod -R 755 Bootstrap/cacge
+php artisan route:clear
+php artisan config:cache
+php artisan cache:clear
+php artisan key:generate
+composer update
