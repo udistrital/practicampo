@@ -39,8 +39,8 @@ services:
     working_dir: /var/www/html/practicampo/
     volumes:
       - ./:/var/www/html/practicampo/
-      - ./vendor:/var/www/html/practicampo/vendor
-      - ./node_modules:/var/www/html/practicampo/node_modules
+    #  - ./vendor:/var/www/html/practicampo/vendor
+    #  - ./node_modules:/var/www/html/practicampo/node_modules
     depends_on:
       - db
     #command: sh -c "php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan config:cache && php artisan cache:clear && php artisan key:generate"
@@ -52,10 +52,10 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: DBvivUSER.2021$
-      MYSQL_DATABASE: udpracticampo
-      MYSQL_USER: viverouser
-      MYSQL_PASSWORD: DBvivUSER.2021$
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
       - ./db_backup:/docker-entrypoint-initdb.d
