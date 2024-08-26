@@ -40,7 +40,7 @@ RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory-limit.ini
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-EXPOSE 80 443
+EXPOSE 80
 
-CMD ["docker-entrypoint.sh"]
-#CMD ["apache2-foreground"]
+#CMD ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
