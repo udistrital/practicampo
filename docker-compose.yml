@@ -39,6 +39,7 @@ services:
     working_dir: /var/www/html/practicampo/
     volumes:
       - ./:/var/www/html/practicampo/
+      - ./apache:/etc/apache2/sites-available/
     #  - ./vendor:/var/www/html/practicampo/vendor
     #  - ./node_modules:/var/www/html/practicampo/node_modules
     depends_on:
