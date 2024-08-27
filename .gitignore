@@ -11,3 +11,4 @@ npm-debug.log
 yarn-error.log
 /vendor
 /db_backup/*.sql
+/letsencrypt
