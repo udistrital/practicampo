@@ -1,6 +1,6 @@
 
 @if($filter == 'proy_legal')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
@@ -32,7 +32,7 @@
 @endif
 
 @if($filter == 'proy_recha')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
@@ -72,7 +72,7 @@
 @if($filter == 'not_send')
     <form  name="proy_not_send">
         @csrf
-        <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+        <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
             <thead>
                 <th style="width: 30px">Sel. Todo <input type="checkbox" id="sel_proy_not_send" name="sel_proy_not_send" value="" onchange="total_sel_not_send()"></th>
                 <th style="width: 35px">Cod.</th>
@@ -108,7 +108,7 @@
 @endif
 
 @if($filter == 'send')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
@@ -140,7 +140,7 @@
 @endif
 
 @if($filter == 'all')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>

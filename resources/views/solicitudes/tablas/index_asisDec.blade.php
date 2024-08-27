@@ -1,6 +1,6 @@
 
 @if($filter == 'pend-cierre')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -43,7 +43,7 @@
 @endif
 
 @if($filter == 'pend-teso')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             {{-- @if($filter =='enc_trans')
             <th style="width: 25px">Sel. Todo <input type="checkbox" id="sel_soli" name="sel_soli" value="" onchange="sel_todo_nada_soli()"></th>
@@ -119,7 +119,7 @@
 @endif
 
 @if($filter == 'pend')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -160,7 +160,7 @@
 @if($filter == 'aprob')
     @csrf
 
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 75px">Docente</th>
             <th style="width: 75px">N° Identificación</th>
@@ -184,7 +184,7 @@
 @endif
 
 @if($filter == 'all')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -221,7 +221,7 @@
 @if($filter == 'enc_trans')
     <form action="{{route('encues_trans')}}" method="GET" name="encuesta_trans">
         @csrf
-        <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+        <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
             <thead>
                
                 <th style="width: 25px">Sel. Todo <input type="checkbox" id="sel_encuesta" name="sel_encuesta" value="" onchange="total_sel_encuesta()"></th>

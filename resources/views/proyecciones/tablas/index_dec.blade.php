@@ -1,5 +1,5 @@
 @if($filter=='aprob-cons')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
@@ -52,7 +52,7 @@
 @endif
 
 @if($filter=='pend')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
@@ -101,7 +101,7 @@
 @endif
 
 @if($filter=='elect')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -143,7 +143,7 @@
 @endif
 
 @if($filter=='aprob')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 30px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
@@ -187,7 +187,7 @@
 @endif
 
 @if($filter=='all')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 30px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
@@ -231,7 +231,7 @@
 @endif
 
 @if($filter=='no-elect')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0" style="width: 60%">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0" style="width: 60%">
         
         <thead style="text-align: center" style="margin-right: 20%;margin-left: 20%; width: 60%;">
             {{-- <th style="width: 425pxpx"> --}}

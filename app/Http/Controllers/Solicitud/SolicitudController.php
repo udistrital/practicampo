@@ -2295,7 +2295,7 @@ class SolicitudController extends Controller
                         ->join('estado as es_dec_sol','sol_prac.aprobacion_decano','=','es_dec_sol.id')
                         ->where('aprobacion_consejo_facultad','=',3)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                         // return view('proyecciones.index',['proyecciones'=>$proyeccion, 
                         //                                     'usuario'=>$user_DB,
@@ -2326,7 +2326,7 @@ class SolicitudController extends Controller
                         ->where('aprobacion_consejo_facultad','=',3)
                         // ->where('p_prel.id_estado','=',2)
                         ->where('sol_prac.id_estado_solicitud_practica','=',2)
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                         // return view('proyecciones.index',['proyecciones'=>$proyeccion, 
                         //                                     'usuario'=>$user_DB,
@@ -2359,7 +2359,7 @@ class SolicitudController extends Controller
                         ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
                         ->where('aprobacion_consejo_facultad','=',3)
                         ->where('p_prel.id_estado','=',2)
-                        ->paginate(10);
+                        ->paginate(10000);
 
                     break;
 
@@ -2381,7 +2381,7 @@ class SolicitudController extends Controller
                         ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
                         ->where('aprobacion_consejo_facultad','=',3)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
 
                     break;
 
@@ -2449,7 +2449,7 @@ class SolicitudController extends Controller
                             ->where('e_aca.electiva','=',1)
                             ->where('aprobacion_coordinador','=',7)
                             ->where('p_prel.id_estado','=',1)
-                            ->paginate(10);
+                            ->paginate(10000);
 
                         //     if(count($proyecciones_extra) >= 1)
                         //     {
@@ -2488,7 +2488,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.confirm_docente','=',1)
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                         return view('solicitudes.index',['proyecciones'=>$proyeccion, 
                                                             'filter'=>$filter, 
                                                             'usuario'=>$user_DB,
@@ -2524,7 +2524,7 @@ class SolicitudController extends Controller
                         // ->where('doc_prac.tiene_soporte_practica','=',1)
                         ->where('p_prel.id_estado','=',1)
 			->orderby('full_name','asc')
-                        ->paginate(500);
+                        ->paginate(10000);
 //dd($proyeccion);
                       
                         $docentes_aprob = [];
@@ -2607,7 +2607,7 @@ class SolicitudController extends Controller
                         ->join('estado as es_dec_sol','sol_prac.aprobacion_decano','=','es_dec_sol.id')
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                         // $filter="all";
 
@@ -2650,7 +2650,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.confirm_docente','=',1)
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'pend-teso':
@@ -2681,7 +2681,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.radicado_financiera','=',0)
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'pend-cierre':
@@ -2718,7 +2718,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.confirm_transportadora','=',1)
                         ->where('sol_transp.diligenciado','=',1)
                         ->where('enc_transp.diligenciado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'enc_trans':
@@ -2755,7 +2755,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.confirm_transportadora','=',1)
                         ->where('sol_transp.diligenciado','=',1)
                         ->where('enc_transp.diligenciado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'aprob':
@@ -2786,7 +2786,7 @@ class SolicitudController extends Controller
                         // ->where('doc_prac.tiene_soporte_avance','=',1)
                         // ->where('doc_prac.tiene_soporte_practica','=',1)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
 
                       
                         $docentes_aprob = [];
@@ -2865,7 +2865,7 @@ class SolicitudController extends Controller
                         ->where('p_prel.confirm_coord','=',1)
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     default;
@@ -2904,7 +2904,7 @@ class SolicitudController extends Controller
                         ->where('p_prel.aprobacion_consejo_facultad','=',3)
                         ->where('sol_prac.id_estado_solicitud_practica','=',5)
                         ->where('sol_prac.listado_estudiantes','=',0)
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                         return view('solicitudes.index',['proyecciones'=>$proyeccion,
                                                             'proyeccion_preliminar'=>$proyeccion, 
@@ -2938,7 +2938,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.id_estado_solicitud_practica','=',5)
                         ->where('sol_prac.confirm_docente','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'pend':
@@ -2975,7 +2975,7 @@ class SolicitudController extends Controller
                             $query->where('p_prel.id_docente_responsable','=',$idUser)
                             ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
                     
                     case 'all':
@@ -3008,7 +3008,7 @@ class SolicitudController extends Controller
                             $query->where('id_docente_responsable','=',$idUser)
                             ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
-                        ->paginate(10);
+                        ->paginate(10000);
                         $estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
@@ -3044,7 +3044,7 @@ class SolicitudController extends Controller
                         ->where('p_prel.aprobacion_consejo_facultad','=',3)
                         ->where('sol_prac.id_estado_solicitud_practica','=',5)
                         ->where('sol_prac.listado_estudiantes','=',0)
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                         return view('solicitudes.index',['proyecciones'=>$proyeccion,
                                                             'proyeccion_preliminar'=>$proyeccion, 
@@ -3083,7 +3083,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.confirm_asistD','=',0)
                         ->where('sol_prac.id_estado_solicitud_practica','=',5)
                         ->where('sol_prac.listado_estudiantes','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'proy-aprob':
@@ -3104,7 +3104,7 @@ class SolicitudController extends Controller
                         ->where('id_estado_solicitud_practica','=',3)
                         ->where('si_capital','=',1)
                         ->where('tiene_resolucion','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'aprob':
@@ -3131,7 +3131,7 @@ class SolicitudController extends Controller
                         ->where('p_prel.aprobacion_consejo_facultad','=',3)
                         ->where('sol_prac.id_estado_solicitud_practica','=',3)
                         ->where('sol_prac.aprobacion_decano','=',7)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'sol_recha':
@@ -3160,7 +3160,7 @@ class SolicitudController extends Controller
                         ->where('aprobacion_consejo_facultad','=',3)
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.aprobacion_coordinador','=',4)
-                        ->paginate(10);
+                        ->paginate(10000);
 
                         $estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
@@ -3190,7 +3190,7 @@ class SolicitudController extends Controller
                         ->where('p_prel.id_docente_responsable','=',$idUser)
                         ->where('aprobacion_consejo_facultad','=',3)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                         // $filter="all";
 
@@ -3230,7 +3230,7 @@ class SolicitudController extends Controller
                         ->where('sol_transp.diligenciado','=',1)
                         ->where('sol_prac.legalizado_financiera','=',0)
                         ->where('enc_transp.diligenciado','=',0)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'transp':
@@ -3266,7 +3266,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.radicado_financiera','=',1)
                         ->where('sol_prac.confirm_transportadora','=',1)
                         ->where('sol_transp.diligenciado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                         return view('solicitudes.index',['proyecciones'=>$proyeccion, 
                                                             'filter'=>$filter, 
                                                             'usuario'=>$user_DB,
@@ -3307,7 +3307,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.radicado_financiera','=',1)
                         ->where('sol_prac.confirm_transportadora','=',1)
                         ->where('sol_transp.diligenciado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                         return view('solicitudes.index',['proyecciones'=>$proyeccion, 
                                                             'filter'=>$filter, 
                                                             'usuario'=>$user_DB,
@@ -3356,7 +3356,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.radicado_financiera','=',1)
                         ->where('transp_proy.cant_transporte_rp','>=',1)
                         ->orWhere('transp_proy.cant_transporte_ra','>=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'aprob':
@@ -3396,7 +3396,7 @@ class SolicitudController extends Controller
                         ->orWhere('transp_proy.cant_transporte_ra','>=',1)
                         // ->where('sol_prac.confirm_transportadora','=',0)
                         // ->where('sol_transp.diligenciado','=',0)
-                        ->paginate(10);
+                        ->paginate(10000);
                         return view('solicitudes.index',['proyecciones'=>$proyeccion, 
                                                             'filter'=>$filter, 
                                                             'usuario'=>$user_DB,
@@ -3462,7 +3462,7 @@ class SolicitudController extends Controller
             ->where('sol_prac.id_estado_solicitud_practica','=',3)
             ->where('p_prel.id_estado','=',1)
             ->where('sol_prac.id',$solic['solic'])
-            ->paginate(10);
+            ->paginate(20);
         }
         else if($cant_solic > 1)
         {
@@ -4488,7 +4488,7 @@ class SolicitudController extends Controller
             ->orWhere('p_prel.destino_rp','LIKE','%'.$query.'%')
             ->orWhere('p_prel.destino_ra','LIKE','%'.$query.'%')
             
-            ->paginate(10);
+            ->paginate(20);
             return view('solicitudes.buscador.buscador',['proyecciones'=>$proyeccion, 
                                                             'searchText'=>$query, 
                                                             'usuario'=>$usuario,

@@ -50,7 +50,7 @@ class UsersController extends Controller
                     ->join('roles as ro', 'us.id_role','=', 'ro.id' )
                     ->select('ti.sigla','us.id', 'us.usuario','us.primer_nombre','us.segundo_nombre', 'us.primer_apellido', 
                     'us.segundo_apellido','ro.name as role', 'us.email', 'us.tiene_firma')
-                    ->where('id_estado','=', '1')->paginate(10);
+                    ->where('id_estado','=', '1')->paginate(10000);
                     break;
                 case 'inac':
                     $usuarios=DB::table('users as us')
@@ -58,7 +58,7 @@ class UsersController extends Controller
                     ->join('roles as ro', 'us.id_role','=', 'ro.id' )
                     ->select('ti.sigla','us.id', 'us.usuario','us.primer_nombre','us.segundo_nombre', 'us.primer_apellido', 
                     'us.segundo_apellido','ro.name as role', 'us.email', 'us.tiene_firma')
-                    ->where('id_estado','=', '2')->paginate(10);
+                    ->where('id_estado','=', '2')->paginate(10000);
                     break;
                 case 'all':
                     $usuarios=DB::table('users as us')
@@ -66,7 +66,7 @@ class UsersController extends Controller
                     ->join('roles as ro', 'us.id_role','=', 'ro.id' )
                     ->select('ti.sigla','us.id', 'us.usuario','us.primer_nombre','us.segundo_nombre',
                     'us.primer_apellido', 
-                    'us.segundo_apellido','ro.name as role', 'us.email', 'us.tiene_firma')->paginate(10);
+                    'us.segundo_apellido','ro.name as role', 'us.email', 'us.tiene_firma')->paginate(10000);
                     break;
                 default;
             }

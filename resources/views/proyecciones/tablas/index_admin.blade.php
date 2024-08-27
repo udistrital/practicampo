@@ -1,5 +1,5 @@
 @if($filter == 'all')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 90px">Proy. Curricular</th>
@@ -35,7 +35,7 @@
 @endif
 
 @if($filter == 'inact')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 90px">Proy. Curricular</th>
@@ -71,7 +71,7 @@
 @endif
 
 @if($filter == 'not_send_docente')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 90px">Proy. Curricular</th>

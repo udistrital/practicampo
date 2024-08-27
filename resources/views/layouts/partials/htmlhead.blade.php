@@ -34,4 +34,10 @@
     <!-- jQuery timepicker library -->
     <link href="{{ asset('css/timepicker.css') }}" rel="stylesheet"> 
     {{-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css"> --}}
+
+    <!-- DataTables CSS CDN -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.dataTables.css" />
+    <!--   -->
+</head>
+
 </head>

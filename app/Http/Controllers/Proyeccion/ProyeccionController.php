@@ -85,7 +85,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.id_estado',1)
                         // ->where('p_prel.aprobacion_consejo_facultad',5)
                         ->orderBy('p_aca.programa_academico', 'ASC')
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                         return view('proyecciones.index',['proyecciones'=>$proyeccion,
                                                             'filter'=>$filter,  
@@ -106,7 +106,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.id_estado',2)
                         // ->where('p_prel.aprobacion_consejo_facultad',5)
                         ->orderBy('p_aca.programa_academico', 'ASC')
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                         return view('proyecciones.index',['proyecciones'=>$proyeccion,
                                                             'filter'=>$filter,  
@@ -129,7 +129,7 @@ class ProyeccionController extends Controller
                         ->where('confirm_docente','=',0)
                         // ->where('confirm_coord','=',0)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
 
                         return view('proyecciones.index',['proyecciones'=>$proyeccion,
                                                             'filter'=>$filter,  
@@ -167,7 +167,7 @@ class ProyeccionController extends Controller
                         ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
                         ->where('aprobacion_consejo_facultad','=',3)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
 
                     break;
 
@@ -234,7 +234,7 @@ class ProyeccionController extends Controller
                         ->where('e_aca.electiva','=',1)
                         ->where('aprobacion_coordinador','=',7)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'pend':
@@ -261,7 +261,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.confirm_asistD','=',1)
 			->where('p_prel.confirm_coord','=',1)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'aprob':
@@ -286,7 +286,7 @@ class ProyeccionController extends Controller
                             ->where('p_prel.aprobacion_decano','=',7)
                             ->where('p_prel.confirm_asistD','=',1)
                             ->where('p_prel.id_estado','=',1)
-                            ->paginate(10);
+                            ->paginate(10000);
                     break;
                     
                     case 'all':
@@ -310,7 +310,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.aprobacion_asistD','=',7)
                         ->where('p_prel.confirm_asistD','=',1)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                     break;
 
@@ -364,7 +364,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.aprobacion_coordinador','=',7)
                         ->where('p_prel.confirm_asistD','=',1)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'not_send':
@@ -386,7 +386,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.confirm_coord','=',1)
                         ->where('p_prel.confirm_asistD','=',0)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'sin_pres':
@@ -414,7 +414,7 @@ class ProyeccionController extends Controller
                                   ->orWhere('valor_estimado_transporte_ra','=',0)
                                   ->orWhere('valor_estimado_transporte_ra','=',null);
                         })
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
                     
                     case 'all':
@@ -433,7 +433,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.aprobacion_coordinador','=',7)
                         ->where('p_prel.confirm_coord','=',1)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     default;
@@ -468,7 +468,7 @@ class ProyeccionController extends Controller
                             $query->where('id_docente_responsable','=',$idUser)
                             ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'not_send':
@@ -495,7 +495,7 @@ class ProyeccionController extends Controller
                             $query->where('id_docente_responsable','=',$idUser)
                             ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
-                        ->paginate(10);
+                        ->paginate(10000);
 
                     break;
 
@@ -526,7 +526,7 @@ class ProyeccionController extends Controller
                             $query->where('id_docente_responsable','=',$idUser)
                             ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
                     
                     case 'all':
@@ -558,7 +558,7 @@ class ProyeccionController extends Controller
                         })
                         // ->orWhere('aprobacion_coordinador','=',3)
                         // ->orWhere('aprobacion_decano','=',5)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     default;
@@ -587,7 +587,7 @@ class ProyeccionController extends Controller
                         // ->where('confirm_coord','=',1)
                         ->where('id_docente_responsable','=',$idUser)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'not_send':
@@ -609,7 +609,7 @@ class ProyeccionController extends Controller
                         ->where('confirm_coord','=',0)
                         ->where('id_docente_responsable','=',$idUser)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(10);
+                        ->paginate(10000);
 
                     break;
 
@@ -631,7 +631,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.id_estado','=',1)
                         ->where('aprobacion_coordinador','=',4)
                         ->orWhere('aprobacion_consejo_facultad','=',4)
-                        ->paginate(10);
+                        ->paginate(10000);
                     break;
 
                     case 'all':
@@ -652,7 +652,7 @@ class ProyeccionController extends Controller
                         // ->where('aprobacion_coordinador','=',5)
                         // ->where('confirm_creador','=',0)
                         
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                     break;
 
@@ -679,7 +679,7 @@ class ProyeccionController extends Controller
                         ->join('estado as es_dec_sol','sol_prac.aprobacion_decano','=','es_dec_sol.id')
                         ->where('sol_prac.id_estado_solicitud_practica','=',6)
                         ->where('p_prel.id_estado','=',6)
-                        ->paginate(10);
+                        ->paginate(10000);
                         
                     break;
 

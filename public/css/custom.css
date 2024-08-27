@@ -183,7 +183,7 @@ input:checked + .slider:after {
   border-radius: 50%; }
 
 .header_table {
-  table-layout: fixed;
+  /*table-layout: fixed;*/
   width: 100%;
   word-break: break-word;
   font-size: 12px; }
@@ -296,3 +296,14 @@ input:checked + .slider:after {
   color: #212a2f !important; }
 
 /*# sourceMappingURL=custom.css.map */
+
+table.dataTable thead th {
+  background-color: #f4f4f4; /* Color de fondo para el encabezado */
+  color: #333; /* Color del texto del encabezado */
+  font-weight: bold; /* Hacer el texto en negrita */
+  /* padding: 12px 8px; /* Espaciado interno */
+  text-align: left; /* Alineación del texto */
+  border-bottom: 2px solid #ddd; /* Línea inferior de borde */
+  vertical-align: middle; /* Alineación vertical del texto */
+  /*white-space: nowrap; */
+}

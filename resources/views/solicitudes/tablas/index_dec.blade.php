@@ -1,5 +1,5 @@
 @if($filter=='pend')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 30px">Cod.</th>
             <th style="width: 55px">Proy. Curricular</th>
@@ -51,7 +51,7 @@
 @endif
 
 @if($filter=='aprobb')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 30px">Cod.</th>
             <th style="width: 55px">Proy. Curricular</th>
@@ -103,7 +103,7 @@
 @endif
 
 @if($filter=='aprob')
-<table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+<table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
     <thead>
         <th style="width: 75px">Docente</th>
         <th style="width: 75px">N° Identificación</th>
@@ -127,7 +127,7 @@
 @endif
 
 @if($filter=='all')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 30px">Cod.</th>
             <th style="width: 55px">Proy. Curricular</th>

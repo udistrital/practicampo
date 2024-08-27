@@ -1,5 +1,5 @@
 @if($filter == 'pre-proy')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -39,7 +39,7 @@
 @endif
 
 @if($filter == 'proy-comp')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -68,7 +68,7 @@
 @endif
 
 @if($filter == 'transp')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -99,7 +99,7 @@
 @endif
 
 @if($filter == 'estud')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -130,7 +130,7 @@
 @endif
 
 @if($filter == 'sol_recha')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -165,7 +165,7 @@
 @endif
 
 @if($filter == 'ejec-sol')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -196,7 +196,7 @@
 @endif
 
 @if($filter == 'aprob')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>
@@ -225,7 +225,7 @@
 @endif
 
 @if($filter == 'all')
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+    <table id="myTable" class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
         <thead>
             <th style="width: 35px">Cod.</th>
             <th style="width: 80px">Proy. Curricular</th>

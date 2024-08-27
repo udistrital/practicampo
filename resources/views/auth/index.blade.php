@@ -75,15 +75,15 @@
 
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-          <table class="table table-bordered table-condensed table-hover table-sm" cellspacing="0" style="table-layout: fixed; width:100%; word-break: break-word; font-size: 12px">
+          <table id="myTable" class="table table-bordered table-condensed table-hover table-sm" cellspacing="0" style="table-layout: fixed; width:100%; word-break: break-word; font-size: 12px">
            <thead>
-            <th style="width: 22px">TI</th>
+            <th style="width: 35px">TI</th>
             <th style="width: 60px">Identificación</th>
             <th style="width: 75px">Nombres</th> 
             <th style="width: 75px">Apellidos</th>
-            <th style="width: 50px">Usuario</th>
+            <th style="width: 70px">Usuario</th>
             <th style="width: 120px">E-Mail</th>
-            <th style="width: 65px">Rol</th>
+            <th style="width: 75px">Rol</th>
             <th style="width: 39px">Acción</th>
            </thead> 
             @foreach ($usuarios as $item) 
