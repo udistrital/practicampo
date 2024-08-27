@@ -16,6 +16,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     certbot \
     python3-certbot-apache \
+    cron \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
 
 
@@ -40,7 +41,7 @@ RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory-limit.ini
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-EXPOSE 80
+EXPOSE 80 443
 
-#CMD ["docker-entrypoint.sh"]
-CMD ["apache2-foreground"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+#CMD ["apache2-foreground"]

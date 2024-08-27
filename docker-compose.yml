@@ -40,7 +40,7 @@ services:
     volumes:
       - ./:/var/www/html/practicampo/
       - ./apache:/etc/apache2/sites-available/
-      - ./letsencrypt:/etc/letsencrypt/live/practicampo.udistrital.edu.co/
+      - ./letsencrypt:/etc/letsencrypt/live/
     #  - ./vendor:/var/www/html/practicampo/vendor
     #  - ./node_modules:/var/www/html/practicampo/node_modules
     depends_on:
