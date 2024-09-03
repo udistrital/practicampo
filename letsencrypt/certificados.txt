@@ -1,2 +1,0 @@
-Colocar volumen para no perder los certificados de letsencrypt
-./letsencrypt:/etc/letsencrypt/

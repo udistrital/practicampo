@@ -12,3 +12,4 @@ yarn-error.log
 /vendor
 /db_backup/*.sql
 /letsencrypt
+/app/Http/Middleware/ForceHttps.php
