@@ -37,11 +37,11 @@
 {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script> --}}
 
 
-<!-- jQuery library -->
+<!--<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> jQuery library -->
 <script src="{{ asset('js/timepicker.js') }}" type="text/javascript" async="async"></script>
 {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script> --}}
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
 

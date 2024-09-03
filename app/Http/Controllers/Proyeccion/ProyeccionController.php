@@ -5540,10 +5540,10 @@ class ProyeccionController extends Controller
         $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
         $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->first();
         $emails = [];
-
-        $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
-        $emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
-        $emails[] = ["email"=>$AsisD->email,"role"=>$AsisD->id_role];
+        $emails[] = ["email"=>"juldgonzalezc@udistrital.edu.co","id_role"=>5];
+        //$emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
+        //$emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
+        //$emails[] = ["email"=>$AsisD->email,"role"=>$AsisD->id_role];
 
         // foreach($emails as $email)
         // {
@@ -5586,16 +5586,16 @@ class ProyeccionController extends Controller
         $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->first();
         $emails = [];
 
-        $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
+        //$emails[] = ["email"=>"juldgonzalezc@udistrital.edu.co","role"=>5]; //prueba
+        //$emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
         // $emails[] = ["email"=>$coord->email,"role"=>$coord->id_role];
         // $emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
         // $emails[] = ["email"=>$AsisD->email,"role"=>$AsisD->id_role];
 
-        // foreach($emails as $email)
-        // {
-
-        //     Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_proyeccion,$nueva_solicitud, $email, $correos_administrativos ));
-        // }
+         //foreach($emails as $email)
+         //{
+         //    Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_proyeccion,$nueva_solicitud, $email, $correos_administrativos ));
+         //}
     }
 
     /**
