@@ -722,6 +722,12 @@
     <!-- 2.3 -->
 
 <!-- información proyección -->
+@if(is_null($solicitud_practica->hora_salida) || $solicitud_practica->hora_salida == 0)
+    {{ $solicitud_practica->hora_salida = '' }}
+@endif
+@if(is_null($solicitud_practica->hora_regreso) || $solicitud_practica->hora_regreso == 0)
+    {{ $solicitud_practica->hora_regreso = '' }}
+@endif
 
 @if($tipo_ruta == 1)
 <br>
@@ -981,10 +987,12 @@
                                     style="border-top-right-radius: 0; border-bottom-right-radius: 0"
                                     value="{{$proyeccion_preliminar->fecha_salida_aprox_rp}}" onchange="duracion_edit_RP(this.value)"> 
                                 </div>
+                                
                                 <div class="col-md-5" style="padding-left: 0px;padding-right: 0px;">
                                     <input id="hora_salida_rp" type="text" class="timepicker form-control  @error('hora_salida_rp') is-invalid @enderror" name="hora_salida_rp" 
                                     style="padding-left: 0.5rem;padding-right: 0rem;border-top-left-radius: 0; border-bottom-left-radius: 0;margin-top: 1px;"
-                                    value="" autocomplete="off" autofocus required>
+                                    value="{{$solicitud_practica->hora_salida}}"
+                                    autocomplete="off" autofocus required>
                                 </div>
                             </div>
                         </div>  
@@ -1033,7 +1041,7 @@
                                 <div class="col-md-5" style="padding-left: 0px;padding-right: 0px;">
                                     <input id="hora_regreso_rp" type="text" class="timepicker form-control  @error('hora_salida_rp') is-invalid @enderror" name="hora_regreso_rp" 
                                     style="padding-left: 0.5rem;padding-right: 0rem;border-top-left-radius: 0; border-bottom-left-radius: 0;margin-top: 1px;"
-                                    value="" autocomplete="off" autofocus required>
+                                    value="{{$solicitud_practica->hora_regreso}}" autocomplete="off" autofocus required>
                                 </div>
                             </div>
                         </div>
@@ -2175,7 +2183,7 @@
                                 <div class="col-md-5" style="padding-left: 0px;padding-right: 0px;">
                                     <input id="hora_salida_ra" type="text" class="timepicker form-control  @error('hora_salida_rp') is-invalid @enderror" name="hora_salida_ra" 
                                     style="padding-left: 0.5rem;padding-right: 0rem;border-top-left-radius: 0; border-bottom-left-radius: 0;margin-top: 1px;"
-                                    value="" autocomplete="off" autofocus required>
+                                    value="{{$solicitud_practica->hora_salida}}" autocomplete="off" autofocus required>
                                 </div>
                             </div>
                         </div>  
@@ -2222,7 +2230,7 @@
                                 <div class="col-md-5" style="padding-left: 0px;padding-right: 0px;">
                                     <input id="hora_regreso_ra" type="text" class="timepicker form-control  @error('hora_regreso_ra') is-invalid @enderror" name="hora_regreso_ra" 
                                     style="padding-left: 0.5rem;padding-right: 0rem;border-top-left-radius: 0; border-bottom-left-radius: 0;margin-top: 1px;"
-                                    value="" autocomplete="off" autofocus required>
+                                    value="{{$solicitud_practica->hora_regreso}}" autocomplete="off" autofocus required>
                                 </div>
                             </div>
                         </div>  
