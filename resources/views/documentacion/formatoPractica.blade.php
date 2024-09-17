@@ -78,17 +78,17 @@ header{position:fixed;}
                     </colgroup> --}}
                     <thead>
                         <tr>
-                            <th class="tg-0pky" colspan="4">Fecha De Solicitud</th>
+                            <th class="tg-0pky" colspan="">Fecha De Solicitud</th>
                             <th class="tg-0pky" colspan="20"><?= $fecha_solicitud?></th><br>
                         </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td class="tg-0pky" colspan="4">Proyecto Curricular</td>
+                        <td class="tg-0pky" colspan="">Proyecto Curricular</td>
                         <td class="tg-0pky" colspan="20"><?= $solicitud_practica->programa_academico?></td><br>
                     </tr>
                     <tr>
-                        <td class="tg-0pky" colspan="4">Docente Responsable</td>
+                        <td class="tg-0pky" colspan="">Docente Responsable</td>
                         <td class="tg-0pky"  colspan="8">
                             @foreach ($doce_pract_int as $item) 
                                 <p  style="margin: 0rem;font-size: 10.5px"><?= $item['full_name']?></p>
@@ -102,7 +102,7 @@ header{position:fixed;}
                         </td><br>
                     </tr>
                     <tr>
-                        <td class="tg-0pky" colspan="4">Teléfono de Contacto</td>
+                        <td class="tg-0pky" colspan="">Teléfono de Contacto</td>
                         <td class="tg-0pky" colspan="6">
                             @foreach ($doce_pract_int as $item) 
                                 <p style="margin: 0rem;font-size: 10.5px"><?= $item['celular']?></p>
@@ -116,7 +116,7 @@ header{position:fixed;}
                         </td><br>
                     </tr>
                     <tr>
-                        <td class="tg-0pky" colspan="4">Nombre de la asignatura</td>
+                        <td class="tg-0pky" colspan="">Nombre de la asignatura</td>
                         <td class="tg-0pky" colspan="12">
                             @foreach ($espa_pract_int as $item) 
                                 <p style="margin: 0rem;font-size: 10.5px"><?= $item['espacio_academico']?></p>
@@ -130,13 +130,13 @@ header{position:fixed;}
                         </td><br>
                     </tr>
                     <tr>
-                        <td class="tg-0pky" colspan="4">Período Academico</td>
+                        <td class="tg-0pky" colspan="">Período Academico</td>
                         <td class="tg-0pky" colspan="12"><?= $solicitud_practica->anio_periodo?> - <?= $solicitud_practica->periodo_academico?></td>
                         <td class="tg-0pky" colspan="4">Semetre Asignatura</td>
                         <td class="tg-0pky" colspan="4"><?= $solicitud_practica->semestre_asignatura?></td><br>
                     </tr>
                     <tr>
-                        <td class="tg-0pky" colspan="4">Número de Estudiantes</td>
+                        <td class="tg-0pky" colspan="">Número de Estudiantes</td>
                         <td class="tg-0pky" colspan="2"><?= $solicitud_practica->num_estudiantes?></td>
                         <td class="tg-0pky" colspan="8">Número de Grupos:</td>
                         <td class="tg-0pky" colspan="2"><?= $solicitud_practica->cantidad_grupos?></td>
@@ -144,7 +144,7 @@ header{position:fixed;}
                         <td class="tg-0pky" colspan="4">{{$practicas_integradas->cant_espa_aca + $docentes_practica->total_docentes_apoyo + 1}}</td><br>
                     </tr>
                     <tr>
-                        <td class="tg-0pky" colspan="4">Fecha y Hora de Salida</td>
+                        <td class="tg-0pky" colspan="">Fecha y Hora de Salida</td>
                         <td class="tg-0pky" colspan="4"><?= $solicitud_practica->fecha_salida?> <br> <?= $solicitud_practica->hora_salida?></td>
                         <td class="tg-0pky" colspan="4">Fecha y Hora de Regreso</td>
                         <td class="tg-0pky" colspan="4"><?= $solicitud_practica->fecha_regreso?> <br> <?= $solicitud_practica->hora_regreso?></td>
@@ -152,7 +152,7 @@ header{position:fixed;}
                         <td class="tg-0pky" colspan="4"><?= $solicitud_practica->duracion_num_dias?></td><br>
                     </tr>
                     <tr>
-                        <td class="tg-0pky" colspan="4">Número de Vehiculos</td>
+                        <td class="tg-0pky" colspan="">Número de Vehiculos</td>
                         <td class="tg-0pky" colspan="2"><?php if($solicitud_practica->tipo_ruta == 1) echo "$transporte_proyeccion->cant_transporte_rp"; 
                         elseif ($solicitud_practica->tipo_ruta == 2) {echo $transporte_proyeccion->cant_transporte_ra;}?></td>
                         <td class="tg-0pky" colspan="9">Tipo de Vehículo</td>
@@ -162,7 +162,7 @@ header{position:fixed;}
                     </tr>
     
                     <tr>
-                        <td class="tg-0pky" colspan="4">CRONOGRAMA</td>
+                        <td class="tg-0pky" colspan="">CRONOGRAMA</td>
                         <td class="tg-0pky" colspan="20" ><?= $solicitud_practica->cronograma?>
                         <br></td>
                         <br>
