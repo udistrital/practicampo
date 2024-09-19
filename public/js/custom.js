@@ -254,10 +254,11 @@ $(document).ready(function(){
    {
         $("#soporte_apoyo").show();
         num_max_apoyo = $("#num_apoyo").val();
-        $("#total_docentes_apoyo").attr('max',num_max_apoyo);;
+        $("#total_docentes_apoyo").attr('max',num_max_apoyo);
    }
    else if(num_apoyo == 0 || num_apoyo == null)
    {
+	    $("#total_docentes_apoyo").attr('max',0);
         $("#cant_docen_apoyo").hide();
         $("#soporte_apoyo").hide();
    }
@@ -3156,6 +3157,8 @@ $("#num_apoyo").change('keypress', function () {
         $("#soporte_apoyo").hide();
         $("#sop_pers_apoyo").removeAttr('required','required');
         $("#cant_docen_apoyo").hide();
+		$("#total_docentes_apoyo").attr('max',0);
+		$("#total_docentes_apoyo").val(0);
     }
     
     switch(num_apoyo)
