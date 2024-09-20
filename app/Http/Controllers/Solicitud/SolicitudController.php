@@ -2612,7 +2612,7 @@ class SolicitudController extends Controller
                         // $filter="all";
 
                         // $estudiantes=new estudiantes_practica();
-                        $estudiantes=DB::table('estudiantes_solicitud_practica')->get();
+                        //$estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
                     default;
@@ -3009,7 +3009,7 @@ class SolicitudController extends Controller
                             ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
                         ->paginate(10000);
-                        $estudiantes=DB::table('estudiantes_solicitud_practica')->get();
+                        //$estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
                     default;
@@ -3162,7 +3162,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.aprobacion_coordinador','=',4)
                         ->paginate(10000);
 
-                        $estudiantes=DB::table('estudiantes_solicitud_practica')->get();
+                        //$estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
                     case 'all':
@@ -3195,7 +3195,7 @@ class SolicitudController extends Controller
                         // $filter="all";
 
                         // $estudiantes=new estudiantes_practica();
-                        $estudiantes=DB::table('estudiantes_solicitud_practica')->get();
+                        //$estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
                     case 'ejec-sol':
