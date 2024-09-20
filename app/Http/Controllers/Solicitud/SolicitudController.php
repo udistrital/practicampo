@@ -3165,7 +3165,7 @@ class SolicitudController extends Controller
                         $estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
-                    case 'all':
+		    case 'all':
                         $espacios = DB::table('espacio_academico as esp_aca')
                         ->where('electiva','=',1)->get();
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
@@ -3195,7 +3195,7 @@ class SolicitudController extends Controller
                         // $filter="all";
 
                         // $estudiantes=new estudiantes_practica();
-                        $estudiantes=DB::table('estudiantes_solicitud_practica')->get();
+                        //$estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
                     case 'ejec-sol':
