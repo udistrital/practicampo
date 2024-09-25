@@ -1479,6 +1479,8 @@ class SolicitudController extends Controller
         $vlr_estud_min= $sistema->vlr_estud_min;
         $vlr_docen_max= $sistema->vlr_docen_max;
         $vlr_docen_min= $sistema->vlr_docen_min;
+		
+		$practicas_integradas = practicas_integradas::where('id','=',$id)->first();		
 
         if(Auth::user()->id_role == 1 ||  Auth::user()->id_role == 4 || Auth::user()->id_role == 5)
         {
@@ -1498,7 +1500,8 @@ class SolicitudController extends Controller
                 //$total_docentes_apoyo = $request->get('total_docentes_apoyo');
                 $total_docentes_apoyo = $docentes_practica->total_docentes_apoyo;
                 $num_acompa_apoyo = $request->get('num_apoyo');
-                $total_docentes = $total_docentes_apoyo + 1;
+				$num_doc_pract_int = $practicas_integradas->cant_espa_aca;
+                $total_docentes = $num_doc_pract_int + $total_docentes_apoyo + 1;
                 $proyeccion_preliminar->num_estudiantes_aprox = $num_estudiantes;
                 $solicitud_practica->num_estudiantes= $num_estudiantes;
                 $solicitud_practica->total_docentes_apoyo= $total_docentes_apoyo;
