@@ -574,7 +574,6 @@ class ProyeccionController extends Controller
 				$grupo = 'grupo_' . $i;
 				$proyeccion_preliminar->$grupo = $request->get($grupo);
 			}*/
-			//dd($proyeccion_preliminar->grupo_1."---".$proyeccion_preliminar->grupo_2."---".$proyeccion_preliminar->grupo_3."---".$proyeccion_preliminar->grupo_4);
 
             $proyeccion_preliminar->destino_rp=$request->get('destino_rp');
             $proyeccion_preliminar->destino_ra=$request->get('destino_ra');
@@ -679,12 +678,7 @@ class ProyeccionController extends Controller
 				$this->for_cantidades($request, $practicas_integradas, $practicas_integradas->cant_espa_aca, $campo, $cont);
             }
 
-			//dd($proyeccion_preliminar."\n\n".$practicas_integradas);
-            /*dd("ID ESPACIOS:    ".$practicas_integradas->id_espa_aca_1." - ".$practicas_integradas->id_espa_aca_2." - ".$practicas_integradas->id_espa_aca_3." - ".$practicas_integradas->id_espa_aca_4." - ".
-			$practicas_integradas->id_espa_aca_5." - ".$practicas_integradas->id_espa_aca_6." - ".$practicas_integradas->id_espa_aca_7." - ".
-			"\nID DOCENTES:    ".$practicas_integradas->id_docen_espa_aca_1." - ".$practicas_integradas->id_docen_espa_aca_2." - ".$practicas_integradas->id_docen_espa_aca_3." - ".
-			$practicas_integradas->id_docen_espa_aca_4." - ".$practicas_integradas->id_docen_espa_aca_5." - ".$practicas_integradas->id_docen_espa_aca_6." - ".$practicas_integradas->id_docen_espa_aca_7);*/
-            //$practicas_integradas->save();
+			//$practicas_integradas->save();
         /**Tabla practicas_integradas */
             
         /**Tabla docentes_practica */
@@ -706,7 +700,6 @@ class ProyeccionController extends Controller
 				$docente_apoyo= 'docente_apoyo_' . $i;
 				$docentes_practica->$docente_apoyo = $request->get($apoyo);
 			}
-            //dd($docentes_practica);
 
             //$docentes_practica->save();
         /**Tabla docentes_practica */
@@ -759,7 +752,10 @@ class ProyeccionController extends Controller
 			for ($i = 1; $i <= 4; $i++) {
 				$vlr_trans_menor_rp = 'vlr_trans_menor_rp_' . $i;
 				$transporte_menor->$vlr_trans_menor_rp = 0;
+				$vlr_trans_menor_ra = 'vlr_trans_menor_ra_' . $i;
+				$transporte_menor->$vlr_trans_menor_ra = 0;
 			}
+			
 			if($transporte_menor->cant_trans_menor_rp > 0){
 				$transporte_menor->docente_resp_t_menor_rp=$request->get('docente_resp_t_menor_rp');
 				for ($i = 1; $i <= $transporte_menor->cant_trans_menor_rp; $i++) {
@@ -773,10 +769,6 @@ class ProyeccionController extends Controller
 				$transporte_menor->docente_resp_t_menor_rp=null;
 			}
 			
-			for ($i = 1; $i <= 4; $i++) {
-				$vlr_trans_menor_ra = 'vlr_trans_menor_ra_' . $i;
-				$transporte_menor->$vlr_trans_menor_ra = 0;
-			}
 			if($transporte_menor->cant_trans_menor_ra > 0){
 				$transporte_menor->docente_resp_t_menor_ra=$request->get('docente_resp_t_menor_ra');
 				for ($i = 1; $i <= $transporte_menor->cant_trans_menor_ra; $i++) {
@@ -788,11 +780,9 @@ class ProyeccionController extends Controller
 				}
 			}else{
 				$transporte_menor->docente_resp_t_menor_ra=null;
-			}
+			} 
             
-            
-            //$transporte_menor->save();
-			
+            //$transporte_menor->save();		
 
             $vlr_trans_menor_rp_1=$transporte_menor->vlr_trans_menor_rp_1;
             $vlr_trans_menor_rp_2=$transporte_menor->vlr_trans_menor_rp_2;
@@ -894,6 +884,7 @@ class ProyeccionController extends Controller
             //$costos_proyeccion->save();
         /**Tabla costos_proyeccion */
 
+		//dd($proyeccion_preliminar,$transporte_menor,$docentes_practica,$practicas_integradas);
 		$proyeccion_preliminar->save();
 		$id=$proyeccion_preliminar->id;
 		

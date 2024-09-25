@@ -11,6 +11,10 @@
         page-break-after: always;
         position:fixed;bottom:0cm;left:0cm;right:0cm;height:110px;
         }
+		.page-break-before {
+        page-break-before: always;
+        position:fixed;bottom:0cm;left:0cm;right:0cm;height:110px;
+        }
         textarea{font-family:"Arial, sans-serif";font-size:10pt;
         border:none}
 
@@ -94,8 +98,8 @@
             :<br>
         </p>
         <div align="center" style="margin-top:0cm;margin-bottom:0cm;margin-left: -5px;margin-right: -5px;">
-            <table class="table table-bordered" width="85%" style="border-collapse: collapse;">
-                <tr>
+            <table class="table table-bordered" width="85%" style="border-collapse: collapse;">                
+				<tr>
                     <th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:70pt">ASIGNATURA</th>
                     <th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:55pt">DOCENTES</th>
                     <th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:50pt">SITIO DE DESARROLLO</th>
@@ -106,12 +110,11 @@
                     <th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:52.5pt">TRANSPORTE MENOR/LOCAL</th>
                     <th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:57.5pt">OTROS</th>
                     <th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:35pt">TOTAL DISPONIBILIDAD</th>
-                </tr>
+				</tr>               
                 
-                @foreach($solicitud_practica as $sol)
-                    <tr>
-                        <td style="border: 1px solid;">
-                            
+                @foreach($solicitud_practica as $sol)							
+                    <tr>				
+                        <td style="border: 1px solid;">													
                             <!--<p class="MsoNormal" style="text-align:center;margin-top: 4px;margin-bottom: 0px;height:5px" align="center">
                                 <span >&nbsp;</span>
                             </p>-->
@@ -318,7 +321,7 @@
                         <td style="border: 1px solid;">
                             @foreach($vlr_materiales as $item)
                                 @if($sol->id == $item['id_proy'])
-                                    <p class="MsoNormal" style="text-align:center;margin-top:3px;margin-bottom: 0px;" align="center">
+                                    <p class="MsoNormal" style="text-align:center;margin-top:0px;margin-bottom: 0px;" align="center">
                                         <span style="font-size:5.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
                                             <strong>MATERIALES:</strong> ${{number_format($item['vlr_materiales'],0,',','.')}}</span>
                                         <!-- <br> -->
@@ -329,7 +332,7 @@
                                             <strong>BOLETAS/OTROS:</strong> ${{number_format($item['vlr_otros_boletas'],0,',','.')}}</span>
                                     </p>
                                     <hr class="divider">
-                                    <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;" align="center">
+                                    <p class="MsoNormal" style="text-align:center;margin-top: 0px;margin-bottom: 0px;" align="center">
                                         <span style="font-size:5.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
                                             <strong>TOTAL OTROS</strong></span>
                                         <span style="font-size:5.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
@@ -358,59 +361,82 @@
                                 <!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
                                     <span >&nbsp;</span>
                                 </p> -->
-                        </td>
-                        
+								@if($loop->last)
+									<tr>
+										<td colspan="9" style="border: 1px solid;">
+											<!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
+												<span >&nbsp;</span>
+											</p> -->
+											<p class="MsoNormal" style="text-align:left;margin-top: 3px;margin-bottom: 0px;margin-left: 12px;" align="center">
+												<span style="font-size:6.3pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
+												<strong>TOTAL</strong>
+												<!-- <br><br> -->
+												</span>
+											</p>
+											<!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
+												<span >&nbsp;</span>
+											</p> -->
+										</td>
+										<td colspan="1" style="border: 1px solid;">
+											
+											<!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
+												<span >&nbsp;</span>
+											</p> -->
+											<p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;" align="center">
+												<span style="font-size:6.3pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
+												<?php echo '$'.number_format($sumatoria_presupuesto,0,',','.')?>
+												<!-- <br><br> -->
+												</span>
+											</p>
+											<!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
+												<span >&nbsp;</span>
+											</p> -->
+										</td>
+									</tr>
+									<tr>
+									<td colspan="10">
+									<ul style="margin-top: 0px;margin-bottom: 0px;">
+									  <li><p align="justify"><?= $parrafos_modificables->parr_11?> {{ number_format($vlr_viaticos->vlr_docen_max,0,',','.')}}</p></li>
+									  <li><p align="justify"><?= $parrafos_modificables->parr_12?> {{ number_format($vlr_viaticos->vlr_estud_min,0,',','.')}}</p></li>
+									  <li><p align="justify"><?= $parrafos_modificables->parr_13?> {{ number_format($vlr_viaticos->vlr_estud_max,0,',','.')}}</p></li>
+									</ul> 
+									<div class="page-break"></div>
+									</td>
+									</tr>						
+								@endif
+							
+								@if($loop->iteration % 5 == 0)
+									<div class="page-break" style="border: 0px;"></div>	
+								@endif															
+                        </td>  					
                     </tr>
-
+					@if($loop->iteration == 5 && $loop->count > 5)
+					<tr>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:70pt">ASIGNATURA</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:55pt">DOCENTES</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:50pt">SITIO DE DESARROLLO</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:42pt">FECHA</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:25pt">No. DÍAS</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:52.5pt">VIATICOS DOCENTES</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:52.5pt">AUXILIO ESTUDIANTES</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:52.5pt">TRANSPORTE MENOR/LOCAL</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:57.5pt">OTROS</th>
+						<th style="border: 1px solid; font-size: 6.3pt;text-align: center;width:35pt">TOTAL DISPONIBILIDAD</th>
+					</tr>    
+					@endif	
+				
                 @endforeach
-
-                <tr>
-                    <td colspan="9" style="border: 1px solid;">
-                        <!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
-                            <span >&nbsp;</span>
-                        </p> -->
-                        <p class="MsoNormal" style="text-align:left;margin-top: 3px;margin-bottom: 0px;margin-left: 12px;" align="center">
-                            <span style="font-size:6.3pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
-                            <strong>TOTAL</strong>
-                            <!-- <br><br> -->
-                            </span>
-                        </p>
-                        <!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
-                            <span >&nbsp;</span>
-                        </p> -->
-                    </td>
-                    <td colspan="1" style="border: 1px solid;">
-                        
-                        <!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
-                            <span >&nbsp;</span>
-                        </p> -->
-                        <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;" align="center">
-                            <span style="font-size:6.3pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
-                            <?php echo '$'.number_format($sumatoria_presupuesto,0,',','.')?>
-                            <!-- <br><br> -->
-                            </span>
-                        </p>
-                        <!-- <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
-                            <span >&nbsp;</span>
-                        </p> -->
-                    </td>
-                </tr>
+				@foreach($solicitud_practica as $sol)
+				
+				@endforeach
             </table>                    
         </div>
-        
-        <ul>
-          <li><p align="justify"><?= $parrafos_modificables->parr_11?> {{ number_format($vlr_viaticos->vlr_docen_max,0,',','.')}}</p></li>
-          <li><p align="justify"><?= $parrafos_modificables->parr_12?> {{ number_format($vlr_viaticos->vlr_estud_min,0,',','.')}}</p></li>
-          <li><p align="justify"><?= $parrafos_modificables->parr_13?> {{ number_format($vlr_viaticos->vlr_estud_max,0,',','.')}}</p></li>
-        </ul> 
-
-        <div class="page-break"></div>
         <!--<ul>
           <li><p align="justify"><?= $parrafos_modificables->parr_11?> {{ number_format($vlr_viaticos->vlr_docen_max,0,',','.')}}</p></li>
           <li><p align="justify"><?= $parrafos_modificables->parr_12?> {{ number_format($vlr_viaticos->vlr_estud_min,0,',','.')}}</p></li>
           <li><p align="justify"><?= $parrafos_modificables->parr_13?> {{ number_format($vlr_viaticos->vlr_estud_max,0,',','.')}}</p></li>
         </ul>-->
-
+		
         <p align="justify"> <strong>ARTÍCULO SEGUNDO:</strong>
             <?= $parrafos_modificables->parr_14?></p>
         <p align="justify"> <strong>ARTÍCULO TERCERO:</strong>
@@ -435,7 +461,7 @@
         Decano Facultad del Medio Ambiente y Recursos Naturales</strong></span></p>
         
         </td></tr>
-    </table> 
+    </table>  
     <footer>
         <table class="table table-bordered" width="80%" style="border-collapse: collapse;margin-left: auto;margin-right: auto;">
             <tr>
