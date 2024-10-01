@@ -169,9 +169,10 @@ header{position:fixed;}
                     </tr>
                     </tbody>
                 </table>
-
+                <div class="page-break">
+                </div>
                 {{-- <br> --}}
-                <p style="margin-left: 50px; margin-top: 10px"><strong><span class="larger">2. Detalle del Presupuesto</strong></span></p>
+                <p style="margin-left: 50px; margin-top: 130px"><strong><span class="larger">2. Detalle del Presupuesto</strong></span></p>
                 <table class="tg" style="margin: 0 auto;width: 90%;">
                     <colgroup>
                     <col style="width: 159px">
@@ -228,10 +229,9 @@ header{position:fixed;}
                 {{-- <br>  --}}
                 {{-- <br> --}}
 
-                <div class="page-break">
-                </div>
+                
 
-                <p style="margin-left: 50;margin-top: 100;"><strong><span class="larger">3. Presentación Práctica Académica</strong></span></p>
+                <p style="margin-left: 50;margin-top: 20;"><strong><span class="larger">3. Presentación Práctica Académica</strong></span></p>
                 <table class="tg" style="margin: 0 auto;width: 90%;">
                     <colgroup>
                         <col style="width: 699px">
@@ -340,7 +340,6 @@ header{position:fixed;}
                         <col style="width: 64px">
                         <col style="width: 52px">
                     </colgroup>
-                    <thead>
                     <tr>
                     <th class="tg-amwm">N°.</th>
                     <th class="tg-amwm">Nombres y Apellidos</th>
@@ -351,7 +350,6 @@ header{position:fixed;}
                     <th class="tg-amwm">Estado</th>
                     <th class="tg-amwm">Grupo</th>
                     </tr>
-                    </thead>
                     <tbody>
                     <?= $x = 1 ?>
                         @foreach ($estudiantes as $est)
@@ -364,11 +362,29 @@ header{position:fixed;}
                             <td class="tg-0lax">{{$est->eps}}</td>
                             <td class="tg-0lax">{{$est->celular}}</td>
                             <td class="tg-0lax"></td>
-                            <td class="tg-0lax">{{$est->grupo}}</td>
+                            <td class="tg-0lax">{{$est->grupo}}
+                            @if($loop->iteration % 43 == 0)
+                                <div class="page-break" style="border: 0px;"></div>	
+                            @endif                            	
+                            </td>
+                            
                             </tr>
                             <?= $x = $x+1 ?>
+                            @if($loop->iteration == 43)
+                                <div style="border: 0px; margin-top: 130px;"></div>	
+                                <tr>
+                    <th class="tg-amwm">N°.</th>
+                    <th class="tg-amwm">Nombres y Apellidos</th>
+                    <th class="tg-amwm">Doc. De Identidad</th>
+                    <th class="tg-amwm">Código</th>
+                    <th class="tg-amwm">EPS</th>
+                    <th class="tg-amwm">Celular</th>
+                    <th class="tg-amwm">Estado</th>
+                    <th class="tg-amwm">Grupo</th>
+                    </tr>
+                            @endif	
                         @endforeach
-                    </tbody>
+                    </tbody>                    
                 </table>
 
 
