@@ -5813,15 +5813,15 @@ function valid_edit_proy()
 {
     var ra_edit = $("input[id*='capac_transporte_ra_[]']");
     var hhh = document.getElementById("capac_transporte_ra_[]");
-    var h1 = ra_edit[0].value().length;
-    alert(hhh.length);
+    //var h1 = ra_edit[0].value().length;
+    //alert(hhh.length);
     if(hhh==0){
-        alert("sfsdfsdfsd por favor");
+        alert("Colocar la capacidad del vehiculo");
         document.getElementById("capac_transporte_ra_[]").focus();
         return 0;
     }
 
-    alert("Gracias LV");
+    //alert("Gracias LV");
     document.edit_proyeccion.submit();
 }
 
