@@ -363,14 +363,14 @@ header{position:fixed;}
                             <td class="tg-0lax">{{$est->celular}}</td>
                             <td class="tg-0lax"></td>
                             <td class="tg-0lax">{{$est->grupo}}
-                            @if($loop->iteration % 43 == 0)
+                            @if($loop->iteration % 37 == 0)
                                 <div class="page-break" style="border: 0px;"></div>	
                             @endif                            	
                             </td>
                             
                             </tr>
                             <?= $x = $x+1 ?>
-                            @if($loop->iteration == 43)
+                            @if($loop->iteration == 37)
                                 <div style="border: 0px; margin-top: 130px;"></div>	
                                 <tr>
                     <th class="tg-amwm">N°.</th>
