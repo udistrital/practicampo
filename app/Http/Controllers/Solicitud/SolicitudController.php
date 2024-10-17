@@ -1650,7 +1650,7 @@ class SolicitudController extends Controller
                                 $viaticos_estudiantes_rp = $num_estudiantes*$vlr_estud_max*$num_dias_rp;
                                 $viaticos_docente_rp = ($num_dias_rp-0.5)*$vlr_docen_max*$total_docentes;
                             }
-                            if($programa_academico->pregado == 0){
+                            if($programa_academico->pregrado == 0){
 								$viaticos_estudiantes_rp=0;
 							}        
 
@@ -1777,7 +1777,7 @@ class SolicitudController extends Controller
                                 $viaticos_estudiantes_ra = $num_estudiantes*$vlr_estud_max*$num_dias_ra;
                                 $viaticos_docente_ra = ($num_dias_ra-0.5)*$vlr_docen_max*$total_docentes;
                             }
-                            if($programa_academico->pregado == 0){
+                            if($programa_academico->pregrado == 0){
 								$viaticos_estudiantes_ra=0;
 							}  
                             
@@ -1785,7 +1785,7 @@ class SolicitudController extends Controller
                             $valor_estimado_transporte_ra=$costos_proyeccion->valor_estimado_transporte_ra;
                             
                             $nuevo_costo_total_transporte_menor_ra = $vlr_trans_menor_ra_1 + $vlr_trans_menor_ra_2 + $vlr_trans_menor_ra_3 + $vlr_trans_menor_ra_4;
-                            
+
                             $total_presupuesto_sin_transporte_menor_ra = $costos_proyeccion->total_presupuesto_ra - $costo_total_transporte_menor_ra; 
 
                             $costos_proyeccion->costo_total_transporte_menor_ra = $nuevo_costo_total_transporte_menor_ra;
