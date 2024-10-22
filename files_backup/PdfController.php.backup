@@ -2893,8 +2893,8 @@ class PdfController extends Controller
                                         $join->on('sol_prac.id_proyeccion_preliminar', '=', DB::raw($pract_inte->id));
                                     })
                             ->where('espa_aca.id',$pract_inte->id_espa_aca_1)
-                            ->orWhere('espa_aca.id',$pract_inte->id_espa_aca_2)->get()
-                            ->and();
+                            ->orWhere('espa_aca.id',$pract_inte->id_espa_aca_2)->get();
+                            //->and();
     
                     foreach($espa_aca as $item)
                     {

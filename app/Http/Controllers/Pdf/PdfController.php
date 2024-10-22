@@ -142,16 +142,16 @@ class PdfController extends Controller
                         ->first();
 
         $doce_pract_int = [];
-
+        
         $docente_resp=DB::table('users')
                     ->select('id','email','celular',
                     DB::raw('CONCAT_WS(" ",users.primer_nombre,users.primer_apellido) as full_name'))
                     ->where('id',$solicitudes_practica[0]->id_docente_responsable)->first();
-//dd($pract_inte->cant_espa_aca);
-        if($pract_inte->cant_espa_aca == 0 or is_null($pract_inte->cant_espa_aca)){        
+//dd($docente_resp);
+        //if($pract_inte->cant_espa_aca == 0 or is_null($pract_inte->cant_espa_aca)){        
            $doce_pract_int[] =['id'=>$docente_resp->id,'full_name'=>$docente_resp->full_name,
                             'email'=>$docente_resp->email,'celular'=>$docente_resp->celular];
-        }
+        //}
 //dd($doce_pract_int);
         $contador = 0;
         $sumatoria_presupuesto=0;
@@ -856,7 +856,7 @@ class PdfController extends Controller
 		}
 
 		$doce_pract_int = $temp;        
-        //dd($espa_pract_int);
+        //dd($doce_pract_int);
         $f_resolucion=$this->obtenerFechaEnLetra($anio_resolucion);
         $f_plan_prac=$this->obtenerFechaEnLetra($anio_resolucion);
         $hoy=$this->obtenerFechaEnLetra($fecha_solicitud);

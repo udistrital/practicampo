@@ -2091,14 +2091,14 @@ class SolicitudController extends Controller
 
                 if($solicitud_practica->tipo_ruta == 1)
                 {
-                    if(isEmpty($transporte_proyeccion->cant_transporte_rp) || $transporte_proyeccion->cant_transporte_rp == NULL)
+                    if($transporte_proyeccion->cant_transporte_rp == 0 || $transporte_proyeccion->cant_transporte_rp == NULL || $transporte_proyeccion->cant_transporte_rp == '')
                     {
                         $cant_transp = 0;
                     }
                 }
                 else if($solicitud_practica->tipo_ruta == 2)
                 {
-                    if(isEmpty($transporte_proyeccion->cant_transporte_rp) || $transporte_proyeccion->cant_transporte_rp == NULL)
+                    if($transporte_proyeccion->cant_transporte_ra == 0 || $transporte_proyeccion->cant_transporte_ra == NULL || $transporte_proyeccion->cant_transporte_ra == '')
                     {
                         $cant_transp = 0;
                     }
@@ -5081,7 +5081,7 @@ class SolicitudController extends Controller
      */
     public function encuesta_transp(Request $request, $id)
     {
-        $id = Crypt::decrypt($id);
+        //$id = Crypt::decrypt($id);
         $idUser_log = Auth::user()->id;
         $solic_prac = DB::table('solicitud_practica as sol_prac')
         ->where('sol_prac.id_proyeccion_preliminar','=',$id)->first();
@@ -5092,7 +5092,7 @@ class SolicitudController extends Controller
 
         if($solic_prac->tipo_ruta == 1)
         {
-            if(isEmpty($transporte_proyeccion->cant_transporte_rp) ||$transporte_proyeccion->cant_transporte_rp == NULL)
+            if($transporte_proyeccion->cant_transporte_rp == 0 || $transporte_proyeccion->cant_transporte_rp == NULL || $transporte_proyeccion->cant_transporte_rp == '')
             {
                 $cant_transp = 0;
             }
@@ -5100,7 +5100,7 @@ class SolicitudController extends Controller
 
         if($solic_prac->tipo_ruta == 2)
         {
-            if(isEmpty($transporte_proyeccion->cant_transporte_ra) ||$transporte_proyeccion->cant_transporte_ra == NULL)
+            if($transporte_proyeccion->cant_transporte_ra == 0 || $transporte_proyeccion->cant_transporte_ra == NULL || $transporte_proyeccion->cant_transporte_ra == '')
             {
                 $cant_transp = 0;
             }
