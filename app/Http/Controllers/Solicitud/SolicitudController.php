@@ -1652,7 +1652,11 @@ class SolicitudController extends Controller
                             }
                             if($programa_academico->pregrado == 0){
 								$viaticos_estudiantes_rp=0;
-							}        
+							} 
+                            if($proyeccion_preliminar->realizada_bogota_rp == 1 && $num_dias_rp == 1){
+                                $viaticos_estudiantes_rp = 0;
+                                $viaticos_docente_rp = 0;
+                            }       
 
                             $costo_total_transporte_menor_rp=$costos_proyeccion->costo_total_transporte_menor_rp;
                             $valor_estimado_transporte_rp=$costos_proyeccion->valor_estimado_transporte_rp;
@@ -1780,6 +1784,10 @@ class SolicitudController extends Controller
                             if($programa_academico->pregrado == 0){
 								$viaticos_estudiantes_ra=0;
 							}  
+                            if($proyeccion_preliminar->realizada_bogota_ra == 1 && $num_dias_ra == 1){
+                                $viaticos_estudiantes_ra = 0;
+                                $viaticos_docente_ra = 0;
+                            }
                             
                             $costo_total_transporte_menor_ra=$costos_proyeccion->costo_total_transporte_menor_ra;
                             $valor_estimado_transporte_ra=$costos_proyeccion->valor_estimado_transporte_ra;

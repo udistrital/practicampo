@@ -1765,12 +1765,12 @@
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_rp" class="col-form-label text-md-left" title="">
+                <label for="det_materiales_rp" class="col-form-label text-md-left" title="" hidden>
                     <i class="fas fa-question-circle" 
                     data-toggle="tooltip" data-placement="left" 
                     data-title="Indique los materiales requeridos para la realización de la práctica académica" style="font-size: 0.813rem"></i> {{ __('Materiales') }}</label>
                 <input id="det_materiales_rp" type="text"  class="form-control @error('det_materiales_rp') is-invalid @enderror" name="det_materiales_rp" 
-                title=""
+                title="" hidden
                 value="{{$mater_herra_proyeccion->det_materiales_rp}}" autocomplete="off" autofocus>
                 
                 @error('det_materiales_rp')
@@ -1781,12 +1781,12 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="">
+                <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="" hidden>
                     <i class="fas fa-question-circle" 
                     data-toggle="tooltip" data-placement="left" 
                     data-title="Indique valor aproximado de los materiales requeridos" style="font-size: 0.813rem"></i> {{ __('Valor Total Materiales') }}</label>
                 <input id="vlr_materiales_rp" type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
-                title=""
+                title="" hidden
                 value="{{number_format($costos_proyeccion->vlr_materiales_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
                 >
                 
@@ -2923,13 +2923,13 @@
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_ra" class="col-form-label text-md-left" title="">
+                <label for="det_materiales_ra" class="col-form-label text-md-left" title="" hidden>
                     <i class="fas fa-question-circle" 
                     data-toggle="tooltip" data-placement="left" 
                     data-title="Indique los materiales requeridos para la realización de la práctica académica" style="font-size: 0.813rem"></i> {{ __('Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="det_materiales_ra" type="text"  class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
-                title=""
+                title="" hidden
                 value="{{$mater_herra_proyeccion->det_materiales_ra}}" autocomplete="off" autofocus >
                 
                 @error('det_materiales_ra')
@@ -2940,13 +2940,13 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="">
+                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="" hidden>
                     <i class="fas fa-question-circle" 
                     data-toggle="tooltip" data-placement="left" 
                     data-title="Indique valor aproximado de los materiales requeridos" style="font-size: 0.813rem"></i> {{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_materiales_ra" type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
-                title=""
+                title="" hidden
                 value="{{number_format($costos_proyeccion->vlr_materiales_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
                 >
                 

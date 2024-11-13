@@ -1503,9 +1503,9 @@
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_rp" class="col-form-label text-md-left" title="Materiales">{{ __('Materiales') }}</label>
+                <label for="det_materiales_rp" class="col-form-label text-md-left" title="Materiales" hidden>{{ __('Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="det_materiales_rp" type="text"  class="form-control @error('det_materiales_rp') is-invalid @enderror" name="det_materiales_rp" 
+                <input id="det_materiales_rp" hidden type="text"  class="form-control @error('det_materiales_rp') is-invalid @enderror" name="det_materiales_rp" 
                 value="{{$mate_herra_proyeccion->det_materiales_rp}}" autocomplete="off" autofocus readonly>
                 
                 @error('det_materiales_rp')
@@ -1516,9 +1516,9 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="Valor Total Materiales">{{ __('Valor Total Materiales') }}</label>
+                <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="Valor Total Materiales" hidden>{{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="vlr_materiales_rp" type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
+                <input id="vlr_materiales_rp" hidden type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
                 value="$ {{number_format($costos_proyeccion->vlr_materiales_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
                 readonly>
                 
@@ -2505,9 +2505,9 @@
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_ra" class="col-form-label text-md-left" title="Materiales">{{ __('Materiales') }}</label>
+                <label for="det_materiales_ra" class="col-form-label text-md-left" title="Materiales" hidden>{{ __('Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="det_materiales_ra" type="text"  class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
+                <input id="det_materiales_ra" hidden type="text"  class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
                 value="{{$mate_herra_proyeccion->det_materiales_ra}}" autocomplete="off" autofocus readonly>
                 
                 @error('det_materiales_ra')
@@ -2518,9 +2518,9 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="Valor Total Materiales">{{ __('Valor Total Materiales') }}</label>
+                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="Valor Total Materiales" hidden>{{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="vlr_materiales_ra" type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
+                <input id="vlr_materiales_ra" hidden type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
                 value="$ {{number_format($costos_proyeccion->vlr_materiales_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
                 readonly>
                 

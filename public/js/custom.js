@@ -1,6 +1,7 @@
 // import { url } from "inspector";
 
 $(document).ready(function(){
+
     var form = document.forms[1].id;
     
     var docentes_activos = $("#docentes_activos").val();
@@ -908,6 +909,71 @@ $(document).ready(function(){
         
     });
 
+    // Deshabilitar inputs de rutas cuando se selecciona un radio button
+        // Ruta principal
+        const inputDestino_rp = document.getElementById('destino_rp');
+        const inputCant_url_rp = document.getElementById('cant_url_rp');
+        const inputCant_url_ruta_rp = document.getElementById('ruta_principal');
+        const inputCant_detalle_recorrido_rp = document.getElementById('det_recorrido_interno_rp');
+        const radioSi_rp = document.querySelector('input[name="realizada_bogota_rp"][value="1"]');
+        const radioNo_rp = document.querySelector('input[name="realizada_bogota_rp"][value="0"]');
+        inputDestino_rp.disabled = true;
+        inputCant_url_rp.disabled = true;
+        inputCant_url_ruta_rp.disabled = true;
+        inputCant_detalle_recorrido_rp.disabled = true;
+
+        if(radioSi_rp.checked || radioNo_rp.checked){
+            inputDestino_rp.disabled = false;
+            inputCant_url_rp.disabled = false;
+            inputCant_url_ruta_rp.disabled = false;
+            inputCant_detalle_recorrido_rp.disabled = false;
+        }
+        const toggleInput_rp = () => {
+            if (radioSi_rp.checked || radioNo_rp.checked) {
+                inputDestino_rp.disabled = false;
+                inputCant_url_rp.disabled = false;
+                inputCant_url_ruta_rp.disabled = false;
+                inputCant_detalle_recorrido_rp.disabled = false;
+            } else {
+                inputDestino_rp.disabled = true;
+                inputCant_url_rp.disabled = true;
+                inputCant_url_ruta_rp.disabled = true;
+                inputCant_detalle_recorrido_rp.disabled = true;
+            }
+        };
+
+        radioSi_rp.addEventListener('change', toggleInput_rp);
+        radioNo_rp.addEventListener('change', toggleInput_rp);
+
+        // Ruta alterna
+        const inputDestino_ra = document.getElementById('destino_ra');
+        const inputCant_url_ra = document.getElementById('cant_url_ra');
+        const inputCant_url_ruta_ra = document.getElementById('ruta_alterna');
+        const inputCant_detalle_recorrido_ra = document.getElementById('det_recorrido_interno_ra');
+        const radioSi_ra = document.querySelector('input[name="realizada_bogota_ra"][value="1"]');
+        const radioNo_ra = document.querySelector('input[name="realizada_bogota_ra"][value="0"]');
+        //inputDestino_ra.disabled = true;
+        //inputCant_url_ra.disabled = true;
+        //inputCant_url_ruta_ra.disabled = true;
+        //inputCant_detalle_recorrido_ra.disabled = true;
+
+        const toggleInput_ra = () => {
+            if (radioSi_ra.checked || radioNo_ra.checked) {
+                inputDestino_ra.disabled = false;
+                inputCant_url_ra.disabled = false;
+                inputCant_url_ruta_ra.disabled = false;
+                inputCant_detalle_recorrido_ra.disabled = false;
+            } else {
+                inputDestino_ra.disabled = true;
+                inputCant_url_ra.disabled = true;
+                inputCant_url_ruta_ra.disabled = true;
+                inputCant_detalle_recorrido_ra.disabled = true;
+            }
+        };
+
+        radioSi_ra.addEventListener('change', toggleInput_ra);
+        radioNo_ra.addEventListener('change', toggleInput_ra);
+
     $(addButton_ea_edit).click(function(e){
         e.preventDefault();
 
@@ -1699,6 +1765,10 @@ function calc_viaticos_RP()
         {
             viaticos_apoyo_estud_rp_format  = (new Intl.NumberFormat("es-CO").format(0));
         }
+        var bogota_rp= document.querySelector('input[name="realizada_bogota_rp"][value="1"]');
+        if(bogota_rp.checked){
+            viaticos_apoyo_estud_rp_format  = (new Intl.NumberFormat("es-CO").format(0));
+        }
 
         if(cant_trans_rp == 0)
         {
@@ -1756,6 +1826,10 @@ function calc_viaticos_RP()
         }
         else
         {
+            viaticos_apoyo_estud_ra_format  = (new Intl.NumberFormat("es-CO").format(0));
+        }
+        var bogota_ra= document.querySelector('input[name="realizada_bogota_ra"][value="1"]');
+        if(bogota_ra.checked){
             viaticos_apoyo_estud_ra_format  = (new Intl.NumberFormat("es-CO").format(0));
         }
 

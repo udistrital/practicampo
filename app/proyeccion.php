@@ -23,6 +23,7 @@ class proyeccion extends Model
             'grupo_3',  
             'grupo_4',  
 
+            'realizada_bogota_rp',
             'destino_rp',  
             'cantidad_url_rp',
             'ruta_principal', 
@@ -38,6 +39,7 @@ class proyeccion extends Model
             'fecha_regreso_aprox_rp',  
             'duracion_num_dias_rp',
             
+            'realizada_bogota_ra',
             'destino_ra',
             'cantidad_url_ra',
             'ruta_alterna', 

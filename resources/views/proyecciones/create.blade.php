@@ -886,6 +886,36 @@
                             <h4>Ruta Principal (Destino para cumplir los objetivos de la práctica)</h4>
                             <hr class="divider">
 
+                            <div  class="form-group row">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="realizada_bogota_rp" class="col-form-label text-md-left">
+                                            <i class="fas fa-question-circle" 
+                                            data-toggle="tooltip" data-placement="left" 
+                                            style="font-size: 0.813rem"></i> {{ __('¿La práctica se realizará en Bogotá?') }}</label>
+                                        <span class="hs-form-required">*</span>
+                                        <div class="row">
+
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="realizada_bogota_rp" id="realizada_bogota_rp" value="1"
+                                                title="" onchange="duracionRP(this.value)"> 
+                                                <label class="form-check-label" for="">Si</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="realizada_bogota_rp" id="realizada_bogota_rp"  value="0"
+                                                    title="" onchange="duracionRP(this.value)">
+                                                    <label class="form-check-label" for="">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- ruta principal -->
                                 <!-- 3 -->
                                     <div class="form-group row">
@@ -898,7 +928,7 @@
                                                 </i> {{ __('Destino Ruta Principal') }}</label>
                                             <span class="hs-form-required" title="Nombre Asociado A La Ruta">*</span>
                                             <input id="destino_rp" type="text" class="form-control @error('destino_rp') is-invalid @enderror" name="destino_rp" 
-                                            title=""
+                                            title="" placeholder="ejemplo: (Bogotá - Medellín - Bogotá)"
                                             value="" required autocomplete="off" autofocus>
 
                                             @error('destino_rp')
@@ -1896,7 +1926,7 @@
                                 <!-- materiales -->
                                     <div class="form-group row">
                                         <div class="col-md-8">
-                                            <label for="det_materiales_rp" class="col-form-label text-md-left" title="">
+                                            <label for="det_materiales_rp" class="col-form-label text-md-left" title="" hidden>
                                                 <i class="fas fa-question-circle" 
                                                 data-toggle="tooltip" data-placement="left" 
                                                 data-title="Indique los materiales requeridos para la realización de la práctica académica"
@@ -1904,7 +1934,7 @@
                                             </i> {{ __('Materiales') }}</label>
                                             {{-- <span class="hs-form-required">*</span> --}}
                                             <input id="det_materiales_rp" type="text"  class="form-control @error('det_materiales_rp') is-invalid @enderror" name="det_materiales_rp" 
-                                            title=""
+                                            title="" hidden
                                             value="" autocomplete="off" autofocus>
                                             
                                             @error('det_materiales_rp')
@@ -1915,7 +1945,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="">
+                                            <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="" hidden>
                                                 <i class="fas fa-question-circle" 
                                                 data-toggle="tooltip" data-placement="left" 
                                                 data-title="Indique valor aproximado de los materiales requeridos"
@@ -1923,7 +1953,7 @@
                                             </i> {{ __('Valor Total Materiales') }}</label>
                                             {{-- <span class="hs-form-required">*</span> --}}
                                             <input id="vlr_materiales_rp" type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
-                                            title=""
+                                            title="" hidden
                                             value="" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)">
                                             
                                             @error('vlr_materiales_rp')
@@ -2156,6 +2186,36 @@
                             <br>
                             <h4>Ruta Contingencia (Destino para cumplir propósitos de práctica pero por fallas en la vía, clima o demás se adopta como ruta principal de destino)</h4>
                             <hr class="divider">
+                            
+                            <div  class="form-group row">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="realizada_bogota_ra" class="col-form-label text-md-left">
+                                            <i class="fas fa-question-circle" 
+                                            data-toggle="tooltip" data-placement="left" 
+                                            style="font-size: 0.813rem"></i> {{ __('¿La práctica se realizará en Bogotá?') }}</label>
+                                        <span class="hs-form-required">*</span>
+                                        <div class="row">
+
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="realizada_bogota_ra" id="realizada_bogota_ra" value="1"
+                                                title="" onchange="duracionRP(this.value)">
+                                                <label class="form-check-label" for="">Si</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="realizada_bogota_ra" id="realizada_bogota_ra"  value="0"
+                                                    title="" onchange="duracionRP(this.value)">
+                                                    <label class="form-check-label" for="">No</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- ruta alterna -->
                                 <!-- 9 -->
@@ -2169,7 +2229,7 @@
                                                 </i> {{ __('Destino Ruta Contingencia') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <input id="destino_ra" type="text" class="form-control @error('destino_ra') is-invalid @enderror" name="destino_ra" 
-                                            title=""
+                                            title="" placeholder="ejemplo: (Bogotá - Medellín - Bogotá)"
                                             value="" required autocomplete="off" autofocus>
                                             
                                             @error('destino_ra')
@@ -3122,7 +3182,7 @@
                                 <!-- materiales -->
                                     <div class="form-group row">
                                         <div class="col-md-8">
-                                            <label for="det_materiales_ra" class="col-form-label text-md-left" title="">
+                                            <label for="det_materiales_ra" class="col-form-label text-md-left" title="" hidden>
                                                 <i class="fas fa-question-circle" 
                                                 data-toggle="tooltip" data-placement="left" 
                                                 data-title="Indique los materiales requeridos para la realización de la práctica académica"
@@ -3130,7 +3190,7 @@
                                             </i> {{ __('Materiales') }}</label>
                                             {{-- <span class="hs-form-required">*</span> --}}
                                             <input id="det_materiales_ra" type="text"  class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
-                                            title=""
+                                            title="" hidden
                                             value="" autocomplete="off" autofocus>
                                             
                                             @error('det_materiales_ra')
@@ -3141,7 +3201,7 @@
                                         </div>
 
                                         <div class="col-md-4">
-                                            <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="">
+                                            <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="" hidden>
                                                 <i class="fas fa-question-circle" 
                                                 data-toggle="tooltip" data-placement="left" 
                                                 data-title="Indique valor aproximado de los materiales requeridos"
@@ -3149,7 +3209,7 @@
                                             </i> {{ __('Valor Total Materiales') }}</label>
                                             {{-- <span class="hs-form-required">*</span> --}}
                                             <input id="vlr_materiales_ra" type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
-                                            title=""
+                                            title="" hidden
                                             value="" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)">
                                             
                                             @error('vlr_materiales_ra')

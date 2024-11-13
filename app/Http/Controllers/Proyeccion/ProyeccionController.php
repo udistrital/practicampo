@@ -833,6 +833,8 @@ class ProyeccionController extends Controller
                     break;
             }
 
+            $proyeccion_preliminar->realizada_bogota_rp=$request->get('realizada_bogota_rp');
+            $proyeccion_preliminar->realizada_bogota_ra=$request->get('realizada_bogota_ra');
             $proyeccion_preliminar->destino_rp=$request->get('destino_rp');
             $proyeccion_preliminar->destino_ra=$request->get('destino_ra');
             $proyeccion_preliminar->cantidad_url_rp=$request->get('cant_url_rp');
@@ -1639,6 +1641,16 @@ class ProyeccionController extends Controller
             $viaticos_docentes = $this->calc_viaticos_docen($num_dias_rp,$num_dias_ra,$total_docentes);
             $viaticos_docente_rp =$viaticos_docentes['viaticos_docen_rp'];
             $viaticos_docente_ra =$viaticos_docentes['viaticos_docen_ra'];
+
+            if($request->get('realizada_bogota_rp') == 1 && $num_dias_rp == 1){
+                $viaticos_estudiantes_rp = 0;
+                $viaticos_docente_rp = 0;
+            }
+
+            if($request->get('realizada_bogota_ra') == 1 && $num_dias_ra == 1){
+                $viaticos_estudiantes_ra = 0;
+                $viaticos_docente_ra = 0;
+            }
 
             $costos_proyeccion->viaticos_estudiantes_rp=$viaticos_estudiantes_rp;
             $costos_proyeccion->viaticos_estudiantes_ra=$viaticos_estudiantes_ra;
@@ -3746,7 +3758,7 @@ class ProyeccionController extends Controller
     }
 
     /**
-     * Actualización prouyección preliminar
+     * Actualización proyección preliminar
      *
      * @param  int  $id
      * @param  \Illuminate\Http\Request  $request
@@ -3842,6 +3854,8 @@ class ProyeccionController extends Controller
                     $num_dias_ra = $fecha_salida_ra->diff($fecha_regreso_ra);
                     $proyeccion_preliminar->duracion_num_dias_ra=$num_dias_ra->days+1;
 
+                    $proyeccion_preliminar->realizada_bogota_rp=$request->get('realizada_bogota_rp');
+                    $proyeccion_preliminar->realizada_bogota_ra=$request->get('realizada_bogota_ra');
                     $proyeccion_preliminar->destino_rp=$request->get('destino_rp');
                     $proyeccion_preliminar->destino_ra=$request->get('destino_ra');
                     $proyeccion_preliminar->det_recorrido_interno_rp=$request->get('det_recorrido_interno_rp');
@@ -3959,11 +3973,11 @@ class ProyeccionController extends Controller
                     }
 
                     $proyeccion_preliminar->aprobacion_coordinador=5;
-		    $proyeccion_preliminar->aprobacion_asistD=7;
+		            $proyeccion_preliminar->aprobacion_asistD=7;
                     $proyeccion_preliminar->aprobacion_decano=5;
                     $proyeccion_preliminar->confirm_asistD=1;
-		    $costos_proyeccion->valor_estimado_transporte_rp=1;
-		    $costos_proyeccion->valor_estimado_transporte_ra=1;
+		            $costos_proyeccion->valor_estimado_transporte_rp=1;
+		            $costos_proyeccion->valor_estimado_transporte_ra=1;
 
                 /**Tabla proyeccion_preliminar */
 
@@ -4684,6 +4698,16 @@ class ProyeccionController extends Controller
                     $viaticos_docentes = $this->calc_viaticos_docen($num_dias_rp,$num_dias_ra,$total_docentes);
                     $viaticos_docente_rp =$viaticos_docentes['viaticos_docen_rp'];
                     $viaticos_docente_ra =$viaticos_docentes['viaticos_docen_ra'];
+
+                    if($request->get('realizada_bogota_rp') == 1 && $num_dias_rp == 1){
+                        $viaticos_estudiantes_rp = 0;
+                        $viaticos_docente_rp = 0;
+                    }
+        
+                    if($request->get('realizada_bogota_ra') == 1 && $num_dias_ra == 1){
+                        $viaticos_estudiantes_ra = 0;
+                        $viaticos_docente_ra = 0;
+                    }
 
                     $costos_proyeccion->viaticos_estudiantes_rp=$viaticos_estudiantes_rp;
                     $costos_proyeccion->viaticos_estudiantes_ra=$viaticos_estudiantes_ra;

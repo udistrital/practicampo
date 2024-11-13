@@ -712,7 +712,37 @@
 <h4>Ruta Principal (Destino para cumplir los objetivos de la práctica)</h4>
 <hr class="divider">
 <br>
+<div  class="form-group row">
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+        <div class="form-group">
+            <label for="realizada_bogota_rp" class="col-form-label text-md-left">
+                <i class="fas fa-question-circle" 
+                data-toggle="tooltip" data-placement="left" 
+                style="font-size: 0.813rem"></i> {{ __('¿La práctica se realizará en Bogotá?') }}</label>
+            <span class="hs-form-required">*</span>
+            <div class="row">
 
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="realizada_bogota_rp" id="realizada_bogota_rp" value="1"
+                    title="" disabled
+                    <?php if($proyeccion_preliminar->realizada_bogota_rp == 1) echo 'checked'?>>
+                    <label class="form-check-label" for="">Si</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="realizada_bogota_rp" id="realizada_bogota_rp"  value="0"
+                        title="" disabled
+                        <?php if($proyeccion_preliminar->realizada_bogota_rp == 0) echo 'checked'?>>
+                        <label class="form-check-label" for="">No</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- ruta principal -->
     <!-- 3 -->
         <div class="form-group row">
@@ -1466,9 +1496,9 @@
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_rp" class="col-form-label text-md-left" title="">{{ __('Materiales') }}</label>
+                <label for="det_materiales_rp" class="col-form-label text-md-left" title="" hidden>{{ __('Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="det_materiales_rp" type="text"  class="form-control @error('det_materiales_rp') is-invalid @enderror" name="det_materiales_rp" 
+                <input id="det_materiales_rp" hidden type="text"  class="form-control @error('det_materiales_rp') is-invalid @enderror" name="det_materiales_rp" 
                 value="{{$mater_herra_proyeccion->det_materiales_rp}}" autocomplete="off" autofocus disabled>
                 
                 @error('det_materiales_rp')
@@ -1479,9 +1509,9 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="">{{ __('Valor Total Materiales') }}</label>
+                <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="" hidden>{{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="vlr_materiales_rp" type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
+                <input id="vlr_materiales_rp" hidden type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
                 value="{{number_format($costos_proyeccion->vlr_materiales_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
                 disabled>
                 
@@ -1563,7 +1593,37 @@
 <h4>Ruta Contingencia (Destino para cumplir propósitos de práctica pero por fallas en la vía, clima o demás se adopta como ruta principal de destino)</h4>
 <hr class="divider">
 <br>
+<div  class="form-group row">
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+        <div class="form-group">
+            <label for="realizada_bogota_ra" class="col-form-label text-md-left">
+                <i class="fas fa-question-circle" 
+                data-toggle="tooltip" data-placement="left" 
+                style="font-size: 0.813rem"></i> {{ __('¿La práctica se realizará en Bogotá?') }}</label>
+            <span class="hs-form-required">*</span>
+            <div class="row">
 
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="realizada_bogota_ra" id="realizada_bogota_ra" value="1"
+                    title="" disabled
+                    <?php if($proyeccion_preliminar->realizada_bogota_ra == 1) echo 'checked'?>>
+                    <label class="form-check-label" for="">Si</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="realizada_bogota_ra" id="realizada_bogota_ra"  value="0"
+                        title="" disabled
+                        <?php if($proyeccion_preliminar->realizada_bogota_ra == 0) echo 'checked'?>>
+                        <label class="form-check-label" for="">No</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- ruta alterna -->
     <!-- 9 -->
         <div class="form-group row">
@@ -2305,9 +2365,9 @@
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_ra" class="col-form-label text-md-left" title="">{{ __('Materiales') }}</label>
+                <label for="det_materiales_ra" class="col-form-label text-md-left" title="" hidden>{{ __('Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="det_materiales_ra" type="text"  class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
+                <input id="det_materiales_ra" hidden type="text"  class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
                 value="{{$mater_herra_proyeccion->det_materiales_ra}}" autocomplete="off" autofocus disabled>
                 
                 @error('det_materiales_ra')
@@ -2318,9 +2378,9 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="">{{ __('Valor Total Materiales') }}</label>
+                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="" hidden>{{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="vlr_materiales_ra" type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
+                <input id="vlr_materiales_ra" hidden type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
                 value="{{number_format($costos_proyeccion->vlr_materiales_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
                 disabled>
                 
