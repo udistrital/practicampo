@@ -20,6 +20,7 @@ use PractiCampoUD\transporte_menor;
 use PractiCampoUD\transporte_proyeccion;
 use PractiCampoUD\presupuesto_programa_academico;
 use PractiCampoUD\detalle_presupuesto_programa_academico;
+use PractiCampoUD\estudiantes_practica;
 use PractiCampoUD\Http\Controllers\Controller;
 use PractiCampoUD\Mail\CodigoMail;
 use Carbon\Carbon;
@@ -1993,35 +1994,54 @@ class SolicitudController extends Controller
                     $nuevo_presupuesto_total_ra = $presupuesto_sin_transporte_ra + $nuevo_presupuesto_transporte;
                     $costos_proyeccion->total_presupuesto_ra = $nuevo_presupuesto_total_ra;
                 }
-
-                if($solicitud_practica->num_resolucion = $request->get('num_resolucion') != null)
-                {
-                    $solicitud_practica->tiene_resolucion=1;
+                if($request->get('aprobacion_asistD') == 5){
+                    //dd($request->get('aprobacion_asistD'));
+                }else if($request->get('aprobacion_asistD') == 7){
+                    //dd($request->get('aprobacion_asistD'));
+                    if($solicitud_practica->num_resolucion = $request->get('num_resolucion') != null)
+                    {
+                        $solicitud_practica->tiene_resolucion=1;
+                    }
+                    $solicitud_practica->num_resolucion = $request->get('num_resolucion');
+        
+                    $solicitud_practica->fecha_resolucion = $request->get('fecha_resolucion');
+                    $solicitud_practica->num_cdp = $request->get('num_cdp');
+                    $solicitud_practica->si_capital = intval($request->get('si_capital'));
+                    $solicitud_practica->num_solicitud_necesidad = $request->get('num_solicitud_necesidad');
+        
+                    $solicitud_practica->confirm_asistD = 1;
+                    $solicitud_practica->aprobacion_asistD = 7;
+        
+                    if(Auth::user()->id_role == 1)
+                    {
+                        $solicitud_practica->id_asistD_confirm =  $proyeccion_preliminar->id_asistD_confirm;
+                        $solicitud_practica->id_asistD_aprob = $proyeccion_preliminar->id_asistD_aprob;
+                    }
+                    else if(Auth::user()->id_role == 3)
+                    {
+                        $solicitud_practica->id_asistD_confirm =  Auth::user()->id;
+                        $solicitud_practica->id_asistD_aprob = Auth::user()->id;
+                    }
+                }else if($request->get('aprobacion_asistD') == 4){
+                    $detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->first();
+                    $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
+                    $solicitud_practica->confirm_asistD = 0;
+                    $solicitud_practica->aprobacion_asistD = 5;
+                    $solicitud_practica->confirm_coord = 0;
+                    $solicitud_practica->aprobacion_coordinador = 5;
+                    $solicitud_practica->confirm_creador = 0;
+                    $solicitud_practica->confirm_docente = 0;
+                    $solicitud_practica->listado_estudiantes = 0;
+                    $detalle_presupuesto_programa_academico;
+                    $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $detalle_presupuesto_programa_academico->presupuesto_practica;
+                    $presupuesto_programa_academico->update();
+                    //dd($presupuesto_programa_academico, $detalle_presupuesto_programa_academico, $lista_estudiantes);                    
+                    foreach ($lista_estudiantes as $list_estud){
+                        $list_estud->delete();
+                    }   
+                    $detalle_presupuesto_programa_academico->delete();                 
                 }
-                $solicitud_practica->num_resolucion = $request->get('num_resolucion');
-    
-                $solicitud_practica->fecha_resolucion = $request->get('fecha_resolucion');
-                $solicitud_practica->num_cdp = $request->get('num_cdp');
-                $solicitud_practica->si_capital = intval($request->get('si_capital'));
-                $solicitud_practica->num_solicitud_necesidad = $request->get('num_solicitud_necesidad');
-    
-                $solicitud_practica->confirm_asistD = 1;
-                $solicitud_practica->aprobacion_asistD = 7;
-    
-                if(Auth::user()->id_role == 1)
-                {
-                    $solicitud_practica->id_asistD_confirm =  $proyeccion_preliminar->id_asistD_confirm;
-                    $solicitud_practica->id_asistD_aprob = $proyeccion_preliminar->id_asistD_aprob;
-                }
-                else if(Auth::user()->id_role == 3)
-                {
-                    $solicitud_practica->id_asistD_confirm =  Auth::user()->id;
-                    $solicitud_practica->id_asistD_aprob = Auth::user()->id;
-                }
-                
-    
-            }
-            
+            }            
         }
 
         if(Auth::user()->id_role == 2 || Auth::user()->id_role == 1)

@@ -2823,13 +2823,13 @@
         <tr>
             <td>Servicio Transporte: </td>
             <td colspan="3">Nota: valor sujeto a contrato suscrito entre la facultad y las empresas de transporte. Se recomienda solicitar concepto en la decanatura para establecer costos del recorrido.</td>
-            <td>{{ number_format($costos_proyeccion->valor_estimado_transporte_rp, 0, ',','.') }}</td>
+            <td>0</td>
             
         </tr>
 
         <tr>
             <td colspan="4">Total Presupuesto: </td>
-            <td>{{ number_format($costos_proyeccion->viaticos_estudiantes_rp + $costos_proyeccion->viaticos_docente_rp + $costos_proyeccion->valor_estimado_transporte_rp + $costos_proyeccion->vlr_materiales_rp + $costos_proyeccion->vlr_guias_baquianos_rp + $costos_proyeccion->vlr_otros_boletas_rp + $costos_proyeccion->costo_total_transporte_menor_rp, 0, ',','.') }}</td>
+            <td>{{ number_format($costos_proyeccion->viaticos_estudiantes_rp + $costos_proyeccion->viaticos_docente_rp + $costos_proyeccion->vlr_materiales_rp + $costos_proyeccion->vlr_guias_baquianos_rp + $costos_proyeccion->vlr_otros_boletas_rp + $costos_proyeccion->costo_total_transporte_menor_rp, 0, ',','.') }}</td>
             
         </tr>
     </table>
@@ -2894,13 +2894,13 @@
         <tr>
             <td>Servicio Transporte: </td>
             <td colspan="3">Nota: valor sujeto a contrato suscrito entre la facultad y las empresas de transporte. Se recomienda solicitar concepto en la decanatura para establecer costos del recorrido.</td>
-            <td>{{ number_format($costos_proyeccion->valor_estimado_transporte_ra, 0, ',','.') }}</td>
+            <td>0</td>
             
         </tr>
 
         <tr>
             <td colspan="4">Total Presupuesto: </td>
-            <td>{{ number_format($costos_proyeccion->viaticos_estudiantes_ra + $costos_proyeccion->viaticos_docente_ra + $costos_proyeccion->valor_estimado_transporte_ra + $costos_proyeccion->vlr_materiales_ra + $costos_proyeccion->vlr_guias_baquianos_ra + $costos_proyeccion->vlr_otros_boletas_ra + $costos_proyeccion->costo_total_transporte_menor_ra, 0, ',','.') }}</td>
+            <td>{{ number_format($costos_proyeccion->viaticos_estudiantes_ra + $costos_proyeccion->viaticos_docente_ra + $costos_proyeccion->vlr_materiales_ra + $costos_proyeccion->vlr_guias_baquianos_ra + $costos_proyeccion->vlr_otros_boletas_ra + $costos_proyeccion->costo_total_transporte_menor_ra, 0, ',','.') }}</td>
             
         </tr>
     </table>
@@ -3057,6 +3057,43 @@
 
 @if($solicitud_practica->aprobacion_asistD == 5)
 
+    <!-- estado AsistD -->
+    <div class="form-group row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="id_estado">
+                        <i class="fas fa-question-circle" 
+                        data-toggle="tooltip" data-placement="left" 
+                        data-title="Asigne uno de los estados a la salida de práctica académica" style="font-size: 0.813rem"></i> Estado Asistencia Decanatura</label>
+                    <div class="row">
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="aprobacion_asistD" value="5"
+                            <?php if($solicitud_practica->aprobacion_asistD == 5) echo 'checked'?> onchange="rechazo_solic_asist()">
+                            <label class="form-check-label" for="">Pendiente</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="aprobacion_asistD" value="7" onchange="rechazo_solic_asist()">
+                            <label class="form-check-label" for="">Aprobado</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="aprobacion_asistD"  value="4" onchange="rechazo_solic_asist()">
+                                <label class="form-check-label" for="">Rechazado</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- estado AsistD -->
 
     <!-- Resolución - CDP - SiCapital-->
         <div class="form-group row">
@@ -3073,14 +3110,14 @@
 
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="si_capital" value="0">
+                                    <input class="form-check-input" type="radio" name="si_capital" value="0" disabled>
                                     <label class="form-check-label" for="">No</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6 col-md-6 col-sm-64 col-xs-12">
                                     <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="si_capital" value="1" checked>
+                                    <input class="form-check-input" type="radio" name="si_capital" value="1" checked disabled>
                                     <label class="form-check-label" for="">Si</label>
                                     </div>
                                 </div>
@@ -3097,7 +3134,7 @@
                             salida de práctica académica. Ej. 7658-2021" style="font-size: 0.813rem"></i> {{ __('N° Sol. Necesidad') }}</label>
                         <span class="hs-form-required">*</span>
                         <input id="num_solicitud_necesidad" type="text" class="form-control @error('num_solicitud_necesidad') is-invalid @enderror" name="num_solicitud_necesidad" 
-                        value="" pattern="[0-9\-]+" required autocomplete="off" autofocus>
+                        value="" pattern="[0-9\-]+" required autocomplete="off" autofocus disabled>
 
                         @error('num_solicitud_necesidad')
                             <span class="invalid-feedback" role="alert">
@@ -3115,7 +3152,7 @@
                         <span class="hs-form-required">*</span>
                         <input id="num_resolucion" type="text" class="form-control @error('num_resolucion') is-invalid @enderror" name="num_resolucion" 
                         value=""  required autocomplete="off" autofocus pattern="[0-9]+"
-                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)">
+                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)" disabled>
 
                         @error('num_resolucion')
                             <span class="invalid-feedback" role="alert">
@@ -3135,8 +3172,8 @@
                             <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                             </div>
-                        <input class="inputDate form-control datetimepicker" name="fecha_resolucion"  type="text" required
-                        value="">
+                        <input id="fecha_resolucion" class="inputDate form-control datetimepicker" name="fecha_resolucion"  type="text" required
+                        value="" disabled>
                         </div>
                     </div>
 
@@ -3147,9 +3184,9 @@
                             data-title="Indique el número de CDP asociado a la 
                             salida de práctica académica. Ej. 8536" style="font-size: 0.813rem"></i> {{ __('N° CDP') }}</label>
                         <span class="hs-form-required">*</span>
-                        <input id="num_cdp" type="text" class="form-control @error('num_cdp') is-invalid @enderror" name="num_cdp" 
+                        <input id="num_cdp" type="number" class="form-control @error('num_cdp') is-invalid @enderror" name="num_cdp" 
                         value="" required autocomplete="off" autofocus pattern="[0-9]+"
-                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)">
+                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)" disabled>
 
                         @error('num_cdp')
                             <span class="invalid-feedback" role="alert">
@@ -3214,48 +3251,6 @@
 
         <!-- 0 -->
     <!-- estado Consejo Facultad-->
-@endif
-
-@if($solicitud_practica->aprobacion_asistD == 0)
-    <!-- estado AsistD -->
-        <div class="form-group row">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="form-group">
-                    <label for="id_estado">
-                        <i class="fas fa-question-circle" 
-                        data-toggle="tooltip" data-placement="left" 
-                        data-title="Asigne uno de los estados a la salida de práctica académica" style="font-size: 0.813rem"></i> Estado Asistencia Decanatura</label>
-                    <div class="row">
-
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="aprobacion_asistD" value="5"
-                            <?php if($solicitud_practica->aprobacion_asistD == 5) echo 'checked'?>>
-                            <label class="form-check-label" for="">Pendiente</label>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="aprobacion_asistD" value="3"
-                            <?php if($solicitud_practica->aprobacion_asistD == 3) echo 'checked'?>>
-                            <label class="form-check-label" for="">Aprobado</label>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="aprobacion_asistD"  value="4" 
-                                <?php if($solicitud_practica->aprobacion_asistD == 4) echo 'checked'?>>
-                                <label class="form-check-label" for="">Rechazado</label>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- estado AsistD -->
 @endif
 
 <!-- Legalizar - Tesorería -->

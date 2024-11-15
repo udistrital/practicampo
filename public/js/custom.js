@@ -6179,3 +6179,29 @@ function ver_estudiantes(){
     icono.classList.toggle('fa-eye');
     icono.classList.toggle('fa-eye-slash');
 }
+
+function rechazo_solic_asist(){
+    const rdbtn_pendiente = document.querySelector('input[name="aprobacion_asistD"][value="5"]');
+    const rdbtn_aprobado = document.querySelector('input[name="aprobacion_asistD"][value="7"]');
+    const si_capital = document.querySelector('input[name="si_capital"][value="1"]');
+    const no_capital = document.querySelector('input[name="si_capital"][value="0"]');
+    const sol_necesidad = document.getElementById('num_solicitud_necesidad');
+    const num_resolucion = document.getElementById('num_resolucion');
+    const fecha_resolucion = document.getElementById('fecha_resolucion');
+    const num_cdp = document.getElementById('num_cdp');
+    if (rdbtn_aprobado.checked) {
+        si_capital.disabled = false;
+        no_capital.disabled = false;
+        sol_necesidad.disabled = false;
+        num_resolucion.disabled = false;
+        fecha_resolucion.disabled = false;
+        num_cdp.disabled = false;
+    } else {
+        si_capital.disabled = true;
+        no_capital.disabled = true;
+        sol_necesidad.disabled = true;
+        num_resolucion.disabled = true;
+        fecha_resolucion.disabled = true;
+        num_cdp.disabled = true;
+    }
+}
