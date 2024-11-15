@@ -26,6 +26,7 @@
                   <a class="collapse-item" href="{{url('register') }}">Nuevo Usuario</a>
                   <a class="collapse-item" href="{{url('ver/documento') }}">Listar Documentos</a>
                   <a class="collapse-item" href="{{url('sistema') }}">Sistema</a>
+                  <a class="collapse-item" href="{{url('presupuesto') }}">Presupuestos</a>
                   {{-- <a class="collapse-item" href="{{url('edicion/documento') }}">Edición Documentos</a> --}}
               </div>
             </div>

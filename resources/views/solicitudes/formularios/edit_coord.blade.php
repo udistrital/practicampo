@@ -703,6 +703,31 @@
             
         </div>
     <!-- 2.3 -->
+    <!-- Visualizar lista de estudiantes -->
+    <br>
+    <div class="form-group row col-md-12">
+        <h4>Ver Lista de Estudiantes</h4>
+        <button class="btn btn-success btn_ver" type="button" id="btn_ver_estud" style="border: 1px solid #d1d3e2; margin-left: 5px; border-top-left-radius: 0; border-bottom-left-radius: 0"
+        onclick="ver_estudiantes()"><i id="icono_ver_estud" class="far fa-eye"></i></button>
+    </div>
+    <br>
+    <table id="tabla_estudiantes" class="table table-bordered " style="border-collapse: collapse;margin-left: auto;margin-right: auto;" hidden>
+    <tr>
+        <th>N°</th>
+        <th>Nombre Estudiante</th>
+        <th>Correo Institucional</th>
+        <th>Grupo</th>
+    </tr>
+    @foreach($lista_estudiantes as $lista_estud)
+    <tr>
+        <td>{{$loop->iteration}}</td>
+        <td><?php echo $lista_estud->nombre_completo ?></td>
+        <td><?php echo $lista_estud->email ?></td>
+        <td><?php echo $lista_estud->grupo ?></td>
+    </tr>  
+    @endforeach
+     </table>
+    <!-- Visualizar lista de estudiantes -->
 
 <!-- información proyección -->
 
@@ -2959,6 +2984,39 @@
 
     </div>
 <!-- certificados -->
+
+<!-- Visualización Presupuesto Programa academico -->
+    <h4>Presupuesto</h4>
+    <hr class="divider">
+    <br>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label for="presupuesto_actual" class="col-form-label text-md-left">{{ __('Presupuesto Actual') }}</label>
+            <input id="presupuesto_actual" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_actual" 
+            title=""
+            value="$ {{number_format($presupuesto_programa_academico->presupuesto_actual, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+
+        <div class="col-md-3">
+            <label for="presupuesto_práctica" class="col-form-label text-md-left"> {{__('Presupuesto Práctica N°') }} {{ $solicitud_practica->id }}</label>
+            <input id="presupuesto_práctica" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_práctica" 
+            title=""
+            value="$ {{number_format($presupuesto_practica, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+
+        <div class="col-md-3">
+            <label for="presupuesto_restante" class="col-form-label text-md-left">{{ __('Presupuesto restante') }}</label>
+            <input id="presupuesto_restante" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_restante" 
+            title=""
+            value="$ {{number_format($presupuesto_restante, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label id="lblpractica" class="col-form-label text-md-left text-danger" hidden>{{ __('La práctica no se puede aprobar porque el presupuesto del programa no es suficiente.') }}</label>
+        </div>
+    </div>
+<!-- Visualización Presupuesto Programa academico -->
 
 <h4>Observaciones</h4>
 <hr class="divider">

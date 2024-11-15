@@ -18,6 +18,8 @@ use PractiCampoUD\solicitud_transporte;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\transporte_menor;
 use PractiCampoUD\transporte_proyeccion;
+use PractiCampoUD\presupuesto_programa_academico;
+use PractiCampoUD\detalle_presupuesto_programa_academico;
 use PractiCampoUD\Http\Controllers\Controller;
 use PractiCampoUD\Mail\CodigoMail;
 use Carbon\Carbon;
@@ -1080,6 +1082,20 @@ class SolicitudController extends Controller
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario_log->primer_nombre.' '.$usuario_log->segundo_nombre.' '.$usuario_log->primer_apellido.' '.$usuario_log->segundo_apellido;
                 $nomb_doc_respon = $usuario_respon->primer_nombre.' '.$usuario_respon->segundo_nombre.' '.$usuario_respon->primer_apellido.' '.$usuario_respon->segundo_apellido;
+                
+                $presupuesto_programa_academico= DB::table('presupuesto_programa_academico')
+                ->where('id_programa_academico',$proyeccion_preliminar->id_programa_academico)->first();
+                $presupuesto_practica= 0;
+                if($solicitud_practica->tipo_ruta == 1){
+                    $presupuesto_practica=$costos_proyeccion->viaticos_docente_rp + $costos_proyeccion->viaticos_estudiantes_rp + $costos_proyeccion->vlr_guias_baquianos_rp +
+                                        $costos_proyeccion->vlr_materiales_rp + $costos_proyeccion->vlr_otros_boletas_rp + $costos_proyeccion->costo_total_transporte_menor_rp;
+                }else if($solicitud_practica->tipo_ruta == 2){
+                    $presupuesto_practica=$costos_proyeccion->viaticos_docente_ra + $costos_proyeccion->viaticos_estudiantes_ra + $costos_proyeccion->vlr_guias_baquianos_ra +
+                                        $costos_proyeccion->vlr_materiales_ra + $costos_proyeccion->vlr_otros_boletas_ra + $costos_proyeccion->costo_total_transporte_menor_ra;
+                }
+                
+                $presupuesto_restante=$presupuesto_programa_academico->presupuesto_actual - $presupuesto_practica;
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
 
                 return view('solicitudes.edit',["proyeccion_preliminar"=>$proyeccion_preliminar,
                                                 "espa_aca_integradas"=>$espa_aca_int,
@@ -1113,7 +1129,11 @@ class SolicitudController extends Controller
                                                 "tipo_ruta"=>$tipo_ruta,
                                                 "usuario"=>$usuario_log,
                                                 'vlr_viaticos'=>$vlr_viaticos,
-                                                'control_sistema'=>$control_sistema
+                                                'control_sistema'=>$control_sistema,
+                                                'presupuesto_programa_academico'=>$presupuesto_programa_academico,
+                                                'presupuesto_practica'=>$presupuesto_practica,
+                                                'presupuesto_restante'=>$presupuesto_restante,
+                                                'lista_estudiantes'=>$lista_estudiantes
         
                 ]);
             break;
@@ -1482,7 +1502,9 @@ class SolicitudController extends Controller
 		
 		$practicas_integradas = practicas_integradas::where('id','=',$id)->first();
         $programa_academico = DB::table('programa_academico')
-        ->where('id',$proyeccion_preliminar->id_programa_academico)->first();	
+        ->where('id',$proyeccion_preliminar->id_programa_academico)->first();
+
+        $presupuesto_programa_academico = presupuesto_programa_academico::where('id_programa_academico','=',$proyeccion_preliminar->id_programa_academico)->first();
 
         if(Auth::user()->id_role == 1 ||  Auth::user()->id_role == 4 || Auth::user()->id_role == 5)
         {
@@ -1861,6 +1883,22 @@ class SolicitudController extends Controller
                 $solicitud_practica->confirm_coord = 1;
                 $proyeccion_preliminar->observ_coordinador= $request->get('observ_coordinador');
                 $solicitud_practica->aprobacion_coordinador= $request->get('aprobacion_coordinador');
+                $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+                if($valor_formateado >= 0 && $request->get('aprobacion_coordinador') == 7){
+                    $detalle_presupuesto_programa_academico = new detalle_presupuesto_programa_academico;
+                    $presupuesto_programa_academico->presupuesto_actual = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+                    $detalle_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
+                    $detalle_presupuesto_programa_academico->id_solicitud = $solicitud_practica->id;
+                    $detalle_presupuesto_programa_academico->presupuesto_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_práctica'));
+                    $detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;
+                    $detalle_presupuesto_programa_academico->fecha_aprobacion = $mytime;
+                    $detalle_presupuesto_programa_academico->anio_periodo = $mytime->year;
+                    $detalle_presupuesto_programa_academico->id_periodo_academico = $proyeccion_preliminar->id_periodo_academico;
+                    $detalle_presupuesto_programa_academico->save();
+                    $presupuesto_programa_academico->update();                    
+                }                
+                
+                //dd($presupuesto_programa_academico,$detalle_presupuesto_programa_academico);
 
                 if(Auth::user()->id_role == 1)
                 {

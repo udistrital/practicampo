@@ -909,7 +909,26 @@ $(document).ready(function(){
         
     });
 
+    // Presupuesto programa academico
+    if(form == "edit_solicitud"){
+        const presupuestoInput = document.getElementById('presupuesto_restante');
+        const presupuesto_restante = presupuestoInput ? presupuestoInput.value : null;
+        if (presupuesto_restante !== null) {
+            const lblpractica = document.getElementById('lblpractica');
+            presupuesto_restante_format = Number(presupuesto_restante.replace(/[$.\s]/g, ''));
+            console.log(presupuesto_restante_format);
+            const radio_aprobacion_coordinador = document.querySelector('input[name="aprobacion_coordinador"][value="7"]');
+            
+            if(presupuesto_restante_format < 0){
+                radio_aprobacion_coordinador.disabled = true;
+                lblpractica.removeAttribute('hidden');
+            } 
+        }        
+    }   
+    // Presupuesto programa academico
+    
     // Deshabilitar inputs de rutas cuando se selecciona un radio button
+    if(form == "edit_proyeccion"){
         // Ruta principal
         const inputDestino_rp = document.getElementById('destino_rp');
         const inputCant_url_rp = document.getElementById('cant_url_rp');
@@ -973,6 +992,7 @@ $(document).ready(function(){
 
         radioSi_ra.addEventListener('change', toggleInput_ra);
         radioNo_ra.addEventListener('change', toggleInput_ra);
+    }
 
     $(addButton_ea_edit).click(function(e){
         e.preventDefault();
@@ -6136,3 +6156,26 @@ function obsInactProy(inactProy)
 /* observ. inactividad solicitudes */
 
 /* observ. inactividad solicitudes */
+function confirmarGuardarPresupuesto(event) {
+    const confirmar = confirm('¿Estás seguro(a) de que deseas guardar los cambios?');
+
+    if (!confirmar) {
+        event.preventDefault();
+        return false;
+    }
+
+    return true;
+}
+
+function ver_estudiantes(){
+    const tabla = document.getElementById('tabla_estudiantes');
+    const icono = document.getElementById('icono_ver_estud');
+    
+    if (tabla.hasAttribute('hidden')) {
+        tabla.removeAttribute('hidden');
+    } else {
+        tabla.setAttribute('hidden', '');
+    }
+    icono.classList.toggle('fa-eye');
+    icono.classList.toggle('fa-eye-slash');
+}

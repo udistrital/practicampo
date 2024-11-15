@@ -93,6 +93,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('sistema','Sistema\SistemaController@index')->name('sistema_edit')->middleware('role:1,2,3');
         Route::put('sistema','Sistema\SistemaController@update')->name('sistema_update')->middleware('role:1,2,3');
         // ------> Apertura - Cierre Sistema <------
+
+        // ------> Presupuesto programas academicos <------
+        Route::get('presupuesto','Presupuesto\PresupuestoController@index')->name('presupuesto_edit')->middleware('role:1,2,3');
+        Route::put('presupuesto','Presupuesto\PresupuestoController@update')->name('presupuesto_update')->middleware('role:1,2,3');
+        // ------> Presupuesto programas academicos <------
         
     });
 
