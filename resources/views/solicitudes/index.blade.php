@@ -98,7 +98,7 @@
                                   <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_solicitud"   @if(isset($filter) and ($filter == 'aprob')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="9">
-                                      <label class="form-check-label" for="">Aprob.</label>
+                                      <label class="form-check-label" for="">Aprobadas</label>
                                     </div>
                                   </div>
                                 @endif
@@ -156,7 +156,7 @@
                             @if(Auth::user()->coordinador() || Auth::user()->decano()  || Auth::user()->asistenteD())
 
                               @if(Auth::user()->coordinador() || Auth::user()->asistenteD())
-                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'pend')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="7">
                                       <label class="form-check-label" for="">Pendientes</label>
@@ -173,27 +173,27 @@
                                 @endif --}}
 
                                 @if(Auth::user()->asistenteD())
-                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'pend-teso')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="17">
                                         <label class="form-check-label" for="">Tesorería</label>
                                     </div>
                                   </div>
-                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'pend-cierre')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="18">
                                         <label class="form-check-label" for="">Cierres</label>
                                     </div>
                                   </div>
 
-                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'enc_trans')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="21">
                                         <label class="form-check-label" for="">Encuestas</label>
                                     </div>
                                   </div>
 
-                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'sol_realizadas')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="23">
                                         <label class="form-check-label" for="">Realizadas</label>
