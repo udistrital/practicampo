@@ -51,7 +51,7 @@
                                     data-toggle="tooltip" data-placement="left" 
                                     data-title="" style="font-size: 0.813rem"></i> Presupuesto actual</label>
                                     <input id="{{ $pa->id }}" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-8" name="{{ $pa->id }}" 
-                                    value="{{$presupuesto}}" autocomplete="off" autofocus title="" disabled>
+                                    value="{{$presupuesto_act}}" autocomplete="off" autofocus title="" disabled>
 
                                     @error('vlr_docen_min')
                                         <span class="invalid-feedback" role="alert">
