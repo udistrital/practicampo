@@ -316,6 +316,10 @@ function filtrar_solicitudes(value)
         case '22':
             href = "{!! route('solicitud_filter','estud'); !!}";
             break;
+            
+        case '23':
+        href = "{!! route('solicitud_filter','sol_realizadas'); !!}";
+        break;
         default:
         
     }

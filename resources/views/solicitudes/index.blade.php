@@ -192,6 +192,13 @@
                                         <label class="form-check-label" for="">Encuestas</label>
                                     </div>
                                   </div>
+
+                                  <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'sol_realizadas')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="23">
+                                        <label class="form-check-label" for="">Realizadas</label>
+                                    </div>
+                                  </div>
                                 @endif
 
                               @endif
@@ -238,6 +245,9 @@
               @endif 
 
               @if(Auth::user()->asistenteD())
+                @if($filter == 'sol_realizada')
+                  @include('solicitudes.tablas.index_sol_realizada',$proyecciones)
+                @endif
                 @if($filter == 'aprob_solic')
                   @include('solicitudes.tablas.index_docpdf_descarga',$proyecciones)
                 @else

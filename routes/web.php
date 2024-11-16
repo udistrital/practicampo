@@ -179,6 +179,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('encue_trans/{id}','Solicitud\SolicitudController@encuesta_transp')->name('encue_trans');
         Route::get('estud_doc/{id}','Solicitud\SolicitudController@ver_doc_estud')->name('estud_doc');
 
+        Route::get('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_edit')->name('practica_realizada_edit');
+        Route::put('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_update')->name('practica_realizada_update');
+
         Route::get('solic_legal/{id}','Solicitud\SolicitudController@solic_legal')->name('solic_legal');
         Route::put('solic_cierre/{id}','Solicitud\SolicitudController@solic_cierre')->name('solic_cierre');
         Route::get('encues_trans','Excel\ExcelController@exportEncuestaTrans')->name('encues_trans');
