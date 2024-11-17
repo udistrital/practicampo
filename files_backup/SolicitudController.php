@@ -2758,6 +2758,36 @@ class SolicitudController extends Controller
                         //->where('sol_prac.listado_estudiantes','=',1)
                     break;
 
+                    case 'sol_realizadas':
+                        $proyeccion=DB::table('proyeccion_preliminar as p_prel')
+                        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
+                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
+                                'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
+                                'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
+                                'c_proy.total_presupuesto_rp','c_proy.total_presupuesto_ra','c_proy.valor_estimado_transporte_rp','c_proy.valor_estimado_transporte_ra',
+                                'sol_prac.tipo_ruta as tipo_ruta','sol_prac.id as id_solicitud',
+                                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                        ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
+                        ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
+                        ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
+                        ->join('users','p_prel.id_docente_responsable','=','users.id')
+                        ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
+                        ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_proyeccion_preliminar')
+                        ->join('estado as es_coor_sol','sol_prac.aprobacion_coordinador','=','es_coor_sol.id')
+                        ->join('estado as es_dec_sol','sol_prac.aprobacion_decano','=','es_dec_sol.id')
+                        ->where('aprobacion_consejo_facultad','=',3)
+                        ->where('sol_prac.aprobacion_coordinador','=',7)
+                        ->where('sol_prac.aprobacion_asistD','=',7)
+                        ->where('sol_prac.aprobacion_decano','=',7)
+                        ->where('sol_prac.id_estado_solicitud_practica','=',3)
+                        ->where('sol_prac.confirm_docente','=',1)
+                        ->where('p_prel.id_estado','=',1)
+                        ->paginate(10000);
+                    break;
+
                     default;
                 }
             break; 
@@ -3295,6 +3325,49 @@ class SolicitudController extends Controller
                                             'usuario'=>$user_DB,
                                             'control_sistema'=>$control_sistema,
                                             'documentos_sistema'=>$documentos_sistema]);
+    }
+
+    /**
+     * Mostrar formulario de practicas aprobadas para marcar si se realizaron o no
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function practica_realizada_edit($id){
+        $filter = "sol_realizada";
+        $id = Crypt::decrypt($id);
+        $solicitud=DB::table('proyeccion_preliminar as p_prel')
+        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
+                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,
+                'e_aca.electiva','p_prel.confirm_coord','users.id_estado as id_estado_doc','sol_prac.id as id_solicitud', 'sol_prac.estado_practica',
+                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+        ->join('users','p_prel.id_docente_responsable','=','users.id')
+        ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_proyeccion_preliminar')
+        ->where('sol_prac.id','=',$id)->paginate(1);
+        $idUser = Auth::user()->id;
+        $user_DB= DB::table('users')
+        ->where('id',$idUser)->first();
+        $control_sistema =DB::table('control_sistema')->first();
+        return view('solicitudes.index',['proyecciones'=>$solicitud,
+                                        'filter'=>$filter,
+                                        'usuario'=>$user_DB, 
+                                        'control_sistema'=>$control_sistema]);
+    }
+
+    /**
+     * Actualizar la respectiva solicitud si la práctica se realizó
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function practica_realizada_update(Request $request, $id){
+        $id = Crypt::decrypt($id);
+        $solicitud = solicitud::where('id_proyeccion_preliminar', '=', $id)->first();
+        $solicitud->estado_practica = $request->get('practica_realizada');
+        $solicitud->update();
+        return redirect('solicitudes/filtrar/sol_realizadas');
     }
 
     /**

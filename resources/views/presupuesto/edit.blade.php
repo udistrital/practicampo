@@ -6,7 +6,7 @@
     @section('contenido')
 
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-4">
             <div class="col-md-10">
                 <div class="card">
                     <div class="card-header">{{ __('Editar Presupuesto de los programas académicos') }}</div>
@@ -82,4 +82,7 @@
                         <!-- submit -->
                         </form>                        
                     </div>
+                </div>
+            </div>
+        </div>
     @endsection   

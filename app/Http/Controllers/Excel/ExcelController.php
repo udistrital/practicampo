@@ -18,6 +18,9 @@ use PractiCampoUD\Exports\ReportEncuestaExport;
 use PractiCampoUD\Exports\ReportFormatoProyecciones;
 use PractiCampoUD\Exports\ReportFormatoUsers;
 use PractiCampoUD\Imports\ReportUsersImport;
+use PractiCampoUD\Exports\ReportSolicitudesAprobadasExport;
+use PractiCampoUD\Exports\ReportSolicitudesRealizadasExport;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DB;
 
@@ -224,6 +227,59 @@ class ExcelController extends Controller
         catch(\Exception $ex)
         {
             return back()->withError('Falla al descargar las encuestas de transporte.');
+        }
+    }
+
+    /**
+     * Muestra formulario para descargar los excel
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_solicitudes_edit(){
+        $usuario = DB::table('users')->where('id','=',Auth::user()->id)->first();
+        $control_sistema = DB::table('control_sistema')->first();
+        return view('excel.edit',[
+                                'control_sistema' => $control_sistema,
+                                'usuario' => $usuario]);
+    }
+
+    /**
+     * Exporta las prácticas aprobadas para la solicitud de transporte
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_solicitudes_aprobadas_transporte(Request $request){
+        try
+        {
+            $fechaInicial = $request->input('fecha_inicial');
+            $fechaFinal = $request->input('fecha_final');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            //dd("Solicitudes Aprobadas: ",$fechaInicial,$fechaFinal);
+            return Excel::download(new ReportSolicitudesAprobadasExport($fechaInicial,$fechaFinal),'Solicitudes_Aprobadas_'.$mytime.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel');
+        }
+    }
+
+    /**
+     * Exporta las prácticas que fueron o no realizadas
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_solicitudes_realizadas(Request $request){
+        try
+        {
+            $fechaInicial = $request->input('fecha_inicial');
+            $fechaFinal = $request->input('fecha_final');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            //dd("Solicitudes Reazliadas: ",$fechaInicial,$fechaFinal);
+            return Excel::download(new ReportSolicitudesRealizadasExport($fechaInicial,$fechaFinal),'Solicitudes_Realizadas_'.$mytime.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel'.$ex);
         }
     }
 

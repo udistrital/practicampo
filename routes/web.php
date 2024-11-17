@@ -123,6 +123,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('exp_formato_estud','Excel\ExcelController@exportFormatoEstud')->name('exp_formato_estud');
         Route::get('exp_formato_users','Excel\ExcelController@exportFormatoUsers')->name('exp_formato_users');
 
+        // ------> Descargar Excel de solicitudes <------
+        Route::get('excel_solicitudes','Excel\ExcelController@excel_solicitudes_edit')->name('excel_solicitudes_edit')->middleware('role:1,2,3');
+        Route::get('excel_solicitudes_aprobadas_transporte','Excel\ExcelController@excel_solicitudes_aprobadas_transporte')->name('excel_solicitudes_aprobadas_transporte')->middleware('role:1,2,3');
+        Route::get('excel_solicitudes_realizadas','Excel\ExcelController@excel_solicitudes_realizadas')->name('excel_solicitudes_realizadas')->middleware('role:1,2,3');
+        // ------> Descargar Excel de solicitudes <------
+
         // ------> PDF Routes <------
         Route::get('solicitudes_pdf','Pdf\PdfController@exportSolicitudPdf')->name('solicitud.pdf');
         Route::get('solicitudes','Solicitud\SolicitudController@index')->name('solicitud_index');

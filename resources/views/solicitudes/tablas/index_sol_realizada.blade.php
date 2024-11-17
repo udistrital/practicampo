@@ -31,7 +31,7 @@
             <td>{{ $item->destino_rp }}</td>
             <td>{{ $item->fecha_salida_aprox_rp }}</td>
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
-            <td>{{ $item->realizada == 0 ? 'No Realizada' : 'Realizada' }}</td>
+            <td>{{ $item->estado_practica == 2 ? 'No Realizada' : 'Realizada' }}</td>
 
         </tr>
     </table> 
@@ -45,7 +45,7 @@
                     <div class="col-lg-1 col-md-2 col-sm-2 col-xs-8">
                         <div class="form-check form-check-inline">
                         <input id="practica_realizada" class="form-check-input" type="radio" name="practica_realizada" value="1"
-                        <?php if($item->realizada == 1) echo 'checked'?>>
+                        <?php if($item->estado_practica == 1) echo 'checked'?>>
                         <label class="form-check-label" for="">Realizada</label>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8">
                         <div class="form-check form-check-inline">
                         <input id="practica_realizada" class="form-check-input" type="radio" name="practica_realizada" value="0"
-                        <?php if($item->realizada == 0) echo 'checked'?>>
+                        <?php if($item->estado_practica == 2) echo 'checked'?>>
                         <label class="form-check-label" for="">No realizada</label>
                         </div>
                     </div>

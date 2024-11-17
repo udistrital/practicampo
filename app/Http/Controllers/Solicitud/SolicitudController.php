@@ -3630,7 +3630,7 @@ class SolicitudController extends Controller
         $solicitud=DB::table('proyeccion_preliminar as p_prel')
         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
                 'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,
-                'e_aca.electiva','p_prel.confirm_coord','users.id_estado as id_estado_doc','sol_prac.id as id_solicitud', 'sol_prac.realizada',
+                'e_aca.electiva','p_prel.confirm_coord','users.id_estado as id_estado_doc','sol_prac.id as id_solicitud', 'sol_prac.estado_practica',
                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
@@ -3656,7 +3656,7 @@ class SolicitudController extends Controller
     public function practica_realizada_update(Request $request, $id){
         $id = Crypt::decrypt($id);
         $solicitud = solicitud::where('id_proyeccion_preliminar', '=', $id)->first();
-        $solicitud->realizada = $request->get('practica_realizada');
+        $solicitud->estado_practica = $request->get('practica_realizada');
         $solicitud->update();
         return redirect('solicitudes/filtrar/sol_realizadas');
     }
