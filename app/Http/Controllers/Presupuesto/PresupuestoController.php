@@ -45,10 +45,21 @@ use DB;
         $idUser = Auth::user()->id;
         $usuario=DB::table('users')
         ->where('id',$idUser)->first();
-        $programa_academico =DB::table('programa_academico')->get();
+        $programas_academicos =DB::table('programa_academico')
+        ->orderByRaw("
+        CASE
+            WHEN programa_academico LIKE 'Tec%' THEN 1
+            WHEN programa_academico LIKE 'Ing%' THEN 2
+            WHEN programa_academico LIKE 'Adm%' THEN 3
+            WHEN programa_academico LIKE 'Esp%' THEN 4
+            WHEN programa_academico LIKE 'Maes%' THEN 5
+            ELSE 5
+        END
+        ")
+        ->get();
         return view('presupuesto.edit',['control_sistema'=>$control_sistema,
                                     'presupuesto_programa_academico'=>$presupuesto_programa_academico,
-                                    'programa_academico'=>$programa_academico,
+                                    'programa_academico'=>$programas_academicos,
                                     'usuario'=>$usuario]);
     }
 

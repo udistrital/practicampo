@@ -18,8 +18,25 @@
 
                         <br>
 
+                        @php
+                            $tipo_anterior = '';
+                        @endphp
                         <!-- 5 -->
                         @foreach ($programa_academico as $pa)
+                        @php
+                            $tipo_actual = '';
+                            if (str_starts_with(strtolower($pa->programa_academico), 'tec')) {
+                                $tipo_actual = 'Programas Académicos de Tecnología';
+                            } elseif (str_starts_with(strtolower($pa->programa_academico), 'ing')) {
+                                $tipo_actual = 'Programas Académicos de Ingeniería';
+                            } elseif (str_starts_with(strtolower($pa->programa_academico), 'esp')) {
+                                $tipo_actual = 'Programas Académicos de Especialización';
+                            } elseif (str_starts_with(strtolower($pa->programa_academico), 'maes')) {
+                                $tipo_actual = 'Programas Académicos de Maestría';
+                            } elseif (str_starts_with(strtolower($pa->programa_academico), 'admin')) {
+                                $tipo_actual = 'Programas Académicos de Administración';
+                            }
+                        @endphp
                         @if (!$loop->last)    
                             @php
                                 $presupuesto = null;
@@ -32,11 +49,19 @@
                                     }
                                 }
                             @endphp
+                            @if ($tipo_actual !== $tipo_anterior)
+                                <hr class="divider">
+                                <h4 class="">{{ $tipo_actual }}</h4>
+                                <hr class="divider">
+                                @php
+                                    $tipo_anterior = $tipo_actual;
+                                @endphp
+                            @endif
                             <div class="form-group row">
                                 <div class="col-md-8">
                                 <label for="{{ $pa->id }}" class="col-form-label text-md-left col-md-12" title=""><i class="fas fa-question-circle" 
                                     data-toggle="tooltip" data-placement="left" 
-                                    data-title="" style="font-size: 0.813rem"></i> Presupuesto inicial para {{ $pa->programa_academico }}</label>
+                                    data-title="" style="font-size: 0.813rem"></i> Presupuesto inicial para: {{ $pa->programa_academico }}</label>
                                     <input id="{{ $pa->id }}" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-12" name="{{ $pa->id }}" 
                                     value="{{$presupuesto}}" autocomplete="off" autofocus title="">
 
@@ -58,10 +83,8 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                </div> 
-                                
-                            </div>                            
-                            <hr class="divider">
+                                </div>                                 
+                            </div>             
                         @endif
                         @endforeach
                         <!-- 5 -->
