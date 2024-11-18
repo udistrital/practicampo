@@ -928,7 +928,7 @@ $(document).ready(function(){
     // Presupuesto programa academico
     
     // Deshabilitar inputs de rutas cuando se selecciona un radio button
-    if(form == "edit_proyeccion"){
+    if(form == "create_proyeccion_form" || form == "edit_proyeccion"){
         // Ruta principal
         const inputDestino_rp = document.getElementById('destino_rp');
         const inputCant_url_rp = document.getElementById('cant_url_rp');
@@ -971,10 +971,10 @@ $(document).ready(function(){
         const inputCant_detalle_recorrido_ra = document.getElementById('det_recorrido_interno_ra');
         const radioSi_ra = document.querySelector('input[name="realizada_bogota_ra"][value="1"]');
         const radioNo_ra = document.querySelector('input[name="realizada_bogota_ra"][value="0"]');
-        //inputDestino_ra.disabled = true;
-        //inputCant_url_ra.disabled = true;
-        //inputCant_url_ruta_ra.disabled = true;
-        //inputCant_detalle_recorrido_ra.disabled = true;
+        inputDestino_ra.disabled = true;
+        inputCant_url_ra.disabled = true;
+        inputCant_url_ruta_ra.disabled = true;
+        inputCant_detalle_recorrido_ra.disabled = true;
 
         const toggleInput_ra = () => {
             if (radioSi_ra.checked || radioNo_ra.checked) {
@@ -6156,6 +6156,31 @@ function obsInactProy(inactProy)
 /* observ. inactividad solicitudes */
 
 /* observ. inactividad solicitudes */
+function validar_realizada_bogota() {
+    const realizadaBogotaRP = document.getElementsByName('realizada_bogota_rp');
+    const realizadaBogotaRA = document.getElementsByName('realizada_bogota_ra');
+
+    function isRadioSelected(radioGroup) {
+        for (const radio of radioGroup) {
+            if (radio.checked) {
+                return true;
+            }
+        }
+        return false;
+    }
+    if (!isRadioSelected(realizadaBogotaRP)) {
+        alert("Debe seleccionar si la práctica se realizará en Bogotá o no\nEn: Ruta Principal");
+        realizadaBogotaRP[0].focus();
+        return false;
+    }
+    if (!isRadioSelected(realizadaBogotaRA)) {
+        alert("Debe seleccionar si la práctica se realizará en Bogotá o no\nEn: Ruta de Contingencia");
+        realizadaBogotaRA[0].focus();
+        return false;
+    }
+    return true; 
+}
+
 function confirmarGuardarPresupuesto(event) {
     const confirmar = confirm('¿Estás seguro(a) de que deseas guardar los cambios?');
 

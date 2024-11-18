@@ -12,7 +12,8 @@
                     <div class="card-header" id="num_docen" name="{{$usuario->id}}">{{ __('Registro Proyección Preliminar') }}</div>
     
                     <div class="card-body">
-                        <form method="POST" action="{{ route('proyeccion_store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('proyeccion_store') }}" enctype="multipart/form-data" id="create_proyeccion_form"
+                        onsubmit="return validar_realizada_bogota()">
                             @csrf
                             <!-- información proyección -->
                                 <!-- 1 -->
@@ -889,7 +890,7 @@
                             <div  class="form-group row">
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
                                     <div class="form-group">
-                                        <label for="realizada_bogota_rp" class="col-form-label text-md-left">
+                                        <label for="realizada_bogota_rp" class="col-form-label text-md-left" id="lblrealizada_bogota_rp">
                                             <i class="fas fa-question-circle" 
                                             data-toggle="tooltip" data-placement="left" 
                                             style="font-size: 0.813rem"></i> {{ __('¿La práctica se realizará en Bogotá?') }}</label>
@@ -2190,7 +2191,7 @@
                             <div  class="form-group row">
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
                                     <div class="form-group">
-                                        <label for="realizada_bogota_ra" class="col-form-label text-md-left">
+                                        <label for="realizada_bogota_ra" class="col-form-label text-md-left" id="lblrealizada_bogota_ra">
                                             <i class="fas fa-question-circle" 
                                             data-toggle="tooltip" data-placement="left" 
                                             style="font-size: 0.813rem"></i> {{ __('¿La práctica se realizará en Bogotá?') }}</label>
