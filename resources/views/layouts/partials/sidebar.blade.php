@@ -74,9 +74,9 @@
                   <div class="bg-nav py-2 collapse-inner rounded">
                     {{-- @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD() || Auth::user()->coordinador() || Auth::user()->docente() || Auth::user()->transportador()) --}}
                     <a class="collapse-item" href="{{url('solicitudes/filtrar/all') }}">Listar Solicitudes </a>
-                      {{-- @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD()) --}}               
+                      @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD())            
                         <a class="collapse-item" href="{{url('excel_solicitudes') }}"> Descargar Excel </a>
-                      {{--@endif--}}
+                      @endif
                     {{-- @endif --}}                    
                   </div>
                 </div>
