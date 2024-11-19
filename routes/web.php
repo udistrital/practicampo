@@ -28,6 +28,7 @@ Route::get('loginEst', 'EstudianteController@showLoginFormEst')->name('loginEst'
 Route::post('login', 'Auth\LoginController@login'); 
 Route::post('loginEst', 'EstudianteController@loginEst'); 
 
+//Route::get('logout', 'Users\UsersController@logout_redirect')->name('logout_redirect');
 Route::post('logout', 'Users\UsersController@logout')->name('logout');
 
 // ------> Reset Password TODOS <------

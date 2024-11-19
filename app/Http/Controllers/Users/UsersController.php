@@ -1036,8 +1036,18 @@ class UsersController extends Controller
         $request->session()->regenerate();
         $request->session()->flash('Acción Exitosa','La sesión se ha cerrado correctamente.');
 
-        return view('auth.login');
+        //return view('auth.login');
+        return redirect('/');
     }
+
+    /**
+     * Asegurar la redirección al login
+     *
+     */
+    //public function logout_redirect()
+    //{
+    //    return redirect('/');
+    //}
 
     /**
      * Buscador de usuarios por palabras claves 
