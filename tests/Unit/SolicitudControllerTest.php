@@ -328,6 +328,32 @@ class SolicitudControllerTest extends TestCase
         $response->assertViewIs('solicitudes.lista_estudiantes'); 
     }
 
+    /**
+     * Prueba unitaria del método edit del controlador SolicitudController
+     */
+    public function test_solicitud_practica_realizada_edit(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $proyeccion = proyeccion::find(1170);
+        $id = Crypt::encrypt($proyeccion->id);
+        $response = $this->get("practica_realizada/{$id}");
+        $response->assertStatus(200);
+        $response->assertViewIs('solicitudes.index'); 
+    }
+
+    public function test_solicitud_practica_realizada_update(): void{
+        $user = User::find(79308666);
+        $this->actingAs($user);
+        $proyeccion = proyeccion::find(1170);
+        $id = Crypt::encrypt($proyeccion->id);
+        $data = [
+            'practica_realizada' => 1
+        ];
+        $response = $this->put("practica_realizada/{$id}", $data);
+
+        $response->assertStatus(302);
+        $response->assertRedirect('solicitudes/filtrar/sol_realizadas');
+    }
     /*
     Métodos que no se usan:
     duplicar_proy
