@@ -268,6 +268,7 @@
             <th style="width: 75px">Destino</th>
             <th style="width: 50px">Fecha Salida</th>
             <th style="width: 50px">Fecha Regreso</th>
+            <th style="width: 50px">Estado</th>
             <th style="width: 25px"></th>
             
         </thead> 
@@ -286,6 +287,12 @@
             <td>{{ $item->destino_rp }}</td>
             <td>{{ $item->fecha_salida_aprox_rp }}</td>
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
+            @if($item->estado_practica == 1)
+            <td>Realizada</td>
+            @elseif($item->estado_practica == 2)
+            <td>No Realizada</td>
+            @endif
+            
             
             <td style="text-align: center"> 
                 <a href="{{route('practica_realizada_edit',[Crypt::encrypt($item->id_solicitud)])}}">

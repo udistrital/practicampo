@@ -1919,6 +1919,11 @@ class SolicitudController extends Controller
                     $solicitud_practica->confirm_creador=1;
                     $solicitud_practica->confirm_docente=0;
                     $solicitud_practica->confirm_coord=0;
+                    $solicitud_practica->listado_estudiantes=0;
+                    $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
+                    foreach ($lista_estudiantes as $list_estud){
+                        $list_estud->delete();
+                    }  
                 }
                 else if($solicitud_practica->aprobacion_coordinador == 2)
                 {
@@ -2766,7 +2771,7 @@ class SolicitudController extends Controller
                                 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
                                 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
                                 'c_proy.total_presupuesto_rp','c_proy.total_presupuesto_ra','c_proy.valor_estimado_transporte_rp','c_proy.valor_estimado_transporte_ra',
-                                'sol_prac.tipo_ruta as tipo_ruta','sol_prac.id as id_solicitud',
+                                'sol_prac.tipo_ruta as tipo_ruta','sol_prac.id as id_solicitud', 'sol_prac.estado_practica',
                                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
