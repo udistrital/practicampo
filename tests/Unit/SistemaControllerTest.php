@@ -16,7 +16,7 @@ class SistemaControllerTest extends TestCase
     /**
      * Prueba unitaria del método index del controlador SistemaController
      */
-    public function test_presupuesto_index(): void{
+    public function test_sistema_index(): void{
         $user = User::find(79308666);
         $this->actingAs($user);
         $response = $this->get("sistema");
@@ -27,7 +27,7 @@ class SistemaControllerTest extends TestCase
     /**
      * Prueba unitaria del método update del controlador SistemaController
      */
-    public function test_presupuesto_update(): void{
+    public function test_sistema_update(): void{
         $user = User::find(79308666);
         $this->actingAs($user);
         $data = [
