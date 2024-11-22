@@ -6230,3 +6230,21 @@ function rechazo_solic_asist(){
         num_cdp.disabled = true;
     }
 }
+
+function checkEmptyInput(input) {
+    if (input.value.trim() === "") {
+        input.value = "0";
+    }
+}
+
+function clearDefaultValue(input) {
+    if (input.value === "0") {
+        input.value = "";
+    }
+}
+
+function restoreDefaultValue(input) {
+    if (input.value.trim() === "") {
+        input.value = "0";
+    }
+}

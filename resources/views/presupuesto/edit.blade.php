@@ -57,34 +57,41 @@
                                     $tipo_anterior = $tipo_actual;
                                 @endphp
                             @endif
-                            <div class="form-group row">
-                                <div class="col-md-8">
-                                <label for="{{ $pa->id }}" class="col-form-label text-md-left col-md-12" title=""><i class="fas fa-question-circle" 
-                                    data-toggle="tooltip" data-placement="left" 
-                                    data-title="" style="font-size: 0.813rem"></i> Presupuesto inicial para: {{ $pa->programa_academico }}</label>
-                                    <input id="{{ $pa->id }}" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-12" name="{{ $pa->id }}" 
-                                    value="{{$presupuesto}}" autocomplete="off" autofocus title="">
+                            <div class="card">
+                                <div class="form-group row ml-1">
+                                    <div class="col-md-8">
+                                    <label for="presupuesto" class="col-form-label text-md-left col-md-12" title=""><i class="" 
+                                        data-toggle="tooltip" data-placement="left" 
+                                        data-title="" style="font-size: 0.813rem"></i>Presupuesto {{ $pa->programa_academico }}</label>
+                                        <input id="presupuesto" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-12" name="presupuesto" 
+                                        value="$ {{number_format($presupuesto,'0',',','.')}}" autocomplete="off" autofocus title="" disabled>
+                                    </div> 
+                                    <div class="col-md-4">
+                                    <label for="presupuesto_restante" class="col-form-label text-md-left col-md-12" title=""><i class="" 
+                                        data-toggle="tooltip" data-placement="left" 
+                                        data-title="" style="font-size: 0.813rem"></i> Presupuesto restante</label>
+                                        <input id="presupuesto_restante" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-8" name="presupuesto_restante" 
+                                        value="$ {{number_format($presupuesto_act,'0',',','.')}}" autocomplete="off" autofocus title="" disabled>
 
-                                    @error('vlr_docen_min')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div> 
-                                <div class="col-md-4">
-                                <label for="{{ $pa->id }}" class="col-form-label text-md-left col-md-12" title=""><i class="fas fa-question-circle" 
-                                    data-toggle="tooltip" data-placement="left" 
-                                    data-title="" style="font-size: 0.813rem"></i> Presupuesto actual</label>
-                                    <input id="{{ $pa->id }}" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-8" name="{{ $pa->id }}" 
-                                    value="{{$presupuesto_act}}" autocomplete="off" autofocus title="" disabled>
-
-                                    @error('vlr_docen_min')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>                                 
-                            </div>             
+                                        @error('vlr_docen_min')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>                                 
+                                </div>  
+                                <div class="form-group row ml-1">
+                                    <div class="col-md-8">
+                                    <label for="{{ $pa->id }}" class="col-form-label text-md-left col-md-12" title=""><i class="" 
+                                        data-toggle="tooltip" data-placement="left" 
+                                        data-title="" style="font-size: 0.813rem"></i> Asignar Nuevo Presupuesto {{ $pa->programa_academico }}</label>
+                                        <input id="{{ $pa->id }}" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-12" name="{{ $pa->id }}" 
+                                        value="0" autocomplete="off" autofocus title="" onchange="formatVlr(this)" oninput="checkEmptyInput(this)"
+                                        onfocus="clearDefaultValue(this)" onblur="restoreDefaultValue(this)" >
+                                    </div>                               
+                                </div>
+                            </div>  
+                            <hr class="divider">             
                         @endif
                         @endforeach
                         <!-- 5 -->

@@ -73,9 +73,12 @@ use DB;
         //dd($request);
         $presupuesto_programa_academico =presupuesto_programa_academico::get();
         foreach ($presupuesto_programa_academico as $presu_pa){
-            $presu_pa->presupuesto_inicial = $request->get($presu_pa->id_programa_academico);
-            $presu_pa->presupuesto_actual = $request->get($presu_pa->id_programa_academico);
-            $presu_pa->update();
+            $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get($presu_pa->id_programa_academico));
+            if($valor_formateado != 0){                
+                $presu_pa->presupuesto_inicial = $valor_formateado;
+                $presu_pa->presupuesto_actual = $valor_formateado;
+                $presu_pa->update();
+            }            
         };
 
         $control_sistema = DB::table('control_sistema')->first();
