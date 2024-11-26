@@ -246,11 +246,31 @@ footer{position:fixed;bottom:0cm;left:0cm;right:0cm;height:1cm;}
               <td class="tg-amwm" colspan="9" style="text-align: right;"><strong style=" margin-right:10px">TOTAL AVANCE SOLICITADO:</strong></td>
               <td class="tg-0lax" colspan="2">$  {{ number_format($total_avance, 0, ',','.')}}</td>
             </tr>
+            @php
+                function getMonthInSpanish($date) {
+                    $months = [
+                        'January' => 'enero',
+                        'February' => 'febrero',
+                        'March' => 'marzo',
+                        'April' => 'abril',
+                        'May' => 'mayo',
+                        'June' => 'junio',
+                        'July' => 'julio',
+                        'August' => 'agosto',
+                        'September' => 'septiembre',
+                        'October' => 'octubre',
+                        'November' => 'noviembre',
+                        'December' => 'diciembre',
+                    ];
+                    $englishMonth = strftime('%B', strtotime($date));
+                    return $months[$englishMonth] ?? $englishMonth;
+                }
+            @endphp
             <tr>
               <td class="tg-nrix" colspan="11">
                 <p style="text-align: left; font-size: 8pt"><strong>Justificación del avance y Cronograma (de acuerdo a la resolución de solicitud de avance):</strong></p>
                 <p style="text-align: justify; font-size: 8pt">@php setlocale(LC_TIME, "spanish"); @endphpEl avance cubre el auxilio de estudiantes, viáticos docentes, materiales, etc. de las prácticas académicas de @foreach ($solicitud_practica as $sol)
-{{ $sol->espacio_academico }} que se llevará a cabo del día {!! substr($sol->fecha_salida,-2) !!} al día {{ substr($sol->fecha_regreso,-2) }} del mes de {!! strftime('%B', strtotime($sol->fecha_regreso)) !!} de {!! substr($sol->fecha_salida,0,4) !!} del proyecto curricular de {{ $sol->programa_academico }}, 
+{{ $sol->espacio_academico }} que se llevará a cabo del día {!! substr($sol->fecha_salida,-2) !!} al día {{ substr($sol->fecha_regreso,-2) }} del mes de {!! getMonthInSpanish($sol->fecha_regreso) !!} de {!! substr($sol->fecha_salida,0,4) !!} del proyecto curricular de {{ $sol->programa_academico }}, 
 @endforeach</p>
               </td>
               
