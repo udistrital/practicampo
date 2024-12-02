@@ -97,17 +97,14 @@ class EstudianteController extends Controller
          );
 
         if (Auth::guard('estud')->attempt($credenciales)) {
+        //if (true) {
             $details = Auth::guard('estud')->user();
-
             $email_estudiante =$details->email;
+
             $estudiante = DB::table('estudiantes_solicitud_practica as esp')
                         ->where('email','=',$email_estudiante)->first();
-            $id_solicitudes =DB::table('estudiantes_solicitud_practica as est_prac')
-                                ->select('est_prac.id_solicitud_practica')
-                                ->where('aprob_terminos_condiciones',0)
-                                ->where('verificacion_asistencia',0)
-                                ->where('email',$email_estudiante)->get();
-            
+            $solic_asociadas[]=null;
+            $filter=null;
             if($estudiante == null || $estudiante->estado_estudiante != 1 )
             {
                 Abort('401');
@@ -115,34 +112,98 @@ class EstudianteController extends Controller
             }
             else if($estudiante != null || $estudiante->estado_estudiante == 1)
             {
-                $solic_asociadas = [];
-                foreach($id_solicitudes as $id_solic)
-                {
-    
-                    $solic=DB::table('solicitud_practica as sol_prac')
-                                ->select('sol_prac.id','p_aca.programa_academico','e_aca.espacio_academico','sol_prac.tipo_ruta',
-                                        'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida',
-                                        DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                                ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
-                                ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
-                                ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
-                                ->join('users','p_prel.id_docente_responsable','=','users.id')
-                                ->join('estudiantes_solicitud_practica as est_sol','sol_prac.id','=','est_sol.id_solicitud_practica')
-                                ->where('sol_prac.id',$id_solic->id_solicitud_practica)
-                                ->where('est_sol.habilitado',1)->first();
-                    
-                    if(!empty($solic) || $solic != null)
-                    {
-                        $solic_asociadas[] = $solic;
-                    }
-                } 
                 return view('estudiantes.index_solic_est',["estudiante"=>$estudiante,
-                                                        "solic_asociadas"=>$solic_asociadas]);
+                                        "solic_asociadas"=>$solic_asociadas,
+                                        "filter"=>$filter]);
             }
         }
         else {
             Abort('401');
         }
+    }
+
+    public function filterEstudiante($filter)
+    {
+        $details = Auth::guard('estud')->user();
+        $email_estudiante =$details->email;
+        $estudiante = DB::table('estudiantes_solicitud_practica as esp')
+                    ->where('email','=',$email_estudiante)->first();
+        $id_solicitudes =DB::table('estudiantes_solicitud_practica as est_prac')
+                            ->select('est_prac.id_solicitud_practica')
+                            ->where('aprob_terminos_condiciones',0)
+                            ->where('verificacion_asistencia',0)
+                            ->where('email',$email_estudiante)->get();        
+        switch ($filter){
+            case 'sol_estudiante':
+                if($estudiante == null || $estudiante->estado_estudiante != 1 )
+                {
+                    Abort('401');
+                    // return view('auth.fallida_est');
+                }
+                else if($estudiante != null || $estudiante->estado_estudiante == 1)
+                {
+                    $solic_asociadas = [];
+                    foreach($id_solicitudes as $id_solic)
+                    {
+
+                        $solic=DB::table('solicitud_practica as sol_prac')
+                                    ->select('sol_prac.id','p_aca.programa_academico','e_aca.espacio_academico','sol_prac.tipo_ruta',
+                                            'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida',
+                                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                                    ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+                                    ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                                    ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                                    ->join('users','p_prel.id_docente_responsable','=','users.id')
+                                    ->join('estudiantes_solicitud_practica as est_sol','sol_prac.id','=','est_sol.id_solicitud_practica')
+                                    ->where('sol_prac.id',$id_solic->id_solicitud_practica)
+                                    ->where('est_sol.habilitado',1)->first();
+                        
+                        if(!empty($solic) || $solic != null)
+                        {
+                            $solic_asociadas[] = $solic;
+                        }
+                    } 
+                    return view('estudiantes.index_solic_est',["estudiante"=>$estudiante,
+                                                            "solic_asociadas"=>$solic_asociadas,
+                                                            "filter"=>$filter]);
+                }
+            break;
+
+            case 'sol_evaluacion':
+                if($estudiante == null || $estudiante->estado_estudiante != 1 )
+                {
+                    Abort('401');
+                    // return view('auth.fallida_est');
+                }
+                else if($estudiante != null || $estudiante->estado_estudiante == 1)
+                {
+                    $solic_asociadas = [];
+                    foreach($id_solicitudes as $id_solic)
+                    {
+
+                        $solic=DB::table('solicitud_practica as sol_prac')
+                                    ->select('sol_prac.id','p_aca.programa_academico','e_aca.espacio_academico','sol_prac.tipo_ruta',
+                                            'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida',
+                                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                                    ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+                                    ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                                    ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                                    ->join('users','p_prel.id_docente_responsable','=','users.id')
+                                    ->join('estudiantes_solicitud_practica as est_sol','sol_prac.id','=','est_sol.id_solicitud_practica')
+                                    ->where('sol_prac.id',$id_solic->id_solicitud_practica)
+                                    ->where('est_sol.habilitado',1)->first();
+                        
+                        if(!empty($solic) || $solic != null)
+                        {
+                            $solic_asociadas[] = $solic;
+                        }
+                    } 
+                    return view('estudiantes.index_solic_est',["estudiante"=>$estudiante,
+                                                            "solic_asociadas"=>$solic_asociadas,
+                                                            "filter"=>$filter]);
+                }
+            break;
+        }            
     }
 
     public function importDoc(Request $request, $id, $id_sol)

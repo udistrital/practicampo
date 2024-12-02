@@ -1,6 +1,6 @@
 @include('layouts.partials.htmlhead')
 
-<div id="content" style="position: relative;background-color: #ebf4ef; background-image: url('img/descarga.png');background-repeat: no-repeat; background-size: 100% 100%;">
+<div id="content" style="position: relative;background-color: #ebf4ef; background-image: url('/img/descarga.png');background-repeat: no-repeat; background-size: 100% 100%;">
     
     <div class="container" style=" height:90vh;">
         <div>
@@ -11,43 +11,33 @@
         </div>
         <!-- end HEADER -->
         <br><br>
-        <div>
-            <div class="row justify-content-center">
-                <div class="col-md-12 card-header">{{ __('Listado de Solicitudes Asociadas a: ') }}{{$estudiante->nombre_completo}}</div>
-                <div class="col-md-12 card-body" style="background-color: #f8f9fc">
-                    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
-                        <thead>
-                            <th style="width: 30px">Cod.</th>
-                            <th style="width: 70px">Proy. Curricular</th>
-                            <th style="width: 70px">Esp. Académico</th> 
-                            <th style="width: 70px">Docente</th>
-                            <th style="width: 70px">Destino</th>
-                            <th style="width: 35px">Fecha Salida</th>
-                            <th style="width: 20px">Ver</th>
-                        </thead>
-                        @foreach($solic_asociadas as $item)
-                        <tr>
-                            <td>{{$item->id}}</td>
-                            <td>{{$item->programa_academico}}</td>
-                            <td>{{$item->espacio_academico}}</td>
-                            <td>{{$item->full_name}}</td>
-                            <td><?php if($item->tipo_ruta == 1){echo $item->destino_rp;} elseif($item->tipo_ruta == 2){echo $item->destino_ra;}?></td>
-                            <td>{{$item->fecha_salida}}</td>
-                            <td>
-                                <a href="{{route('doc_est_edit',[Crypt::encrypt($item->id),Crypt::encrypt($estudiante->email)])}}">
-                                    <button class="btn-success" style="background-color: #447161; border:0">Ir</button>
-                                </a> 
-                            </td>
-                        </tr>
-                        @endforeach
-                    </table>
+        <h4>{{ __('Listado de Solicitudes Asociadas a: ') }}{{$estudiante->nombre_completo}}</h4>
+        <div class="row" style="background-color: #f8f9fc">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="id_filtro_proyeccion">Seleccionar Filtro</label>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="id_filtro_estudiante"  @if(isset($filter) and ($filter == 'sol_estudiante')) checked="true" @endif onclick="filtrar_solicutudes_estudiante(this.value)" value="1">
+                                <label class="form-check-label" for="">Solicitudes Estudiante</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="id_filtro_estudiante"  @if(isset($filter) and ($filter == 'sol_evaluacion')) checked="true" @endif onclick="filtrar_solicutudes_estudiante(this.value)" value="2">
+                                <label class="form-check-label" for="">Evaluar Prácticas</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        @include('estudiantes.index_filtros',$solic_asociadas)
         
     </div>
     <br>
-    <br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br>
 </div>
 </div>
 

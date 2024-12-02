@@ -332,6 +332,28 @@ $('input:radio[name="id_filtro_solicitud"]').change(
        
 });
 
+function filtrar_solicutudes_estudiante(value)
+{
+    switch(value)
+    {
+        case '1':
+            href = "{!! route('estudiante_filter_solicitud','sol_estudiante'); !!}";
+            break;
+        case '2':
+            href = "{!! route('estudiante_filter_solicitud','sol_evaluacion'); !!}";
+            break;
+
+        default:
+        
+    }
+    window.location.href = href;
+}
+
+$('input:radio[name="id_filtro_estudiante"]').change(
+    function(){
+        filtrar_solicutudes_estudiante(this.value);
+       
+});
 
 </script>
 

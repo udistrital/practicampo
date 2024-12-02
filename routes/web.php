@@ -46,6 +46,7 @@ Route::group(['middleware' => 'estudiante'], function () {
     Route::get('editEst/{id}/{email}','EstudianteController@edit')->name('doc_est_edit');
     Route::get('loginEst/{email}','EstudianteController@index')->name('doc_est_ind');
     Route::post('imp-doc-estudiantes/{id}/{id_sol}','EstudianteController@importDoc')->name('import_doc_estudiante.img');
+    Route::get('Estudiante/filtrar/{id}','EstudianteController@filterEstudiante')->name('estudiante_filter_solicitud');
 });
 // ------> acciones estudiantes <------
 

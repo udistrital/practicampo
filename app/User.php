@@ -113,7 +113,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function adminPerm()
     {
-        return (($this->id_role === 1 || $this->id_role === 2 || $this->id_role === 3) && ($this->id_estado === 1));
+        return (($this->hasRole('Admin') || $this->hasRole('Decano') || $this->hasRole('Asistente Decanatura')) && ($this->id_estado === 1));
     }
 
     public function otrosPerm()
