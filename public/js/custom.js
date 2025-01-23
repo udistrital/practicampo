@@ -1,7 +1,11 @@
 // import { url } from "inspector";
-
 $(document).ready(function(){
-
+    const formIdcambios = 'cambios_proyeccion';
+    const formverif = document.getElementById(formIdcambios);
+    
+    if (formverif) {
+        habilitar_inputs_cambios(formIdcambios);
+    }
     var form = document.forms[1].id;
     
     var docentes_activos = $("#docentes_activos").val();
@@ -6246,5 +6250,82 @@ function clearDefaultValue(input) {
 function restoreDefaultValue(input) {
     if (input.value.trim() === "") {
         input.value = "0";
+    }
+}
+
+function habilitar_inputs_cambios(formId) {
+    const form = document.getElementById(formId);
+
+    if (form) {
+        const integradaNo = document.querySelector('input[name="integrada"][value="0"]');
+        const integradaSi = document.querySelector('input[name="integrada"][value="1"]');
+        const cantEstAca = document.getElementById('cant_espa_aca');
+
+        integradaNo.addEventListener('change', toggleCantEstAca);
+        integradaSi.addEventListener('change', toggleCantEstAca);
+
+        if (integradaNo && integradaSi && cantEstAca) {
+
+            toggleCantEstAca();
+
+            integradaNo.addEventListener('change', toggleCantEstAca);
+            integradaSi.addEventListener('change', toggleCantEstAca);
+
+            function toggleCantEstAca() {
+                if (integradaNo.checked) {
+                    cantEstAca.setAttribute('readonly', '');
+                } else {
+                    cantEstAca.removeAttribute('readonly');
+                }
+            }
+        }
+        ver_rp();
+        ver_ra();
+        ver_vehic();
+        ver_vehic_ra();
+
+        function inputs_div() {
+            const div = document.getElementById('transporte_rp_2_edit');
+            if (div) {
+                const inputs = div.querySelectorAll('input, select, textarea, button');
+                inputs.forEach(input => {
+                    input.required = false;
+                });
+            }
+
+            const div2 = document.getElementById('transporte_rp_3_edit');
+            if (div2) {
+                const inputs = div2.querySelectorAll('input, select, textarea, button');
+                inputs.forEach(input => {
+                    input.required = false;
+                });
+            }
+
+            const docente_resp_t_menor_rp = document.getElementById('docente_resp_t_menor_rp');
+            docente_resp_t_menor_rp.removeAttribute('required');
+
+            const docente_resp_t_menor_ra = document.getElementById('docente_resp_t_menor_ra');
+            docente_resp_t_menor_ra.removeAttribute('required');
+
+            const div3 = document.getElementById('transporte_ra_2_edit');
+            if (div3) {
+                const inputs = div3.querySelectorAll('input, select, textarea, button');
+                inputs.forEach(input => {
+                    input.required = false;
+                });
+            }
+
+            const div4 = document.getElementById('transporte_ra_3_edit');
+            if (div4) {
+                const inputs = div4.querySelectorAll('input, select, textarea, button');
+                inputs.forEach(input => {
+                    input.required = false;
+                });
+            }
+
+        }
+        inputs_div();
+    } else {
+        console.error(`No se encontró un formulario con el ID "${formId}"`);
     }
 }

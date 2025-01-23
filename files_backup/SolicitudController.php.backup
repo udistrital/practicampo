@@ -18,6 +18,9 @@ use PractiCampoUD\solicitud_transporte;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\transporte_menor;
 use PractiCampoUD\transporte_proyeccion;
+use PractiCampoUD\presupuesto_programa_academico;
+use PractiCampoUD\detalle_presupuesto_programa_academico;
+use PractiCampoUD\estudiantes_practica;
 use PractiCampoUD\Http\Controllers\Controller;
 use PractiCampoUD\Mail\CodigoMail;
 use Carbon\Carbon;
@@ -39,6 +42,331 @@ use stdClass;
  */
 class SolicitudController extends Controller
 {
+    /**
+     * Muestra formulario para editar solicitud
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function hab_cambios_sol($id)
+    {
+        $id=Crypt::decrypt($id);
+        $idRole = Auth::user()->id_role;
+        $vlr_viaticos=DB::table('control_sistema as cs')
+                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
+                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+
+        $control_sistema =DB::table('control_sistema')->first();
+
+        switch($idRole){
+            case 1:
+            break;
+
+            case 2:
+                $proyeccion_preliminar = proyeccion::find($id);
+                $practicas_integradas = practicas_integradas::find($id);
+                $docentes_practica = docentes_practica::find($id);
+                $costos_proyeccion = costos_proyeccion::find($id);
+                $mate_herra_proyeccion = materiales_herramientas_proyeccion::find($id);
+                $riesg_amen_practica = riesgos_amenazas_practica::find($id);
+                $transporte_proyeccion = transporte_proyeccion::find($id);
+                $transporte_menor = transporte_menor::find($id);
+
+                $solicitud_practica = DB::table('solicitud_practica as sol_prac')
+                ->where('sol_prac.id_proyeccion_preliminar','=',$id)->first();
+                $doc_req_solic = documentos_requeridos_solicitud::find($solicitud_practica->id);
+                $idUser = $proyeccion_preliminar->id_docente_responsable;
+                $usuario=DB::table('users')
+                ->where('id','=',$idUser)->first();
+                $sedes = DB::table('sedes_universidad')->get();
+                $programa_academico = DB::table('programa_academico')->get();
+                $espacio_academico=DB::table('espacio_academico as esp_aca')
+                ->select('esp_aca.id', 'esp_aca.id_programa_academico', 'prog_aca.programa_academico', 'esp_aca.codigo_espacio_academico',
+                        'esp_aca.espacio_academico', 'esp_aca.plan_estudios_1', 'esp_aca.plan_estudios_2', 'esp_aca.tipo_espacio')
+                ->join('programa_academico as prog_aca','esp_aca.id_programa_academico','=','prog_aca.id')
+                ->whereIn('esp_aca.id', [$usuario->id_espacio_academico_1, $usuario->id_espacio_academico_2, $usuario->id_espacio_academico_3, 
+                $usuario->id_espacio_academico_4, $usuario->id_espacio_academico_5, $usuario->id_espacio_academico_6])->get();
+                $periodo_academico=DB::table('periodo_academico')->get();
+                $semestre_asignatura=DB::table('semestre_asignatura')->get();
+                $tipo_transporte=DB::table('tipo_transporte')->get();
+
+                $id_esp_aca = $proyeccion_preliminar->id_espacio_academico;
+                $docentes_activos =DB::table('users')
+                ->select('users.id',
+                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                ->where('users.id_estado','=',1)
+                ->where('users.id_role','=',5)
+                ->where(function ($query) use($id_esp_aca){
+                    $query->where('users.id_espacio_academico_1','=',$id_esp_aca)
+                    ->orWhere('users.id_espacio_academico_2','=',$id_esp_aca)
+                    ->orWhere('users.id_espacio_academico_3','=',$id_esp_aca)
+                    ->orWhere('users.id_espacio_academico_4','=',$id_esp_aca)
+                    ->orWhere('users.id_espacio_academico_5','=',$id_esp_aca)
+                    ->orWhere('users.id_espacio_academico_6','=',$id_esp_aca);
+                })->get();
+                
+                $num_docen_act = count($docentes_activos);
+                if($num_docen_act == 0 || $docentes_activos == null)
+                {
+                    
+                    $docentes_activos->id = 0;
+                    $docentes_activos->full_name = 'No hay docentes activos';
+                    $docentes_activos->push($docentes_activos);
+                } 
+                
+
+                $estado_doc_respon =$usuario->id_estado;
+        
+                $num_grupos_proy = 0; 
+        
+                $prog_aca_user = [];
+                $esp_aca_user = [];
+
+                /** Practicas integradas */
+                    $docen_integ = [];
+                    $d_int_espa_aca_1 = [];
+                    $d_int_espa_aca_2 = [];
+                    $d_int_espa_aca_3 = [];
+                    $d_int_espa_aca_4 = [];
+                    $d_int_espa_aca_5 = [];
+                    $d_int_espa_aca_6 = [];
+                    $d_int_espa_aca_7 = [];
+
+                    if($practicas_integradas->id_docen_espa_aca_1 != null || $practicas_integradas->id_docen_espa_aca_1 > 0)
+                    {
+                        $d_1=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_1)->get();
+
+                        foreach($d_1 as $d_1)
+                        {
+                            $d_int_espa_aca_1[] = ['id'=>$d_1->id,'full_name'=>$d_1->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_1[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_2 != null || $practicas_integradas->id_docen_espa_aca_2 > 0)
+                    {
+                        $d_2=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_2)->get();
+
+                        foreach($d_2 as $d_2)
+                        {
+                            $d_int_espa_aca_2[] = ['id'=>$d_2->id,'full_name'=>$d_2->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_2[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_3 != null || $practicas_integradas->id_docen_espa_aca_3 > 0)
+                    {
+                        $d_3=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_3)->get();
+
+                        foreach($d_3 as $d_3)
+                        {
+                            $d_int_espa_aca_3[] = ['id'=>$d_3->id,'full_name'=>$d_3->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_3[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_4 != null || $practicas_integradas->id_docen_espa_aca_4 > 0)
+                    {
+                        $d_4=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_4)->get();
+
+                        foreach($d_4 as $d_4)
+                        {
+                            $d_int_espa_aca_4[] = ['id'=>$d_4->id,'full_name'=>$d_4->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_4[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_5 != null || $practicas_integradas->id_docen_espa_aca_5 > 0)
+                    {
+                    $d_5=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_5)->get();
+
+                        foreach($d_5 as $d_5)
+                        {
+                            $d_int_espa_aca_5[] = ['id'=>$d_5->id,'full_name'=>$d_5->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_5[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_6 != null || $practicas_integradas->id_docen_espa_aca_6 > 0)
+                    {
+                        $d_6=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_6)->get();
+
+                        foreach($d_6 as $d_6)
+                        {
+                            $d_int_espa_aca_6[] = ['id'=>$d_6->id,'full_name'=>$d_6->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_6[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_7 != null || $practicas_integradas->id_docen_espa_aca_7 > 0)
+                    {
+                        $d_7=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_7)->get();
+
+                        foreach($d_7 as $d_7)
+                        {
+                            $d_int_espa_aca_7[] = ['id'=>$d_7->id,'full_name'=>$d_7->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_7[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+                /** practicas integradas */
+
+                $espa_aca_int = DB::table('espacio_academico as esp_aca')
+                ->select('esp_aca.id', 'esp_aca.id_programa_academico', 'prog_aca.programa_academico', 'esp_aca.codigo_espacio_academico',
+                        'esp_aca.espacio_academico', 'esp_aca.plan_estudios_1', 'esp_aca.plan_estudios_2', 'esp_aca.tipo_espacio')
+                ->join('programa_academico as prog_aca','esp_aca.id_programa_academico','=','prog_aca.id')
+                ->whereIn('esp_aca.id', [$practicas_integradas->id_espa_aca_1, $practicas_integradas->id_espa_aca_2, $practicas_integradas->id_espa_aca_3, 
+                $practicas_integradas->id_espa_aca_4, $practicas_integradas->id_espa_aca_5, $practicas_integradas->id_espa_aca_6,
+                $practicas_integradas->id_espa_aca_7])->get();
+            
+                foreach($espacio_academico as $esp_aca)
+                {
+                    $prog_aca_user[] = [
+                        'id'=>$esp_aca->id_programa_academico,
+                        'programa_academico'=>$esp_aca->programa_academico,
+                    ];
+                    
+                }
+                
+                $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
+                $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
+                $tipo_ruta = $solicitud_practica->tipo_ruta;
+                return view('solicitudes.formularios.cambiar_edit',["proyeccion_preliminar"=>$proyeccion_preliminar,
+                                                "sedes"=>$sedes,
+                                                "practicas_integradas"=>$practicas_integradas,
+                                                "espa_aca_integradas"=>$espa_aca_int,
+                                                "d_int_espa_aca_1"=>$d_int_espa_aca_1,
+                                                "d_int_espa_aca_2"=>$d_int_espa_aca_2,
+                                                "d_int_espa_aca_3"=>$d_int_espa_aca_3,
+                                                "d_int_espa_aca_4"=>$d_int_espa_aca_4,
+                                                "d_int_espa_aca_5"=>$d_int_espa_aca_5,
+                                                "d_int_espa_aca_6"=>$d_int_espa_aca_6,
+                                                "d_int_espa_aca_7"=>$d_int_espa_aca_7,
+                                                "programas_academicos"=>$programa_academico,
+                                                "espacios_academicos"=>$espacio_academico,
+                                                "periodos_academicos"=>$periodo_academico,
+                                                "semestres_asignaturas"=>$semestre_asignatura,
+                                                "tipos_transportes"=>$tipo_transporte,
+                                                "programas_usuario"=>$newArray_prog,
+                                                "nombre_usuario"=>$nomb_usuario,
+                                                "docentes_activos"=>$docentes_activos,
+                                                "estado_doc_respon"=>$estado_doc_respon,
+                                                "solicitud_practica"=>$solicitud_practica,
+                                                "costos_proyeccion"=>$costos_proyeccion,
+                                                "docentes_practica"=>$docentes_practica,
+                                                "mate_herra_proyeccion"=>$mate_herra_proyeccion,
+                                                "riesg_amen_practica"=>$riesg_amen_practica,
+                                                "transporte_proyeccion"=>$transporte_proyeccion,
+                                                "transporte_menor"=>$transporte_menor,
+                                                "documentos_requeridos"=>$doc_req_solic,
+                                                "tipo_ruta"=>$tipo_ruta,
+                                                "usuario"=>$usuario,
+                                                'vlr_viaticos'=>$vlr_viaticos,
+                                                'control_sistema'=>$control_sistema
+        
+                ]);
+                
+            break;
+        }
+    }
+
+    /**
+     * Muestra formulario para editar solicitud
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Request
+     */
+    public function cambios_sol(Request $request, $id)
+    {
+        $id=Crypt::decrypt($id);
+        $idRole = Auth::user()->id_role;
+        $vlr_viaticos=DB::table('control_sistema as cs')
+                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
+                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+
+        $control_sistema =DB::table('control_sistema')->first();
+
+        switch($idRole){
+            case 1:
+            break;
+
+            case 2:
+                if(Auth::user()->decano()){
+                    dd($request->all());
+                }
+            break;
+        }
+        return redirect('solicitudes/filtrar/edit_sol');
+    }
     /**
      * Muestra formulario de solicitud
      *
@@ -1080,6 +1408,20 @@ class SolicitudController extends Controller
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario_log->primer_nombre.' '.$usuario_log->segundo_nombre.' '.$usuario_log->primer_apellido.' '.$usuario_log->segundo_apellido;
                 $nomb_doc_respon = $usuario_respon->primer_nombre.' '.$usuario_respon->segundo_nombre.' '.$usuario_respon->primer_apellido.' '.$usuario_respon->segundo_apellido;
+                
+                $presupuesto_programa_academico= DB::table('presupuesto_programa_academico')
+                ->where('id_programa_academico',$proyeccion_preliminar->id_programa_academico)->first();
+                $presupuesto_practica= 0;
+                if($solicitud_practica->tipo_ruta == 1){
+                    $presupuesto_practica=$costos_proyeccion->viaticos_docente_rp + $costos_proyeccion->viaticos_estudiantes_rp + $costos_proyeccion->vlr_guias_baquianos_rp +
+                                        $costos_proyeccion->vlr_materiales_rp + $costos_proyeccion->vlr_otros_boletas_rp + $costos_proyeccion->costo_total_transporte_menor_rp;
+                }else if($solicitud_practica->tipo_ruta == 2){
+                    $presupuesto_practica=$costos_proyeccion->viaticos_docente_ra + $costos_proyeccion->viaticos_estudiantes_ra + $costos_proyeccion->vlr_guias_baquianos_ra +
+                                        $costos_proyeccion->vlr_materiales_ra + $costos_proyeccion->vlr_otros_boletas_ra + $costos_proyeccion->costo_total_transporte_menor_ra;
+                }
+                
+                $presupuesto_restante=$presupuesto_programa_academico->presupuesto_actual - $presupuesto_practica;
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
 
                 return view('solicitudes.edit',["proyeccion_preliminar"=>$proyeccion_preliminar,
                                                 "espa_aca_integradas"=>$espa_aca_int,
@@ -1113,7 +1455,11 @@ class SolicitudController extends Controller
                                                 "tipo_ruta"=>$tipo_ruta,
                                                 "usuario"=>$usuario_log,
                                                 'vlr_viaticos'=>$vlr_viaticos,
-                                                'control_sistema'=>$control_sistema
+                                                'control_sistema'=>$control_sistema,
+                                                'presupuesto_programa_academico'=>$presupuesto_programa_academico,
+                                                'presupuesto_practica'=>$presupuesto_practica,
+                                                'presupuesto_restante'=>$presupuesto_restante,
+                                                'lista_estudiantes'=>$lista_estudiantes
         
                 ]);
             break;
@@ -1482,7 +1828,9 @@ class SolicitudController extends Controller
 		
 		$practicas_integradas = practicas_integradas::where('id','=',$id)->first();
         $programa_academico = DB::table('programa_academico')
-        ->where('id',$proyeccion_preliminar->id_programa_academico)->first();	
+        ->where('id',$proyeccion_preliminar->id_programa_academico)->first();
+
+        $presupuesto_programa_academico = presupuesto_programa_academico::where('id_programa_academico','=',$proyeccion_preliminar->id_programa_academico)->first();
 
         if(Auth::user()->id_role == 1 ||  Auth::user()->id_role == 4 || Auth::user()->id_role == 5)
         {
@@ -1652,7 +2000,11 @@ class SolicitudController extends Controller
                             }
                             if($programa_academico->pregrado == 0){
 								$viaticos_estudiantes_rp=0;
-							}        
+							} 
+                            if($proyeccion_preliminar->realizada_bogota_rp == 1 && $num_dias_rp == 1){
+                                $viaticos_estudiantes_rp = 0;
+                                $viaticos_docente_rp = 0;
+                            }       
 
                             $costo_total_transporte_menor_rp=$costos_proyeccion->costo_total_transporte_menor_rp;
                             $valor_estimado_transporte_rp=$costos_proyeccion->valor_estimado_transporte_rp;
@@ -1780,6 +2132,10 @@ class SolicitudController extends Controller
                             if($programa_academico->pregrado == 0){
 								$viaticos_estudiantes_ra=0;
 							}  
+                            if($proyeccion_preliminar->realizada_bogota_ra == 1 && $num_dias_ra == 1){
+                                $viaticos_estudiantes_ra = 0;
+                                $viaticos_docente_ra = 0;
+                            }
                             
                             $costo_total_transporte_menor_ra=$costos_proyeccion->costo_total_transporte_menor_ra;
                             $valor_estimado_transporte_ra=$costos_proyeccion->valor_estimado_transporte_ra;
@@ -1853,6 +2209,22 @@ class SolicitudController extends Controller
                 $solicitud_practica->confirm_coord = 1;
                 $proyeccion_preliminar->observ_coordinador= $request->get('observ_coordinador');
                 $solicitud_practica->aprobacion_coordinador= $request->get('aprobacion_coordinador');
+                $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+                if($valor_formateado >= 0 && $request->get('aprobacion_coordinador') == 7){
+                    $detalle_presupuesto_programa_academico = new detalle_presupuesto_programa_academico;
+                    $presupuesto_programa_academico->presupuesto_actual = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+                    $detalle_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
+                    $detalle_presupuesto_programa_academico->id_solicitud = $solicitud_practica->id;
+                    $detalle_presupuesto_programa_academico->presupuesto_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_práctica'));
+                    $detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;
+                    $detalle_presupuesto_programa_academico->fecha_aprobacion = $mytime;
+                    $detalle_presupuesto_programa_academico->anio_periodo = $mytime->year;
+                    $detalle_presupuesto_programa_academico->id_periodo_academico = $proyeccion_preliminar->id_periodo_academico;
+                    $detalle_presupuesto_programa_academico->save();
+                    $presupuesto_programa_academico->update();                    
+                }                
+                
+                //dd($presupuesto_programa_academico,$detalle_presupuesto_programa_academico);
 
                 if(Auth::user()->id_role == 1)
                 {
@@ -1872,6 +2244,11 @@ class SolicitudController extends Controller
                     $solicitud_practica->confirm_creador=1;
                     $solicitud_practica->confirm_docente=0;
                     $solicitud_practica->confirm_coord=0;
+                    $solicitud_practica->listado_estudiantes=0;
+                    $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
+                    foreach ($lista_estudiantes as $list_estud){
+                        $list_estud->delete();
+                    }   
                 }
                 else if($solicitud_practica->aprobacion_coordinador == 2)
                 {
@@ -1947,35 +2324,54 @@ class SolicitudController extends Controller
                     $nuevo_presupuesto_total_ra = $presupuesto_sin_transporte_ra + $nuevo_presupuesto_transporte;
                     $costos_proyeccion->total_presupuesto_ra = $nuevo_presupuesto_total_ra;
                 }
-
-                if($solicitud_practica->num_resolucion = $request->get('num_resolucion') != null)
-                {
-                    $solicitud_practica->tiene_resolucion=1;
-                }
-                $solicitud_practica->num_resolucion = $request->get('num_resolucion');
-    
-                $solicitud_practica->fecha_resolucion = $request->get('fecha_resolucion');
-                $solicitud_practica->num_cdp = $request->get('num_cdp');
-                $solicitud_practica->si_capital = intval($request->get('si_capital'));
-                $solicitud_practica->num_solicitud_necesidad = $request->get('num_solicitud_necesidad');
-    
-                $solicitud_practica->confirm_asistD = 1;
-                $solicitud_practica->aprobacion_asistD = 7;
-    
-                if(Auth::user()->id_role == 1)
-                {
-                    $solicitud_practica->id_asistD_confirm =  $proyeccion_preliminar->id_asistD_confirm;
-                    $solicitud_practica->id_asistD_aprob = $proyeccion_preliminar->id_asistD_aprob;
-                }
-                else if(Auth::user()->id_role == 3)
-                {
-                    $solicitud_practica->id_asistD_confirm =  Auth::user()->id;
-                    $solicitud_practica->id_asistD_aprob = Auth::user()->id;
-                }
-                
-    
-            }
-            
+                if($request->get('aprobacion_asistD') == 5){
+                    //dd($request->get('aprobacion_asistD'));
+                }else if($request->get('aprobacion_asistD') == 7){
+                    //dd($request->get('aprobacion_asistD'));
+                    if($solicitud_practica->num_resolucion = $request->get('num_resolucion') != null)
+                    {
+                        $solicitud_practica->tiene_resolucion=1;
+                    }
+                    $solicitud_practica->num_resolucion = $request->get('num_resolucion');
+        
+                    $solicitud_practica->fecha_resolucion = $request->get('fecha_resolucion');
+                    $solicitud_practica->num_cdp = $request->get('num_cdp');
+                    $solicitud_practica->si_capital = intval($request->get('si_capital'));
+                    $solicitud_practica->num_solicitud_necesidad = $request->get('num_solicitud_necesidad');
+        
+                    $solicitud_practica->confirm_asistD = 1;
+                    $solicitud_practica->aprobacion_asistD = 7;
+        
+                    if(Auth::user()->id_role == 1)
+                    {
+                        $solicitud_practica->id_asistD_confirm =  $proyeccion_preliminar->id_asistD_confirm;
+                        $solicitud_practica->id_asistD_aprob = $proyeccion_preliminar->id_asistD_aprob;
+                    }
+                    else if(Auth::user()->id_role == 3)
+                    {
+                        $solicitud_practica->id_asistD_confirm =  Auth::user()->id;
+                        $solicitud_practica->id_asistD_aprob = Auth::user()->id;
+                    }
+                }else if($request->get('aprobacion_asistD') == 4){
+                    $detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->first();
+                    $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
+                    $solicitud_practica->confirm_asistD = 0;
+                    $solicitud_practica->aprobacion_asistD = 5;
+                    $solicitud_practica->confirm_coord = 0;
+                    $solicitud_practica->aprobacion_coordinador = 5;
+                    $solicitud_practica->confirm_creador = 0;
+                    $solicitud_practica->confirm_docente = 0;
+                    $solicitud_practica->listado_estudiantes = 0;
+                    $detalle_presupuesto_programa_academico;
+                    $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $detalle_presupuesto_programa_academico->presupuesto_practica;
+                    $presupuesto_programa_academico->update();
+                    //dd($presupuesto_programa_academico, $detalle_presupuesto_programa_academico, $lista_estudiantes);                    
+                    foreach ($lista_estudiantes as $list_estud){
+                        $list_estud->delete();
+                    }   
+                    $detalle_presupuesto_programa_academico->delete();                 
+                }    
+            }            
         }
 
         if(Auth::user()->id_role == 2 || Auth::user()->id_role == 1)
@@ -2091,14 +2487,14 @@ class SolicitudController extends Controller
 
                 if($solicitud_practica->tipo_ruta == 1)
                 {
-                    if(isEmpty($transporte_proyeccion->cant_transporte_rp) || $transporte_proyeccion->cant_transporte_rp == NULL)
+                    if($transporte_proyeccion->cant_transporte_rp == 0 || $transporte_proyeccion->cant_transporte_rp == NULL || $transporte_proyeccion->cant_transporte_rp == '')
                     {
                         $cant_transp = 0;
                     }
                 }
                 else if($solicitud_practica->tipo_ruta == 2)
                 {
-                    if(isEmpty($transporte_proyeccion->cant_transporte_rp) || $transporte_proyeccion->cant_transporte_rp == NULL)
+                    if($transporte_proyeccion->cant_transporte_ra == 0 || $transporte_proyeccion->cant_transporte_ra == NULL || $transporte_proyeccion->cant_transporte_ra == '')
                     {
                         $cant_transp = 0;
                     }
@@ -2626,6 +3022,35 @@ class SolicitudController extends Controller
                         //$estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
+                    case 'edit_sol':
+                        $proyeccion=DB::table('proyeccion_preliminar as p_prel')
+                        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
+                                'p_prel.destino_rp','p_prel.destino_ra','p_prel.fecha_salida_aprox_rp','p_prel.fecha_salida_aprox_ra','p_prel.fecha_regreso_aprox_rp',
+                                'p_prel.fecha_regreso_aprox_ra','es_coor.abrev as ab_coor',
+                                'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
+                                'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
+                                'c_proy.vlr_materiales_rp','c_proy.vlr_materiales_ra','c_proy.vlr_guias_baquianos_rp','c_proy.vlr_guias_baquianos_ra',
+                                'c_proy.vlr_otros_boletas_rp','c_proy.vlr_otros_boletas_ra',
+                                'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
+                                'c_proy.total_presupuesto_rp','c_proy.total_presupuesto_ra','c_proy.valor_estimado_transporte_rp','c_proy.valor_estimado_transporte_ra',
+                                'sol_prac.tipo_ruta as tipo_ruta', 'sol_prac.id as id_solicitud',
+                                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                        ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
+                        ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
+                        ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
+                        ->join('users','p_prel.id_docente_responsable','=','users.id')
+                        ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
+                        ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_proyeccion_preliminar')
+                        ->join('estado as es_coor_sol','sol_prac.aprobacion_coordinador','=','es_coor_sol.id')
+                        ->join('estado as es_dec_sol','sol_prac.aprobacion_decano','=','es_dec_sol.id')
+                        ->where('p_prel.id_estado','=',1)
+                        ->where('sol_prac.listado_estudiantes','=',1)
+                        ->where('sol_prac.estado_practica','=',2)
+                        ->paginate(10000);
+                    break;
+
                     default;
                 }
 
@@ -2876,6 +3301,36 @@ class SolicitudController extends Controller
                         ->where('p_prel.confirm_coord','=',1)
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
+                        ->paginate(10000);
+                    break;
+
+                    case 'sol_realizadas':
+                        $proyeccion=DB::table('proyeccion_preliminar as p_prel')
+                        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
+                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
+                                'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
+                                'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
+                                'c_proy.total_presupuesto_rp','c_proy.total_presupuesto_ra','c_proy.valor_estimado_transporte_rp','c_proy.valor_estimado_transporte_ra',
+                                'sol_prac.tipo_ruta as tipo_ruta','sol_prac.id as id_solicitud', 'sol_prac.estado_practica',
+                                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                        ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
+                        ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
+                        ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
+                        ->join('users','p_prel.id_docente_responsable','=','users.id')
+                        ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
+                        ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_proyeccion_preliminar')
+                        ->join('estado as es_coor_sol','sol_prac.aprobacion_coordinador','=','es_coor_sol.id')
+                        ->join('estado as es_dec_sol','sol_prac.aprobacion_decano','=','es_dec_sol.id')
+                        ->where('aprobacion_consejo_facultad','=',3)
+                        ->where('sol_prac.aprobacion_coordinador','=',7)
+                        ->where('sol_prac.aprobacion_asistD','=',7)
+                        ->where('sol_prac.aprobacion_decano','=',7)
+                        ->where('sol_prac.id_estado_solicitud_practica','=',3)
+                        ->where('sol_prac.confirm_docente','=',1)
+                        ->where('p_prel.id_estado','=',1)
                         ->paginate(10000);
                     break;
 
@@ -3522,6 +3977,48 @@ class SolicitudController extends Controller
                                             'documentos_sistema'=>$documentos_sistema]);
     }
 
+    /**
+     * Mostrar formulario de practicas aprobadas para marcar si se realizaron o no
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function practica_realizada_edit($id){
+        $filter = "sol_realizada";
+        $id = Crypt::decrypt($id);
+        $solicitud=DB::table('proyeccion_preliminar as p_prel')
+        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
+                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,
+                'e_aca.electiva','p_prel.confirm_coord','users.id_estado as id_estado_doc','sol_prac.id as id_solicitud', 'sol_prac.estado_practica',
+                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+        ->join('users','p_prel.id_docente_responsable','=','users.id')
+        ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_proyeccion_preliminar')
+        ->where('sol_prac.id','=',$id)->paginate(1);
+        $idUser = Auth::user()->id;
+        $user_DB= DB::table('users')
+        ->where('id',$idUser)->first();
+        $control_sistema =DB::table('control_sistema')->first();
+        return view('solicitudes.index',['proyecciones'=>$solicitud,
+                                        'filter'=>$filter,
+                                        'usuario'=>$user_DB, 
+                                        'control_sistema'=>$control_sistema]);
+    }
+
+    /**
+     * Actualizar la respectiva solicitud si la práctica se realizó
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function practica_realizada_update(Request $request, $id){
+        $id = Crypt::decrypt($id);
+        $solicitud = solicitud::where('id_proyeccion_preliminar', '=', $id)->first();
+        $solicitud->estado_practica = $request->get('practica_realizada');
+        $solicitud->update();
+        return redirect('solicitudes/filtrar/sol_realizadas');
+    }
     /**
      * Listado de estudiantes registrados en la solicitud
      *
@@ -5081,7 +5578,7 @@ class SolicitudController extends Controller
      */
     public function encuesta_transp(Request $request, $id)
     {
-        $id = Crypt::decrypt($id);
+        //$id = Crypt::decrypt($id);
         $idUser_log = Auth::user()->id;
         $solic_prac = DB::table('solicitud_practica as sol_prac')
         ->where('sol_prac.id_proyeccion_preliminar','=',$id)->first();
@@ -5092,7 +5589,7 @@ class SolicitudController extends Controller
 
         if($solic_prac->tipo_ruta == 1)
         {
-            if(isEmpty($transporte_proyeccion->cant_transporte_rp) ||$transporte_proyeccion->cant_transporte_rp == NULL)
+            if($transporte_proyeccion->cant_transporte_rp == 0 || $transporte_proyeccion->cant_transporte_rp == NULL || $transporte_proyeccion->cant_transporte_rp == '')
             {
                 $cant_transp = 0;
             }
@@ -5100,7 +5597,7 @@ class SolicitudController extends Controller
 
         if($solic_prac->tipo_ruta == 2)
         {
-            if(isEmpty($transporte_proyeccion->cant_transporte_ra) ||$transporte_proyeccion->cant_transporte_ra == NULL)
+            if($transporte_proyeccion->cant_transporte_ra == 0 || $transporte_proyeccion->cant_transporte_ra == NULL || $transporte_proyeccion->cant_transporte_ra == '')
             {
                 $cant_transp = 0;
             }

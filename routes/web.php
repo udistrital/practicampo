@@ -163,7 +163,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('proyecciones/buscar/proy','Proyeccion\ProyeccionController@buscador')->name('proyeccion_buscar');
         Route::get('proyeccver/{id}','Proyeccion\ProyeccionController@ver_proyeccion')->name('proy_legalizadas');
         Route::post('proyeccduplicar/{id}','Proyeccion\ProyeccionController@duplicar_proy')->name('proy_duplicar');
-        Route::post('cambios_proy/{id}','Proyeccion\ProyeccionController@cambios_proy')->name('proy_cambios');
+        Route::put('cambios_proy/{id}','Proyeccion\ProyeccionController@cambios_proy')->name('proy_cambios');
         Route::get('hab_cambios_proy/{id}','Proyeccion\ProyeccionController@hab_cambios_proy')->name('proy_hab_cambios');
 
         // ------> solicitudes Routes <------
@@ -193,6 +193,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('solic_legal/{id}','Solicitud\SolicitudController@solic_legal')->name('solic_legal');
         Route::put('solic_cierre/{id}','Solicitud\SolicitudController@solic_cierre')->name('solic_cierre');
         Route::get('encues_trans','Excel\ExcelController@exportEncuestaTrans')->name('encues_trans');
+
+        Route::put('cambios_sol/{id}','Solicitud\SolicitudController@cambios_sol')->name('sol_cambios');
+        Route::get('hab_cambios_sol/{id}','Solicitud\SolicitudController@hab_cambios_sol')->name('sol_hab_cambios');
 
         // Search Routes...
         Route::post('buscar/espa_aca','Otros\EspacioAcademicoController@searchEspaAca')->name('espa_aca');

@@ -31,7 +31,11 @@
             <td>{{ $item->destino_rp }}</td>
             <td>{{ $item->fecha_salida_aprox_rp }}</td>
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
+            @if($item->estado_practica == 3)
+            <td>No Validada</td>
+            @else
             <td>{{ $item->estado_practica == 2 ? 'No Realizada' : 'Realizada' }}</td>
+            @endif
 
         </tr>
     </table> 
@@ -52,7 +56,7 @@
 
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8">
                         <div class="form-check form-check-inline">
-                        <input id="practica_realizada" class="form-check-input" type="radio" name="practica_realizada" value="0"
+                        <input id="practica_realizada" class="form-check-input" type="radio" name="practica_realizada" value="2"
                         <?php if($item->estado_practica == 2) echo 'checked'?>>
                         <label class="form-check-label" for="">No realizada</label>
                         </div>

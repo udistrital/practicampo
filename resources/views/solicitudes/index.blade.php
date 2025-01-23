@@ -204,12 +204,12 @@
                               @endif
 
                               @if(Auth::user()->decano() )
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'aprob')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="9">
                                       <label class="form-check-label" for="">Aprob.</label>
                                   </div>
-                                </div>
+                                </div>                                
                               @endif
                             @endif
 
@@ -224,6 +224,13 @@
                                     <label class="form-check-label" for="">Pendientes</label>
                                 </div>
                               </div>
+
+                              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                  <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'edit_sol')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="24">
+                                      <label class="form-check-label" for="">Editar Solicitud</label>
+                                  </div>
+                                </div>
                             @endif
 
                         </div>

@@ -217,6 +217,31 @@ class ProyeccionController extends Controller
                         //->where('p_prel.id_estado','=',1)              
                     break;
 
+                    case 'edit_proy':
+                        $proyeccion=DB::table('proyeccion_preliminar as p_prel')
+                        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','users.id_estado as id_estado_doc',
+                                'p_prel.destino_rp','p_prel.fecha_salida_aprox_rp','p_prel.fecha_regreso_aprox_rp','es_coor.abrev as ab_coor','es_dec.abrev  as ab_dec',
+                                'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra', 
+                                'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'c_proy.viaticos_docente_ra', 'c_proy.vlr_materiales_rp', 'c_proy.vlr_materiales_ra', 
+                                'c_proy.vlr_otros_boletas_rp', 'c_proy.vlr_otros_boletas_ra', 'c_proy.vlr_guias_baquianos_rp', 'c_proy.vlr_guias_baquianos_ra', 
+                                'c_proy.total_presupuesto_rp','c_proy.total_presupuesto_ra','c_proy.valor_estimado_transporte_rp','c_proy.valor_estimado_transporte_ra',
+                                'es_consj.abrev  as es_consj','p_prel.created_at as f_creacion',
+                                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                        ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
+                        ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
+                        ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
+                        ->join('users','p_prel.id_docente_responsable','=','users.id')
+                        ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
+                        ->where('p_prel.aprobacion_coordinador','=',7)
+                        ->where('p_prel.aprobacion_asistD','=',7)
+                        ->where('p_prel.confirm_asistD','=',1)
+                        ->where('p_prel.id_estado','=',1)
+                        ->paginate(10000);
+                        
+                    break;
+
                     default;
                 }
 
@@ -1134,7 +1159,7 @@ class ProyeccionController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    /*public function cambios_proy(Request $request,$id) //Sin función actualmente sept-2024
+    public function cambios_proy(Request $request,$id)
     {
         $control_sistema =DB::table('control_sistema')->first();
         $id = Crypt::decrypt($id);
@@ -1144,7 +1169,7 @@ class ProyeccionController extends Controller
         switch($idRole)
         {
             case 1:
-                $proyeccion_preliminar = proyeccion::find($id);
+                //$proyeccion_preliminar = proyeccion::find($id);
                 // $cambios_proyeccion = cambios_proyeccion::find($id);
 
                 // $cambios_proyeccion->cambiar_programa_academico=isset($_POST['cambiar_programa_academico']) ? 1 : 0;
@@ -1174,67 +1199,30 @@ class ProyeccionController extends Controller
                 // $cambios_proyeccion->cambiar_actividades_riesgo_ra=isset($_POST['cambiar_actividades_riesgo_ra']) ? 1 : 0;
                 // $cambios_proyeccion->id_user_hab=$idUser;
 
-                $proyeccion_preliminar->id_estado = 1;
-                $proyeccion_preliminar->confirm_creador = 1;
-                $proyeccion_preliminar->confirm_docente = 0;
-                $proyeccion_preliminar->confirm_coord = 0;
-                $proyeccion_preliminar->confirm_asistD = 0;
-                $proyeccion_preliminar->aprobacion_coordinador = 5;
-                $proyeccion_preliminar->aprobacion_asistD = 5;
-                $proyeccion_preliminar->aprobacion_decano = 5;
+                //$proyeccion_preliminar->id_estado = 1;
+                //$proyeccion_preliminar->confirm_creador = 1;
+                //$proyeccion_preliminar->confirm_docente = 0;
+                //$proyeccion_preliminar->confirm_coord = 0;
+                //$proyeccion_preliminar->confirm_asistD = 0;
+                //$proyeccion_preliminar->aprobacion_coordinador = 5;
+                //$proyeccion_preliminar->aprobacion_asistD = 5;
+                //$proyeccion_preliminar->aprobacion_decano = 5;
 
                 // $cambios_proyeccion->update();
-                $proyeccion_preliminar->update();
+                //$proyeccion_preliminar->update();
                 break;
 
             case 2:
                 $proyeccion_preliminar = proyeccion::find($id);
-                // $cambios_proyeccion = cambios_proyeccion::find($id);
+                if(Auth::user()->decano()){
 
-                // $cambios_proyeccion->cambiar_programa_academico=isset($_POST['cambiar_programa_academico']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_espacio_academico=isset($_POST['cambiar_espacio_academico']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_sem_anio_per=isset($_POST['cambiar_sem_anio_per']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_integrada=isset($_POST['cambiar_integrada']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_estudiantes=isset($_POST['cambiar_estudiantes']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_grupos=isset($_POST['cambiar_grupos']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_personal_apoyo=isset($_POST['cambiar_personal_apoyo']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_destino_rp=isset($_POST['cambiar_destino_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_url_rp=isset($_POST['cambiar_url_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_detalle_rp=isset($_POST['cambiar_detalle_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_sedes_rp=isset($_POST['cambiar_sedes_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_fechas_rp=isset($_POST['cambiar_fechas_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_transporte_rp=isset($_POST['cambiar_transporte_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_transporte_menor_rp=isset($_POST['cambiar_transporte_menor_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_otros_rp=isset($_POST['cambiar_otros_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_actividades_riesgo_rp=isset($_POST['cambiar_actividades_riesgo_rp']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_destino_ra=isset($_POST['cambiar_destino_ra']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_url_ra=isset($_POST['cambiar_url_ra']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_detalle_ra=isset($_POST['cambiar_detalle_ra']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_sedes_ra=isset($_POST['cambiar_sedes_ra']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_fechas_ra=isset($_POST['cambiar_fechas_ra']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_transporte_ra=isset($_POST['cambiar_transporte_ra']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_transporte_menor_ra=isset($_POST['cambiar_transporte_menor_ra']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_otros_ra=isset($_POST['cambiar_otros_ra']) ? 1 : 0;
-                // $cambios_proyeccion->cambiar_actividades_riesgo_ra=isset($_POST['cambiar_actividades_riesgo_ra']) ? 1 : 0;
-                // $cambios_proyeccion->id_user_hab=$idUser;
-
-                $proyeccion_preliminar->id_estado = 1;
-                $proyeccion_preliminar->confirm_creador = 1;
-                $proyeccion_preliminar->confirm_docente = 0;
-                $proyeccion_preliminar->confirm_coord = 0;
-                $proyeccion_preliminar->confirm_asistD = 0;
-                $proyeccion_preliminar->aprobacion_coordinador = 5;
-                $proyeccion_preliminar->aprobacion_asistD = 5;
-                $proyeccion_preliminar->aprobacion_decano = 5;
-
-                // $cambios_proyeccion->update();
-                $proyeccion_preliminar->update();
+                }
                 break;
             
         }
 
         return redirect('proyecciones/filtrar/all');
-    }*/
+    }
     /**
      * Ver proyección preliminar
      *

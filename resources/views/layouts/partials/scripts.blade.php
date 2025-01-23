@@ -192,6 +192,10 @@ function filtrar_proyecciones(value)
         case '16':
             href = "{!! route('proyeccion_filter','inact'); !!}";
             break
+        
+        case '17':
+        href = "{!! route('proyeccion_filter','edit_proy'); !!}";
+        break
 
         default:
         
@@ -320,6 +324,11 @@ function filtrar_solicitudes(value)
         case '23':
         href = "{!! route('solicitud_filter','sol_realizadas'); !!}";
         break;
+
+        case '24':
+        href = "{!! route('solicitud_filter','edit_sol'); !!}";
+        break
+
         default:
         
     }

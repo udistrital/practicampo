@@ -291,6 +291,8 @@
             <td>Realizada</td>
             @elseif($item->estado_practica == 2)
             <td>No Realizada</td>
+            @elseif($item->estado_practica == 3)
+            <td>No Validada</td>
             @endif
             
             

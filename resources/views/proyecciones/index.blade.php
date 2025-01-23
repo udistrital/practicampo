@@ -179,7 +179,7 @@
                                   </div>
                                 </div> --}}
                             
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_proyeccion"  @if(isset($filter) and ($filter == 'no-elect')) checked="true" @endif onclick="filtrar_proyecciones(this.value)" value="10">
                                       <label class="form-check-label" for="">Oblig. Sin Proyección</label>
@@ -193,10 +193,17 @@
                                   </div>
                                 </div>
 
-                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_proyeccion"  @if(isset($filter) and ($filter == 'aprob-cons')) checked="true" @endif onclick="filtrar_proyecciones(this.value)" value="11">
                                       <label class="form-check-label" for="">Aprob. Consejo Facultad</label>
+                                  </div>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                  <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="id_filtro_proyeccion"  @if(isset($filter) and ($filter == 'edit_proy')) checked="true" @endif onclick="filtrar_proyecciones(this.value)" value="17">
+                                      <label class="form-check-label" for="">Editar Proyección</label>
                                   </div>
                                 </div>
                               @endif
