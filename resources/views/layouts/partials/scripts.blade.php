@@ -1,5 +1,7 @@
-<!-- Bootstrap core JavaScript-->
-<script src="{{ asset('vendor/jquery/jquery.min.js') }}" type="text/javascript"></script>
+<!-- Bootstrap core JavaScript -->
+<!-- <script src="{{ asset('vendor/jquery/jquery.min.js') }}" type="text/javascript"></script> -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+ <!-- <script src="https://code.jquery.com/jquery-migrate-3.4.0.min.js"></script> -->
 <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
 
 <!-- Core plugin JavaScript-->

@@ -1790,10 +1790,11 @@ function calc_viaticos_RP()
             viaticos_apoyo_estud_rp_format  = (new Intl.NumberFormat("es-CO").format(0));
         }
         var bogota_rp= document.querySelector('input[name="realizada_bogota_rp"][value="1"]');
-        if(bogota_rp.checked){
-            viaticos_apoyo_estud_rp_format  = (new Intl.NumberFormat("es-CO").format(0));
+        if(bogota_rp){
+            if(bogota_rp.checked){
+                viaticos_apoyo_estud_rp_format  = (new Intl.NumberFormat("es-CO").format(0));
+            }
         }
-
         if(cant_trans_rp == 0)
         {
            viaticos_apoyo_doc_rp = (new Intl.NumberFormat("es-CO").format(0));
@@ -1853,9 +1854,12 @@ function calc_viaticos_RP()
             viaticos_apoyo_estud_ra_format  = (new Intl.NumberFormat("es-CO").format(0));
         }
         var bogota_ra= document.querySelector('input[name="realizada_bogota_ra"][value="1"]');
-        if(bogota_ra.checked){
-            viaticos_apoyo_estud_ra_format  = (new Intl.NumberFormat("es-CO").format(0));
+        if(bogota_ra){
+            if(bogota_ra.checked){
+                viaticos_apoyo_estud_ra_format  = (new Intl.NumberFormat("es-CO").format(0));
+            }
         }
+        
 
         if(cant_trans_ra == 0)
         {
