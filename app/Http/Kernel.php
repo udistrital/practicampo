@@ -22,6 +22,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         // \PractiCampoUD\Http\Middleware\Admin::class,
         \PractiCampoUD\Http\Middleware\ForceHttps::class,
+        \PractiCampoUD\Http\Middleware\SecurityHeadersMiddleware::class,
     ];
 
     /**
