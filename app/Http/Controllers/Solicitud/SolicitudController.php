@@ -734,7 +734,7 @@ class SolicitudController extends Controller
                     $doc_req_solicitud->update();
                     $docentes_practica->update();
                     $proyeccion_preliminar->update();
-                    $costos_proyeccion->update();
+                    //$costos_proyeccion->update();
                     $transporte_proyeccion->update();
                     $transporte_menor->update();
                     $mater_herra_proyeccion->update();
@@ -3425,6 +3425,7 @@ class SolicitudController extends Controller
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
                         ->where('sol_prac.estado_practica','=',2)
+                        ->where('sol_prac.aprobacion_coordinador','=',7)
                         ->paginate(10000);
                     break;
 
