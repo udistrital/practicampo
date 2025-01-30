@@ -19,15 +19,16 @@ class SecurityHeadersMiddleware
 
         $csp = "default-src 'self'; " .
                "style-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdn.datatables.net; " .
-               "script-src 'self' 'unsafe-inline' 'unsafe-eval' code.jquery.com cdn.jsdelivr.net cdn.datatables.net; " .
+               "script-src 'self' 'unsafe-inline' code.jquery.com cdn.jsdelivr.net cdn.datatables.net cdnjs.cloudflare.com maps.googleapis.com; " .
                "font-src 'self' cdn.jsdelivr.net; " .
                "img-src 'self' data:; " .
-               "connect-src 'self';";
-        $response->headers->set('Content-Security-Policy', $csp);
-        $response->headers->set('X-Frame-Options', 'DENY');
-        $response->headers->set('X-XSS-Protection', '1; mode=block');
-        $response->headers->set('X-Content-Type-Options', 'nosniff');
-        $response->headers->set('Referrer-Policy', 'no-referrer');
+               "connect-src 'self' maps.googleapis.com;";
+        $response->headers->set('Content-Security-Policy', $csp, true);
+        $response->headers->set('X-Frame-Options', 'SAMEORIGIN', true);
+        $response->headers->set('X-XSS-Protection', '1; mode=block', true);
+        $response->headers->set('X-Content-Type-Options', 'nosniff', true);
+        $response->headers->set('Referrer-Policy', 'no-referrer', true);
+        $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains', true);
 
         return $response;
     }
