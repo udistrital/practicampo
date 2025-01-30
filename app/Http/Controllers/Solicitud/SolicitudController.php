@@ -2740,13 +2740,19 @@ class SolicitudController extends Controller
                     $solicitud_practica->confirm_docente = 0;
                     $solicitud_practica->listado_estudiantes = 0;
                     $detalle_presupuesto_programa_academico;
-                    $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $detalle_presupuesto_programa_academico->presupuesto_practica;
+                    if($detalle_presupuesto_programa_academico){
+                        $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $detalle_presupuesto_programa_academico->presupuesto_practica;
+                    }
+                    
                     $presupuesto_programa_academico->update();
                     //dd($presupuesto_programa_academico, $detalle_presupuesto_programa_academico, $lista_estudiantes);                    
                     foreach ($lista_estudiantes as $list_estud){
                         $list_estud->delete();
-                    }   
-                    $detalle_presupuesto_programa_academico->delete();                 
+                    }  
+                    if($detalle_presupuesto_programa_academico){
+                        $detalle_presupuesto_programa_academico->delete(); 
+                    } 
+                                    
                 }    
             }            
         }
@@ -3424,7 +3430,7 @@ class SolicitudController extends Controller
                         ->join('estado as es_dec_sol','sol_prac.aprobacion_decano','=','es_dec_sol.id')
                         ->where('p_prel.id_estado','=',1)
                         ->where('sol_prac.listado_estudiantes','=',1)
-                        ->where('sol_prac.estado_practica','=',2)
+                        ->where('sol_prac.estado_practica','!=',1)
                         ->where('sol_prac.aprobacion_coordinador','=',7)
                         ->paginate(10000);
                     break;
