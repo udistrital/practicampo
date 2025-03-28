@@ -3884,7 +3884,7 @@ class SolicitudController extends Controller
                         ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
                         ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
                         ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_proyeccion_preliminar')
-                        // ->where('aprobacion_coordinador','=',5)
+                        ->where('sol_prac.aprobacion_coordinador','!=',4)
                         ->where('p_prel.confirm_creador','=',1)
                         ->where('p_prel.confirm_docente','=',1)
                         ->where('p_prel.confirm_coord','=',1)
