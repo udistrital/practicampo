@@ -3,9 +3,13 @@
 namespace PractiCampoUD;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class docentes_practica extends Model
+class docentes_practica extends Model implements Auditable
 {
+    use AuditableTrait;
+    
     protected $table = 'docentes_practica';
 
     public $timestamps = false;

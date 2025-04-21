@@ -6239,6 +6239,19 @@ function rechazo_solic_asist(){
     }
 }
 
+function rechazo_proy_cons_asist() {
+    const rdbtn_rechazado = document.querySelector('input[name="aprobacion_consejo_facultad"][value="4"]');
+    const num_acta_consejo_facultad = document.getElementById('num_acta_consejo_facultad');
+    const fecha_acta_consejo_facultad = document.getElementById('fecha_acta_consejo_facultad');
+    if (rdbtn_rechazado.checked) {
+        num_acta_consejo_facultad.disabled = true;
+        fecha_acta_consejo_facultad.disabled = true;
+    } else {
+        num_acta_consejo_facultad.disabled = false;
+        fecha_acta_consejo_facultad.disabled = false;
+    }
+}
+
 function checkEmptyInput(input) {
     if (input.value.trim() === "") {
         input.value = "0";
@@ -6332,4 +6345,8 @@ function habilitar_inputs_cambios(formId) {
     } else {
         console.error(`No se encontró un formulario con el ID "${formId}"`);
     }
+}
+
+function mostrarModalSeleccionRol() {
+    document.getElementById('rolModal').style.display = 'block';
 }

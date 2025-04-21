@@ -58,7 +58,8 @@ class ProyeccionController extends Controller
     public function filterProyeccion($filter)
     {
         $mytime = Carbon::now('America/Bogota');
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $idUser = Auth::user()->id;
         
         $user_DB= DB::table('users')
@@ -142,6 +143,7 @@ class ProyeccionController extends Controller
             break;
 
             case 2:
+            case 9:
                 
                 switch($filter)
                 {
@@ -370,7 +372,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.aprobacion_asistD','=',7)
                         ->where('p_prel.aprobacion_consejo_facultad','=',5)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(30);
+                        ->paginate(10000);
                     break;
 
                     case 'send':
@@ -491,8 +493,7 @@ class ProyeccionController extends Controller
                         ->where('confirm_coord','=',1)
                         ->where('p_prel.id_estado','=',1)
                         ->where(function($query) use ($idUser, $id_prog_coord){
-                            $query->where('id_docente_responsable','=',$idUser)
-                            ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
+                            $query->where('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
                         ->paginate(10000);
                     break;
@@ -518,8 +519,7 @@ class ProyeccionController extends Controller
                         ->where('confirm_coord','=',0)
                         ->where('p_prel.id_estado','=',1)
                         ->where(function($query) use ($idUser, $id_prog_coord){
-                            $query->where('id_docente_responsable','=',$idUser)
-                            ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
+                            $query->where('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
                         ->paginate(10000);
 
@@ -549,8 +549,32 @@ class ProyeccionController extends Controller
                         ->where('confirm_coord','=',0)
                         ->where('p_prel.id_estado','=',1)
                         ->where(function($query) use ($idUser, $id_prog_coord){
-                            $query->where('id_docente_responsable','=',$idUser)
-                            ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
+                            $query->where('p_prel.id_programa_academico','=',$id_prog_coord);
+                        })
+                        ->paginate(10000);
+                    break;
+
+                    case 'proy_recha_cons':
+                        $usuario=DB::table('users')->where('id','=',$idUser)->first();
+                        $id_prog_coord = $usuario->id_programa_academico_coord;
+                        $proyeccion=DB::table('proyeccion_preliminar as p_prel')
+                        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','es_consj.abrev  as es_consj','users.id_estado as id_estado_doc',
+                                'p_prel.destino_rp','p_prel.fecha_salida_aprox_rp','p_prel.fecha_regreso_aprox_rp','es_coor.abrev as ab_coor',
+                                'es_dec.abrev  as ab_dec', 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp',
+                                'c_proy.viaticos_estudiantes_ra', 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 
+                                'c_proy.total_presupuesto_rp','c_proy.total_presupuesto_ra','c_proy.valor_estimado_transporte_rp','c_proy.valor_estimado_transporte_ra',
+                                'p_prel.created_at as f_creacion', 'p_prel.aprobacion_consejo_facultad',
+                                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                        ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
+                        ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
+                        ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
+                        ->join('users','p_prel.id_docente_responsable','=','users.id')
+                        ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
+                        ->where('p_prel.aprobacion_consejo_facultad','=',4)
+                        ->where(function($query) use ($idUser, $id_prog_coord){
+                            $query->where('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
                         ->paginate(10000);
                     break;
@@ -579,8 +603,7 @@ class ProyeccionController extends Controller
                         ->where('confirm_creador','=',1)
                         ->where('p_prel.id_estado','=',1)
                         ->where(function($query) use ($idUser, $id_prog_coord){
-                            $query->where('id_docente_responsable','=',$idUser)
-                            ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
+                            $query->where('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
                         // ->orWhere('aprobacion_coordinador','=',3)
                         // ->orWhere('aprobacion_decano','=',5)
@@ -793,7 +816,8 @@ class ProyeccionController extends Controller
      */
     public function store(Request $request)
     {
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $idUser = Auth::user()->id;
         $mytime = Carbon::now('America/Bogota');
         $control_sistema=DB::table('control_sistema as control')->first();
@@ -1714,7 +1738,8 @@ class ProyeccionController extends Controller
     {
         $control_sistema =DB::table('control_sistema')->first();
         $id = Crypt::decrypt($id);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         switch($idRole)
         {
             case 1:
@@ -1982,6 +2007,7 @@ class ProyeccionController extends Controller
             break;
 
             case 2:
+            case 9:
                 $proyeccion_preliminar = proyeccion::find($id);
                 $practicas_integradas = practicas_integradas::find($id);
                 $transporte_proyeccion = transporte_proyeccion::find($id);
@@ -3051,7 +3077,8 @@ class ProyeccionController extends Controller
     {
         $control_sistema =DB::table('control_sistema')->first();
         $id = Crypt::decrypt($id);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
 
         switch($idRole)
         {
@@ -3320,6 +3347,7 @@ class ProyeccionController extends Controller
             break;
 
             case 2:
+            case 9:
                 $proyeccion_preliminar = proyeccion::find($id);
                 // $cambios_proyeccion = cambios_proyeccion::find($id);
                 $practicas_integradas = practicas_integradas::find($id);
@@ -3595,7 +3623,8 @@ class ProyeccionController extends Controller
     {
         $control_sistema =DB::table('control_sistema')->first();
         $id = Crypt::decrypt($id);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
 
         switch($idRole)
         {
@@ -3643,7 +3672,8 @@ class ProyeccionController extends Controller
                 //$proyeccion_preliminar->update();
                 break;
 
-            case 2:                
+            case 2:
+            case 9:                
                 if(Auth::user()->decano()){
                     $mytime = Carbon::now('America/Bogota');
                     $proyeccion_preliminar = proyeccion::where('id', '=', $id)->first();
@@ -4587,7 +4617,8 @@ class ProyeccionController extends Controller
     {   
         $control_sistema =DB::table('control_sistema')->first();
         $id = Crypt::decrypt($id);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
 
         switch($idRole)
         {
@@ -4695,9 +4726,9 @@ class ProyeccionController extends Controller
         $prog_aca=DB::table('programa_academico')
         ->where('id',$id_prog_aca)->first();
 
-        if(Auth::user()->id_role == 1 ||  Auth::user()->id_role == 4 || Auth::user()->id_role == 5)
+        if(Auth::user()->admin() ||  Auth::user()->coordinador() || Auth::user()->docente())
         {
-            if(Auth::user()->id == $proyeccion_preliminar->id_docente_responsable || Auth::user()->id_role == 1)
+            if((Auth::user()->id == $proyeccion_preliminar->id_docente_responsable && Auth::user()->docente()) || Auth::user()->admin())
             {
                 /**Tabla proyeccion_preliminar */
                     $proyeccion_preliminar->practicas_integradas = intval($request->get('integrada'));
@@ -5653,7 +5684,7 @@ class ProyeccionController extends Controller
             }
 
             /**campos coordinador */
-                if(Auth::user()->id_role == 1 || (Auth::user()->id_role == 4 && Auth::user()->id_programa_academico_coord == $proyeccion_preliminar->id_programa_academico))
+                if(Auth::user()->admin() || (Auth::user()->coordinador() && Auth::user()->id_programa_academico_coord == $proyeccion_preliminar->id_programa_academico))
                 {   //Auth::user()->hasRole(['Admin','Coordinador Proyecto']);
 
                     $proyeccion_preliminar->conf_curricul_plan_pract_rp=$request->get('conf_curricul_plan_pract_rp')=='on'?1:0;
@@ -5677,13 +5708,17 @@ class ProyeccionController extends Controller
                     {
                         $proyeccion_preliminar->id_estado = 2;
                     }
+                    if($proyeccion_preliminar->aprobacion_consejo_facultad == 4)
+                    {
+                        $proyeccion_preliminar->aprobacion_consejo_facultad = 5;
+                    }
 
                 }
             /**campos coordinador */
 
         }
 
-        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 2 )
+        if(Auth::user()->admin() || Auth::user()->decano() )
         {
             $proyeccion_preliminar->observ_decano= $request->get('observ_decano');
             $proyeccion_preliminar->aprobacion_decano= $request->get('aprobacion_decano')!=null?$request->get('aprobacion_decano'):$proyeccion_preliminar->aprobacion_decano;
@@ -5714,7 +5749,7 @@ class ProyeccionController extends Controller
             }
             $proyeccion_preliminar->update();
             
-            if((Auth::user()->id_role == 1 || Auth::user()->id_role == 2) && $request->get('aprobacion_decano') == 4)
+            if((Auth::user()->admin() || Auth::user()->decano()) && $request->get('aprobacion_decano') == 4)
             {
                 $proyeccion_preliminar->confirm_creador=1;
                 $proyeccion_preliminar->confirm_docente=1;
@@ -5727,14 +5762,14 @@ class ProyeccionController extends Controller
                 $proyeccion_preliminar->update();
             
             }
-            if(Auth::user()->id_role == 2)
+            if(Auth::user()->decano())
             {
 
                 return redirect('proyecciones/filtrar/pend');
             }
         }
 
-        if(Auth::user()->id_role == 1 || Auth::user()->id_role == 3 )
+        if(Auth::user()->admin() || Auth::user()->asistenteD() )
         {
             /** Debe tener valores para actualizar o no requerir transporte */
             if($transporte_proyeccion->cant_transporte_rp == 0)
@@ -5828,6 +5863,12 @@ class ProyeccionController extends Controller
                             $doc_req_sol->save();
                         }   
 
+                    }else if($aprobacion_consejo_facultad == 4){
+                        $proyeccion_preliminar->confirm_creador=1;
+                        $proyeccion_preliminar->confirm_docente=1;
+                        $proyeccion_preliminar->confirm_coord=0;
+                        $proyeccion_preliminar->aprobacion_decano=5;
+                        $proyeccion_preliminar->aprobacion_coordinador=5;
                     }
 
                     $proyeccion_preliminar->id_asistD_aprob_consejo = Auth::user()->id;
@@ -5835,7 +5876,7 @@ class ProyeccionController extends Controller
             /** Agregar  aprobacion_consejo_facultad */
         }
 
-        if(Auth::user()->id_role == 1)
+        if(Auth::user()->admin())
         {
             $proyeccion_preliminar->id_estado=$request->get('estado_proyeccion');
             $estado_proy = $request->get('estado_proyeccion');
@@ -5881,22 +5922,22 @@ class ProyeccionController extends Controller
         // $solicitud_practica->save();
 
         /** Enviar notificacion */
-            if(Auth::user()->id_role == 4 && $request->get('aprobacion_coordinador') == 7)
+            if(Auth::user()->coordinador() && $request->get('aprobacion_coordinador') == 7)
             {
                 $this->aprob_coord_proy($id);
             }
 
-            if(Auth::user()->id_role == 4 && $request->get('aprobacion_coordinador') == 4)
+            if(Auth::user()->coordinador() && $request->get('aprobacion_coordinador') == 4)
             {
                 $this->rechazo_coord_proy($id);
             }
 
-            if(Auth::user()->id_role == 4 && $request->get('aprobacion_coordinador') == 2)
+            if(Auth::user()->coordinador() && $request->get('aprobacion_coordinador') == 2)
             {
                 $this->cierre_coord_proy($id);
             }
             
-            if(Auth::user()->id_role == 1 || Auth::user()->id_role == 3 )
+            if(Auth::user()->admin() || Auth::user()->asistenteD() )
             {
                 if($proyeccion_preliminar->aprobacion_decano == 7)
                 {
@@ -5909,7 +5950,7 @@ class ProyeccionController extends Controller
 
             
         /** Enviar notificacion */
-        if(Auth::user()->id_role == 1 )
+        if(Auth::user()->admin() )
         {
             return redirect('proyecciones/filtrar/all');
         }
@@ -5927,7 +5968,8 @@ class ProyeccionController extends Controller
     {
         $control_sistema =DB::table('control_sistema')->first();
         $id = Crypt::decrypt($id);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $idUser = Auth::user()->id;
         $mytime = Carbon::now('America/Bogota');
 
@@ -6253,7 +6295,8 @@ class ProyeccionController extends Controller
     public function sendProy(Request $request)
     {
 
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $idUser = Auth::user()->id;
 
         $id_proyecciones_confimadas = $request->get('data');
@@ -6263,6 +6306,7 @@ class ProyeccionController extends Controller
             break;
 
             case 2:
+            case 9:
             break;
 
             case 3:
@@ -6318,7 +6362,8 @@ class ProyeccionController extends Controller
         // DB::beginTransaction();
         // try
         // {
-            $idRole = Auth::user()->id_role;
+            //$idRole = Auth::user()->id_role;
+            $idRole = session('rol_seleccionado')['id'];
             $idUser = Auth::user()->id;
 
             $id_proyecciones_vb_decano = $request->get('data');
@@ -6336,6 +6381,7 @@ class ProyeccionController extends Controller
                 break;
 
                 case 2:
+                case 9:
                     foreach($id_proyecciones_vb_decano as $id)
                     {
                         $proyeccion = proyeccion::find($id);

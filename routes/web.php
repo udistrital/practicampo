@@ -13,16 +13,27 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     // return view('welcome');
     return view('auth/login');
     // return view('mantenimiento');
 });
+Route::post('/', function (Request $request) {
+    if ($request->has('access_token') && $request->has('id_token')) {
+        return redirect()->route('wso2.callback', $request->all());
+    }
+})->withoutMiddleware([\PractiCampoUD\Http\Middleware\VerifyCsrfToken::class]);
 
 // ------> Authentication Routes... <------
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::get('loginEst', 'EstudianteController@showLoginFormEst')->name('loginEst');
+
+Route::get('auth/wso2', 'Auth\Wso2AuthController@redirectToWso2')->name('wso2.login');
+Route::get('auth/wso2/callback', 'Auth\Wso2AuthController@handleWso2Callback')->name('wso2.callback');
+Route::post('home/seleccionar_rol', 'Auth\Wso2AuthController@seleccionar_rol')->name('seleccionar_rol');
+Route::get('pre_seleccionar_rol', 'Auth\Wso2AuthController@pre_seleccionar_rol')->name('pre_seleccionar_rol');
 // Route::group(['middleware' => 'activo'], function () {
 
 Route::post('login', 'Auth\LoginController@login'); 

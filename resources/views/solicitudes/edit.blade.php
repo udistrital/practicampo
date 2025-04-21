@@ -15,6 +15,9 @@
                         {{-- <php if($estado_doc_respon == 1){ echo $nombre_doc_resp;} elseif ($estado_doc_respon == 2){ echo "Usuario Inactivo";}?> --}}
                     
                         <div class="card-body">
+                        @if(session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
                             <form method="POST" action="{{ route('solicitud_update',[Crypt::encrypt($proyeccion_preliminar->id), Crypt::encrypt($tipo_ruta)]) }}" id="edit_solicitud">
                                 @method('PUT')
                                 @csrf
@@ -48,7 +51,7 @@
 
                                     <!-- usuario == al responsable de la proyección -->
                                     @if($usuario_log->id == $proyeccion_preliminar->id_docente_responsable)
-                                        @include('solicitudes.formularios.edit_coord_creador',array($proyeccion_preliminar,$programas_usuario, 
+                                        @include('solicitudes.formularios.edit_coord',array($proyeccion_preliminar,$programas_usuario, 
                                         $espacios_academicos,$periodos_academicos,$semestres_asignaturas, $tipos_transportes))
                                     @endif
                                     <!-- usuario == al responsable de la proyección -->

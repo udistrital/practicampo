@@ -45,7 +45,7 @@
 
                                 <!-- usuario == al responsable de la proyección -->
                                 @if($usuario_log->id == $proyeccion_preliminar->id_docente_responsable)
-                                    @include('proyecciones.formularios.edit_coord_creador',array($proyeccion_preliminar,$programas_usuario, 
+                                    @include('proyecciones.formularios.edit_coord',array($proyeccion_preliminar,$programas_usuario, 
                                     $espacios_academicos,$periodos_academicos,$semestres_asignaturas, $tipos_transportes))
                                 @endif
                                 <!-- usuario == al responsable de la proyección -->

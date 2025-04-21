@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use PractiCampoUD\User;
 use Carbon\Carbon;
 use DB;
+use Jumbojett\OpenIDConnectClient;
 
 /**
  * Manejo de usuarios
@@ -1031,13 +1032,33 @@ class UsersController extends Controller
         header("cache-Control: no-store, no-cache, must-revalidate");
         header("cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
-        Auth::logout();
-        $request->session()->flush();
-        $request->session()->regenerate();
-        $request->session()->flash('Acción Exitosa','La sesión se ha cerrado correctamente.');
 
+        $oidc = new OpenIDConnectClient(
+            env('WSO2_AUTHORIZATION_URL'),
+            env('WSO2_CLIENT_ID'),
+            env('WSO2_CLIENT_SECRET')
+        );
+    
+        $oidc->providerConfigParam([
+            'authorization_endpoint' => env('WSO2_AUTHORIZATION_URL'),
+            'end_session_endpoint' => env('WSO2_SIGN_OUT_URL')
+        ]);
+    
+        $redirectUrl = env('WSO2_SIGN_OUT_REDIRECT_URL');
+    
+        $idToken = session('id_token');
+
+        Auth::logout();        
+        //$request->session()->flush();
+        //$request->session()->regenerate();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        //$request->session()->flash('Acción Exitosa','La sesión se ha cerrado correctamente.');     
+        session()->flush();
+        
+        return $oidc->signOut($idToken, $redirectUrl);
         //return view('auth.login');
-        return redirect('/');
+        //return redirect('/');
     }
 
     /**

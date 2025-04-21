@@ -3,9 +3,13 @@
 namespace PractiCampoUD;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class materiales_herramientas_proyeccion extends Model
+class materiales_herramientas_proyeccion extends Model implements Auditable
 {
+    use AuditableTrait;
+    
     protected $table = 'materiales_herramientas_proyeccion';
 
     public $timestamps = false;

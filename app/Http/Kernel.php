@@ -23,6 +23,7 @@ class Kernel extends HttpKernel
         // \PractiCampoUD\Http\Middleware\Admin::class,
         \PractiCampoUD\Http\Middleware\ForceHttps::class,
         \PractiCampoUD\Http\Middleware\SecurityHeadersMiddleware::class,
+        \PractiCampoUD\Http\Middleware\Wso2Redirect::class,
     ];
 
     /**
@@ -39,6 +40,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \PractiCampoUD\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \PractiCampoUD\Http\Middleware\ValidateTokenMiddleware::class,
         ],
 
         'api' => [

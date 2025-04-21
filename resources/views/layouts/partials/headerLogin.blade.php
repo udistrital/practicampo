@@ -3,10 +3,13 @@
     <a href="{{ url('/home') }}"><img src="{{ asset('img/logoHeader.png') }}" alt="" class="logo img-fluid" 
         style="display: inline-block; width: 255px; top: 28px; margin: 1rem 0 0 1.29rem"/></a>
     </div>
-    <div class="col-md-7">
+    <div class="col-md-5">
     </div>
-    <div class="col-md-2">
+    <div class="col-md-4">
         <nav class="navbar navbar-expand-lg navbar-light bg-transp" style="margin: 1.9rem 1.3rem 0 -1.3rem;">
+        @if (session('rol_seleccionado'))
+                <div class="col-md-9 d-flex justify-content-center text-center" style="font-size: 1.1rem">Rol actual: {{ session('rol_seleccionado')['nombre'] }}</div>
+                @endif
         
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 
@@ -15,19 +18,24 @@
                 @if (Auth::guest())
                     <li><a class="nav-link" href="{{ url('/login') }}" ><i class="icon-user"></i> Ingresar</a></li>
                     <li><a class="nav-link" href="{{ url('/loginEst') }}" ><i class="icon-user"></i> Estudiante</a></li>
-                @else
-                    
+                @else                    
+                
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.1rem">
                     <span class="hidden-xs">{{ Auth::user()->usuario }}</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('users_perfil',Crypt::encrypt(Auth::user()->id)) }}">Perfil</a>
+                        
+                        @if (count(Auth::user()->roles->pluck('guard_name')->toArray()) > 1)
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#rolModal2">Cambiar Rol</a>
+                        @endif
                         <a class="dropdown-item" href="{{ url('/logout') }}" style="color: #090808"
                             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
                             Cerrar Sesión
-                        </a> 
+                        </a>                 
+
                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
                                 {{ csrf_field() }}
                                 <input type="submit" value="logout" style="display: none;">

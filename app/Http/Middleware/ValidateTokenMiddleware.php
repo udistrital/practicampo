@@ -1,45 +1,33 @@
 <?php
-namespace App\Http\Middleware;
+namespace PractiCampoUD\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Jumbojett\OpenIDConnectClient;
+use Carbon\Carbon;
 
 class ValidateTokenMiddleware
 {
+    /**
+     * Maneja la expiración del token.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check()) {
-            $token = session('access_token');
+     $expiracion_token = session('expires_in');
+        //dd(session('expires_in'));
+        if ($expiracion_token && now()->greaterThanOrEqualTo(Carbon::parse($expiracion_token))) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken(); 
+            session()->flush();
 
-            if (!$token || !$this->validar_token($token)) { //falta realizar pruebas
-                Auth::logout();
-                session()->flush();
-                return redirect('/')->with('error', 'Tu sesión ha expirado.'); //validar mensaje de error
-            }
+            return redirect()->route('login')->with('error','Su sesión ha expirado. Ingresa nuevamente.');
         }
 
-        return $next($request);
-    }
-
-    private function validar_token($token) //función por validar correctamente
-    {
-        $oidc = new OpenIDConnectClient(
-            env('WSO2_TOKEN_URL'),
-            env('WSO2_CLIENT_ID'),
-            env('WSO2_CLIENT_SECRET')
-        );
-
-        $oidc->providerConfigParam([
-            'token_endpoint' => env('WSO2_TOKEN_URL')
-        ]);
-
-        try {
-            $userInfo = $oidc->introspectToken($token);
-            return $userInfo->active ?? false;
-        } catch (\Exception $e) {
-            return false;
-        }
+    return $next($request);
     }
 }

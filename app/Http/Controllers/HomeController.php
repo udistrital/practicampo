@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use NumberFormatter;
+use PractiCampoUD\User;
 /**
  * Página de inicio de acceso
  * 
@@ -43,6 +44,27 @@ class HomeController extends Controller
                     ->where('id',$idUser)->first();
         
         $control_sistema =DB::table('control_sistema')->first();
+
+        $user = User::find($idUser);
+        $roles_actuales = $user->roles->pluck('name', 'id')->toArray();
+        $cont=0;
+        foreach($roles_actuales as $roles){
+            $cont++;
+        }        
+        if(!session('rol_seleccionado')){
+            if($cont<2){
+                foreach ($roles_actuales as $id => $nombre) {
+                    session([
+                        'rol_seleccionado' => [
+                            'id' => $id,
+                            'nombre' => $nombre
+                        ]
+                    ]);
+                }
+            }else{
+                session(['roles_disponibles' => $roles_actuales]);
+            }
+        }        
 
         return view('home2',['usuario'=>$usuario,
                              'control_sistema'=>$control_sistema]);

@@ -122,9 +122,16 @@ class PdfController extends Controller
                 ->select('users.firma_litografica','users.tiene_firma',
                         DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, 
                         users.primer_apellido, users.segundo_apellido) as full_name'))
-                ->join('roles as rol','users.id_role','rol.id')
+                ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
+                ->where(function ($query) {
+                    $query->where('roles.name', '=', 'Decano')
+                        ->orWhere('roles.id', '=', 2);
+                })
                 ->where('id_estado','=',1)
-                ->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+                //->where('usuario','=',"dmedioa")
+                //->orWhere('rol.id','=',2)
+                ->first();
 
         $anio_resolucion = $solicitudes_practica[0]->fecha_resolucion;
 
@@ -934,7 +941,7 @@ class PdfController extends Controller
     public function exportFormatoPracticaPdf($ids)
     {
 
-        // if(Auth::user()->id_role == 4)
+        // if(Auth::user()->coordinador())
         // {
 
             // $id=Crypt::decrypt($id);
@@ -1153,26 +1160,49 @@ class PdfController extends Controller
             $decano = DB::table('users')
                     ->select('users.firma_litografica','users.tiene_firma',
                             DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                    ->join('roles as rol','users.id_role','rol.id')
+                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
+                    ->where(function ($query) {
+                        $query->where('roles.name', '=', 'Decano')
+                            ->orWhere('roles.id', '=', 2);
+                    })
                     ->where('id_estado','=',1)
-                    ->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+                    //->where('usuario','=',"dmedioa")
+                    //->orWhere('rol.id','=',2)
+                    ->first();
 
             $id_pro_aca = $solicitudes_practica->id_pro_aca;
             $coord = DB::table('users')
-                    ->select('users.firma_litografica','users.tiene_firma',
-                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                    ->join('roles as rol','users.id_role','rol.id')
-                    ->where('rol.name','=',"Coordinador")->orWhere('rol.id','=',4)
-                    ->where('id_estado','=',1)
-                    ->where('id_programa_academico_coord','=',$id_pro_aca)->first();
+                ->select(
+                    'users.firma_litografica',
+                    'users.tiene_firma',
+                    DB::raw('CONCAT_WS(" ", users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name')
+                )
+                ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                ->where(function ($query) {
+                    $query->where('roles.name', '=', 'Coordinador Proyecto')
+                        ->orWhere('roles.id', '=', 4);
+                })
+                ->where('users.id_estado', '=', 1)
+                ->where('users.id_programa_academico_coord', '=', $id_pro_aca)
+                ->first();
 
             $docente_responsable = DB::table('users')
                     ->select('users.firma_litografica','users.tiene_firma',
                         DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                     ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
-                    ->join('roles as rol','users.id_role','rol.id')
+                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
                     ->where('id_estado','=',1)
-                    ->where('users.id','=',$solicitudes_practica->id_docente_responsable)->orWhere('rol.id','=',2)->first();
+                    ->where('users.id','=',$solicitudes_practica->id_docente_responsable)
+                    ->orWhere(function ($query) {
+                        $query->where('roles.name', '=', 'Decano')
+                        ->orWhere('roles.id', '=', 2);
+                    })
+                    //->orWhere('usuario','=',"dmedioa")
+                    //->orWhere('rol.id','=',2)
+                    ->first();
             
             $valor_diario->vlr_estud_max = number_format($valor_diario->vlr_estud_max, 0, ',','.');
             $valor_diario->vlr_estud_min = number_format($valor_diario->vlr_estud_min, 0, ',','.');
@@ -1719,7 +1749,7 @@ class PdfController extends Controller
             //     'f_salida'=>$f_salida,
             //     'f_regreso'=>$f_regreso]);
         // }
-        // else if(Auth::user()->id_role == 3 || Auth::user()->id_role == 2 || Auth::user()->id_role == 1)
+        // else if(Auth::user()->asistenteD() || Auth::user()->decano() || Auth::user()->admin())
         // {
         //     $id=explode(",",$ids);
 
@@ -1821,9 +1851,16 @@ class PdfController extends Controller
         $decano = DB::table('users')
                 ->select('users.firma_litografica','users.tiene_firma',
                     DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                ->join('roles as rol','users.id_role','rol.id')
+                ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
+                ->where(function ($query) {
+                    $query->where('roles.name', '=', 'Decano')
+                        ->orWhere('roles.id', '=', 2);
+                })
                 ->where('id_estado','=',1)
-                ->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+                //->where('usuario','=',"dmedioa")
+                //->orWhere('rol.id','=',2)
+                ->first();
 
         $tipo_transporte = new stdClass;
         $tipo_transporte_1 = new stdClass;
@@ -2439,7 +2476,7 @@ class PdfController extends Controller
      */
     public function exportAvancePdf($ids)
     {
-        // if(Auth::user()->id_role == 4)
+        // if(Auth::user()->coordinador())
         // {    
             $id=explode(",",$ids);
             $list_solic = [];
@@ -2500,27 +2537,50 @@ class PdfController extends Controller
             $decano = DB::table('users')
                     ->select('users.firma_litografica','users.tiene_firma',
                             DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                    ->join('roles as rol','users.id_role','rol.id')
+                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
+                    ->where(function ($query) {
+                        $query->where('roles.name', '=', 'Decano')
+                            ->orWhere('roles.id', '=', 2);
+                    })
                     ->where('id_estado','=',1)
-                    ->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+                    //->where('usuario','=',"dmedioa")
+                    //->orWhere('rol.id','=',2)
+                    ->first();
 
             $id_docente_responsable = $solicitudes_practica[0]->id_docente_responsable;
             $docente_responsable = DB::table('users')
             ->select('users.firma_litografica','users.tiene_firma',
                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
             ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
-            ->join('roles as rol','users.id_role','rol.id')
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
             ->where('id_estado','=',1)
-            ->where('users.id','=',$id_docente_responsable)->orWhere('rol.id','=',2)->first();
+            ->where('users.id','=',$id_docente_responsable)
+            ->orWhere(function ($query) {
+                $query->where('roles.name', '=', 'Decano')
+                    ->orWhere('roles.id', '=', 2);
+            })
+            //->orWhere('usuario','=',"dmedioa")
+            //->orWhere('rol.id','=',2)
+            ->first();
 
             $id_pro_aca = $solicitudes_practica[0]->id_pro_aca;
             $coord = DB::table('users')
-                    ->select('users.firma_litografica','users.tiene_firma',
-                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                    ->join('roles as rol','users.id_role','rol.id')
-                    ->where('rol.name','=',"Coordinador")->orWhere('rol.id','=',4)
-                    ->where('id_estado','=',1)
-                    ->where('id_programa_academico_coord','=',$id_pro_aca)->first();
+                ->select(
+                    'users.firma_litografica',
+                    'users.tiene_firma',
+                    DB::raw('CONCAT_WS(" ", users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name')
+                )
+                ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                ->where(function ($query) {
+                    $query->where('roles.name', '=', 'Coordinador Proyecto')
+                        ->orWhere('roles.id', '=', 4);
+                })
+                ->where('users.id_estado', '=', 1)
+                ->where('users.id_programa_academico_coord', '=', $id_pro_aca)
+                ->first();
 
             $valor_diario = DB::table('control_sistema')->first();
 
@@ -2576,9 +2636,17 @@ class PdfController extends Controller
                     ->select('users.firma_litografica','users.tiene_firma',
                         DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                     ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
-                    ->join('roles as rol','users.id_role','rol.id')
+                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
                     ->where('id_estado','=',1)
-                    ->where('users.id','=',$id_docente_responsable)->orWhere('rol.id','=',2)->first();
+                    ->where('users.id','=',$id_docente_responsable)
+                    ->orWhere(function ($query) {
+                        $query->where('roles.name', '=', 'Decano')
+                            ->orWhere('roles.id', '=', 2);
+                    })
+                    //->orWhere('usuario','=',"dmedioa")
+                    //->orWhere('rol.id','=',2)
+                    ->first();
             
             if($docente_responsable->tiene_firma == 1)
             {
@@ -2639,7 +2707,7 @@ class PdfController extends Controller
             //             'docente_responsable'=>$docente_responsable,
             //             'hoy'=>$hoy]);
         // }
-        // else if(Auth::user()->id_role == 3 || Auth::user()->id_role == 2 || Auth::user()->id_role == 1)
+        // else if(Auth::user()->asistenteD() || Auth::user()->decano() || Auth::user()->admin())
         // {
         //     $id=explode(",",$ids);
 
@@ -2748,9 +2816,16 @@ class PdfController extends Controller
         $decano = DB::table('users')
                 ->select('users.firma_litografica','users.tiene_firma',
                         DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                ->join('roles as rol','users.id_role','rol.id')
+                ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
+                ->where(function ($query) {
+                    $query->where('roles.name', '=', 'Decano')
+                        ->orWhere('roles.id', '=', 2);
+                })
                 ->where('id_estado','=',1)
-                ->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+                //->where('usuario','=',"dmedioa")
+                //->orWhere('rol.id','=',2)
+                ->first();
                 
         $docente_resp=DB::table('users')
                     ->select('id','email','celular',
@@ -3273,10 +3348,16 @@ class PdfController extends Controller
 
         $decano = DB::table('users')
                 ->select('users.firma_litografica','users.tiene_firma',
-                        DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                ->join('roles as rol','users.id_role','rol.id')
+                        DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))                
+                ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
+                ->where(function ($query) {
+                    $query->where('roles.name', '=', 'Decano')
+                        ->orWhere('roles.id', '=', 2);
+                })
                 ->where('id_estado','=',1)
-                ->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+                ->first();
+                //orWhere('rol.id','=',2)
 
         $viaticos_docente = 0;
         $viaticos_estudiante = 0;
@@ -3371,9 +3452,17 @@ class PdfController extends Controller
                 ->select('users.firma_litografica','users.tiene_firma','users.id_estado',
                     DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                 ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
-                ->join('roles as rol','users.id_role','rol.id')
+                ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')                
                 // ->where('id_estado','=',1)
-                ->where('users.id','=',$solicitud->id_docente_creador)->orWhere('rol.id','=',2)->first();
+                ->where('users.id','=',$solicitud->id_docente_creador)
+                ->orWhere(function ($query) {
+                    $query->where('roles.name', '=', 'Decano')
+                        ->orWhere('roles.id', '=', 2);
+                })
+                //(->orWhere('usuario','=',"dmedioa")
+                //->orWhere('rol.id','=',2)
+                ->first();
         
         // if($docente_responsable->tiene_firma == 1)
         // {

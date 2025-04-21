@@ -35,6 +35,8 @@
                                 $tipo_actual = 'Programas Académicos de Maestría';
                             } elseif (str_starts_with(strtolower($pa->programa_academico), 'admin')) {
                                 $tipo_actual = 'Programas Académicos de Administración';
+                            } elseif (str_starts_with(strtolower($pa->programa_academico), 'doc')) {
+                                $tipo_actual = 'Programas Académicos de Doctorado';
                             }
                         @endphp
                         @if (!$loop->last)    

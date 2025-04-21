@@ -8,13 +8,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use PractiCampoUD\Notifications\ResetPasswordNotification;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, Auditable
 {
     use Notifiable;
     use HasRoles;
     use HasFactory;
+    use AuditableTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -113,12 +116,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function adminPerm()
     {
-        return (($this->hasRole('Admin') || $this->hasRole('Decano') || $this->hasRole('Asistente Decanatura')) && ($this->id_estado === 1));
+        return (($this->hasRole('Admin') || ($this->hasRole('Decano') && session('rol_seleccionado')['nombre'] == 'Decano') || $this->hasRole('Delegado Decanatura') || $this->hasRole('Asistente Decanatura')) && ($this->id_estado === 1));
     }
 
     public function otrosPerm()
     {
-        return (($this->id_role === 1 || $this->id_role === 2 || $this->id_role === 3 || $this->id_role === 4 || $this->id_role === 5 || $this->id_role === 6 || $this->id_role === 7) 
+        return (($this->hasRole('Admin') || $this->hasRole('Decano') || $this->hasRole('Delegado Decanatura') || $this->hasRole('Asistente Decanatura')
+        || $this->hasRole('Coordinador Proyecto') || $this->hasRole('Docente') || $this->hasRole('Vicerrectoria Administrativa') || $this->hasRole('Transportador')) 
         && ($this->id_estado === 1));
     }
 
@@ -128,33 +132,58 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function decano()
-    {        
-        return $this->hasRole('Decano');
+    {   
+        if((session('rol_seleccionado')['nombre'] == 'Decano' && $this->hasRole('Decano'))
+        || (session('rol_seleccionado')['nombre'] == 'Delegado Decanatura' && $this->hasRole('Delegado Decanatura'))){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function asistenteD()
     {
-        return $this->hasRole('Asistente Decanatura');
+        if(session('rol_seleccionado')['nombre'] == 'Asistente Decanatura' && $this->hasRole('Asistente Decanatura')){
+            return true;
+        }else{
+            return false;
+        }
     }
     
     public function coordinador()
     {
-        return $this->hasRole('Coordinador Proyecto');
+        if(session('rol_seleccionado')['nombre'] == 'Coordinador Proyecto' && $this->hasRole('Coordinador Proyecto')){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function docente()
     {
-        return $this->hasRole('Docente');
+        if(session('rol_seleccionado')['nombre'] == 'Docente' && $this->hasRole('Docente')){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function viceAcademica()
     {
-        return $this->hasRole('Vicerrectoria Administrativa');
+        if(session('rol_seleccionado')['nombre'] == 'Vicerrectoria Administrativa' && $this->hasRole('Vicerrectoria Administrativa')){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function transportador()
     {
-        return $this->hasRole('Transportador');
+        if(session('rol_seleccionado')['nombre'] == 'Transportador' && $this->hasRole('Transportador')){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function activo()
@@ -174,7 +203,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function estudiante()
     {
-        return $this->hasRole('Estudiante');
+        if(session('rol_seleccionado')['nombre'] == 'Estudiante' && $this->hasRole('Estudiante')){
+            return true;
+        }else{
+            return false;
+        }
+        //return $this->hasRole('Estudiante');
     }
     
     public function userHasRole($roleId)

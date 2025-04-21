@@ -67,6 +67,7 @@
         @endif
     <!-- start scripts -->
     @include('layouts.partials.scripts')
+    @include('layouts.partials.modal_seleccionar_rol')
     <!-- end scripts -->
 </body>
 </html>

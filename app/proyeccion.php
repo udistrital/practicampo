@@ -3,9 +3,13 @@
 namespace PractiCampoUD;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Auditable as AuditableTrait;
 
-class proyeccion extends Model
+class proyeccion extends Model implements Auditable
 {
+    use AuditableTrait;
+    
     protected $table = 'proyeccion_preliminar';
 
     protected $fillable = [

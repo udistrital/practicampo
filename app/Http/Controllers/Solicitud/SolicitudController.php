@@ -51,7 +51,8 @@ class SolicitudController extends Controller
     public function hab_cambios_sol($id)
     {
         $id=Crypt::decrypt($id);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $vlr_viaticos=DB::table('control_sistema as cs')
                         ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
                         'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
@@ -63,6 +64,7 @@ class SolicitudController extends Controller
             break;
 
             case 2:
+            case 9:
                 $proyeccion_preliminar = proyeccion::find($id);
                 $practicas_integradas = practicas_integradas::find($id);
                 $docentes_practica = docentes_practica::find($id);
@@ -348,7 +350,8 @@ class SolicitudController extends Controller
     public function cambios_sol(Request $request, $id)
     {
         $id=Crypt::decrypt($id);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $vlr_viaticos=DB::table('control_sistema as cs')
                         ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
                         'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
@@ -360,6 +363,7 @@ class SolicitudController extends Controller
             break;
 
             case 2:
+            case 9:
                 if(Auth::user()->decano()){
                     //dd($request->all());
                     $control_sistema =DB::table('control_sistema')->first();
@@ -508,22 +512,71 @@ class SolicitudController extends Controller
                             /**Tabla transporte_proyeccion RP*/
     
                             /**Tabla transporte_menor */
-                                $transporte_menor->docente_resp_t_menor_rp=$request->get('docente_resp_t_menor_rp');
-                                $transporte_menor->cant_trans_menor_rp=$request->get('cant_trans_menor_rp');
-                                $transporte_menor->trans_menor_rp_1=$request->get('trans_menor_rp_1');
-                                $transporte_menor->trans_menor_rp_2=$request->get('trans_menor_rp_2');
-                                $transporte_menor->trans_menor_rp_3=$request->get('trans_menor_rp_3');
-                                $transporte_menor->trans_menor_rp_4=$request->get('trans_menor_rp_4');
-                                $transporte_menor->vlr_trans_menor_rp_1=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_1')));
-                                $transporte_menor->vlr_trans_menor_rp_2=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_2')));
-                                $transporte_menor->vlr_trans_menor_rp_3=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_3')));
-                                $transporte_menor->vlr_trans_menor_rp_4=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_4')));
-    
-                                $vlr_trans_menor_rp_1=$transporte_menor->vlr_trans_menor_rp_1;
-                                $vlr_trans_menor_rp_2=$transporte_menor->vlr_trans_menor_rp_2;
-                                $vlr_trans_menor_rp_3=$transporte_menor->vlr_trans_menor_rp_3;
-                                $vlr_trans_menor_rp_4=$transporte_menor->vlr_trans_menor_rp_4;
-    
+                            $transporte_menor->cant_trans_menor_rp=$request->get('cant_trans_menor_rp');
+        
+                            switch($transporte_menor->cant_trans_menor_rp)
+                            {
+                                case "0":
+                                    $transporte_menor->docente_resp_t_menor_rp=null;
+                                    $transporte_menor->trans_menor_rp_1=null;
+                                    $transporte_menor->trans_menor_rp_2=null;
+                                    $transporte_menor->trans_menor_rp_3=null;
+                                    $transporte_menor->trans_menor_rp_4=null;
+                                    $transporte_menor->vlr_trans_menor_rp_1=0;
+                                    $transporte_menor->vlr_trans_menor_rp_2=0;
+                                    $transporte_menor->vlr_trans_menor_rp_3=0;
+                                    $transporte_menor->vlr_trans_menor_rp_4=0;
+                                    break;
+                                case "1":
+                                    $transporte_menor->docente_resp_t_menor_rp=$request->get('docente_resp_t_menor_rp');
+                                    $transporte_menor->trans_menor_rp_1=$request->get('trans_menor_rp_1');
+                                    $transporte_menor->trans_menor_rp_2=null;
+                                    $transporte_menor->trans_menor_rp_3=null;
+                                    $transporte_menor->trans_menor_rp_4=null;
+                                    $transporte_menor->vlr_trans_menor_rp_1=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_1')));
+                                    $transporte_menor->vlr_trans_menor_rp_2=0;
+                                    $transporte_menor->vlr_trans_menor_rp_3=0;
+                                    $transporte_menor->vlr_trans_menor_rp_4=0;
+                                    break;
+                                case "2":
+                                    $transporte_menor->docente_resp_t_menor_rp=$request->get('docente_resp_t_menor_rp');
+                                    $transporte_menor->trans_menor_rp_1=$request->get('trans_menor_rp_1');
+                                    $transporte_menor->trans_menor_rp_2=$request->get('trans_menor_rp_2');
+                                    $transporte_menor->trans_menor_rp_3=null;
+                                    $transporte_menor->trans_menor_rp_4=null;
+                                    $transporte_menor->vlr_trans_menor_rp_1=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_1')));
+                                    $transporte_menor->vlr_trans_menor_rp_2=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_2')));
+                                    $transporte_menor->vlr_trans_menor_rp_3=0;
+                                    $transporte_menor->vlr_trans_menor_rp_4=0;
+                                    break;
+                                case "3":
+                                    $transporte_menor->docente_resp_t_menor_rp=$request->get('docente_resp_t_menor_rp');
+                                    $transporte_menor->trans_menor_rp_1=$request->get('trans_menor_rp_1');
+                                    $transporte_menor->trans_menor_rp_2=$request->get('trans_menor_rp_2');
+                                    $transporte_menor->trans_menor_rp_3=$request->get('trans_menor_rp_3');
+                                    $transporte_menor->trans_menor_rp_4=null;
+                                    $transporte_menor->vlr_trans_menor_rp_1=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_1')));
+                                    $transporte_menor->vlr_trans_menor_rp_2=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_2')));
+                                    $transporte_menor->vlr_trans_menor_rp_3=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_3')));
+                                    $transporte_menor->vlr_trans_menor_rp_4=0;
+                                    break;
+                                case "4":
+                                    $transporte_menor->docente_resp_t_menor_rp=$request->get('docente_resp_t_menor_rp');
+                                    $transporte_menor->trans_menor_rp_1=$request->get('trans_menor_rp_1');
+                                    $transporte_menor->trans_menor_rp_2=$request->get('trans_menor_rp_2');
+                                    $transporte_menor->trans_menor_rp_3=$request->get('trans_menor_rp_3');
+                                    $transporte_menor->trans_menor_rp_4=$request->get('trans_menor_rp_4');
+                                    $transporte_menor->vlr_trans_menor_rp_1=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_1')));
+                                    $transporte_menor->vlr_trans_menor_rp_2=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_2')));
+                                    $transporte_menor->vlr_trans_menor_rp_3=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_3')));
+                                    $transporte_menor->vlr_trans_menor_rp_4=intval(str_replace(".","",$request->get('vlr_trans_menor_rp_4')));
+                                    break;
+                            }
+        
+                            $vlr_trans_menor_rp_1=$transporte_menor->vlr_trans_menor_rp_1;
+                            $vlr_trans_menor_rp_2=$transporte_menor->vlr_trans_menor_rp_2;
+                            $vlr_trans_menor_rp_3=$transporte_menor->vlr_trans_menor_rp_3;
+                            $vlr_trans_menor_rp_4=$transporte_menor->vlr_trans_menor_rp_4;   
                             /**Tabla transporte_menor */
                                         
                             /**Tabla costos_proyeccion RP*/
@@ -638,24 +691,72 @@ class SolicitudController extends Controller
                                 $transporte_proyeccion->exclusiv_tiempo_ra_3=$request->get('exclusiv_tiempo_ra_3')==NULL?NULL:intval($request->get('exclusiv_tiempo_ra_3'));
                             /**Tabla transporte_proyeccion RA*/        
                             
-                            /**Tabla transporte_menor */
-                                $transporte_menor->docente_resp_t_menor_ra=$request->get('docente_resp_t_menor_ra');
-                                $transporte_menor->cant_trans_menor_ra=$request->get('cant_trans_menor_ra');
-                                $transporte_menor->trans_menor_ra_1=$request->get('trans_menor_ra_1');
-                                $transporte_menor->trans_menor_ra_2=$request->get('trans_menor_ra_2');
-                                $transporte_menor->trans_menor_ra_3=$request->get('trans_menor_ra_3');
-                                $transporte_menor->trans_menor_ra_4=$request->get('trans_menor_ra_4');
-                                $transporte_menor->vlr_trans_menor_ra_1=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_1')));
-                                $transporte_menor->vlr_trans_menor_ra_2=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_2')));
-                                $transporte_menor->vlr_trans_menor_ra_3=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_3')));
-                                $transporte_menor->vlr_trans_menor_ra_4=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_4')));
-    
-                                $vlr_trans_menor_ra_1=$transporte_menor->vlr_trans_menor_ra_1;
-                                $vlr_trans_menor_ra_2=$transporte_menor->vlr_trans_menor_ra_2;
-                                $vlr_trans_menor_ra_3=$transporte_menor->vlr_trans_menor_ra_3;
-                                $vlr_trans_menor_ra_4=$transporte_menor->vlr_trans_menor_ra_4;
-    
-                            /**Tabla transporte_menor */
+                            /**Tabla transporte_menor RA*/
+                            $transporte_menor->cant_trans_menor_ra=$request->get('cant_trans_menor_ra');        
+                            
+                            switch($transporte_menor->cant_trans_menor_ra)
+                            {
+                                case "0":
+                                    $transporte_menor->docente_resp_t_menor_ra=null;
+                                    $transporte_menor->trans_menor_ra_1=null;
+                                    $transporte_menor->trans_menor_ra_2=null;
+                                    $transporte_menor->trans_menor_ra_3=null;
+                                    $transporte_menor->trans_menor_ra_4=null;
+                                    $transporte_menor->vlr_trans_menor_ra_1=0;
+                                    $transporte_menor->vlr_trans_menor_ra_2=0;
+                                    $transporte_menor->vlr_trans_menor_ra_3=0;
+                                    $transporte_menor->vlr_trans_menor_ra_4=0;
+                                    break;
+                                case "1":
+                                    $transporte_menor->docente_resp_t_menor_ra=$request->get('docente_resp_t_menor_ra');
+                                    $transporte_menor->trans_menor_ra_1=$request->get('trans_menor_ra_1');
+                                    $transporte_menor->trans_menor_ra_2=null;
+                                    $transporte_menor->trans_menor_ra_3=null;
+                                    $transporte_menor->trans_menor_ra_4=null;
+                                    $transporte_menor->vlr_trans_menor_ra_1=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_1')));
+                                    $transporte_menor->vlr_trans_menor_ra_2=0;
+                                    $transporte_menor->vlr_trans_menor_ra_3=0;
+                                    $transporte_menor->vlr_trans_menor_ra_4=0;
+                                    break;
+                                case "2":
+                                    $transporte_menor->docente_resp_t_menor_ra=$request->get('docente_resp_t_menor_ra');
+                                    $transporte_menor->trans_menor_ra_1=$request->get('trans_menor_ra_1');
+                                    $transporte_menor->trans_menor_ra_2=$request->get('trans_menor_ra_2');
+                                    $transporte_menor->trans_menor_ra_3=null;
+                                    $transporte_menor->trans_menor_ra_4=null;
+                                    $transporte_menor->vlr_trans_menor_ra_1=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_1')));
+                                    $transporte_menor->vlr_trans_menor_ra_2=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_2')));
+                                    $transporte_menor->vlr_trans_menor_ra_3=0;
+                                    $transporte_menor->vlr_trans_menor_ra_4=0;
+                                    break;
+                                case "3":
+                                    $transporte_menor->docente_resp_t_menor_ra=$request->get('docente_resp_t_menor_ra');
+                                    $transporte_menor->trans_menor_ra_1=$request->get('trans_menor_ra_1');
+                                    $transporte_menor->trans_menor_ra_2=$request->get('trans_menor_ra_2');
+                                    $transporte_menor->trans_menor_ra_3=$request->get('trans_menor_ra_3');
+                                    $transporte_menor->trans_menor_ra_4=null;
+                                    $transporte_menor->vlr_trans_menor_ra_1=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_1')));
+                                    $transporte_menor->vlr_trans_menor_ra_2=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_2')));
+                                    $transporte_menor->vlr_trans_menor_ra_3=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_3')));
+                                    $transporte_menor->vlr_trans_menor_ra_4=0;
+                                    break;
+                                case "4":
+                                    $transporte_menor->docente_resp_t_menor_ra=$request->get('docente_resp_t_menor_ra');
+                                    $transporte_menor->trans_menor_ra_1=$request->get('trans_menor_ra_1');
+                                    $transporte_menor->trans_menor_ra_2=$request->get('trans_menor_ra_2');
+                                    $transporte_menor->trans_menor_ra_3=$request->get('trans_menor_ra_3');
+                                    $transporte_menor->trans_menor_ra_4=$request->get('trans_menor_ra_4');
+                                    $transporte_menor->vlr_trans_menor_ra_1=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_1')));
+                                    $transporte_menor->vlr_trans_menor_ra_2=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_2')));
+                                    $transporte_menor->vlr_trans_menor_ra_3=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_3')));
+                                    $transporte_menor->vlr_trans_menor_ra_4=intval(str_replace(".","",$request->get('vlr_trans_menor_ra_4')));
+                                    break;
+                            }
+                            $vlr_trans_menor_ra_1=$transporte_menor->vlr_trans_menor_ra_1;
+                            $vlr_trans_menor_ra_2=$transporte_menor->vlr_trans_menor_ra_2;
+                            $vlr_trans_menor_ra_3=$transporte_menor->vlr_trans_menor_ra_3;
+                            $vlr_trans_menor_ra_4=$transporte_menor->vlr_trans_menor_ra_4;   
+                            /**Tabla transporte_menor RA*/
                         
                             /**Tabla costos_proyeccion RA*/
                                 $vlr_materiales_ra=str_replace(".","",$request->get('vlr_materiales_ra'));
@@ -755,7 +856,8 @@ class SolicitudController extends Controller
     {
         $id=Crypt::decrypt($id);
         $tipo_ruta=Crypt::decrypt($tipo_ruta);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $vlr_viaticos=DB::table('control_sistema as cs')
                         ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
                         'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
@@ -1041,6 +1143,7 @@ class SolicitudController extends Controller
             break;
 
             case 2:
+            case 9:
                 $proyeccion_preliminar = proyeccion::find($id);
                 $practicas_integradas = practicas_integradas::find($id);
                 $docentes_practica = docentes_practica::find($id);
@@ -2209,9 +2312,9 @@ class SolicitudController extends Controller
 
         $presupuesto_programa_academico = presupuesto_programa_academico::where('id_programa_academico','=',$proyeccion_preliminar->id_programa_academico)->first();
 
-        if(Auth::user()->id_role == 1 ||  Auth::user()->id_role == 4 || Auth::user()->id_role == 5)
+        if(Auth::user()->admin() ||  Auth::user()->coordinador() || Auth::user()->docente())
         {
-            if(Auth::user()->id_role == 1)
+            if(Auth::user()->admin())
             {
                 $esp_aca = DB::table('espacio_academico as esp_aca')
                 ->where('esp_aca.id_programa_academico','=',$proyeccion_preliminar->id_programa_academico)
@@ -2221,7 +2324,7 @@ class SolicitudController extends Controller
             
             }
 
-            if(Auth::user()->id == $proyeccion_preliminar->id_docente_responsable || Auth::user()->id_role == 1)
+            if((Auth::user()->id == $proyeccion_preliminar->id_docente_responsable && Auth::user()->docente()) || Auth::user()->admin())
             {
                 $num_estudiantes = $request->get('num_estudiantes_aprox');
                 //$total_docentes_apoyo = $request->get('total_docentes_apoyo');
@@ -2573,7 +2676,7 @@ class SolicitudController extends Controller
                 // }
             }
 
-            if(Auth::user()->id_role == 4 || Auth::user()->id_role == 1)
+            if(Auth::user()->coordinador() || Auth::user()->admin())
             {
                 if($proyeccion_preliminar->id_docente_responsable == Auth::user()->id)
                 {
@@ -2582,35 +2685,44 @@ class SolicitudController extends Controller
                     $solicitud_practica->confirm_docente= 1;
                     $solicitud_practica->id_docente_confirm = Auth::user()->id;
                 }
-
-                $solicitud_practica->confirm_coord = 1;
-                $proyeccion_preliminar->observ_coordinador= $request->get('observ_coordinador');
-                $solicitud_practica->aprobacion_coordinador= $request->get('aprobacion_coordinador');
-                $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
-                if($valor_formateado >= 0 && $request->get('aprobacion_coordinador') == 7){
-                    $detalle_presupuesto_programa_academico = new detalle_presupuesto_programa_academico;
-                    $presupuesto_programa_academico->presupuesto_actual = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
-                    $detalle_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
-                    $detalle_presupuesto_programa_academico->id_solicitud = $solicitud_practica->id;
-                    $detalle_presupuesto_programa_academico->presupuesto_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_práctica'));
-                    $detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;
-                    $detalle_presupuesto_programa_academico->fecha_aprobacion = $mytime;
-                    $detalle_presupuesto_programa_academico->anio_periodo = $mytime->year;
-                    $detalle_presupuesto_programa_academico->id_periodo_academico = $proyeccion_preliminar->id_periodo_academico;
-                    $detalle_presupuesto_programa_academico->save();
-                    $presupuesto_programa_academico->update();                    
-                }                
+                try{                    
+                    $solicitud_practica->confirm_coord = 1;
+                    $proyeccion_preliminar->observ_coordinador= $request->get('observ_coordinador');
+                    $solicitud_practica->aprobacion_coordinador= $request->get('aprobacion_coordinador');
+                    $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+                    DB::beginTransaction();
+                    if($valor_formateado >= 0 && $request->get('aprobacion_coordinador') == 7){
+                        
+                        $detalle_presupuesto_programa_academico = new detalle_presupuesto_programa_academico;
+                        $presupuesto_programa_academico->presupuesto_actual = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+                        $detalle_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
+                        $detalle_presupuesto_programa_academico->id_solicitud = $solicitud_practica->id;
+                        $detalle_presupuesto_programa_academico->presupuesto_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_práctica'));
+                        $detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;
+                        $detalle_presupuesto_programa_academico->fecha_aprobacion = $mytime;
+                        $detalle_presupuesto_programa_academico->anio_periodo = $mytime->year;
+                        $detalle_presupuesto_programa_academico->id_periodo_academico = $proyeccion_preliminar->id_periodo_academico;
+                        $detalle_presupuesto_programa_academico->save();
+                        $presupuesto_programa_academico->update();                                           
+                    }
+                    DB::commit(); 
+                }catch(\Exception $e){
+                    DB::rollBack();
+                    \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto: ' . $e->getMessage());
+                    return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto. Intentalo nuevamente.');
+                }
+                              
                 
                 //dd($presupuesto_programa_academico,$detalle_presupuesto_programa_academico);
 
-                if(Auth::user()->id_role == 1)
+                if(Auth::user()->admin())
                 {
                     $solicitud_practica->id_docente_creador = $proyeccion_preliminar->id_docente_responsable;
                     $solicitud_practica->id_docente_confirm = $proyeccion_preliminar->id_docente_responsable;
                     $solicitud_practica->id_coordinador_confirm =  $proyeccion_preliminar->id_coordinador_confirm;
                     $solicitud_practica->id_coordinador_aprob = $proyeccion_preliminar->id_coordinador_aprob;
                 }
-                else if(Auth::user()->id_role == 4)
+                else if(Auth::user()->coordinador())
                 {
                     $solicitud_practica->id_coordinador_confirm =  Auth::user()->id;
                     $solicitud_practica->id_coordinador_aprob = Auth::user()->id;
@@ -2635,14 +2747,14 @@ class SolicitudController extends Controller
 
             }
 
-            if(Auth::user()->id_role == 5 || Auth::user()->id_role == 1)
+            if(Auth::user()->docente() || Auth::user()->admin())
             {
                 $solicitud_practica->confirm_creador= 1;
                 
                 $solicitud_practica->confirm_docente= 1;
                 
 
-                if(Auth::user()->id_role == 5)
+                if(Auth::user()->docente())
                 {
                     $solicitud_practica->id_docente_creador = Auth::user()->id;
                     $solicitud_practica->id_docente_confirm = Auth::user()->id;
@@ -2650,7 +2762,7 @@ class SolicitudController extends Controller
                     $solicitud_practica->aprobacion_coordinador= 5;
                     $solicitud_practica->aprobacion_decano= 5;
                 }
-                else if(Auth::user()->id_role == 1)
+                else if(Auth::user()->admin())
                 {
                     $solicitud_practica->id_docente_creador = $proyeccion_preliminar->id_docente_responsable;
                     $solicitud_practica->id_docente_confirm = $proyeccion_preliminar->id_docente_responsable;
@@ -2659,7 +2771,7 @@ class SolicitudController extends Controller
             
         }
 
-        if(Auth::user()->id_role == 3 || Auth::user()->id_role == 1)
+        if(Auth::user()->asistenteD() || Auth::user()->admin())
         {
             $valor_estimado_transporte_rp = $costos_proyeccion->valor_estimado_transporte_rp;
             $valor_estimado_transporte_ra = $costos_proyeccion->valor_estimado_transporte_ra;
@@ -2719,12 +2831,12 @@ class SolicitudController extends Controller
                     $solicitud_practica->confirm_asistD = 1;
                     $solicitud_practica->aprobacion_asistD = 7;
         
-                    if(Auth::user()->id_role == 1)
+                    if(Auth::user()->admin())
                     {
                         $solicitud_practica->id_asistD_confirm =  $proyeccion_preliminar->id_asistD_confirm;
                         $solicitud_practica->id_asistD_aprob = $proyeccion_preliminar->id_asistD_aprob;
                     }
-                    else if(Auth::user()->id_role == 3)
+                    else if(Auth::user()->asistenteD())
                     {
                         $solicitud_practica->id_asistD_confirm =  Auth::user()->id;
                         $solicitud_practica->id_asistD_aprob = Auth::user()->id;
@@ -2757,7 +2869,7 @@ class SolicitudController extends Controller
             }            
         }
 
-        if(Auth::user()->id_role == 2 || Auth::user()->id_role == 1)
+        if(Auth::user()->decano() || Auth::user()->admin())
         {
             if($request->get('docentes_activos') != 0)
             {
@@ -2790,7 +2902,7 @@ class SolicitudController extends Controller
             }
         }
 
-        if(Auth::user()->id_role == 7)
+        if(Auth::user()->transportador())
         {
             $solicitud_transp = solicitud_transporte::where('id', '=', $solicitud_practica->id)->first();
             $solicitud_transp->nombre_conductor_vehi_1 = $request->get('nombre_cond_vehi_1');
@@ -2825,7 +2937,7 @@ class SolicitudController extends Controller
             $solicitud_transp->update();
         }
 
-        if(Auth::user()->id_role == 1)
+        if(Auth::user()->admin())
         {
             $proyeccion_preliminar->id_estado=$request->get('estado_proyeccion');
             $solicitud_practica->id_estado_solicitud_practica = $request->get('estado_proyeccion');
@@ -2848,7 +2960,7 @@ class SolicitudController extends Controller
 
         $radicado_financiera= $solicitud_practica->radicado_financiera;
 
-        if(Auth::user()->id_role == 2)
+        if(Auth::user()->decano())
         {
 
             if($solicitud_practica->aprobacion_decano == 7)
@@ -2860,7 +2972,7 @@ class SolicitudController extends Controller
             }
         }
 
-        if(Auth::user()->id_role == 3)
+        if(Auth::user()->asistenteD())
         {
             if($radicado_financiera == 1)
             {
@@ -2890,7 +3002,7 @@ class SolicitudController extends Controller
             }
         }
 
-        if(Auth::user()->id_role == 4)
+        if(Auth::user()->coordinador())
         {
             if($request->get('aprobacion_coordinador') == 3)
             {
@@ -2907,7 +3019,7 @@ class SolicitudController extends Controller
             
         }
 
-        if(Auth::user()->id_role == 5)
+        if(Auth::user()->docente())
         {
             if($solicitud_practica->listado_estudiantes == 0)
             {
@@ -2938,7 +3050,7 @@ class SolicitudController extends Controller
         foreach($id as $item){ 
            $solicitud_practica = solicitud::where('id', '=', $item)->first();
 
-           if(Auth::user()->id_role == 1 || Auth::user()->id_role == 2 || Auth::user()->id_role == 3)
+           if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD())
            {
                $solicitud_practica->consec_dfamarena =$request->get('consec_dfamarena');
                $solicitud_practica->consec_cordis =$request->get('consec_cordis');
@@ -3053,7 +3165,8 @@ class SolicitudController extends Controller
     public function filterSolicitud($filter)
     {
         $control_sistema =DB::table('control_sistema')->first();
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $idUser = Auth::user()->id;
         $user_DB= DB::table('users')
         ->where('id',$idUser)->first();
@@ -3129,6 +3242,7 @@ class SolicitudController extends Controller
             break;
 
             case 2:
+            case 9:
                 switch($filter)
                 {
                     case 'inact':
@@ -3822,8 +3936,7 @@ class SolicitudController extends Controller
                         ->where('sol_prac.listado_estudiantes','=',1)
                         ->where('p_prel.id_estado','=',1)
                         ->where(function($query) use ($idUser, $id_prog_coord){
-                            $query->where('p_prel.id_docente_responsable','=',$idUser)
-                            ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
+                            $query->where('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
                         ->paginate(10000);
                     break;
@@ -3855,8 +3968,7 @@ class SolicitudController extends Controller
                         ->where('aprobacion_consejo_facultad','=',3)
                         ->where('p_prel.id_estado','=',1)
                         ->where(function($query) use ($idUser, $id_prog_coord){
-                            $query->where('id_docente_responsable','=',$idUser)
-                            ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
+                            $query->where('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
                         ->paginate(10000);
                         //$estudiantes=DB::table('estudiantes_solicitud_practica')->get();
@@ -3884,7 +3996,7 @@ class SolicitudController extends Controller
                         ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
                         ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
                         ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_proyeccion_preliminar')
-                        ->where('sol_prac.aprobacion_coordinador','!=',4)
+                        //->where('sol_prac.aprobacion_coordinador','!=',4)
                         ->where('p_prel.confirm_creador','=',1)
                         ->where('p_prel.confirm_docente','=',1)
                         ->where('p_prel.confirm_coord','=',1)
@@ -3894,6 +4006,10 @@ class SolicitudController extends Controller
                         ->where('p_prel.aprobacion_consejo_facultad','=',3)
                         ->where('sol_prac.id_estado_solicitud_practica','=',5)
                         ->where('sol_prac.listado_estudiantes','=',0)
+                        ->where(function($query) {
+                            $query->where('sol_prac.aprobacion_coordinador', '=', 5)
+                                  ->orWhereNull('sol_prac.aprobacion_coordinador');
+                        })
                         ->paginate(10000);
                         
                         return view('solicitudes.index',['proyecciones'=>$proyeccion,
@@ -4275,7 +4391,8 @@ class SolicitudController extends Controller
         $solic = Crypt::decrypt($id);
         $control_sistema =DB::table('control_sistema')->first();
         $documentos_sistema = DB::table('tipo_documentacion')->orderBy('id','asc')->get();
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $idUser = Auth::user()->id;
         $user_DB= DB::table('users')
         ->where('id',$idUser)->first();
@@ -4435,13 +4552,14 @@ class SolicitudController extends Controller
     {
         $id=Crypt::decrypt($id);
         $control_sistema =DB::table('control_sistema')->first();
-        if(Auth::user()->id_role == 3 || Auth::user()->id_role == 1)
+        if(Auth::user()->asistenteD() || Auth::user()->admin())
         {
             $proyeccion_preliminar = proyeccion::where('id', '=', $id)->first();
             $sedes = DB::table('sedes_universidad')->get();
             $solicitud_practica = solicitud::where('id_proyeccion_preliminar', '=', $id)->first();
             $tipo_ruta=$solicitud_practica->tipo_ruta;
-            $idRole = Auth::user()->id_role;
+            //$idRole = Auth::user()->id_role;
+            $idRole = session('rol_seleccionado')['id'];
             $vlr_viaticos=DB::table('control_sistema as cs')
                         ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
                         'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
@@ -4704,7 +4822,7 @@ class SolicitudController extends Controller
     public function solic_cierre(Request $request,$id)
     {
         $id=Crypt::decrypt($id);
-        if(Auth::user()->id_role == 3)
+        if(Auth::user()->asistenteD())
         {
             $proyeccion_preliminar = proyeccion::where('id', '=', $id)->first();
             $solicitud_practica = solicitud::where('id_proyeccion_preliminar', '=', $id)->first();
@@ -4737,7 +4855,8 @@ class SolicitudController extends Controller
     {
         $control_sistema =DB::table('control_sistema')->first();
         $id = Crypt::decrypt($id);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         if($idRole == 1)
         {
             $proy=DB::table('proyeccion_preliminar as p_prel')
@@ -4818,7 +4937,7 @@ class SolicitudController extends Controller
         $ra->tipo_ruta = 2;
 
         $rutas = array($rp,$ra);
-        if(Auth::user()->id_role == 1)
+        if(Auth::user()->admin())
         {
             return view('solicitudes.rutas.index_rutas',['proyeccion_preliminar'=>$proyeccion,
                                                         'rutas'=>$rutas, 
@@ -4827,7 +4946,7 @@ class SolicitudController extends Controller
                 
         }
 
-        if(Auth::user()->id_role == 4 && Auth::user()->id == $proyeccion->id_docente_responsable)
+        if(Auth::user()->coordinador() && Auth::user()->id == $proyeccion->id_docente_responsable)
         {
             if($proyeccion->confirm_creador == 0 && $proyeccion->confirm_docente == 0 && $proyeccion->listado_estudiantes == 0)
             {
@@ -5403,7 +5522,8 @@ class SolicitudController extends Controller
     {
         $id=Crypt::decrypt($id);
         $tipo_ruta=Crypt::decrypt($tipo_ruta);
-        $idRole = Auth::user()->id_role;
+        //$idRole = Auth::user()->id_role;
+        $idRole = session('rol_seleccionado')['id'];
         $vlr_viaticos=DB::table('control_sistema as cs')
                         ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
                         'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
@@ -5472,6 +5592,7 @@ class SolicitudController extends Controller
             break;
 
             case 2:
+            case 9:
                 $proyeccion_preliminar = proyeccion::find($id);
                 $docentes_practica = docentes_practica::find($id);
                 $costos_proyeccion = costos_proyeccion::find($id);
@@ -6008,7 +6129,7 @@ class SolicitudController extends Controller
         
         else
         {
-            if(Auth::user()->id_role == 1 ||  Auth::user()->id_role == 4 || Auth::user()->id_role == 5)
+            if(Auth::user()->admin() ||  Auth::user()->coordinador() || Auth::user()->docente())
             {
                 $encuesta_transporte->cumplio_expect = $request->get('cumplio_expect')=='on'?1:0;
                 $encuesta_transporte->ruta_prevista = $request->get('ruta_prevista')=='on'?1:0;
@@ -6026,11 +6147,11 @@ class SolicitudController extends Controller
                 $encuesta_transporte->no_cumplio_expect = $request->get('no_cumplio_expect');
                 $encuesta_transporte->diligenciado = 1;
             }
-            if(Auth::user()->id_role == 3 || Auth::user()->id_role == 1)
+            if(Auth::user()->asistenteD() || Auth::user()->admin())
             {
     
             }
-            if(Auth::user()->id_role == 2 || Auth::user()->id_role == 1)
+            if(Auth::user()->decano() || Auth::user()->admin())
             {
     
             }

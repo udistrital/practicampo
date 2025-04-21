@@ -199,6 +199,10 @@ function filtrar_proyecciones(value)
         href = "{!! route('proyeccion_filter','edit_proy'); !!}";
         break
 
+        case '18':
+        href = "{!! route('proyeccion_filter','proy_recha_cons'); !!}";
+        break
+
         default:
         
     }

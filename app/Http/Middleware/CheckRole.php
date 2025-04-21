@@ -21,7 +21,7 @@ class CheckRole
      */
     public function handle($request, Closure $next, ...$role)
     {
-        if (!Auth::check()) {
+        /*if (!Auth::check()) {
             return redirect('/');
         }
         if (is_string($role)) {
@@ -33,7 +33,7 @@ class CheckRole
         if (!in_array($userRole, $role)) {
             return redirect('/home')->with('error', 'No tienes permiso para acceder a esta sección.');
         }
-        $this->role_verif();
+        $this->role_verif();*/
 
         return $next($request);
     }
