@@ -70,8 +70,8 @@ class Wso2AuthController extends Controller
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer ' . $accessToken,
             ])->post('https://autenticacion.portaloas.udistrital.edu.co/apioas/autenticacion_mid/v1/token/userRol', [
-                //'user' => $userInfo["email"],
-                'user' => "jeussag@udistrital.edu.co", //"documento" => "79794356"
+                'user' => $userInfo["email"],
+                //'user' => "jeussag@udistrital.edu.co", //"documento" => "79794356"
                 //'user' => "anosoriog@udistrital.edu.co",
                 //'user' => "wfernandez@udistrital.edu.co", //"documento" => "79494815"
             ]);
