@@ -468,7 +468,7 @@
                 <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <input id="cant_grupos" type="number" max="4" min="1" pattern="^[1-4]" class="form-control @error('cant_grupos') is-invalid @enderror" name="cant_grupos" 
-                    title="" readonly
+                    title="" readonly onclick="ver_gps_sol()"
                     value="{{$proyeccion_preliminar->cantidad_grupos}}" autocomplete="off" autofocus>
                     @error('cant_grupos')
                         <span class="invalid-feedback" role="alert">
@@ -478,9 +478,9 @@
                     
                     <span class="input-group-btn">
                         <button class="btn btn-success btn_ver" type="button" id="ver_grupos" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
-                        onclick="ver_gps()"><i class="far fa-eye"></i></button>
+                        onclick="ver_gps_sol()"><i class="far fa-eye"></i></button>
                         <button class="btn btn-success btn_ver" type="button" id="ocul_grupos" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
-                        onclick="ocul_gps()"><i class="far fa-eye-slash"></i></button>
+                        onclick="ocul_gps_sol()"><i class="far fa-eye-slash"></i></button>
                     </span>
                 </div>
             </div>
@@ -488,9 +488,9 @@
             <div class="col-md-2">
                 <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Personal Apoyo') }}</label>
                 <div class="input-group">
-                    <input id="num_apoyo" max="3" min="0" pattern="^[0-9]+" class="form-control @error('num_apoyo') is-invalid @enderror" name="num_apoyo" 
+                    <input id="num_apoyo" type="number" max="10" min="0" pattern="^[0-9]+" class="form-control @error('num_apoyo') is-invalid @enderror" name="num_apoyo" 
                     title=""
-                    value="{{$docentes_practica->num_docentes_apoyo}}" autocomplete="off" autofocus readonly disabled>
+                    value="{{$docentes_practica->num_docentes_apoyo}}" autocomplete="off" autofocus readonly>
                     
                     @error('num_apoyo')
                         <span class="invalid-feedback" role="alert">
@@ -516,7 +516,7 @@
                 <div class="input-group">
                     <input id="total_docentes_apoyo" type="number" max="10" min="0" pattern="^[0-9]+" class="form-control @error('total_docentes_apoyo') is-invalid @enderror" name="total_docentes_apoyo" 
                     title=""
-                    value="{{$docentes_practica->total_docentes_apoyo}}" autocomplete="off" autofocus  readonly disabled onchange="calc_viaticos_RP()">
+                    value="{{$docentes_practica->total_docentes_apoyo}}" autocomplete="off" autofocus onchange="calc_viaticos_RP()">
                     
                     @error('total_docentes_apoyo')
                         <span class="invalid-feedback" role="alert">
@@ -524,6 +524,17 @@
                         </span>
                     @enderror
                 </div>    
+            </div>
+
+            <div class="col-md-3" id="soporte_apoyo">
+                <label for="sop_pers_apoyo" class="col-form-label text-md-left" >
+                    <i class="fas fa-question-circle" 
+                    data-toggle="tooltip" data-placement="left" 
+                    data-title="Busque en su computador el soporte de autorización para el personal de apoyo que 
+                    participará en la salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('Soporte Personal Apoyo') }}</label>
+                <input id="sop_pers_apoyo" type="file" class="form-control @error('sop_pers_apoyo') is-invalid @enderror" name="sop_pers_apoyo" 
+                style="color: rgb(243, 3, 3)" accept="application/pdf"
+                title="">
             </div>
         </div>
     <!-- 2 -->
@@ -600,7 +611,7 @@
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="apoyo_1" type="text" class="form-control @error('apoyo_1') is-invalid @enderror" name="apoyo_1" 
                 title=""
-                value="{{$docentes_practica->docente_apoyo_1}}" autocomplete="off" autofocus readonly>
+                value="{{$docentes_practica->docente_apoyo_1}}" autocomplete="off" autofocus>
                 
                 @error('apoyo_1')
                     <span class="invalid-feedback" role="alert">
@@ -612,7 +623,7 @@
                 <label for="apoyo_2" class="col-form-label text-md-left">{{ __('Personal Apoyo 2') }}</label>
                 <input id="apoyo_2" type="text" class="form-control @error('apoyo_2') is-invalid @enderror" name="apoyo_2" 
                 title=""
-                value="{{$docentes_practica->docente_apoyo_2}}" autocomplete="off" autofocus readonly>
+                value="{{$docentes_practica->docente_apoyo_2}}" autocomplete="off" autofocus>
                 @error('apoyo_2')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -624,7 +635,7 @@
                 <label for="apoyo_3" class="col-form-label text-md-left">{{ __('Personal Apoyo 3') }}</label>
                 <input id="apoyo_3" type="text" class="form-control @error('apoyo_3') is-invalid @enderror" name="apoyo_3" 
                 title=""
-                value="{{$docentes_practica->docente_apoyo_3}}" autocomplete="off" autofocus readonly>
+                value="{{$docentes_practica->docente_apoyo_3}}" autocomplete="off" autofocus>
                 @error('apoyo_3')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -636,7 +647,7 @@
                 <label for="apoyo_4" class="col-form-label text-md-left">{{ __('Personal Apoyo 4') }}</label>
                 <input id="apoyo_4" type="text" class="form-control @error('apoyo_4') is-invalid @enderror" name="apoyo_4" 
                 title=""
-                value="{{$docentes_practica->docente_apoyo_4}}"  autocomplete="off" autofocus readonly>
+                value="{{$docentes_practica->docente_apoyo_4}}"  autocomplete="off" autofocus>
                 
                 @error('apoyo_4')
                     <span class="invalid-feedback" role="alert">
@@ -649,7 +660,7 @@
                     <label for="apoyo_5" class="col-form-label text-md-left">{{ __('Personal Apoyo 5') }}</label>
                     <input id="apoyo_5" type="text" class="form-control @error('apoyo_5') is-invalid @enderror" name="apoyo_5" 
                     title=""
-                    value="{{$docentes_practica->docente_apoyo_5}}" autocomplete="off" autofocus readonly>
+                    value="{{$docentes_practica->docente_apoyo_5}}" autocomplete="off" autofocus>
                     @error('apoyo_5')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -661,7 +672,7 @@
                     <label for="apoyo_6" class="col-form-label text-md-left">{{ __('Personal Apoyo 6') }}</label>
                     <input id="apoyo_6" type="text" class="form-control @error('apoyo_6') is-invalid @enderror" name="apoyo_6" 
                     title=""
-                    value="{{$docentes_practica->docente_apoyo_6}}" autocomplete="off" autofocus readonly>
+                    value="{{$docentes_practica->docente_apoyo_6}}" autocomplete="off" autofocus>
                     @error('apoyo_6')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -673,7 +684,7 @@
                     <label for="apoyo_7" class="col-form-label text-md-left">{{ __('Personal Apoyo 7') }}</label>
                     <input id="apoyo_7" type="text" class="form-control @error('apoyo_7') is-invalid @enderror" name="apoyo_7" 
                     title=""
-                    value="{{$docentes_practica->docente_apoyo_7}}"  autocomplete="off" autofocus readonly>
+                    value="{{$docentes_practica->docente_apoyo_7}}"  autocomplete="off" autofocus>
                     
                     @error('apoyo_7')
                         <span class="invalid-feedback" role="alert">
@@ -686,7 +697,7 @@
                     <label for="apoyo_8" class="col-form-label text-md-left">{{ __('Personal Apoyo 8') }}</label>
                     <input id="apoyo_8" type="text" class="form-control @error('apoyo_8') is-invalid @enderror" name="apoyo_8" 
                     title=""
-                    value="{{$docentes_practica->docente_apoyo_8}}" autocomplete="off" autofocus readonly>
+                    value="{{$docentes_practica->docente_apoyo_8}}" autocomplete="off" autofocus>
                     @error('apoyo_8')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -698,7 +709,7 @@
                     <label for="apoyo_9" class="col-form-label text-md-left">{{ __('Personal Apoyo 9') }}</label>
                     <input id="apoyo_9" type="text" class="form-control @error('apoyo_9') is-invalid @enderror" name="apoyo_9" 
                     title=""
-                    value="{{$docentes_practica->docente_apoyo_9}}" autocomplete="off" autofocu readonly>
+                    value="{{$docentes_practica->docente_apoyo_9}}" autocomplete="off" autofocus>
                     @error('apoyo_9')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -710,7 +721,7 @@
                     <label for="apoyo_10" class="col-form-label text-md-left">{{ __('Personal Apoyo 10') }}</label>
                     <input id="apoyo_10" type="text" class="form-control @error('apoyo_10') is-invalid @enderror" name="apoyo_10" 
                     title=""
-                    value="{{$docentes_practica->docente_apoyo_10}}" autocomplete="off" autofocus readonly>
+                    value="{{$docentes_practica->docente_apoyo_10}}" autocomplete="off" autofocus>
                     @error('apoyo_10')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

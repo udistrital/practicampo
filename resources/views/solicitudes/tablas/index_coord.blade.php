@@ -73,7 +73,12 @@
                     <td>{{ $item->full_name }}</td>
                 @endif
                 
-                <td>{{ $item->destino_rp }}</td>
+                @if($item->tipo_ruta == 1)
+                    <td>{{ $item->destino_rp }}</td>
+                @elseif($item->tipo_ruta == 2)
+                    <td>{{ $item->destino_ra }}</td>
+                @endif
+
                 <td>{{ $item->fecha_salida_aprox_rp }}</td>
                 <td>{{ $item->fecha_regreso_aprox_rp }}</td> 
                 <td>{{ $item->ap_coor }}</td> 
@@ -107,7 +112,12 @@
                 <td>{{ $item->programa_academico }}</td>
                 <td>{{ $item->espacio_academico }}</td>
                 
-                <td>{{ $item->destino_rp }}</td>
+                @if($item->tipo_ruta == 1)
+                    <td>{{ $item->destino_rp }}</td>
+                @elseif($item->tipo_ruta == 2)
+                    <td>{{ $item->destino_ra }}</td>
+                @endif
+
                 <td>{{ $item->fecha_salida_aprox_rp }}</td>
                 <td>{{ $item->fecha_regreso_aprox_rp }}</td> 
                 <td>{{ $item->ap_coor }}</td> 

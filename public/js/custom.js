@@ -3591,6 +3591,52 @@ function ocul_gps()
     $("#Grupos_edit").hide();
 }
 
+function ver_gps_sol()
+{
+    var num_gps = $("#cant_grupos").val();
+    $("#ver_grupos").hide();
+    $("#ocul_grupos").show();
+    $("#cant_grupos").removeAttr("readonly");
+
+    switch(num_gps){
+        case "1":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").hide();
+            $("#gp_3_edit").hide();
+            $("#gp_4_edit").hide();
+        break;
+        case "2":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").hide();
+            $("#gp_4_edit").hide();
+        break;
+        case "3":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").show();
+            $("#gp_4_edit").hide();
+        break;
+        case "4":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").show();
+            $("#gp_4_edit").show();
+        break;
+    }
+}
+
+function ocul_gps_sol()
+{
+    $("#ocul_grupos").hide();
+    $("#ver_grupos").show();
+    $("#cant_grupos").attr("readonly","readonly");
+    $("#Grupos_edit").hide();
+}
 /*Cantidad Grupos Proyección Edit*/
 
 /*Cantidad acompañantes  proyeccion - Solicitud edit*/
