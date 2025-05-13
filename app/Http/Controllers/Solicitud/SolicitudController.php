@@ -2730,9 +2730,18 @@ class SolicitudController extends Controller
                             DB::rollBack();
                             return redirect()->back()->with('error', 'El presupuesto fue modificado en otra solicitud. Recarga la página e intenta nuevamente.');
                         }
+                        $pres_id=$presupuesto_programa_academico->id;
+                        $historico_presupuesto_programa_academico = DB::table('historico_presupuesto_programa_academico as h')
+                            ->where('h.id', function ($query) use ($pres_id) {
+                                $query->select(DB::raw('MAX(id)'))
+                                    ->from('historico_presupuesto_programa_academico')
+                                    ->where('id_presupuesto_programa', $pres_id);
+                            })
+                            ->first();
                         $detalle_presupuesto_programa_academico = new detalle_presupuesto_programa_academico;                        
                         $detalle_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
                         $detalle_presupuesto_programa_academico->id_solicitud = $solicitud_practica->id;
+                        $detalle_presupuesto_programa_academico->id_presupuesto_programa_historico = $historico_presupuesto_programa_academico->id;
                         $detalle_presupuesto_programa_academico->presupuesto_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_práctica'));
                         $detalle_presupuesto_programa_academico->presupuesto_restante_proyecto = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
                         $detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;

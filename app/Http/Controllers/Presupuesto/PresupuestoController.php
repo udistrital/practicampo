@@ -12,7 +12,7 @@ use PractiCampoUD\materiales_herramientas_proyeccion;
 use PractiCampoUD\proyeccion;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\presupuesto_programa_academico;
-use PractiCampoUD\detalle_presupuesto_programa_academico;
+use PractiCampoUD\historico_presupuesto_programa_academico;
 use PractiCampoUD\User;
 use Carbon\Carbon;
 use DateTime;
@@ -70,7 +70,9 @@ use DB;
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request){
-        //dd($request);
+        $mytime = Carbon::now('America/Bogota');
+        try{
+        DB::beginTransaction(); 
         $presupuesto_programa_academico =presupuesto_programa_academico::get();
         foreach ($presupuesto_programa_academico as $presu_pa){
             $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get($presu_pa->id_programa_academico));
@@ -78,8 +80,22 @@ use DB;
                 $presu_pa->presupuesto_inicial = $valor_formateado;
                 $presu_pa->presupuesto_actual = $valor_formateado;
                 $presu_pa->update();
+
+                $historico_presupuesto_programa_academico = new historico_presupuesto_programa_academico;                      
+                $historico_presupuesto_programa_academico->id_presupuesto_programa = $presu_pa->id;
+                $historico_presupuesto_programa_academico->id_programa_academico = $presu_pa->id_programa_academico;
+                $historico_presupuesto_programa_academico->presupuesto_inicial_historico = $presu_pa->presupuesto_inicial;
+                $historico_presupuesto_programa_academico->id_user_update = Auth::user()->id;
+                $historico_presupuesto_programa_academico->fecha_update = $mytime;
+                $historico_presupuesto_programa_academico->save();
             }            
         };
+        DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto inicial: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto. Intentalo nuevamente. ' . $e->getMessage());
+        }
 
         $control_sistema = DB::table('control_sistema')->first();
         $idUser = Auth::user()->id;

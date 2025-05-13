@@ -162,8 +162,8 @@ header{position:fixed;}
                     </tr>
     
                     <tr>
-                        <td class="tg-0pky" colspan="">CRONOGRAMA</td>
-                        <td class="tg-0pky" colspan="20" ><?= $solicitud_practica->cronograma?>
+                        <td class="tg-0pky" colspan="" style="margin: 0rem;font-size: 9.5px">CRONOGRAMA</td>
+                        <td class="tg-0pky" colspan="20" style="margin: 0rem;font-size: 9.5px"><?= $solicitud_practica->cronograma?>
                         <br></td>
                         <br>
                     </tr>

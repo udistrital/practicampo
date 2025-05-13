@@ -129,69 +129,7 @@ class Wso2AuthController extends Controller
                                  
                 }
                 $user = User::find($datos_user["documento"]);
-                $this->sync_roles_app($user, $roles_admitidos);
-
-                
-                if ($user->hasRole("Docente") && $user->cant_espacio_academico == 0) {
-                    try{
-                        $espacios = [];
-                        $response = Http::withHeaders([
-                                'Accept' => 'application/json',
-                                'Authorization' => 'Bearer ' . $accessToken,
-                            ])->get("https://autenticacion.portaloas.udistrital.edu.co/apioas/academica_jbpm/v2/carga_docente_identificacion/{$datos_user["documento"]}");
-                        $carga_academica_docente = $response->json();
-
-                        if (isset($carga_academica_docente['docente']['carga'])) {
-                            foreach ($carga_academica_docente['docente']['carga'] as $carga_docente) {
-                                $codEspacio = $carga_docente['cod_espacio'];
-                                $nombreEspacio = $carga_docente['espacio'];
-                
-                                if (!isset($espacios[$codEspacio])) {
-                                    $espacios[$codEspacio] = $nombreEspacio;
-                                }
-                            }
-                            $user->cant_espacio_academico = count($espacios);
-                
-                            $espaciosIds = array_keys($espacios);
-                            for ($i = 0; $i < min(6, count($espaciosIds)); $i++) {
-                                $campo = 'id_espacio_academico_' . ($i + 1);
-                                $user->$campo = $espaciosIds[$i];
-                            }
-                
-                            $user->save();
-                        }
-
-                    }catch(\Exception $e){
-                        return redirect()->route('login')->with('error', 'Ha ocurrido un error al intentar actualizar los espacios académicos del docente. ' . $e->getMessage());
-                    }                    
-                }                
-                
-                if ($user->hasRole("Coordinador Proyecto") && $user->id_programa_academico_coord == 999) {
-                    $id_programas = DB::table('programa_academico')->pluck('id')->toArray();                        
-                    foreach($id_programas as $id){
-                        $response = Http::withHeaders([
-                            'Accept' => 'application/json',
-                            'Authorization' => 'Bearer ' . $accessToken,
-                        ])->get("https://autenticacion.portaloas.udistrital.edu.co/apioas/academica_jbpm/v2/consulta_carrera_condor/{$id}");
-                        if ($response->successful()) {
-                            $data = $response->json();
-                            $documento_coordinador = $data['carreraCondorCollection']['carreraCondor'][0]['numero_documento_coordinador'] ?? null;
-
-                            if ($user->id == $documento_coordinador) {
-                                $user->id_programa_academico_coord=$id; 
-                                $user->update(); 
-                                //dd("Programa académico asignado");
-                            }
-                        }else{
-                            return redirect()->route('login')->with('error', 'Ha ocurrido un error inesperado al realizar una consulta: ' . $e->getMessage());   
-                        }
-                    }                
-                    //$user->id_programa_academico_coord=999; 
-                    //$user->update();
-                    if($user->id_programa_academico_coord == 999){
-                        return redirect()->route('login')->with('error', 'No se encontró un programa académico donde el usuario sea coordinador: ' . $e->getMessage());   
-                    }                      
-                }
+                $this->sync_roles_app($user, $roles_admitidos, $accessToken, $datos_user);
             }
             //dd("prueba");
             Auth::login($user);
@@ -250,7 +188,7 @@ class Wso2AuthController extends Controller
      * @param  User  $user usuario.
      * @param array  $roles_admitidos Roles del usuario permitidos en la aplicación.
      */
-    private function sync_roles_app($user, $roles_admitidos)
+    private function sync_roles_app($user, $roles_admitidos, $accessToken, $datos_user)
     {
         $appRoles = array_values($roles_admitidos); //wso2 roles admitidos
 
@@ -271,6 +209,111 @@ class Wso2AuthController extends Controller
                     $user->save();
                 }
                 $user->removeRole($role);
+            }
+        }
+        if ($user->hasRole("Docente") && $user->cant_espacio_academico == 0) {
+            try{
+                $espacios = [];
+                $response = Http::withHeaders([
+                        'Accept' => 'application/json',
+                        'Authorization' => 'Bearer ' . $accessToken,
+                    ])->get("https://autenticacion.portaloas.udistrital.edu.co/apioas/academica_jbpm/v2/carga_docente_identificacion/{$datos_user["documento"]}");
+                $carga_academica_docente = $response->json();
+
+                if (isset($carga_academica_docente['docente']['carga'])) {
+                    foreach ($carga_academica_docente['docente']['carga'] as $carga_docente) {
+                        $codEspacio = $carga_docente['cod_espacio'];
+                        $nombreEspacio = $carga_docente['espacio'];
+        
+                        if (!isset($espacios[$codEspacio])) {
+                            $espacios[$codEspacio] = $nombreEspacio;
+                        }
+                    }
+                    $user->cant_espacio_academico = count($espacios);
+        
+                    $espaciosIds = array_keys($espacios);
+                    for ($i = 0; $i < min(6, count($espaciosIds)); $i++) {
+                        $campo = 'id_espacio_academico_' . ($i + 1);
+                        $user->$campo = $espaciosIds[$i];
+                    }
+        
+                    $user->save();
+                }
+
+            }catch(\Exception $e){
+                return redirect()->route('login')->with('error', 'Ha ocurrido un error al intentar actualizar los espacios académicos del docente. ' . $e->getMessage());
+            }                    
+        }                
+        
+        if ($user->hasRole("Coordinador Proyecto") && $user->id_programa_academico_coord == 999) {
+            try{            
+                $id_programas = DB::table('programa_academico')->pluck('id')->toArray();                        
+                foreach($id_programas as $id){
+                    $response = Http::withHeaders([
+                        'Accept' => 'application/json',
+                        'Authorization' => 'Bearer ' . $accessToken,
+                    ])->get("https://autenticacion.portaloas.udistrital.edu.co/apioas/academica_jbpm/v2/consulta_carrera_condor/{$id}");//a cambiar por la otra api de coordinadores
+                    if ($response->successful()) {
+                        $data = $response->json();
+                        $documento_coordinador = $data['carreraCondorCollection']['carreraCondor'][0]['numero_documento_coordinador'] ?? null;
+
+                        if ($user->id == $documento_coordinador) {
+                            $user->id_programa_academico_coord=$id; 
+                            $user->update(); 
+                            //dd("Programa académico asignado");
+                        }
+                    }else{
+                        return redirect()->route('login')->with('error', 'Ha ocurrido un error inesperado al realizar una consulta. ');   
+                    }
+
+                    //Código en caso de que lleguen a existir 2 usuarios coordinadores con el mismo id programada academico
+                    $otros_usuarios_coord = DB::table('users')
+                        ->where('id', '!=', $user->id)
+                        ->where('id_programa_academico_coord', $user->id_programa_academico_coord)
+                        ->whereExists(function ($query) {
+                            $query->select(DB::raw(1))
+                                ->from('model_has_roles')
+                                ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                                ->whereColumn('model_has_roles.model_id', 'users.id')
+                                ->where('roles.name', 'Coordinador Proyecto');
+                        })
+                        ->get();
+
+                    foreach ($otros_usuarios_coord as $usuario_coord) {
+                        DB::table('users')
+                            ->where('id', $usuario_coord->id)
+                            ->update(['id_programa_academico_coord' => 999]);
+                    }
+                }                
+                //$user->id_programa_academico_coord=999; 
+                //$user->update();
+                if($user->id_programa_academico_coord == 999){
+                    return redirect()->route('login')->with('error', 'No se encontró un programa académico donde el usuario sea coordinador. ');   
+                }
+            }catch(\Exception $e){
+                return redirect()->route('login')->with('error', 'Ha ocurrido un error al intentar validar los datos del usuario coordinador. ' . $e->getMessage());
+            }                    
+        }
+
+        if($user->hasRole('Decano')){
+            try {
+                //Código en caso de que lleguen a existir 2 usuarios decanos (solo puede existir 1)
+                $otros_usuarios_decano = DB::table('users')
+                    ->where('id', '!=', $user->id)
+                    ->whereExists(function ($query) {
+                        $query->select(DB::raw(1))
+                            ->from('model_has_roles')
+                            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                            ->whereColumn('model_has_roles.model_id', 'users.id')
+                            ->where('roles.name', 'Decano');
+                    })
+                    ->get();
+
+                foreach ($otros_usuarios_decano as $usuario_decano) {
+                    $usuario_decano->removeRole(2);
+                }
+            } catch (\Exception $e) {
+                return redirect()->route('login')->with('error', 'Ha ocurrido un error al intentar validar los datos del usuario decano. ' . $e->getMessage());
             }
         }
     }
