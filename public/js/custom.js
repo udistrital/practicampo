@@ -927,7 +927,20 @@ $(document).ready(function(){
                 radio_aprobacion_coordinador.disabled = true;
                 lblpractica.removeAttribute('hidden');
             } 
-        }        
+        }
+	
+	const presupuestotmInput = document.getElementById('presupuesto_restante_transporte_menor');
+        const presupuesto_restante_transporte_menor = presupuestotmInput ? presupuestotmInput.value : null;
+        if (presupuesto_restante_transporte_menor !== null) {
+            const lblpracticatm = document.getElementById('lblpracticatm');
+            presupuesto_restante_format = Number(presupuesto_restante_transporte_menor.replace(/[$.\s]/g, ''));
+            const radio_aprobacion_coordinador = document.querySelector('input[name="aprobacion_coordinador"][value="7"]');
+            
+            if(presupuesto_restante_format < 0){
+                radio_aprobacion_coordinador.disabled = true;
+                lblpracticatm.removeAttribute('hidden');
+            } 
+        } 
     }   
     // Presupuesto programa academico
     

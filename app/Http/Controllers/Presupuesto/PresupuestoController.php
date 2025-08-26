@@ -13,6 +13,7 @@ use PractiCampoUD\proyeccion;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\presupuesto_programa_academico;
 use PractiCampoUD\historico_presupuesto_programa_academico;
+use PractiCampoUD\presupuesto_transporte_menor;
 use PractiCampoUD\User;
 use Carbon\Carbon;
 use DateTime;
@@ -41,7 +42,10 @@ use DB;
     public function index()
     {
         $control_sistema = DB::table('control_sistema')->first();
-        $presupuesto_programa_academico =DB::table('presupuesto_programa_academico')->get();
+	$presupuesto_programa_academico =DB::table('presupuesto_programa_academico')->get();
+	$presupuesto_transporte_menor = DB::table('presupuesto_transporte_menor')
+            ->orderBy('id', 'desc')
+            ->first();
         $idUser = Auth::user()->id;
         $usuario=DB::table('users')
         ->where('id',$idUser)->first();
@@ -59,7 +63,8 @@ use DB;
         ->get();
         return view('presupuesto.edit',['control_sistema'=>$control_sistema,
                                     'presupuesto_programa_academico'=>$presupuesto_programa_academico,
-                                    'programa_academico'=>$programas_academicos,
+				    'presupuesto_transporte_menor'=>$presupuesto_transporte_menor,
+				    'programa_academico'=>$programas_academicos,
                                     'usuario'=>$usuario]);
     }
 
@@ -95,6 +100,46 @@ use DB;
             DB::rollBack();
             \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto inicial: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto. Intentalo nuevamente. ' . $e->getMessage());
+        }
+
+        $control_sistema = DB::table('control_sistema')->first();
+        $idUser = Auth::user()->id;
+        $usuario=DB::table('users')
+        ->where('id',$idUser)->first();
+        return view('home2',['usuario'=>$usuario,
+                            'control_sistema'=>$control_sistema,]);
+
+    }
+
+    /**
+     * Actualiza el presupuesto del transporte menor
+     *
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function update_presupuesto_tm(Request $request){
+        $mytime = Carbon::now('America/Bogota');
+        try{
+        DB::beginTransaction();
+        $presupuesto_transporte_menor = presupuesto_transporte_menor::orderBy('id', 'desc')->first();
+        $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_transporte_menor'));
+        if($valor_formateado != 0){
+        $presupuesto_transporte_menor = new presupuesto_transporte_menor;
+        $presupuesto_transporte_menor->presupuesto_inicial = $valor_formateado;
+        $presupuesto_transporte_menor->presupuesto_restante = $valor_formateado;
+        $presupuesto_transporte_menor->id_user_update = Auth::user()->id;
+        $presupuesto_transporte_menor->fecha_update = $mytime;
+        $presupuesto_transporte_menor->save();
+        }else{
+            throw new \Exception('El nuevo presupuesto debe ser mayor a cero (0)');
+        }
+
+
+        DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto del transporte menor: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto del transporte menor. Intentalo nuevamente. ' . $e->getMessage());
         }
 
         $control_sistema = DB::table('control_sistema')->first();

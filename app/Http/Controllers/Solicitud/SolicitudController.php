@@ -26,6 +26,7 @@ use PractiCampoUD\Mail\CodigoMail;
 use Carbon\Carbon;
 use DateTime;
 use DB;
+use PractiCampoUD\presupuesto_transporte_menor;
 use stdClass;
 
 /**
@@ -1791,17 +1792,26 @@ class SolicitudController extends Controller
                 
                 $presupuesto_programa_academico= DB::table('presupuesto_programa_academico')
                 ->where('id_programa_academico',$proyeccion_preliminar->id_programa_academico)->first();
-                $presupuesto_practica= 0;
+	        $presupuesto_practica= 0;
+		$presupuesto_transporte_menor_practica = 0;
+                $presupuesto_transporte_menor = DB::table('presupuesto_transporte_menor')
+                    ->orderBy('id', 'desc')
+                    ->first();
                 if($solicitud_practica->tipo_ruta == 1){
                     $presupuesto_practica=$costos_proyeccion->viaticos_docente_rp + $costos_proyeccion->viaticos_estudiantes_rp + $costos_proyeccion->vlr_guias_baquianos_rp +
-                                        $costos_proyeccion->vlr_materiales_rp + $costos_proyeccion->vlr_otros_boletas_rp + $costos_proyeccion->costo_total_transporte_menor_rp;
+                                          $costos_proyeccion->vlr_materiales_rp + $costos_proyeccion->vlr_otros_boletas_rp;
+
+                    $presupuesto_transporte_menor_practica = $costos_proyeccion->costo_total_transporte_menor_rp;  
                 }else if($solicitud_practica->tipo_ruta == 2){
                     $presupuesto_practica=$costos_proyeccion->viaticos_docente_ra + $costos_proyeccion->viaticos_estudiantes_ra + $costos_proyeccion->vlr_guias_baquianos_ra +
-                                        $costos_proyeccion->vlr_materiales_ra + $costos_proyeccion->vlr_otros_boletas_ra + $costos_proyeccion->costo_total_transporte_menor_ra;
+                                          $costos_proyeccion->vlr_materiales_ra + $costos_proyeccion->vlr_otros_boletas_ra;
+
+                    $presupuesto_transporte_menor_practica = $costos_proyeccion->costo_total_transporte_menor_ra;
                 }
                 
                 $presupuesto_restante=$presupuesto_programa_academico->presupuesto_actual - $presupuesto_practica;
                 $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
+		$presupuesto_restante_transporte_menor=$presupuesto_transporte_menor->presupuesto_restante - $presupuesto_transporte_menor_practica;
 
                 return view('solicitudes.edit',["proyeccion_preliminar"=>$proyeccion_preliminar,
                                                 "espa_aca_integradas"=>$espa_aca_int,
@@ -1839,7 +1849,10 @@ class SolicitudController extends Controller
                                                 'presupuesto_programa_academico'=>$presupuesto_programa_academico,
                                                 'presupuesto_practica'=>$presupuesto_practica,
                                                 'presupuesto_restante'=>$presupuesto_restante,
-                                                'lista_estudiantes'=>$lista_estudiantes
+						'lista_estudiantes'=>$lista_estudiantes,
+						'presupuesto_transporte_menor'=>$presupuesto_transporte_menor,
+                                                'presupuesto_transporte_menor_practica'=>$presupuesto_transporte_menor_practica,
+                                                'presupuesto_restante_transporte_menor'=>$presupuesto_restante_transporte_menor
         
                 ]);
             break;
@@ -2638,18 +2651,30 @@ class SolicitudController extends Controller
                                     ->from('historico_presupuesto_programa_academico')
                                     ->where('id_presupuesto_programa', $pres_id);
                             })
-                            ->first();
+			    ->first();
+			$presupuesto_transporte_menor = presupuesto_transporte_menor::orderBy('id', 'desc')
+                                ->lockForUpdate()
+                                ->first();
+                        $valor_formateado_transporte_menor = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante_transporte_menor'));
+                        if($valor_formateado_transporte_menor < 0){
+                            throw new \Exception('No hay presupuesto suficiente del transporte menor para aprobar esta práctica.');
+                        }
                         $detalle_presupuesto_programa_academico = new detalle_presupuesto_programa_academico;
                         $detalle_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
 			$detalle_presupuesto_programa_academico->id_solicitud = $solicitud_practica->id;
 			$detalle_presupuesto_programa_academico->id_presupuesto_programa_historico = $historico_presupuesto_programa_academico->id;
 			$detalle_presupuesto_programa_academico->presupuesto_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_práctica'));
 			$detalle_presupuesto_programa_academico->presupuesto_restante_proyecto = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
-                        $detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;
+			$detalle_presupuesto_programa_academico->id_presupuesto_transporte_menor = $presupuesto_transporte_menor->id;
+                        $detalle_presupuesto_programa_academico->presupuesto_transporte_menor_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_transporte_menor_practica'));
+                        $detalle_presupuesto_programa_academico->presupuesto_restante_transporte_menor = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante_transporte_menor'));
+			$detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;
                         $detalle_presupuesto_programa_academico->fecha_aprobacion = $mytime;
                         $detalle_presupuesto_programa_academico->anio_periodo = $mytime->year;
                         $detalle_presupuesto_programa_academico->id_periodo_academico = $proyeccion_preliminar->id_periodo_academico;
-                        $detalle_presupuesto_programa_academico->save();
+			$detalle_presupuesto_programa_academico->save();
+			$presupuesto_transporte_menor->presupuesto_restante = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante_transporte_menor'));
+                        $presupuesto_transporte_menor->update();
 			$presupuesto_programa_academico->presupuesto_actual = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
 			$presupuesto_programa_academico->update();                                           
                     }else if ($valor_formateado < 0 && $request->get('aprobacion_coordinador') == 7){
@@ -2828,13 +2853,23 @@ class SolicitudController extends Controller
 			if($detalle_presupuesto_programa_academico){
 			    $presupuesto_programa_academico = presupuesto_programa_academico::where('id', $detalle_presupuesto_programa_academico->id_presupuesto_programa)
                                                             ->lockForUpdate()
-                                                            ->first();
+							    ->first();
+			    $presupuesto_transporte_menor = presupuesto_transporte_menor::orderBy('id', 'desc')
+                                //where('id', $detalle_presupuesto_programa_academico->id_presupuesto_transporte_menor)
+                                ->lockForUpdate()
+                                ->first();
 
                             if (!$presupuesto_programa_academico) {
                                 throw new \Exception('Presupuesto académico no encontrado.');
+			    }
+			    if (!$presupuesto_transporte_menor) {
+                                throw new \Exception('Presupuesto transporte menor no encontrado.');
                             }
                             $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $detalle_presupuesto_programa_academico->presupuesto_practica;
 			    $presupuesto_programa_academico->update();
+
+			    $presupuesto_transporte_menor->presupuesto_restante = $presupuesto_transporte_menor->presupuesto_restante + $detalle_presupuesto_programa_academico->presupuesto_transporte_menor_practica;
+                            $presupuesto_transporte_menor->update();
                             $detalle_presupuesto_programa_academico->delete(); 
 			}else{
                             throw new \Exception('Detalle presupuesto de solicitud no encontrado.');
