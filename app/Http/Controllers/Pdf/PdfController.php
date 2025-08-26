@@ -667,7 +667,6 @@ class PdfController extends Controller
                         $doce_pract_int[] =['id'=>$item->id,'full_name'=>$item->full_name,
                                             'email'=>$item->email,'celular'=>$item->celular];
                     }
-                    break;
     
                     $id_1 = $pract_inte->id_espa_aca_1;
                     $id_2 = $pract_inte->id_espa_aca_2;
@@ -733,7 +732,7 @@ class PdfController extends Controller
                                 $espa_pract_int[] =['id_proy'=>$pract_inte->id,'espacio_academico'=>$item->espacio_academico,
                                         'codigo_espacio_academico'=>$item->codigo_espacio_academico,'id_docente'=>$id_docente];
                             }
-    
+    		break;
                 case "7":
                     $docentes_pract_int=DB::table('users')
                         ->select('id','email','celular',

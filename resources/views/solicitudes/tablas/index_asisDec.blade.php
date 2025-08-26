@@ -25,7 +25,13 @@
             @if($item->id_estado_doc == 2)
                 <td>Usuario Inactivo</td>
             @endif
-            <td>{{ $item->destino_rp }}</td>
+
+	    @if($item->tipo_ruta == 1)
+                <td>{{ $item->destino_rp }}</td>
+            @elseif($item->tipo_ruta == 2)
+                <td>{{ $item->destino_ra }}</td>
+            @endif
+            
             <td>{{ $item->fecha_salida_aprox_rp }}</td>
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
             <td>{{ $item->ap_coor }}</td>
@@ -81,7 +87,13 @@
         @if($item->id_estado_doc == 2)
             <td>Usuario Inactivo</td>
         @endif
-        <td>{{ $item->destino_rp }}</td>
+
+	@if($item->tipo_ruta == 1)
+                <td>{{ $item->destino_rp }}</td>
+        @elseif($item->tipo_ruta == 2)
+                <td>{{ $item->destino_ra }}</td>
+        @endif        
+
         <td>{{ $item->fecha_salida_aprox_rp }}</td>
         <td>{{ $item->fecha_regreso_aprox_rp }}</td>
         @if($filter != 'pend') 
@@ -143,7 +155,13 @@
             @if($item->id_estado_doc == 2)
                 <td>Usuario Inactivo</td>
             @endif
-            <td>{{ $item->destino_rp }}</td>
+            
+            @if($item->tipo_ruta == 1)
+                <td>{{ $item->destino_rp }}</td>
+            @elseif($item->tipo_ruta == 2)
+                <td>{{ $item->destino_ra }}</td>
+            @endif
+
             <td>{{ $item->fecha_salida_aprox_rp }}</td>
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
             
@@ -208,7 +226,13 @@
             @if($item->id_estado_doc == 2)
                 <td>Usuario Inactivo</td>
             @endif
-            <td>{{ $item->destino_rp }}</td>
+            
+	    @if($item->tipo_ruta == 1)
+                <td>{{ $item->destino_rp }}</td>
+            @elseif($item->tipo_ruta == 2)
+                <td>{{ $item->destino_ra }}</td>
+            @endif
+
             <td>{{ $item->fecha_salida_aprox_rp }}</td>
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
             <td>{{ $item->ap_coor }}</td> 
@@ -246,7 +270,13 @@
                 @if($item->id_estado_doc == 2)
                     <td>Usuario Inactivo</td>
                 @endif
-                <td>{{ $item->destino_rp }}</td>
+                
+		@if($item->tipo_ruta == 1)
+                    <td>{{ $item->destino_rp }}</td>
+                @elseif($item->tipo_ruta == 2)
+                    <td>{{ $item->destino_ra }}</td>
+                @endif
+
                 <td>{{ $item->fecha_salida_aprox_rp }}</td>
                 <td>{{ $item->fecha_regreso_aprox_rp }}</td>
                
@@ -284,7 +314,13 @@
             @if($item->id_estado_doc == 2)
                 <td>Usuario Inactivo</td>
             @endif
-            <td>{{ $item->destino_rp }}</td>
+            
+	    @if($item->tipo_ruta == 1)
+                <td>{{ $item->destino_rp }}</td>
+            @elseif($item->tipo_ruta == 2)
+                <td>{{ $item->destino_ra }}</td>
+            @endif
+
             <td>{{ $item->fecha_salida_aprox_rp }}</td>
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
             @if($item->estado_practica == 1)

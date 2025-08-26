@@ -153,7 +153,7 @@
                 <td>{{ $item->ap_coor }}</td> 
                 <td>{{ $item->ap_dec }}</td>
                 <td style="text-align: center"> 
-                    <a href="{{route('solicitud_edit',[Crypt::encrypt($item->id),Crypt::encrypt($item->tipo_ruta)])}}">
+                    <a href="{{route('solicitud_rutas',[Crypt::encrypt($item->id)])}}">
                         <button class="btn-success" style="background-color: #447161; border:0">Editar</button>
                     </a> 
                 </td>

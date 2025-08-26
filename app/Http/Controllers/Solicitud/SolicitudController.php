@@ -729,14 +729,17 @@ class SolicitudController extends Controller
                     $solicitud_practica->si_capital = intval($request->get('si_capital'));
                     $solicitud_practica->num_solicitud_necesidad = $request->get('num_solicitud_necesidad');
                     $solicitud_practica->consec_cordis = $request->get('consec_cordis');   
-                    $solicitud_practica->consec_dfamarena = $request->get('consec_dfamarena');    
+		    $solicitud_practica->consec_dfamarena = $request->get('consec_dfamarena');
+          
+    		    $proyeccion_preliminar->num_acta_consejo_facultad= $request->get('num_acta_consejo_facultad');
+                    $proyeccion_preliminar->fecha_acta_consejo_facultad= $request->get('fecha_acta_consejo_facultad');
                     
                     $doc_req_solicitud->update();
                     $docentes_practica->update();
                     $proyeccion_preliminar->update();
                     //$costos_proyeccion->update();
                     $transporte_proyeccion->update();
-                    $transporte_menor->update();
+                    //$transporte_menor->update();
                     $mater_herra_proyeccion->update();
                     $solicitud_practica->update();
                 }
@@ -2224,7 +2227,10 @@ class SolicitudController extends Controller
             if(Auth::user()->id == $proyeccion_preliminar->id_docente_responsable || Auth::user()->id_role == 1)
             {
                 $num_estudiantes = $request->get('num_estudiantes_aprox');
-                //$total_docentes_apoyo = $request->get('total_docentes_apoyo');
+		//$total_docentes_apoyo = $request->get('total_docentes_apoyo');
+		$docentes_practica->num_docentes_apoyo = $request->get('num_apoyo');
+		$docentes_practica->total_docentes_apoyo = $request->get('total_docentes_apoyo');
+		$docentes_practica->soporte_personal_apoyo = $request->file('sop_pers_apoyo') != null ? base64_encode(file_get_contents($request->file('sop_pers_apoyo')->path())) : null;
                 $total_docentes_apoyo = $docentes_practica->total_docentes_apoyo;
                 $num_acompa_apoyo = $request->get('num_apoyo');
 				$num_doc_pract_int = $practicas_integradas->cant_espa_aca;
@@ -2234,11 +2240,32 @@ class SolicitudController extends Controller
                 $solicitud_practica->total_docentes_apoyo= $total_docentes_apoyo;
                 $solicitud_practica->num_acompaniantes_apoyo= $num_acompa_apoyo;
                 $proyeccion_preliminar->cantidad_grupos=$request->get('cant_grupos');
-                $proyeccion_preliminar->grupo_1=$request->get('grupo_1');
-                $proyeccion_preliminar->grupo_2=$request->get('grupo_2');
-                $proyeccion_preliminar->grupo_3=$request->get('grupo_3');
-                $proyeccion_preliminar->grupo_4=$request->get('grupo_4');
-
+                switch($request->get('cant_grupos')){
+                    case "1":
+                        $proyeccion_preliminar->grupo_1=$request->get('grupo_1');
+                        $proyeccion_preliminar->grupo_2=null;
+                        $proyeccion_preliminar->grupo_3=null;
+                        $proyeccion_preliminar->grupo_4=null;
+                    break;
+                    case "2":
+                        $proyeccion_preliminar->grupo_1=$request->get('grupo_1');
+                        $proyeccion_preliminar->grupo_2=$request->get('grupo_2');
+                        $proyeccion_preliminar->grupo_3=null;
+                        $proyeccion_preliminar->grupo_4=null;
+                    break;
+                    case "3":
+                        $proyeccion_preliminar->grupo_1=$request->get('grupo_1');
+                        $proyeccion_preliminar->grupo_2=$request->get('grupo_2');
+                        $proyeccion_preliminar->grupo_3=$request->get('grupo_3');
+                        $proyeccion_preliminar->grupo_4=null;
+                    break;
+                    case "4":
+                        $proyeccion_preliminar->grupo_1=$request->get('grupo_1');
+                        $proyeccion_preliminar->grupo_2=$request->get('grupo_2');
+                        $proyeccion_preliminar->grupo_3=$request->get('grupo_3');
+                        $proyeccion_preliminar->grupo_4=$request->get('grupo_4');
+                    break;
+                }
                 /**Tabla docentes_practica */
                     $docentes_practica->num_doc_docente_apoyo_1=$request->get('doc_apoyo_1');
                     $docentes_practica->num_doc_docente_apoyo_2=$request->get('doc_apoyo_2');
@@ -2583,22 +2610,64 @@ class SolicitudController extends Controller
                     $solicitud_practica->id_docente_confirm = Auth::user()->id;
                 }
 
-                $solicitud_practica->confirm_coord = 1;
-                $proyeccion_preliminar->observ_coordinador= $request->get('observ_coordinador');
-                $solicitud_practica->aprobacion_coordinador= $request->get('aprobacion_coordinador');
-                $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
-                if($valor_formateado >= 0 && $request->get('aprobacion_coordinador') == 7){
-                    $detalle_presupuesto_programa_academico = new detalle_presupuesto_programa_academico;
-                    $presupuesto_programa_academico->presupuesto_actual = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
-                    $detalle_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
-                    $detalle_presupuesto_programa_academico->id_solicitud = $solicitud_practica->id;
-                    $detalle_presupuesto_programa_academico->presupuesto_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_práctica'));
-                    $detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;
-                    $detalle_presupuesto_programa_academico->fecha_aprobacion = $mytime;
-                    $detalle_presupuesto_programa_academico->anio_periodo = $mytime->year;
-                    $detalle_presupuesto_programa_academico->id_periodo_academico = $proyeccion_preliminar->id_periodo_academico;
-                    $detalle_presupuesto_programa_academico->save();
-                    $presupuesto_programa_academico->update();                    
+		try{
+    		    DB::beginTransaction();			
+                    $solicitud_practica->confirm_coord = 1;
+                    $proyeccion_preliminar->observ_coordinador= $request->get('observ_coordinador');
+                    $solicitud_practica->aprobacion_coordinador= $request->get('aprobacion_coordinador');
+                    $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+		    if($request->get('aprobacion_coordinador') == 7){
+			if($valor_formateado < 0){
+			    DB::rollBack();
+                            return redirect()->back()->with('error', 'No hay presupuesto suficiente para aprobar esta práctica.');
+                        }
+                    }
+                    if($valor_formateado >= 0 && $request->get('aprobacion_coordinador') == 7){
+                        $presupuesto_actual_db = DB::table('presupuesto_programa_academico')
+                            ->where('id', $presupuesto_programa_academico->id)
+                            ->value('presupuesto_actual');
+
+                        if ($presupuesto_actual_db !== $presupuesto_programa_academico->presupuesto_actual) {
+                            DB::rollBack();
+                            return redirect()->back()->with('error', 'El presupuesto fue modificado en otra solicitud. Recarga la página e intenta nuevamente.');
+			}
+			$pres_id=$presupuesto_programa_academico->id;
+                        $historico_presupuesto_programa_academico = DB::table('historico_presupuesto_programa_academico as h')
+                            ->where('h.id', function ($query) use ($pres_id) {
+                                $query->select(DB::raw('MAX(id)'))
+                                    ->from('historico_presupuesto_programa_academico')
+                                    ->where('id_presupuesto_programa', $pres_id);
+                            })
+                            ->first();
+                        $detalle_presupuesto_programa_academico = new detalle_presupuesto_programa_academico;
+                        $detalle_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
+			$detalle_presupuesto_programa_academico->id_solicitud = $solicitud_practica->id;
+			$detalle_presupuesto_programa_academico->id_presupuesto_programa_historico = $historico_presupuesto_programa_academico->id;
+			$detalle_presupuesto_programa_academico->presupuesto_practica = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_práctica'));
+			$detalle_presupuesto_programa_academico->presupuesto_restante_proyecto = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+                        $detalle_presupuesto_programa_academico->id_user_aprobacion = Auth::user()->id;
+                        $detalle_presupuesto_programa_academico->fecha_aprobacion = $mytime;
+                        $detalle_presupuesto_programa_academico->anio_periodo = $mytime->year;
+                        $detalle_presupuesto_programa_academico->id_periodo_academico = $proyeccion_preliminar->id_periodo_academico;
+                        $detalle_presupuesto_programa_academico->save();
+			$presupuesto_programa_academico->presupuesto_actual = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_restante'));
+			$presupuesto_programa_academico->update();                                           
+                    }else if ($valor_formateado < 0 && $request->get('aprobacion_coordinador') == 7){
+			DB::rollBack();
+			return redirect()->back()->with('error', 'No hay presupuesto suficiente para aprobar esta práctica.');
+		    }
+		    if($request->get('aprobacion_coordinador') == 7){
+                        $detalle_presupuesto_solicitud= DB::table('detalle_presupuesto_programa_academico')
+                            ->where('id_solicitud', $solicitud_practica->id)->exists();
+                        if(!$detalle_presupuesto_solicitud){
+                            throw new \Exception('No se ha guardado correctamente el presupuesto de la práctica.');
+                        }
+                    }
+                    DB::commit(); 
+                }catch(\Exception $e){
+                    DB::rollBack();
+                    \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto: ' . $e->getMessage());
+                    return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto. Intentalo nuevamente. ' . $e->getMessage());
                 }                
                 
                 //dd($presupuesto_programa_academico,$detalle_presupuesto_programa_academico);
@@ -2618,14 +2687,27 @@ class SolicitudController extends Controller
 
                 if($solicitud_practica->aprobacion_coordinador == 4)
                 {
-                    $solicitud_practica->confirm_creador=1;
-                    $solicitud_practica->confirm_docente=0;
-                    $solicitud_practica->confirm_coord=0;
-                    $solicitud_practica->listado_estudiantes=0;
-                    $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
-                    foreach ($lista_estudiantes as $list_estud){
-                        $list_estud->delete();
-                    }   
+                    try{
+                        DB::beginTransaction();
+                        $solicitud_practica->confirm_creador=0;
+                        $solicitud_practica->confirm_docente=0;
+                        $solicitud_practica->confirm_coord=0;
+                        $solicitud_practica->listado_estudiantes=0;
+                        $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
+                        foreach ($lista_estudiantes as $list_estud){
+                            $list_estud->delete();
+			}
+
+			$lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->exists();
+                        if($lista_estudiantes){
+                            throw new \Exception('No se ha eliminado correctamente la lista de estudiantes.');
+                        }	
+                        DB::commit(); 
+                    }catch(\Exception $e){
+                        DB::rollBack();
+                        \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto: ' . $e->getMessage());
+                        return redirect()->back()->with('error', 'Ocurrió un error al rechazar la solicitud. Intentalo nuevamente. ' . $e->getMessage());
+                    }  
                 }
                 else if($solicitud_practica->aprobacion_coordinador == 2)
                 {
@@ -2730,28 +2812,54 @@ class SolicitudController extends Controller
                         $solicitud_practica->id_asistD_aprob = Auth::user()->id;
                     }
                 }else if($request->get('aprobacion_asistD') == 4){
-                    $detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->first();
-                    $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
-                    $solicitud_practica->confirm_asistD = 0;
-                    $solicitud_practica->aprobacion_asistD = 5;
-                    $solicitud_practica->confirm_coord = 0;
-                    $solicitud_practica->aprobacion_coordinador = 5;
-                    $solicitud_practica->confirm_creador = 0;
-                    $solicitud_practica->confirm_docente = 0;
-                    $solicitud_practica->listado_estudiantes = 0;
-                    $detalle_presupuesto_programa_academico;
-                    if($detalle_presupuesto_programa_academico){
-                        $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $detalle_presupuesto_programa_academico->presupuesto_practica;
-                    }
-                    
-                    $presupuesto_programa_academico->update();
-                    //dd($presupuesto_programa_academico, $detalle_presupuesto_programa_academico, $lista_estudiantes);                    
-                    foreach ($lista_estudiantes as $list_estud){
-                        $list_estud->delete();
-                    }  
-                    if($detalle_presupuesto_programa_academico){
-                        $detalle_presupuesto_programa_academico->delete(); 
-                    } 
+                    try{
+                        DB::beginTransaction();
+                        
+                        $detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->first();
+                        $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
+                        $solicitud_practica->confirm_asistD = 0;
+                        $solicitud_practica->aprobacion_asistD = 5;
+                        $solicitud_practica->confirm_coord = 0;
+                        $solicitud_practica->aprobacion_coordinador = 5;
+                        $solicitud_practica->confirm_creador = 0;
+                        $solicitud_practica->confirm_docente = 0;
+                        $solicitud_practica->listado_estudiantes = 0;
+                        $detalle_presupuesto_programa_academico;
+			if($detalle_presupuesto_programa_academico){
+			    $presupuesto_programa_academico = presupuesto_programa_academico::where('id', $detalle_presupuesto_programa_academico->id_presupuesto_programa)
+                                                            ->lockForUpdate()
+                                                            ->first();
+
+                            if (!$presupuesto_programa_academico) {
+                                throw new \Exception('Presupuesto académico no encontrado.');
+                            }
+                            $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $detalle_presupuesto_programa_academico->presupuesto_practica;
+			    $presupuesto_programa_academico->update();
+                            $detalle_presupuesto_programa_academico->delete(); 
+			}else{
+                            throw new \Exception('Detalle presupuesto de solicitud no encontrado.');
+                        }
+                        
+                        //dd($presupuesto_programa_academico, $detalle_presupuesto_programa_academico, $lista_estudiantes);                    
+                        foreach ($lista_estudiantes as $list_estud){
+                            $list_estud->delete();
+			}
+
+			$detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->exists();
+                        if($detalle_presupuesto_programa_academico){
+                            throw new \Exception('No se ha devuelto correctamente el presupuesto.');
+                        }
+                        
+                        $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->exists();
+                        if($lista_estudiantes){
+                            throw new \Exception('No se ha eliminado correctamente la lista de estudiantes.');
+                        }
+                        DB::commit(); 
+                    }catch(\Exception $e){
+                        DB::rollBack();
+                        \Illuminate\Support\Facades\Log::error('Error al rechazar presupuesto' . $e->getMessage());
+                        return redirect()->back()->with('error', 'Ocurrió un error al rechazar la solicitud. Intentalo nuevamente. ' . $e->getMessage());
+                    }   
                                     
                 }    
             }            
@@ -3446,7 +3554,7 @@ class SolicitudController extends Controller
                     case 'pend':
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
                         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
-                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
                                 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
                                 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
@@ -3476,7 +3584,7 @@ class SolicitudController extends Controller
                     case 'pend-teso':
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
                         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
-                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
                                 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
                                 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
@@ -3507,7 +3615,7 @@ class SolicitudController extends Controller
                     case 'pend-cierre':
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
                         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
-                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
                                 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
                                 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
@@ -3544,7 +3652,7 @@ class SolicitudController extends Controller
                     case 'enc_trans':
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
                         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
-                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
                                 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
                                 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
@@ -3667,9 +3775,9 @@ class SolicitudController extends Controller
                     case 'all':
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
                         ->select('p_prel.id','e_aca.id_programa_academico','p_aca.programa_academico','e_aca.espacio_academico',
-                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_consj.abrev  as es_consj','p_prel.confirm_coord','users.id_estado as id_estado_doc',
-                                'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec','sol_prac.id as id_solicitud',
+                                'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec','sol_prac.id as id_solicitud','sol_prac.tipo_ruta as tipo_ruta',
                                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
@@ -3691,7 +3799,7 @@ class SolicitudController extends Controller
                     case 'sol_realizadas':
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
                         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
-                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
                                 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
                                 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
@@ -3798,7 +3906,7 @@ class SolicitudController extends Controller
                         ->where('electiva','=',1)->get();
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
                         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
-                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
                                 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
                                 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
@@ -3835,7 +3943,7 @@ class SolicitudController extends Controller
                         ->where('electiva','=',1)->get();
                         $proyeccion=DB::table('proyeccion_preliminar as p_prel')
                         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','p_prel.id_docente_responsable',
-                                'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
+                                'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_dec.abrev  as ab_dec','e_aca.electiva','p_prel.confirm_coord','es_consj.abrev as es_consj','users.id_estado as id_estado_doc',
                                 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp', 'c_proy.viaticos_estudiantes_ra',
                                 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 'es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
@@ -3884,7 +3992,7 @@ class SolicitudController extends Controller
                         ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
                         ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
                         ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_proyeccion_preliminar')
-                        ->where('sol_prac.aprobacion_coordinador','!=',4)
+                        //->where('sol_prac.aprobacion_coordinador','!=',4)
                         ->where('p_prel.confirm_creador','=',1)
                         ->where('p_prel.confirm_docente','=',1)
                         ->where('p_prel.confirm_coord','=',1)
@@ -3894,7 +4002,11 @@ class SolicitudController extends Controller
                         ->where('p_prel.aprobacion_consejo_facultad','=',3)
                         ->where('sol_prac.id_estado_solicitud_practica','=',5)
                         ->where('sol_prac.listado_estudiantes','=',0)
-                        ->paginate(10000);
+			->where(function($query) {
+                            $query->where('sol_prac.aprobacion_coordinador', '=', 5)
+                                  ->orWhereNull('sol_prac.aprobacion_coordinador');
+                        })
+			->paginate(10000);
                         
                         return view('solicitudes.index',['proyecciones'=>$proyeccion,
                                                             'proyeccion_preliminar'=>$proyeccion, 

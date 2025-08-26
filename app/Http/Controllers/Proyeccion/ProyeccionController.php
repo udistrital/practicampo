@@ -370,7 +370,7 @@ class ProyeccionController extends Controller
                         ->where('p_prel.aprobacion_asistD','=',7)
                         ->where('p_prel.aprobacion_consejo_facultad','=',5)
                         ->where('p_prel.id_estado','=',1)
-                        ->paginate(30);
+                        ->paginate(10000);
                     break;
 
                     case 'send':
@@ -553,6 +553,31 @@ class ProyeccionController extends Controller
                             ->orWhere('p_prel.id_programa_academico','=',$id_prog_coord);
                         })
                         ->paginate(10000);
+		break;
+
+			case 'proy_recha_cons':
+                        $usuario=DB::table('users')->where('id','=',$idUser)->first();
+                        $id_prog_coord = $usuario->id_programa_academico_coord;
+                        $proyeccion=DB::table('proyeccion_preliminar as p_prel')
+                        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico','es_consj.abrev  as es_consj','users.id_estado as id_estado_doc',
+                                'p_prel.destino_rp','p_prel.fecha_salida_aprox_rp','p_prel.fecha_regreso_aprox_rp','es_coor.abrev as ab_coor',
+                                'es_dec.abrev  as ab_dec', 'c_proy.costo_total_transporte_menor_rp','c_proy.costo_total_transporte_menor_ra', 'c_proy.viaticos_estudiantes_rp',
+                                'c_proy.viaticos_estudiantes_ra', 'c_proy.viaticos_docente_rp', 'c_proy.viaticos_docente_ra', 
+                                'c_proy.total_presupuesto_rp','c_proy.total_presupuesto_ra','c_proy.valor_estimado_transporte_rp','c_proy.valor_estimado_transporte_ra',
+                                'p_prel.created_at as f_creacion', 'p_prel.aprobacion_consejo_facultad',
+                                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                        ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
+                        ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
+                        ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
+                        ->join('users','p_prel.id_docente_responsable','=','users.id')
+                        ->join('costos_proyeccion as c_proy','p_prel.id','=','c_proy.id')
+                        ->where('p_prel.aprobacion_consejo_facultad','=',4)
+                        ->where(function($query) use ($idUser, $id_prog_coord){
+                            $query->where('p_prel.id_programa_academico','=',$id_prog_coord);
+                        })
+                        ->paginate(10000);
                     break;
                     
                     case 'all':
@@ -567,7 +592,7 @@ class ProyeccionController extends Controller
                                 'es_dec.abrev  as ab_dec','es_consj.abrev  as es_consj','users.id_estado as id_estado_doc','p_prel.confirm_coord',
                                 'p_prel.created_at as f_creacion',
                                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+			->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
                         ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
                         ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
@@ -5676,6 +5701,10 @@ class ProyeccionController extends Controller
                     else if($proyeccion_preliminar->aprobacion_decano == 4 && $proyeccion_preliminar->aprobacion_coordinador == 2)
                     {
                         $proyeccion_preliminar->id_estado = 2;
+		    }
+		    if($proyeccion_preliminar->aprobacion_consejo_facultad == 4)
+                    {
+                        $proyeccion_preliminar->aprobacion_consejo_facultad = 5;
                     }
 
                 }
@@ -5828,6 +5857,12 @@ class ProyeccionController extends Controller
                             $doc_req_sol->save();
                         }   
 
+                    }else if($aprobacion_consejo_facultad == 4){
+                        $proyeccion_preliminar->confirm_creador=1;
+                        $proyeccion_preliminar->confirm_docente=1;
+                        $proyeccion_preliminar->confirm_coord=0;
+                        $proyeccion_preliminar->aprobacion_decano=5;
+                        $proyeccion_preliminar->aprobacion_coordinador=5;
                     }
 
                     $proyeccion_preliminar->id_asistD_aprob_consejo = Auth::user()->id;

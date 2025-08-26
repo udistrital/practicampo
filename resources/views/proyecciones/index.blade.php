@@ -162,6 +162,13 @@
                                   </div>
                                 </div>
 
+				<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                  <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="id_filtro_proyeccion"  @if(isset($filter) and ($filter == 'proy_recha_cons')) checked="true" @endif onclick="filtrar_proyecciones(this.value)" value="18">
+                                      <label class="form-check-label" for="">Rechazadas Consejo Facultad</label>
+                                  </div>
+                                </div>
+
                               @endif
 
                               @if(Auth::user()->decano())

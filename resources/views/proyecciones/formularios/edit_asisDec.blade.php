@@ -2568,7 +2568,7 @@
 
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="aprobacion_consejo_facultad" value="5"
+                                    <input class="form-check-input" type="radio" name="aprobacion_consejo_facultad" value="5" onchange="rechazo_proy_cons_asist()"
                                     <?php if($proyeccion_preliminar->aprobacion_consejo_facultad == 5) echo 'checked'?>>
                                     <label class="form-check-label" for="">Pendiente</label>
                                     </div>
@@ -2576,9 +2576,17 @@
 
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="aprobacion_consejo_facultad" value="3"
+                                    <input class="form-check-input" type="radio" name="aprobacion_consejo_facultad" value="3" onchange="rechazo_proy_cons_asist()"
                                     <?php if($proyeccion_preliminar->aprobacion_consejo_facultad == 3) echo 'checked'?>>
                                     <label class="form-check-label" for="">Aprobado</label>
+                                    </div>
+                                </div>
+
+				<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="aprobacion_consejo_facultad" value="4" onchange="rechazo_proy_cons_asist()"
+                                    <?php if($proyeccion_preliminar->aprobacion_consejo_facultad == 4) echo 'checked'?>>
+                                    <label class="form-check-label" for="">Rechazado</label>
                                     </div>
                                 </div>
 
@@ -2615,7 +2623,7 @@
                                 <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                                 </div>
-                            <input class="inputDate form-control datetimepicker" name="fecha_acta_consejo_facultad"  type="text" required
+                            <input id="fecha_acta_consejo_facultad" class="inputDate form-control datetimepicker" name="fecha_acta_consejo_facultad"  type="text" required
                             title="Fecha de acta de consejo de facultad"
                             value="">
                             </div>

@@ -52,7 +52,7 @@ header{position:fixed;}
     </header>
 
     <div style="text-align:center; margin-top: 90;">
-        <table>
+        <table style="margin: 0 auto;width: 94%">
             <div style="margin: 0 auto;width: 94%">
                 <p align="center"><strong><span class="larger">FORMATO DE PRÁCTICAS ACADÉMICAS</strong></span></p>
                 <p style="margin-left: 50px"><strong><span class="larger">1. Información básica práctica académica:
@@ -162,8 +162,8 @@ header{position:fixed;}
                     </tr>
     
                     <tr>
-                        <td class="tg-0pky" colspan="">CRONOGRAMA</td>
-                        <td class="tg-0pky" colspan="20" ><?= $solicitud_practica->cronograma?>
+                        <td class="tg-0pky" colspan="" style="margin: 0rem;font-size: 9.5px">CRONOGRAMA</td>
+                        <td class="tg-0pky" colspan="20" style="margin: 0rem;font-size: 9.5px"><?= $solicitud_practica->cronograma?>
                         <br></td>
                         <br>
                     </tr>

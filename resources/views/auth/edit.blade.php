@@ -483,7 +483,7 @@
                                                 data-title="Indique el código de la asignatura" style="font-size: 0.813rem"></i> {{ __('Cod. Académ.') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <input type="text" name="cod_espacio_academico_[]" id="cod_espacio_academico_[]" value="{{$espacios_usuario[3]['codigo_espacio_academico']}}" class="form-control"
-                                            onchange="searchEspaAca(this.value,1)"/>
+                                            onchange="searchEspaAca(this.value,4)"/>
                                         </div>
                                         <div class="col-md-7">
                                             <label for="espacio_academico_1" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
@@ -523,7 +523,7 @@
                                                 data-title="Indique el código de la asignatura" style="font-size: 0.813rem"></i> {{ __('Cod. Académ.') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <input type="text" name="cod_espacio_academico_[]" id="cod_espacio_academico_[]" value="{{$espacios_usuario[4]['codigo_espacio_academico']}}" class="form-control"
-                                            onchange="searchEspaAca(this.value,1)"/>
+                                            onchange="searchEspaAca(this.value,5)"/>
                                         </div>
                                         <div class="col-md-7">
                                             <label for="espacio_academico_1" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
@@ -563,7 +563,7 @@
                                                 data-title="Indique el código de la asignatura" style="font-size: 0.813rem"></i> {{ __('Cod. Académ.') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <input type="text" name="cod_espacio_academico_[]" id="cod_espacio_academico_[]" value="{{$espacios_usuario[5]['codigo_espacio_academico']}}" class="form-control"
-                                            onchange="searchEspaAca(this.value,1)"/>
+                                            onchange="searchEspaAca(this.value,6)"/>
                                         </div>
                                         <div class="col-md-7">
                                             <label for="espacio_academico_1" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>

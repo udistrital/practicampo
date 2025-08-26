@@ -517,7 +517,7 @@
                 <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <input id="cant_grupos" type="number" max="4" min="1" pattern="^[1-4]" class="form-control @error('cant_grupos') is-invalid @enderror" name="cant_grupos" 
-                    title=""
+                    title="" onclick="ver_gps_proy()"
                     value="{{$proyeccion_preliminar->cantidad_grupos}}" autocomplete="off" autofocus readonly>
                     @error('cant_grupos')
                         <span class="invalid-feedback" role="alert">
@@ -527,9 +527,9 @@
                     
                     <span class="input-group-btn">
                         <button class="btn btn-success btn_ver" type="button" id="ver_grupos" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
-                        onclick="ver_gps()"><i class="far fa-eye"></i></button>
+                        onclick="ver_gps_proy()"><i class="far fa-eye"></i></button>
                         <button class="btn btn-success btn_ver" type="button" id="ocul_grupos" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
-                        onclick="ocul_gps()"><i class="far fa-eye-slash"></i></button>
+                        onclick="ocul_gps_proy()"><i class="far fa-eye-slash"></i></button>
                     </span>
                 </div>
             </div>

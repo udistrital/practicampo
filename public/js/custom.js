@@ -3591,6 +3591,99 @@ function ocul_gps()
     $("#Grupos_edit").hide();
 }
 
+function ver_gps_sol()
+{
+    var num_gps = $("#cant_grupos").val();
+    $("#ver_grupos").hide();
+    $("#ocul_grupos").show();
+    $("#cant_grupos").removeAttr("readonly");
+
+    switch(num_gps){
+        case "1":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").hide();
+            $("#gp_3_edit").hide();
+            $("#gp_4_edit").hide();
+        break;
+        case "2":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").hide();
+            $("#gp_4_edit").hide();
+        break;
+        case "3":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").show();
+            $("#gp_4_edit").hide();
+        break;
+        case "4":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").show();
+            $("#gp_4_edit").show();
+        break;
+    }
+}
+
+function ocul_gps_sol()
+{
+    $("#ocul_grupos").hide();
+    $("#ver_grupos").show();
+    $("#cant_grupos").attr("readonly","readonly");
+    $("#Grupos_edit").hide();
+}
+
+function ver_gps_proy()
+{
+    var num_gps = $("#cant_grupos").val();
+    $("#ver_grupos").hide();
+    $("#ocul_grupos").show();
+    $("#cant_grupos").removeAttr("readonly");
+
+    switch(num_gps){
+        case "1":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").hide();
+            $("#gp_3_edit").hide();
+            $("#gp_4_edit").hide();
+        break;
+        case "2":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").hide();
+            $("#gp_4_edit").hide();
+        break;
+        case "3":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").show();
+            $("#gp_4_edit").hide();
+        break;
+        case "4":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").show();
+            $("#gp_4_edit").show();
+        break;
+    }
+}
+
+function ocul_gps_proy()
+{
+    $("#ocul_grupos").hide();
+    $("#ver_grupos").show();
+    $("#cant_grupos").attr("readonly","readonly");
+    $("#Grupos_edit").hide();
+}
 /*Cantidad Grupos Proyección Edit*/
 
 /*Cantidad acompañantes  proyeccion - Solicitud edit*/
@@ -6236,6 +6329,19 @@ function rechazo_solic_asist(){
         num_resolucion.disabled = true;
         fecha_resolucion.disabled = true;
         num_cdp.disabled = true;
+    }
+}
+
+function rechazo_proy_cons_asist() {
+    const rdbtn_rechazado = document.querySelector('input[name="aprobacion_consejo_facultad"][value="4"]');
+    const num_acta_consejo_facultad = document.getElementById('num_acta_consejo_facultad');
+    const fecha_acta_consejo_facultad = document.getElementById('fecha_acta_consejo_facultad');
+    if (rdbtn_rechazado.checked) {
+        num_acta_consejo_facultad.disabled = true;
+        fecha_acta_consejo_facultad.disabled = true;
+    } else {
+        num_acta_consejo_facultad.disabled = false;
+        fecha_acta_consejo_facultad.disabled = false;
     }
 }
 
