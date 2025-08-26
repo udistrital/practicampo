@@ -35,7 +35,7 @@
             {{mb_strtoupper($f_resolucion['mes'])}} DE {{$f_resolucion['anio']}}</strong>
         <br><br>
         “Por la cual se autoriza un avance a un Docente para el desarrollo de una actividad académica”</p>
-        <p align="justify">La Decana de la Facultad del Medio Ambiente y Recursos Naturales de la Universidad Distrital Francisco José de Caldas, 
+        <p align="justify">El Decano de la Facultad del Medio Ambiente y Recursos Naturales de la Universidad Distrital Francisco José de Caldas, 
         en uso de sus atributos legales, estatutarias, y</p>
         
         <p align="center"><strong>CONSIDERANDO</strong></p>
@@ -122,6 +122,7 @@
                                 <span style="font-size:5.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
                                     @foreach ($espa_pract_int as $item)
                                         <?php if($sol->id == $item['id_proy']) echo $item['espacio_academico'] ?>
+                                        <br>
                                     @endforeach</span>
                             </p>
                             <!--<p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;height:5px" align="center">
@@ -134,15 +135,36 @@
                             </p>
                             <p class="MsoNormal" style="text-align:center;margin-top: 3px;margin-bottom: 0px;" align="center">
                                 <span style="font-size:5.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
+                                    @php
+                                        $docentes_mostrados = [];
+                                        $docentes_repetidos = 0;
+                                    @endphp
+
                                     @foreach ($doce_pract_int as $item) 
                                         @foreach ($espa_pract_int as $esp_pr) 
-                                                <?php if($esp_pr['id_docente'] == $item['id'] && $sol->id == $esp_pr['id_proy'])echo $item['full_name'];?>
-                                            {{-- <br> --}}
-                                            {{-- <br> --}}
-                                            {{--  --}}
+                                            @php
+                                                $clave = $item['id'] . '-' . $sol->id;
+                                            @endphp
+
+                                            @if ($esp_pr['id_docente'] == $item['id'] && $sol->id == $esp_pr['id_proy'])
+                                                @if (!in_array($clave, $docentes_mostrados))
+                                                    {{ $item['full_name'] }}<br><br>
+                                                    @php
+                                                        $docentes_mostrados[] = $clave;
+                                                    @endphp
+                                                @else
+                                                    @php
+                                                        $docentes_repetidos++;
+                                                    @endphp
+                                                @endif
+                                            @endif
                                         @endforeach
-                                        <br><br>
                                     @endforeach
+
+                                    @php
+                                        $total_asistentes[0]['num_docentes'] = $total_asistentes[0]['num_docentes'] - $docentes_repetidos;
+                                    @endphp
+
                                     @if(!is_null($sol->docente_apoyo_1))
 					{{ ucwords(strtolower($sol->docente_apoyo_1)) }}
                                     @endif

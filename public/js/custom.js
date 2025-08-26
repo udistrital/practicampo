@@ -927,7 +927,20 @@ $(document).ready(function(){
                 radio_aprobacion_coordinador.disabled = true;
                 lblpractica.removeAttribute('hidden');
             } 
-        }        
+        }
+        
+        const presupuestotmInput = document.getElementById('presupuesto_restante_transporte_menor');
+        const presupuesto_restante_transporte_menor = presupuestotmInput ? presupuestotmInput.value : null;
+        if (presupuesto_restante_transporte_menor !== null) {
+            const lblpracticatm = document.getElementById('lblpracticatm');
+            presupuesto_restante_format = Number(presupuesto_restante_transporte_menor.replace(/[$.\s]/g, ''));
+            const radio_aprobacion_coordinador = document.querySelector('input[name="aprobacion_coordinador"][value="7"]');
+            
+            if(presupuesto_restante_format < 0){
+                radio_aprobacion_coordinador.disabled = true;
+                lblpracticatm.removeAttribute('hidden');
+            } 
+        }  
     }   
     // Presupuesto programa academico
     
@@ -3631,6 +3644,53 @@ function ver_gps_sol()
 }
 
 function ocul_gps_sol()
+{
+    $("#ocul_grupos").hide();
+    $("#ver_grupos").show();
+    $("#cant_grupos").attr("readonly","readonly");
+    $("#Grupos_edit").hide();
+}
+
+function ver_gps_proy()
+{
+    var num_gps = $("#cant_grupos").val();
+    $("#ver_grupos").hide();
+    $("#ocul_grupos").show();
+    $("#cant_grupos").removeAttr("readonly");
+
+    switch(num_gps){
+        case "1":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").hide();
+            $("#gp_3_edit").hide();
+            $("#gp_4_edit").hide();
+        break;
+        case "2":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").hide();
+            $("#gp_4_edit").hide();
+        break;
+        case "3":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").show();
+            $("#gp_4_edit").hide();
+        break;
+        case "4":
+            $("#Grupos_edit").show();
+            $("#gp_1_edit").show();
+            $("#gp_2_edit").show();
+            $("#gp_3_edit").show();
+            $("#gp_4_edit").show();
+        break;
+    }
+}
+
+function ocul_gps_proy()
 {
     $("#ocul_grupos").hide();
     $("#ver_grupos").show();

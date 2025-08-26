@@ -36,6 +36,7 @@ class SolicituesAprobadasExport implements  FromCollection, WithHeadings, Should
         $solicitudes = DB::table('solicitud_practica as s')
             ->select(
                 's.id',
+                'u.id as id_user',
                 DB::raw("CONCAT(u.primer_nombre, ' ', u.primer_apellido) as Nombre_Docente"),
                 'u.celular',
                 'pa.programa_academico',
@@ -71,6 +72,7 @@ class SolicituesAprobadasExport implements  FromCollection, WithHeadings, Should
     {
         return [
             'ID Solicitud',
+            'Documento Docente',
             'Nombre Docente',
             'Celular',
             'Programa Académico',

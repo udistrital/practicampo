@@ -110,6 +110,7 @@ Route::group(['middleware' => 'auth'], function () {
         // ------> Presupuesto programas academicos <------
         Route::get('presupuesto','Presupuesto\PresupuestoController@index')->name('presupuesto_edit')->middleware('role:1,2,3');
         Route::put('presupuesto','Presupuesto\PresupuestoController@update')->name('presupuesto_update')->middleware('role:1,2,3');
+        Route::put('presupuesto_tm','Presupuesto\PresupuestoController@update_presupuesto_tm')->name('presupuesto_update_tm')->middleware('role:1,2,3');
         // ------> Presupuesto programas academicos <------
         
     });

@@ -3589,6 +3589,39 @@
                                                 @enderror
                                             </div>                                             
                                         </div>
+
+                                        <div class="row mt-3" >                                           
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <label for="num_acta_consejo_facultad" class="col-form-label text-md-left">
+                                                    <i class="fas fa-question-circle" 
+                                                    data-toggle="tooltip" data-placement="left" 
+                                                    data-title="" style="font-size: 0.813rem"></i> {{ __('N° Acta Consejo de Facultad') }}</label>
+                                                <span class="hs-form-required">*</span>
+                                                <input id="num_acta_consejo_facultad" type="number" class="form-control @error('consec_cordis') is-invalid @enderror col-md-6"
+                                                name="num_acta_consejo_facultad" value="{{$proyeccion_preliminar->num_acta_consejo_facultad}}" autocomplete="off" autofocus>
+
+                                                @error('consec_cordis')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                <label for="fecha_acta_consejo_facultad" class="col-form-label text-md-left">
+                                                    <i class="fas fa-question-circle" 
+                                                    data-toggle="tooltip" data-placement="left" 
+                                                    data-title="" style="font-size: 0.813rem"></i> {{ __('Fecha Acta Consejo de Facultad') }}</label>
+                                                <span class="hs-form-required">*</span>
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                    </div>
+                                                <input id="fecha_acta_consejo_facultad" class="inputDate form-control datetimepicker col-md-6" name="fecha_acta_consejo_facultad"  type="text"
+                                                value="{{$proyeccion_preliminar->fecha_acta_consejo_facultad}}" >
+                                                </div>
+                                            </div>                                           
+                                        </div>
                                     </div>                                           
                                 </div>
                             <!-- Resolución - CDP - SiCapital-->

@@ -48,7 +48,7 @@
 		<p>Bogotá, {{$hoy['num']}} de {{ucfirst($hoy['mes'])}} de {{$hoy['anio']}}</p>
 		{{-- <br>	 --}}
 			
-		<p align="justify">Doctor <br>
+		<p align="justify">Doctora <br>
 		<strong>{{$parrafos_modificables->parr_2}}</strong><br>
 		{{$parrafos_modificables->parr_3}}<br>
 		Universidad Distrital Francisco José de Caldas <br>

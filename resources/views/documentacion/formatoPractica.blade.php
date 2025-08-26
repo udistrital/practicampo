@@ -52,7 +52,7 @@ header{position:fixed;}
     </header>
 
     <div style="text-align:center; margin-top: 90;">
-        <table>
+        <table style="margin: 0 auto;width: 94%">
             <div style="margin: 0 auto;width: 94%">
                 <p align="center"><strong><span class="larger">FORMATO DE PRÁCTICAS ACADÉMICAS</strong></span></p>
                 <p style="margin-left: 50px"><strong><span class="larger">1. Información básica práctica académica:

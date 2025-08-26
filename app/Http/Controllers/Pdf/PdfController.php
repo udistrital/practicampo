@@ -674,7 +674,6 @@ class PdfController extends Controller
                         $doce_pract_int[] =['id'=>$item->id,'full_name'=>$item->full_name,
                                             'email'=>$item->email,'celular'=>$item->celular];
                     }
-                    break;
     
                     $id_1 = $pract_inte->id_espa_aca_1;
                     $id_2 = $pract_inte->id_espa_aca_2;
@@ -740,7 +739,7 @@ class PdfController extends Controller
                                 $espa_pract_int[] =['id_proy'=>$pract_inte->id,'espacio_academico'=>$item->espacio_academico,
                                         'codigo_espacio_academico'=>$item->codigo_espacio_academico,'id_docente'=>$id_docente];
                             }
-    
+                break;
                 case "7":
                     $docentes_pract_int=DB::table('users')
                         ->select('id','email','celular',
@@ -2176,18 +2175,18 @@ class PdfController extends Controller
                 "tipo"=>"N/A",
                 "num_apoyo"=>0];
         }
-        if($docentes_acompanantes->personal_apoyo_1!=Null)
+        if($docentes_acompanantes->docente_apoyo_1!=Null)
         {
-        $acompa[] = ["nombre"=>$docentes_acompaniantes->personal_apoyo_1,
-                "identificacion"=>$docentes_acompaniantes->num_doc_personal_apoyo_1,
-                "tipo"=>($docentes_acompaniantes->tipo_personal_apoyo_1)==Null?"":"Apoyo",
+        $acompa[] = ["nombre"=>$docentes_acompanantes->docente_apoyo_1,
+                "identificacion"=>$docentes_acompanantes->num_doc_docente_apoyo_1,
+                "tipo"=>($docentes_acompanantes->tipo_docente_apoyo_1)==Null?"":"Apoyo",
                 "num_apoyo"=>1];
         }
-        if($docentes_acompanantes->personal_apoyo_1!=Null)
+        if($docentes_acompanantes->docente_apoyo_1!=Null)
         {
-        $acompa[] = ["nombre"=>$docentes_acompaniantes->personal_apoyo_2,
-                "identificacion"=>$docentes_acompaniantes->num_doc_personal_apoyo_2,
-                "tipo"=>($docentes_acompaniantes->tipo_personal_apoyo_2)==Null?"":"Apoyo",
+        $acompa[] = ["nombre"=>$docentes_acompanantes->docente_apoyo_2,
+                "identificacion"=>$docentes_acompanantes->num_doc_docente_apoyo_2,
+                "tipo"=>($docentes_acompanantes->tipo_docente_apoyo_2)==Null?"":"Apoyo",
                 "num_apoyo"=>2];
         }
         
@@ -2434,7 +2433,7 @@ class PdfController extends Controller
                                 'anio_resolucion'=>$anio_resolucion,
                                 'doce_pract_int'=>$doce_pract_int,
                                 'total_asistentes'=>$total_asistentes,
-                                'docentes_acompaniantes'=>$docentes_acompaniantes,
+                                'docentes_acompaniantes'=>$docentes_acompanantes,
                                 'viaticos_docente'=>$viaticos_docente,
                                 'viaticos_estudiante'=>$viaticos_estudiante,
                                 'valor_est_trans'=>$valor_est_trans,

@@ -2986,7 +2986,7 @@
 <!-- certificados -->
 
 <!-- Visualización Presupuesto Programa academico -->
-    <h4>Presupuesto</h4>
+    <h4>Presupuesto Programa Académico</h4>
     <hr class="divider">
     <br>
     <div class="form-group row">
@@ -3016,6 +3016,38 @@
             <label id="lblpractica" class="col-form-label text-md-left text-danger" hidden>{{ __('La práctica no se puede aprobar porque el presupuesto del programa no es suficiente.') }}</label>
         </div>
     </div>
+
+    <br>
+    <h4>Presupuesto Transporte Menor</h4>
+    <hr class="divider">    
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label for="presupuesto_actual_transporte_menor" class="col-form-label text-md-left">{{ __('Presupuesto Actual') }}</label>
+            <input id="presupuesto_actual_transporte_menor" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
+            name="presupuesto_actual_transporte_menor" title=""
+            value="$ {{number_format($presupuesto_transporte_menor->presupuesto_restante, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+
+        <div class="col-md-5">
+            <label for="presupuesto_transporte_menor_practica" class="col-form-label text-md-left"> {{__('Presupuesto Transporte Menor Práctica N°') }} {{ $solicitud_practica->id }}</label>
+            <input id="presupuesto_transporte_menor_practica" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
+            name="presupuesto_transporte_menor_practica" title=""
+            value="$ {{number_format($presupuesto_transporte_menor_practica, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+
+        <div class="col-md-4">
+            <label for="presupuesto_restante_transporte_menor" class="col-form-label text-md-left">{{ __('Presupuesto restante transporte menor') }}</label>
+            <input id="presupuesto_restante_transporte_menor" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
+            name="presupuesto_restante_transporte_menor" title=""
+            value="$ {{number_format($presupuesto_restante_transporte_menor, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label id="lblpracticatm" class="col-form-label text-md-left text-danger" hidden>{{ __('La práctica no se puede aprobar porque el presupuesto del transporte menor no es suficiente.') }}</label>
+        </div>
+    </div>
+    <br>
 <!-- Visualización Presupuesto Programa academico -->
 
 <h4>Observaciones</h4>

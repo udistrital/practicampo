@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeWriting;
 use Maatwebsite\Excel\Concerns\WithTitle;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 use Carbon\Carbon;
 use DB;
@@ -37,11 +38,18 @@ class SolicitudesRealizadasExport  implements  FromCollection, WithHeadings, Sho
         ->select('s.id',
                  DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'),
                  'p_aca.programa_academico','e_aca.espacio_academico',                 
-                'p_prel.destino_rp','s.fecha_salida as fecha_salida_aprox_rp','s.fecha_regreso as fecha_regreso_aprox_rp', 'ep.estado')
+                'p_prel.destino_rp','s.fecha_salida as fecha_salida_aprox_rp','s.fecha_regreso as fecha_regreso_aprox_rp',
+                DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.viaticos_docente_rp ELSE cp.viaticos_docente_ra END AS viaticos_docente'),
+                DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.viaticos_estudiantes_rp ELSE cp.viaticos_estudiantes_ra END AS viaticos_estudiantes'),
+                DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.vlr_otros_boletas_rp ELSE cp.vlr_otros_boletas_ra END AS valor_otros_boletas'),
+                DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.vlr_guias_baquianos_rp ELSE cp.vlr_guias_baquianos_ra END AS valor_guias_baquianos'),
+                DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.costo_total_transporte_menor_rp ELSE cp.costo_total_transporte_menor_ra END AS transporte_menor'),
+                'ep.estado')
         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
         ->join('users','p_prel.id_docente_responsable','=','users.id')
         ->join('solicitud_practica as s','p_prel.id','=','s.id_proyeccion_preliminar')
+        ->join('costos_proyeccion as cp','p_prel.id','=','cp.id')
         ->join('estado_practica as ep', 'ep.id', '=', 's.estado_practica')
         ->where('s.aprobacion_decano', '=', 7)
         ->where('s.id_estado_solicitud_practica', '=', 3)
@@ -61,8 +69,13 @@ class SolicitudesRealizadasExport  implements  FromCollection, WithHeadings, Sho
             'Programa Académico', 
             'Espacio Académico',            
             'Destino', 
-            'Fecha Salida Aproximada', 
-            'Fecha Regreso Aproximada', 
+            'Fecha Salida', 
+            'Fecha Regreso', 
+            'Viaticos Docente',
+            'Viaticos Estudiantes',
+            'Valor Otros Boletas',
+            'Valor Guias Baquianos',
+            'Valor Transporte Menor',
             'Estado Solicitud'            
         ];
     }
@@ -70,11 +83,12 @@ class SolicitudesRealizadasExport  implements  FromCollection, WithHeadings, Sho
     public function registerEvents():array{
         return[
             AfterSheet::class => function(AfterSheet $event){
-                $cellRange = 'A1:H1';
+                $cellRange = 'A1:M1';
+                $sheet = $event->sheet->getDelegate();
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                 ->getStartColor()->setRGB('74BB96');
-                foreach (range('A', 'H') as $column) {
+                foreach (range('A', 'M') as $column) {
                     $event->sheet->getColumnDimension($column)->setAutoSize(false);
                     $event->sheet->getColumnDimension($column)->setWidth(15);
                 }
@@ -82,6 +96,17 @@ class SolicitudesRealizadasExport  implements  FromCollection, WithHeadings, Sho
                 $event->sheet->getColumnDimension('C')->setWidth(40);
                 $event->sheet->getColumnDimension('D')->setWidth(30);
                 $event->sheet->getColumnDimension('E')->setWidth(40);
+
+                foreach (range('H', 'L') as $col) {
+                $sheet->getStyle($col . '2:' . $col . $sheet->getHighestRow())
+                    ->getNumberFormat()
+                    ->setFormatCode(NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
+                }
+                foreach (range('H', 'L') as $col) {
+                $sheet->getStyle($col . '2:' . $col . $sheet->getHighestRow())
+                    ->getNumberFormat()
+                    ->setFormatCode('"$"#,##0');
+                }
             },            
             BeforeWriting::class=>function(BeforeWriting $event){
                 $event->writer->setActiveSheetIndex(0);

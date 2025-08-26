@@ -9,6 +9,78 @@
         <div class="row justify-content-center mb-4">
             <div class="col-md-10">
                 <div class="card">
+                    <div class="card-header"><h4>{{ __('Presupuesto transporte menor') }}</h4></div>
+    
+                    <div class="card-body">
+                        <form method="POST" action="{{ route('presupuesto_update_tm') }}" onsubmit="return confirmarGuardarPresupuesto(event)">
+                            @method('PUT')
+                            @csrf
+
+                            <br>                            
+                            <div class="card border-secondary">
+                                <div class="form-group row ml-1">
+                                    <div class="col-md-8">
+                                    <label for="presupuesto_inicial_transporte_menor" class="col-form-label text-md-left col-md-12" title=""><i class="" 
+                                        data-toggle="tooltip" data-placement="left" 
+                                        data-title="" style="font-size: 0.813rem"></i>Presupuesto dado al transporte menor</label>
+                                        <input id="presupuesto_inicial_transporte_menor" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-12"
+                                        name="presupuesto_inicial_transporte_menor" 
+                                        value="$ {{number_format($presupuesto_transporte_menor->presupuesto_inicial,'0',',','.')}}" autocomplete="off" autofocus title="" disabled>
+                                    </div> 
+                                    <div class="col-md-4">
+                                    <label for="presupuesto_restante_transporte_menor" class="col-form-label text-md-left col-md-12" title=""><i class="" 
+                                        data-toggle="tooltip" data-placement="left" 
+                                        data-title="" style="font-size: 0.813rem"></i> Presupuesto restante</label>
+                                        <input id="presupuesto_restante_transporte_menor" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-8"
+                                        name="presupuesto_restante_transporte_menor" 
+                                        value="$ {{number_format($presupuesto_transporte_menor->presupuesto_restante,'0',',','.')}}" autocomplete="off" autofocus title="" disabled>
+
+                                        @error('vlr_docen_min')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>                                 
+                                </div>  
+                                <div class="form-group row ml-1">
+                                    <div class="col-md-8">
+                                    <label for="presupuesto_transporte_menor" class="col-form-label text-md-left col-md-12" title=""><i class="" 
+                                        data-toggle="tooltip" data-placement="left" 
+                                        data-title="" style="font-size: 0.813rem"></i> Asignar Nuevo Presupuesto al transporte menor</label>
+                                        <input id="presupuesto_transporte_menor" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-12"
+                                        name="presupuesto_transporte_menor" 
+                                        value="0" autocomplete="off" autofocus title="" onchange="formatVlr(this)" oninput="checkEmptyInput(this)"
+                                        onfocus="clearDefaultValue(this)" onblur="restoreDefaultValue(this)" >
+                                    </div>                               
+                                </div>
+                            </div>  
+                            <hr class="divider">
+                            <!-- 5 -->
+
+                            
+
+                            <!-- submit -->
+                                <!-- 8 -->
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-5 offset-md-5">
+                                        <br>
+                                        <button id="btnGuardarPresupuestoTM" type="submit" class="btn btn-success" name="submit">
+                                            {{ __('Guardar') }}
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- 8 -->
+                            <!-- submit -->
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="container">
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-10">
+                <div class="card">
                     <div class="card-header">{{ __('Editar Presupuesto de los programas académicos') }}</div>
     
                     <div class="card-body">
