@@ -25,6 +25,7 @@ class EstudiantesImport implements ToModel, WithHeadingRow, WithMultipleSheets
         return new estudiantes_practica([
             'id_solicitud_practica' => $this->id_solicitud,
             'id_tipo_identificacion' => $tipo_identificacion,
+            'num_identificacion' => $row['codigo'],
             'password' => Hash::make($row['codigo']),
             'nombre_completo'=> $row['nombre_completo'],
             'email' => $row['correo_institucional'],

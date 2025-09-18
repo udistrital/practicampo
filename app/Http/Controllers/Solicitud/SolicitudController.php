@@ -2279,6 +2279,149 @@ class SolicitudController extends Controller
                         $proyeccion_preliminar->grupo_4=$request->get('grupo_4');
                     break;
                 }
+
+                /**Tabla practicas_integradas */
+                    $espa_aca_1=DB::table('espacio_academico as espa_aca')->where('id',$request->get('id_espa_aca_1'))->first();
+                    $espa_aca_2=DB::table('espacio_academico as espa_aca')->where('id',$request->get('id_espa_aca_2'))->first();
+                    $espa_aca_3=DB::table('espacio_academico as espa_aca')->where('id',$request->get('id_espa_aca_3'))->first();
+                    $espa_aca_4=DB::table('espacio_academico as espa_aca')->where('id',$request->get('id_espa_aca_4'))->first();
+                    $espa_aca_5=DB::table('espacio_academico as espa_aca')->where('id',$request->get('id_espa_aca_5'))->first();
+                    $espa_aca_6=DB::table('espacio_academico as espa_aca')->where('id',$request->get('id_espa_aca_6'))->first();
+                    $espa_aca_7=DB::table('espacio_academico as espa_aca')->where('id',$request->get('id_espa_aca_7'))->first();
+
+                    switch($practicas_integradas->cant_espa_aca)
+                    {
+                        case "0":
+                            $practicas_integradas->id_espa_aca_1=null;
+                            $practicas_integradas->id_espa_aca_2=null;
+                            $practicas_integradas->id_espa_aca_3=null;
+                            $practicas_integradas->id_espa_aca_4=null;
+                            $practicas_integradas->id_espa_aca_5=null;
+                            $practicas_integradas->id_espa_aca_6=null;
+                            $practicas_integradas->id_espa_aca_7=null;
+                            $practicas_integradas->id_docen_espa_aca_1=null;
+                            $practicas_integradas->id_docen_espa_aca_2=null;
+                            $practicas_integradas->id_docen_espa_aca_3=null;
+                            $practicas_integradas->id_docen_espa_aca_4=null;
+                            $practicas_integradas->id_docen_espa_aca_5=null;
+                            $practicas_integradas->id_docen_espa_aca_6=null;
+                            $practicas_integradas->id_docen_espa_aca_7=null;
+                            break;
+                        case "1":
+                            $practicas_integradas->id_espa_aca_1=$espa_aca_1->id;
+                            $practicas_integradas->id_espa_aca_2=null;
+                            $practicas_integradas->id_espa_aca_3=null;
+                            $practicas_integradas->id_espa_aca_4=null;
+                            $practicas_integradas->id_espa_aca_5=null;
+                            $practicas_integradas->id_espa_aca_6=null;
+                            $practicas_integradas->id_espa_aca_7=null;
+                            $practicas_integradas->id_docen_espa_aca_1=$request->get('id_docen_espa_aca_1');
+                            $practicas_integradas->id_docen_espa_aca_2=null;
+                            $practicas_integradas->id_docen_espa_aca_3=null;
+                            $practicas_integradas->id_docen_espa_aca_4=null;
+                            $practicas_integradas->id_docen_espa_aca_5=null;
+                            $practicas_integradas->id_docen_espa_aca_6=null;
+                            $practicas_integradas->id_docen_espa_aca_7=null;
+                            break;
+                        case "2":
+                            $practicas_integradas->id_espa_aca_1=$espa_aca_1->id;
+                            $practicas_integradas->id_espa_aca_2=$espa_aca_2->id;
+                            $practicas_integradas->id_espa_aca_3=null;
+                            $practicas_integradas->id_espa_aca_4=null;
+                            $practicas_integradas->id_espa_aca_5=null;
+                            $practicas_integradas->id_espa_aca_6=null;
+                            $practicas_integradas->id_espa_aca_7=null;
+                            $practicas_integradas->id_docen_espa_aca_1=$request->get('id_docen_espa_aca_1');
+                            $practicas_integradas->id_docen_espa_aca_2=$request->get('id_docen_espa_aca_2');
+                            $practicas_integradas->id_docen_espa_aca_3=null;
+                            $practicas_integradas->id_docen_espa_aca_4=null;
+                            $practicas_integradas->id_docen_espa_aca_5=null;
+                            $practicas_integradas->id_docen_espa_aca_6=null;
+                            $practicas_integradas->id_docen_espa_aca_7=null;
+                            break;
+                        case "3":
+                            $practicas_integradas->id_espa_aca_1=$espa_aca_1->id;
+                            $practicas_integradas->id_espa_aca_2=$espa_aca_2->id;
+                            $practicas_integradas->id_espa_aca_3=$espa_aca_3->id;
+                            $practicas_integradas->id_espa_aca_4=null;
+                            $practicas_integradas->id_espa_aca_5=null;
+                            $practicas_integradas->id_espa_aca_6=null;
+                            $practicas_integradas->id_espa_aca_7=null;
+                            $practicas_integradas->id_docen_espa_aca_1=$request->get('id_docen_espa_aca_1');
+                            $practicas_integradas->id_docen_espa_aca_2=$request->get('id_docen_espa_aca_2');
+                            $practicas_integradas->id_docen_espa_aca_3=$request->get('id_docen_espa_aca_3');
+                            $practicas_integradas->id_docen_espa_aca_4=null;
+                            $practicas_integradas->id_docen_espa_aca_5=null;
+                            $practicas_integradas->id_docen_espa_aca_6=null;
+                            $practicas_integradas->id_docen_espa_aca_7=null;
+                            break;
+                        case "4":
+                            $practicas_integradas->id_espa_aca_1=$espa_aca_1->id;
+                            $practicas_integradas->id_espa_aca_2=$espa_aca_2->id;
+                            $practicas_integradas->id_espa_aca_3=$espa_aca_3->id;
+                            $practicas_integradas->id_espa_aca_4=$espa_aca_4->id;
+                            $practicas_integradas->id_espa_aca_5=null;
+                            $practicas_integradas->id_espa_aca_6=null;
+                            $practicas_integradas->id_espa_aca_7=null;
+                            $practicas_integradas->id_docen_espa_aca_1=$request->get('id_docen_espa_aca_1');
+                            $practicas_integradas->id_docen_espa_aca_2=$request->get('id_docen_espa_aca_2');
+                            $practicas_integradas->id_docen_espa_aca_3=$request->get('id_docen_espa_aca_3');
+                            $practicas_integradas->id_docen_espa_aca_4=$request->get('id_docen_espa_aca_4');
+                            $practicas_integradas->id_docen_espa_aca_5=null;
+                            $practicas_integradas->id_docen_espa_aca_6=null;
+                            $practicas_integradas->id_docen_espa_aca_7=null;
+                            break;
+                        case "5":
+                            $practicas_integradas->id_espa_aca_1=$espa_aca_1->id;
+                            $practicas_integradas->id_espa_aca_2=$espa_aca_2->id;
+                            $practicas_integradas->id_espa_aca_3=$espa_aca_3->id;
+                            $practicas_integradas->id_espa_aca_4=$espa_aca_4->id;
+                            $practicas_integradas->id_espa_aca_5=$espa_aca_5->id;
+                            $practicas_integradas->id_espa_aca_6=null;
+                            $practicas_integradas->id_espa_aca_7=null;
+                            $practicas_integradas->id_docen_espa_aca_1=$request->get('id_docen_espa_aca_1');
+                            $practicas_integradas->id_docen_espa_aca_2=$request->get('id_docen_espa_aca_2');
+                            $practicas_integradas->id_docen_espa_aca_3=$request->get('id_docen_espa_aca_3');
+                            $practicas_integradas->id_docen_espa_aca_4=$request->get('id_docen_espa_aca_4');
+                            $practicas_integradas->id_docen_espa_aca_5=$request->get('id_docen_espa_aca_5');
+                            $practicas_integradas->id_docen_espa_aca_6=null;
+                            $practicas_integradas->id_docen_espa_aca_7=null;
+                            break;
+                        case "6":
+                            $practicas_integradas->id_espa_aca_1=$espa_aca_1->id;
+                            $practicas_integradas->id_espa_aca_2=$espa_aca_2->id;
+                            $practicas_integradas->id_espa_aca_3=$espa_aca_3->id;
+                            $practicas_integradas->id_espa_aca_4=$espa_aca_4->id;
+                            $practicas_integradas->id_espa_aca_5=$espa_aca_5->id;
+                            $practicas_integradas->id_espa_aca_6=$espa_aca_6->id;
+                            $practicas_integradas->id_espa_aca_7=null;
+                            $practicas_integradas->id_docen_espa_aca_1=$request->get('id_docen_espa_aca_1');
+                            $practicas_integradas->id_docen_espa_aca_2=$request->get('id_docen_espa_aca_2');
+                            $practicas_integradas->id_docen_espa_aca_3=$request->get('id_docen_espa_aca_3');
+                            $practicas_integradas->id_docen_espa_aca_4=$request->get('id_docen_espa_aca_4');
+                            $practicas_integradas->id_docen_espa_aca_5=$request->get('id_docen_espa_aca_5');
+                            $practicas_integradas->id_docen_espa_aca_6=$request->get('id_docen_espa_aca_6');
+                            $practicas_integradas->id_docen_espa_aca_7=null;
+                            break;
+                        case "7":
+                            $practicas_integradas->id_espa_aca_1=$espa_aca_1->id;
+                            $practicas_integradas->id_espa_aca_2=$espa_aca_2->id;
+                            $practicas_integradas->id_espa_aca_3=$espa_aca_3->id;
+                            $practicas_integradas->id_espa_aca_4=$espa_aca_4->id;
+                            $practicas_integradas->id_espa_aca_5=$espa_aca_5->id;
+                            $practicas_integradas->id_espa_aca_6=$espa_aca_6->id;
+                            $practicas_integradas->id_espa_aca_7=$espa_aca_7->id;
+                            $practicas_integradas->id_docen_espa_aca_1=$request->get('id_docen_espa_aca_1');
+                            $practicas_integradas->id_docen_espa_aca_2=$request->get('id_docen_espa_aca_2');
+                            $practicas_integradas->id_docen_espa_aca_3=$request->get('id_docen_espa_aca_3');
+                            $practicas_integradas->id_docen_espa_aca_4=$request->get('id_docen_espa_aca_4');
+                            $practicas_integradas->id_docen_espa_aca_5=$request->get('id_docen_espa_aca_5');
+                            $practicas_integradas->id_docen_espa_aca_6=$request->get('id_docen_espa_aca_6');
+                            $practicas_integradas->id_docen_espa_aca_7=$request->get('id_docen_espa_aca_7');
+                            break;
+                    }
+                /**Tabla practicas_integradas */
+                
                 /**Tabla docentes_practica */
                     $docentes_practica->num_doc_docente_apoyo_1=$request->get('doc_apoyo_1');
                     $docentes_practica->num_doc_docente_apoyo_2=$request->get('doc_apoyo_2');
@@ -2977,6 +3120,7 @@ class SolicitudController extends Controller
         $doc_req_solicitud->update();
         $docentes_practica->update();
         $proyeccion_preliminar->update();
+        $practicas_integradas->update();
         $costos_proyeccion->update();
         $transporte_proyeccion->update();
         $transporte_menor->update();

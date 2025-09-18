@@ -173,7 +173,7 @@
                 <select id="id_espa_aca_1" name="id_espa_aca_1" class="form-control" required
                 title=""
                 onchange="recargarDocenEspaAca(this.value, 1)"
-                readonly disabled>
+                >
                     @foreach($espa_aca_integradas as $esp_aca)
                         <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_1) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
                     @endforeach
@@ -191,7 +191,7 @@
                 
                 <select id="id_docen_espa_aca_1" name="id_docen_espa_aca_1" class="form-control" required
                 title=""
-                readonly disabled>
+                >
                     @foreach($d_int_espa_aca_1 as $d_i_1)
                         <option <?php if($d_i_1['id']==$practicas_integradas->id_docen_espa_aca_1) echo 'selected'?> value="{{$d_i_1['id']}}">{{$d_i_1['full_name']}}</option>
                     @endforeach
@@ -211,7 +211,7 @@
                 <select id="id_espa_aca_2" name="id_espa_aca_2" class="form-control" required
                 title=""
                 onchange="recargarDocenEspaAca(this.value, 2)"
-                readonly disabled>
+                >
                     @foreach($espa_aca_integradas as $esp_aca)
                         <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_2) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
                     @endforeach
@@ -228,7 +228,7 @@
                 <label for="id_docen_espa_aca_2" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_2" name="id_docen_espa_aca_2" class="form-control" required
                 title=""
-                readonly disabled>
+                >
                     @foreach($d_int_espa_aca_2 as $d_i_2)
                         <option <?php if($d_i_2['id']==$practicas_integradas->id_docen_espa_aca_2) echo 'selected'?> value="{{$d_i_2['id']}}">{{$d_i_2['full_name']}}</option>
                     @endforeach
@@ -248,7 +248,7 @@
                 <select id="id_espa_aca_3" name="id_espa_aca_3" class="form-control" required
                 title=""
                 onchange="recargarDocenEspaAca(this.value, 3)"
-                readonly disabled>
+                >
                     @foreach($espa_aca_integradas as $esp_aca)
                         <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_3) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
                     @endforeach
@@ -265,7 +265,7 @@
                 <label for="id_docen_espa_aca_3" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_3" name="id_docen_espa_aca_3" class="form-control" required
                 title=""
-                readonly disabled>
+                >
                     @foreach($d_int_espa_aca_3 as $d_i_3)
                         <option <?php if($d_i_3['id']==$practicas_integradas->id_docen_espa_aca_3) echo 'selected'?> value="{{$d_i_3['id']}}">{{$d_i_3['full_name']}}</option>
                     @endforeach
@@ -285,7 +285,7 @@
                 <select id="id_espa_aca_4" name="id_espa_aca_4" class="form-control" required
                 title=""
                 onchange="recargarDocenEspaAca(this.value, 4)"
-                readonly disabled>
+                >
                     @foreach($espa_aca_integradas as $esp_aca)
                         <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_4) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
                     @endforeach
@@ -302,7 +302,7 @@
                 <label for="id_docen_espa_aca_4" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_4" name="id_docen_espa_aca_4" class="form-control" required
                 title=""
-                readonly disabled>
+                >
                     @foreach($d_int_espa_aca_4 as $d_i_4)
                         <option <?php if($d_i_4['id']==$practicas_integradas->id_docen_espa_aca_4) echo 'selected'?> value="{{$d_i_4['id']}}">{{$d_i_4['full_name']}}</option>
                     @endforeach
@@ -322,7 +322,7 @@
                 <select id="id_espa_aca_5" name="id_espa_aca_5" class="form-control" required
                 title=""
                 onchange="recargarDocenEspaAca(this.value, 5)"
-                readonly disabled>
+                >
                     @foreach($espa_aca_integradas as $esp_aca)
                         <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_5) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
                     @endforeach
@@ -339,7 +339,7 @@
                 <label for="id_docen_espa_aca_5" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_5" name="id_docen_espa_aca_5" class="form-control" required
                 title=""
-                readonly disabled>
+                >
                     @foreach($d_int_espa_aca_5 as $d_i_5)
                         <option <?php if($d_i_5['id']==$practicas_integradas->id_docen_espa_aca_5) echo 'selected'?> value="{{$d_i_5['id']}}">{{$d_i_5['full_name']}}</option>
                     @endforeach
@@ -359,7 +359,7 @@
                 <select id="id_espa_aca_6" name="id_espa_aca_6" class="form-control" required
                 title=""
                 onchange="recargarDocenEspaAca(this.value, 6)"
-                readonly disabled>
+                >
                     @foreach($espa_aca_integradas as $esp_aca)
                         <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_6) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
                     @endforeach
@@ -376,7 +376,7 @@
                 <label for="id_docen_espa_aca_6" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_6" name="id_docen_espa_aca_6" class="form-control" required
                 title=""
-                readonly disabled>
+                >
                     @foreach($d_int_espa_aca_6 as $d_i_6)
                         <option <?php if($d_i_6['id']==$practicas_integradas->id_docen_espa_aca_6) echo 'selected'?> value="{{$d_i_6['id']}}">{{$d_i_6['full_name']}}</option>
                     @endforeach
@@ -396,7 +396,7 @@
                 <select id="id_espa_aca_7" name="id_espa_aca_7" class="form-control" required
                 title=""
                 onchange="recargarDocenEspaAca(this.value, 7)"
-                readonly disabled>
+                >
                     @foreach($espa_aca_integradas as $esp_aca)
                         <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_7) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
                     @endforeach
@@ -413,7 +413,7 @@
                 <label for="id_docen_espa_aca_7" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_7" name="id_docen_espa_aca_7" class="form-control" required
                 title=""
-                readonly disabled>
+                >
                     @foreach($d_int_espa_aca_7 as $d_i_7)
                         <option <?php if($d_i_7['id']==$practicas_integradas->id_docen_espa_aca_7) echo 'selected'?> value="{{$d_i_7['id']}}">{{$d_i_7['full_name']}}</option>
                     @endforeach
