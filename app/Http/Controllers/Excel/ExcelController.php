@@ -23,6 +23,7 @@ use PractiCampoUD\Exports\ReportSolicitudesRealizadasExport;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DB;
+use Exception;
 
 /**
  * Manejador de documentos 
@@ -174,19 +175,27 @@ class ExcelController extends Controller
         DB::beginTransaction();
         try
         {
-            Excel::import(new EstudiantesImport($id),request()->file('listado_estudiantes'));
-            
+            $validacion_estudiantes = DB::table('estudiantes_solicitud_practica')
+                ->where('id_solicitud_practica', '=', $id)->exists();
+            if($validacion_estudiantes){
+                throw new Exception('Error: Ya se han importando los estudiantes anteriormente.');
+            }
+
+            Excel::import(new EstudiantesImport($id),request()->file('listado_estudiantes'));            
             $solicitud_practica =solicitud::where('id', '=', $id)->first();
             $solicitud_practica->listado_estudiantes = 1;
-            $solicitud_practica->update();
+            $solicitud_practica->update();            
+
             DB::commit();
+            return response()->json(['message' => 'Estudiantes importados con éxito'], 200);
         }
         catch(\Exception $ex)
         {
             DB::rollback();
-            return back()->withError('Falla al cargar, verifique el archivo. Mensaje->'.$ex->getMessage());
+            return response()->json(['error' => 'Hubo un error al importar el archivo.'."\n".$ex], 500);
+            //return back()->withError('Falla al cargar, verifique el archivo. Mensaje->'.$ex->getMessage());
         }
-        return Redirect::to('solicitudes/filtrar/proy-comp')->with('success', 'Creación exitosa');
+        //return Redirect::to('solicitudes/filtrar/proy-comp')->with('success', 'Creación exitosa');
     }
 
     /**

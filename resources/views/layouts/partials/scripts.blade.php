@@ -49,6 +49,28 @@
 
 <!-- functions-->
 <script>
+    $('#importEstudForm').on('submit', function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                window.location.href = '/solicitudes/filtrar/proy-comp';
+                alert(response.message);
+            },
+            error: function(response) {
+                alert(response.responseJSON.error);
+            }
+        });
+    });
+</script>
+<script>
         $(document).ready(function() {
             $('#myTable').DataTable();
         })   
