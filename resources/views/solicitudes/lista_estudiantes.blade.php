@@ -12,7 +12,7 @@
               <div class="card-header">{{ __('Listado de Estudiantes  solicitud Práctica N° ') }}<?php echo $id_solicitud?></div>
 
                 <div class="card-body">
-                  <form method="POST" action="{{ route('import_list_estud.excel',[$id_solicitud]) }}"  enctype="multipart/form-data">
+                  <form id="importEstudForm" method="POST" action="{{ route('import_list_estud.excel',[$id_solicitud]) }}"  enctype="multipart/form-data">
                         {{-- @method('PUT') --}}
                         @csrf
 
