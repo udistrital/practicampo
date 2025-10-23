@@ -434,6 +434,11 @@ class UsersController extends Controller
             $usuario->id_espacio_academico_5= (!empty($id_espacio_academico_5->id))?$id_espacio_academico_5->id:null;
             $usuario->id_espacio_academico_6= (!empty($id_espacio_academico_6->id))?$id_espacio_academico_6->id:null;
             $usuario->id_programa_academico_coord=$request->get('id_programa_academico_coord');
+            $usuario->id_tipo_identificacion=$request->get('id_tipo_identificacion');
+            //$usuario->id=$request->get('num_identificacion');
+            $usuario->expedicion_identificacion=$request->get('expedicion_identificacion');
+            $usuario->email=$request->get('email');
+            $usuario->usuario=$request->get('usuario');
             if(!empty($pass) || $pass != null)
             {
                 $usuario->password=Hash::make($pass);
@@ -447,7 +452,7 @@ class UsersController extends Controller
         catch(\Exception $ex)
         {
             DB::rollback();
-            return back()->withError('Falla en la actualización.');
+            return back()->withError('Falla en la actualización.'.$ex->getMessage());
         }
 
         return redirect('users/filtrar/all')->with('success', 'Actualización exitosa');

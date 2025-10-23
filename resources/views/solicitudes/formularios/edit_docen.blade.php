@@ -94,7 +94,7 @@
                             <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="integrada" id="integrada" value="1" 
                             title=""
-                            <?php if($proyeccion_preliminar->practicas_integradas == 1) echo 'checked'?> disabled>
+                            <?php if($proyeccion_preliminar->practicas_integradas == 1) echo 'checked'?>>
                             <label class="form-check-label" for="">Si</label>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="integrada" id="integrada"  value="0"
                                 title=""
-                                <?php if($proyeccion_preliminar->practicas_integradas == 0) echo 'checked'?> disabled>
+                                <?php if($proyeccion_preliminar->practicas_integradas == 0) echo 'checked'?>>
                                 <label class="form-check-label" for="">No</label>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
                 <div class="input-group">
                     <input id="cant_espa_aca" type="number" max="7" min="1" pattern="^[1-7]+" class="form-control @error('cant_espa_aca') is-invalid @enderror" name="cant_espa_aca" 
                     title=""
-                    value="{{$practicas_integradas->cant_espa_aca}}" autocomplete="off" autofocus onchange="" readonly disabled>
+                    value="{{$practicas_integradas->cant_espa_aca}}" autocomplete="off" autofocus onchange="" readonly>
                     
                     @error('cant_espa_aca')
                         <span class="invalid-feedback" role="alert">
