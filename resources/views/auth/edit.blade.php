@@ -132,7 +132,7 @@
                                         <div class="col-md-3">
                                             <label for="id_tipo_identificacion" class="col-form-label text-md-right">{{ __('Tipo Identificación') }}</label>
                                             <span class="hs-form-required">*</span>
-                                            <select name="id_tipo_identificacion" class="form-control" required readonly disabled>
+                                            <select name="id_tipo_identificacion" class="form-control" required>
                                                 @foreach($tipos_identificaciones as $tip_ident)
                                                 <option <?php if($tip_ident->id==$usuario->id_tipo_identificacion) echo 'selected'?> value="{{$tip_ident->id}}">{{$tip_ident->sigla}}</option>
                                                 @endforeach
@@ -161,7 +161,7 @@
                                             <label for="expedicion_identificacion" class="col-form-label text-md-right">{{ __('Lugar Expedición') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <input id="expedicion_identificacion"  class="form-control @error('expedicion_identificacion') is-invalid @enderror" name="expedicion_identificacion" 
-                                            value="{{ $usuario->expedicion_identificacion }}" required autocomplete="off" autofocus readonly>
+                                            value="{{ $usuario->expedicion_identificacion }}" required autocomplete="off" autofocus>
             
                                             @error('expedicion_identificacion')
                                                 <span class="invalid-feedback" role="alert">
@@ -180,7 +180,7 @@
                                             <label for="email" class="col-form-label text-md-right">{{ __('Correo Electrónico Institucional') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $usuario->email }}" required autocomplete="off"
-                                            readonly>
+                                            >
                                             {{-- onchange="obtenerUsuario(this.value);" --}}
                                             @error('email')
                                                 <span class="invalid-feedback" role="alert">
@@ -243,7 +243,7 @@
                                             <label for="usuario" class="col-form-label text-md-left">{{ __('Usuario') }}</label>
                                             {{-- <span class="hs-form-required">*</span> --}}
                                             <input id="usuario" type="text" class="form-control @error('usuario') is-invalid @enderror" name="usuario" value="{{ $usuario->usuario }}" required autocomplete="name" autofocus 
-                                            readonly>
+                                            >
             
                                             @error('usuario')
                                                 <span class="invalid-feedback" role="alert">

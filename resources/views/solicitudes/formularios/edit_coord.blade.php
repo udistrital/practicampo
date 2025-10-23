@@ -3022,9 +3022,9 @@
     <hr class="divider">    
     <div class="form-group row">
         <div class="col-md-3">
-            <label for="presupuesto_actual_transporte_menor" class="col-form-label text-md-left">{{ __('Presupuesto Actual') }}</label>
+            <label for="presupuesto_actual_transporte_menor" class="col-form-label text-md-left" hidden>{{ __('Presupuesto Actual') }}</label>
             <input id="presupuesto_actual_transporte_menor" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
-            name="presupuesto_actual_transporte_menor" title=""
+            name="presupuesto_actual_transporte_menor" title="" hidden
             value="$ {{number_format($presupuesto_transporte_menor->presupuesto_restante, 0, ',','.')}}" autocomplete="off" autofocus readonly>
         </div>
 
@@ -3036,9 +3036,9 @@
         </div>
 
         <div class="col-md-4">
-            <label for="presupuesto_restante_transporte_menor" class="col-form-label text-md-left">{{ __('Presupuesto restante transporte menor') }}</label>
+            <label for="presupuesto_restante_transporte_menor" class="col-form-label text-md-left" hidden>{{ __('Presupuesto restante transporte menor') }}</label>
             <input id="presupuesto_restante_transporte_menor" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
-            name="presupuesto_restante_transporte_menor" title=""
+            name="presupuesto_restante_transporte_menor" title="" hidden
             value="$ {{number_format($presupuesto_restante_transporte_menor, 0, ',','.')}}" autocomplete="off" autofocus readonly>
         </div>
     </div>

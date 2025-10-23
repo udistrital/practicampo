@@ -5614,7 +5614,16 @@ class ProyeccionController extends Controller
                     $num_dias_rp = $proyeccion_preliminar->duracion_num_dias_rp;
                     $num_dias_ra = $proyeccion_preliminar->duracion_num_dias_ra;
                     $num_estud = $proyeccion_preliminar->num_estudiantes_aprox;
-                    $num_doc_pract_int = $practicas_integradas->cant_espa_aca;
+                    
+                    $contador_validos = 0;
+                    for ($i = 1; $i <= $practicas_integradas->cant_espa_aca; $i++) {
+                        $docente_id = $request->get('id_docen_espa_aca_'.$i);
+                        
+                        if ($docente_id != $proyeccion_preliminar->id_docente_responsable) {
+                            $contador_validos++;
+                        }
+                    }
+                    $num_doc_pract_int = $contador_validos;
                     $num_doc_apoyo = $docentes_practica->num_docentes_apoyo;
                     $total_docentes_apoyo = $docentes_practica->total_docentes_apoyo;
                     

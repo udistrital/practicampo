@@ -2246,7 +2246,25 @@ class SolicitudController extends Controller
 		$docentes_practica->soporte_personal_apoyo = $request->file('sop_pers_apoyo') != null ? base64_encode(file_get_contents($request->file('sop_pers_apoyo')->path())) : null;
                 $total_docentes_apoyo = $docentes_practica->total_docentes_apoyo;
                 $num_acompa_apoyo = $request->get('num_apoyo');
-				$num_doc_pract_int = $practicas_integradas->cant_espa_aca;
+
+                $practica_integrada = $request->get('integrada')==null?0:intval($request->get('integrada'));
+                if($practica_integrada == 1){
+                    $practicas_integradas->cant_espa_aca=$request->get('cant_espa_aca');
+                    $proyeccion_preliminar->practicas_integradas=1;
+                }else if($practica_integrada == 0){
+                    $practicas_integradas->cant_espa_aca=0;
+                    $proyeccion_preliminar->practicas_integradas=0;
+                }
+
+                $contador_validos = 0;
+                for ($i = 1; $i <= $practicas_integradas->cant_espa_aca; $i++) {
+                    $docente_id = $request->get('id_docen_espa_aca_'.$i);
+                    
+                    if ($docente_id != $proyeccion_preliminar->id_docente_responsable) {
+                        $contador_validos++;
+                    }
+                }
+				$num_doc_pract_int = $contador_validos;
                 $total_docentes = $num_doc_pract_int + $total_docentes_apoyo + 1;
                 $proyeccion_preliminar->num_estudiantes_aprox = $num_estudiantes;
                 $solicitud_practica->num_estudiantes= $num_estudiantes;

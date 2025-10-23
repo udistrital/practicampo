@@ -1787,6 +1787,9 @@ function calc_viaticos_RP()
 	}
 
         // formatVlr(viaticos_apoyo_estud_rp_format);
+        /*if ($("#vlr_apoyo_docentes_rp").val() === "") {
+            $("#vlr_apoyo_docentes_rp").val(viaticos_apoyo_doc_rp_format);
+        }*/
         $("#vlr_apoyo_docentes_rp").val(viaticos_apoyo_doc_rp_format);
         $("#vlr_apoyo_estudiantes_rp").val(viaticos_apoyo_estud_rp_format);
     }
@@ -1814,6 +1817,9 @@ function calc_viaticos_RP()
            viaticos_apoyo_estud_rp_format = (new Intl.NumberFormat("es-CO").format(0));
         }
 
+        /*if ($("#vlr_apoyo_docentes_rp").val() === "") {
+            $("#vlr_apoyo_docentes_rp").val(viaticos_apoyo_doc_rp);
+        }*/
         $("#vlr_apoyo_docentes_rp").val(viaticos_apoyo_doc_rp);
         $("#vlr_apoyo_estudiantes_rp").val(viaticos_apoyo_estud_rp_format);
 
@@ -1850,6 +1856,9 @@ function calc_viaticos_RP()
            viaticos_apoyo_estud_ra_format = (new Intl.NumberFormat("es-CO").format(0));
         }
 
+        /*if ($("#vlr_apoyo_docentes_ra").val() === "") {
+            $("#vlr_apoyo_docentes_ra").val(viaticos_apoyo_doc_ra_format);
+        }*/
         $("#vlr_apoyo_docentes_ra").val(viaticos_apoyo_doc_ra_format);
         $("#vlr_apoyo_estudiantes_ra").val(viaticos_apoyo_estud_ra_format);
     }
@@ -1880,6 +1889,9 @@ function calc_viaticos_RP()
            viaticos_apoyo_estud_ra_format = (new Intl.NumberFormat("es-CO").format(0));
         }
 
+        /*if ($("#vlr_apoyo_docentes_ra").val() === "") {
+            $("#vlr_apoyo_docentes_ra").val(viaticos_apoyo_doc_ra);
+        }*/
         $("#vlr_apoyo_docentes_ra").val(viaticos_apoyo_doc_ra);
         $("#vlr_apoyo_estudiantes_ra").val(viaticos_apoyo_estud_ra_format);
     }
