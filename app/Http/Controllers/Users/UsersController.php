@@ -439,6 +439,12 @@ class UsersController extends Controller
             $usuario->expedicion_identificacion=$request->get('expedicion_identificacion');
             $usuario->email=$request->get('email');
             $usuario->usuario=$request->get('usuario');
+
+            $role = DB::table('roles')
+            ->where('id', $usuario->id_role)
+            ->value('name');
+            $usuario->syncRoles($role);
+            
             if(!empty($pass) || $pass != null)
             {
                 $usuario->password=Hash::make($pass);
