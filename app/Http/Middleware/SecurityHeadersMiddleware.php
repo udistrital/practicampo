@@ -22,7 +22,9 @@ class SecurityHeadersMiddleware
                "script-src 'self' 'unsafe-inline' code.jquery.com cdn.jsdelivr.net cdn.datatables.net cdnjs.cloudflare.com maps.googleapis.com; " .
                "font-src 'self' cdn.jsdelivr.net; " .
                "img-src 'self' data:; " .
-               "connect-src 'self' maps.googleapis.com;";
+               "connect-src 'self' maps.googleapis.com;" .
+               "object-src 'self' data:;" .
+               "frame-src 'self' data:;";
         $response->headers->set('Content-Security-Policy', $csp, true);
         $response->headers->set('X-Frame-Options', 'SAMEORIGIN', true);
         $response->headers->set('X-XSS-Protection', '1; mode=block', true);
