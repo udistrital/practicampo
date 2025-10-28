@@ -300,6 +300,7 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
                 $tipo_ruta = $solicitud_practica->tipo_ruta;
                 return view('solicitudes.formularios.cambiar_edit',["proyeccion_preliminar"=>$proyeccion_preliminar,
                                                 "sedes"=>$sedes,
@@ -332,6 +333,7 @@ class SolicitudController extends Controller
                                                 "tipo_ruta"=>$tipo_ruta,
                                                 "usuario"=>$usuario,
                                                 'vlr_viaticos'=>$vlr_viaticos,
+                                                'lista_estudiantes'=>$lista_estudiantes,
                                                 'control_sistema'=>$control_sistema
         
                 ]);
@@ -1281,6 +1283,7 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
         
                 return view('solicitudes.edit',["proyeccion_preliminar"=>$proyeccion_preliminar,
                                                 "sedes"=>$sedes,
@@ -1313,6 +1316,7 @@ class SolicitudController extends Controller
                                                 "tipo_ruta"=>$tipo_ruta,
                                                 "usuario"=>$usuario,
                                                 'vlr_viaticos'=>$vlr_viaticos,
+                                                'lista_estudiantes'=>$lista_estudiantes,
                                                 'control_sistema'=>$control_sistema
         
                 ]);
@@ -1532,6 +1536,7 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
         
                 return view('solicitudes.edit',["proyeccion_preliminar"=>$proyeccion_preliminar,
                                                 "practicas_integradas"=>$practicas_integradas,
@@ -1565,6 +1570,7 @@ class SolicitudController extends Controller
                                                 "tipo_ruta"=>$tipo_ruta,
                                                 "usuario"=>$usuario,
                                                 'vlr_viaticos'=>$vlr_viaticos,
+                                                'lista_estudiantes'=>$lista_estudiantes,
                                                 'control_sistema'=>$control_sistema
         
                 ]);

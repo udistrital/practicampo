@@ -740,6 +740,31 @@
                                         
                                     </div>
                                 <!-- 2.3 -->
+    <!-- Visualizar lista de estudiantes -->
+    <br>
+    <div class="form-group row col-md-12">
+        <h4>Ver Lista de Estudiantes</h4>
+        <button class="btn btn-success btn_ver" type="button" id="btn_ver_estud" style="border: 1px solid #d1d3e2; margin-left: 5px; border-top-left-radius: 0; border-bottom-left-radius: 0"
+        onclick="ver_estudiantes()"><i id="icono_ver_estud" class="far fa-eye"></i></button>
+    </div>
+    <br>
+    <table id="tabla_estudiantes" class="table table-bordered " style="border-collapse: collapse;margin-left: auto;margin-right: auto;" hidden>
+    <tr>
+        <th>N°</th>
+        <th>Nombre Estudiante</th>
+        <th>Correo Institucional</th>
+        <th>Grupo</th>
+    </tr>
+    @foreach($lista_estudiantes as $lista_estud)
+    <tr>
+        <td>{{$loop->iteration}}</td>
+        <td><?php echo $lista_estud->nombre_completo ?></td>
+        <td><?php echo $lista_estud->email ?></td>
+        <td><?php echo $lista_estud->grupo ?></td>
+    </tr>  
+    @endforeach
+     </table>
+    <!-- Visualizar lista de estudiantes -->
 
                             <!-- información proyección -->
                             @if(is_null($solicitud_practica->hora_salida) || $solicitud_practica->hora_salida == 0)
