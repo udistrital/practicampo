@@ -2345,7 +2345,9 @@ class SolicitudController extends Controller
                 //$total_docentes_apoyo = $request->get('total_docentes_apoyo');
                 $docentes_practica->num_docentes_apoyo = $request->get('num_apoyo');
                 $docentes_practica->total_docentes_apoyo = $request->get('total_docentes_apoyo');
-                $docentes_practica->soporte_personal_apoyo = $request->file('sop_pers_apoyo') != null ? base64_encode(file_get_contents($request->file('sop_pers_apoyo')->path())) : null;
+                if($request->file('sop_pers_apoyo') != null){
+                    $docentes_practica->soporte_personal_apoyo = $request->file('sop_pers_apoyo') != null ? base64_encode(file_get_contents($request->file('sop_pers_apoyo')->path())) : null;
+                }
                 $total_docentes_apoyo = $docentes_practica->total_docentes_apoyo;                
                 $num_acompa_apoyo = $request->get('num_apoyo');
 
