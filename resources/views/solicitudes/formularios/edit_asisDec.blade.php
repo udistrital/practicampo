@@ -2735,6 +2735,86 @@
 <!-- ruta alterna -->
 @endif
 
+<!-- cronograma -->
+    <div class="form-group row">
+            <div class="col-md-12">
+                <label for="cronograma" class="col-form-label text-md-left">{{ __('Cronograma Recorrido') }}</label>
+                <textarea id="cronograma" style="min-height:5rem;" type="text" class="form-control @error('cronograma') is-invalid @enderror" name="cronograma" 
+                required autocomplete="off" autofocus readonly><?php echo $solicitud_practica->cronograma?></textarea>
+                
+                @error('cronograma')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+    </div>
+<!-- cronograma -->
+
+<!-- observaciones -->
+    <div class="form-group row">
+            <div class="col-md-12">
+                <label for="observaciones" class="col-form-label text-md-left">{{ __('Observaciones Práctica') }}</label>
+                <textarea id="observaciones" style="min-height:5rem;" type="text" class="form-control @error('observaciones') is-invalid @enderror" name="observaciones" 
+                autocomplete="off" autofocus readonly><?php echo $solicitud_practica->observaciones?></textarea>
+                
+                @error('observaciones')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+    </div>
+<!-- observaciones -->
+
+<!-- justificacion -->
+    <div class="form-group row">
+            <div class="col-md-12">
+                <label for="justificacion" class="col-form-label text-md-left">{{ __('Justificación Práctica') }}</label>
+                <textarea id="justificacion" style="min-height:5rem;" type="text" class="form-control @error('justificacion') is-invalid @enderror" name="justificacion" 
+                required autocomplete="off" autofocus readonly><?php echo $solicitud_practica->justificacion?></textarea>
+                
+                @error('justificacion')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+    </div>
+<!-- justificacion -->
+
+<!-- objetivo_general -->
+    <div class="form-group row">
+            <div class="col-md-12">
+                <label for="objetivo_general" class="col-form-label text-md-left">{{ __('Objetivo General Práctica') }}</label>
+                <textarea id="objetivo_general" style="min-height:5rem;" type="text" class="form-control @error('objetivo_general') is-invalid @enderror" name="objetivo_general" 
+                required autocomplete="off" autofocus readonly><?php echo $solicitud_practica->objetivo_general?></textarea>
+                
+                @error('objetivo_general')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+    </div>
+<!-- objetivo_general -->
+
+<!-- metodologia_evaluacion -->
+    <div class="form-group row">
+            <div class="col-md-12">
+                <label for="metodologia_evaluacion" class="col-form-label text-md-left">{{ __('Metodología Trabajo - Evaluacion Práctica') }}</label>
+                <textarea id="metodologia_evaluacion" style="min-height:5rem;" type="text" class="form-control @error('metodologia_evaluacion') is-invalid @enderror" name="metodologia_evaluacion" 
+                required autocomplete="off" autofocus readonly><?php echo $solicitud_practica->metodologia_evaluacion?></textarea>
+                
+                @error('metodologia_evaluacion')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+    </div>
+<!-- metodologia_evaluacion -->
+
 <br>
 <h4>Precios Estimados Transporte</h4>
 <hr class="divider">
