@@ -2757,6 +2757,8 @@ $("input[type=checkbox]").change(function (){
             var num_resolucion_disabled = $row.find('td:nth-child(5)').text();
             if(num_resolucion_disabled == null || num_resolucion_disabled == ""){
                 btn_resolucion_pdf.disabled = true;
+            }else{
+                btn_resolucion_pdf.disabled = false;
             }
             if(this.id == 'solic_aprob_list[]')
             {
