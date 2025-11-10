@@ -2882,7 +2882,11 @@
         <tr>
         <td>Viáticos Docentes: </td>
         <td>{{ $practicas_integradas->cant_espa_aca + $docentes_practica->num_docentes_apoyo + 1 }}</td>
-            <td>135.400</td>
+        @if($proyeccion_preliminar->duracion_num_dias_rp == 1)
+            <td>{{ number_format($control_sistema->vlr_docen_min, 0, ',','.') }}</td>
+        @elseif($proyeccion_preliminar->duracion_num_dias_rp > 1)
+            <td>{{ number_format($control_sistema->vlr_docen_max, 0, ',','.') }}</td>
+        @endif
         <td>{{ $proyeccion_preliminar->duracion_num_dias_rp }}</td>
         <td>{{ number_format($costos_proyeccion->viaticos_docente_rp, 0, ',','.') }}</td>
         
@@ -2891,7 +2895,11 @@
         <tr>
             <td>Viáticos Estudiantes: </td>
             <td>{{ $solicitud_practica->num_estudiantes }}</td>
-            <td>52.600</td>
+            @if($proyeccion_preliminar->duracion_num_dias_rp == 1)
+                <td>{{ number_format($control_sistema->vlr_estud_min, 0, ',','.') }}</td>
+            @elseif($proyeccion_preliminar->duracion_num_dias_rp > 1)
+                <td>{{ number_format($control_sistema->vlr_estud_max, 0, ',','.') }}</td>
+            @endif
             <td>{{ $proyeccion_preliminar->duracion_num_dias_rp }}</td>
             <td>{{ number_format($costos_proyeccion->viaticos_estudiantes_rp, 0, ',','.') }}</td>
             
