@@ -2753,6 +2753,11 @@ $("input[type=checkbox]").change(function (){
     $("input[type=checkbox]").each(function(){
         if($(this).is(":checked"))
         {
+            var $row = $(this).closest('tr');
+            var num_resolucion_disabled = $row.find('td:nth-child(5)').text();
+            if(num_resolucion_disabled == null || num_resolucion_disabled == ""){
+                btn_resolucion_pdf.disabled = true;
+            }
             if(this.id == 'solic_aprob_list[]')
             {
                 contador++;
@@ -6350,6 +6355,26 @@ function rechazo_solic_asist(){
     } else {
         si_capital.disabled = true;
         no_capital.disabled = true;
+        sol_necesidad.disabled = true;
+        num_resolucion.disabled = true;
+        fecha_resolucion.disabled = true;
+        num_cdp.disabled = true;
+    }
+}
+
+function si_capital_solicitud_asist(){
+    const si_capital = document.querySelector('input[name="si_capital"][value="1"]');
+    const no_capital = document.querySelector('input[name="si_capital"][value="0"]');
+    const sol_necesidad = document.getElementById('num_solicitud_necesidad');
+    const num_resolucion = document.getElementById('num_resolucion');
+    const fecha_resolucion = document.getElementById('fecha_resolucion');
+    const num_cdp = document.getElementById('num_cdp');
+    if (si_capital.checked) {
+        sol_necesidad.disabled = false;
+        num_resolucion.disabled = false;
+        fecha_resolucion.disabled = false;
+        num_cdp.disabled = false;
+    } else {
         sol_necesidad.disabled = true;
         num_resolucion.disabled = true;
         fecha_resolucion.disabled = true;

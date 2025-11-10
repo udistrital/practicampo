@@ -3215,14 +3215,14 @@
 
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="si_capital" value="0" disabled>
+                                    <input class="form-check-input" type="radio" name="si_capital" value="0" disabled onchange="si_capital_solicitud_asist()">
                                     <label class="form-check-label" for="">No</label>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6 col-md-6 col-sm-64 col-xs-12">
                                     <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="si_capital" value="1" checked disabled>
+                                    <input class="form-check-input" type="radio" name="si_capital" value="1" checked disabled onchange="si_capital_solicitud_asist()">
                                     <label class="form-check-label" for="">Si</label>
                                     </div>
                                 </div>
