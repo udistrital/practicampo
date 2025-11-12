@@ -374,7 +374,6 @@
                                     <span style="font-size:5.5pt;font-family:&quot;Arial&quot;,sans-serif;mso-ansi-language:PT-BR" lang="PT-BR">
                                         @foreach($presupuesto as $item)
                                             @if($sol->id == $item['id_proy'])
-						<strong>CDP {{$sol->num_cdp}}</strong><br><br>
                                                 ${{number_format($item['total_presupuesto'],0,',','.')}}
                                             @endif
                                         @endforeach
