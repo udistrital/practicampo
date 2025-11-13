@@ -3247,7 +3247,7 @@
                             salida de práctica académica. Ej. 7658-2021" style="font-size: 0.813rem"></i> {{ __('N° Sol. Necesidad') }}</label>
                         <span class="hs-form-required">*</span>
                         <input id="num_solicitud_necesidad" type="text" class="form-control @error('num_solicitud_necesidad') is-invalid @enderror" name="num_solicitud_necesidad" 
-                        value="" pattern="[0-9\-]+" required autocomplete="off" autofocus disabled>
+                        value="{{$solicitud_practica->num_solicitud_necesidad}}" pattern="[0-9\-]+" required autocomplete="off" autofocus disabled>
 
                         @error('num_solicitud_necesidad')
                             <span class="invalid-feedback" role="alert">
@@ -3264,7 +3264,7 @@
                             salida de práctica académica. Ej. 1234" style="font-size: 0.813rem"></i> {{ __('N° Resolución') }}</label>
                         <span class="hs-form-required">*</span>
                         <input id="num_resolucion" type="text" class="form-control @error('num_resolucion') is-invalid @enderror" name="num_resolucion" 
-                        value=""  required autocomplete="off" autofocus pattern="[0-9]+"
+                        value="{{$solicitud_practica->num_resolucion}}"  required autocomplete="off" autofocus pattern="[0-9]+"
                         onchange="onlyNmb(this)" onkeyup="onlyNmb(this)" disabled>
 
                         @error('num_resolucion')
@@ -3286,7 +3286,7 @@
                             <i class="fa fa-calendar"></i>
                             </div>
                         <input id="fecha_resolucion" class="inputDate form-control datetimepicker" name="fecha_resolucion"  type="text" required
-                        value="" disabled>
+                        value="{{$solicitud_practica->fecha_resolucion}}" disabled>
                         </div>
                     </div>
 
@@ -3298,7 +3298,7 @@
                             salida de práctica académica. Ej. 8536" style="font-size: 0.813rem"></i> {{ __('N° CDP') }}</label>
                         <span class="hs-form-required">*</span>
                         <input id="num_cdp" type="number" class="form-control @error('num_cdp') is-invalid @enderror" name="num_cdp" 
-                        value="" required autocomplete="off" autofocus pattern="[0-9]+"
+                        value="{{$solicitud_practica->num_cdp}}" required autocomplete="off" autofocus pattern="[0-9]+"
                         onchange="onlyNmb(this)" onkeyup="onlyNmb(this)" disabled>
 
                         @error('num_cdp')
