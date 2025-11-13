@@ -175,14 +175,23 @@ class ExcelController extends Controller
         DB::beginTransaction();
         try
         {
+            $solicitud_practica =solicitud::where('id', '=', $id)->first();
             $validacion_estudiantes = DB::table('estudiantes_solicitud_practica')
                 ->where('id_solicitud_practica', '=', $id)->exists();
             if($validacion_estudiantes){
                 throw new Exception('Error: Ya se han importando los estudiantes anteriormente.');
             }
+            $coleccion = Excel::toCollection(null, request()->file('listado_estudiantes'))->first();
+            $total_filas = max(0, $coleccion->filter(function ($fila, $index) {
+                return $index > 0 && !empty($fila[0]);
+            })->count());
+            if($solicitud_practica->num_estudiantes != $total_filas){
+                throw new Exception('Error: Verifica que la cantidad de estudiantes registrada en la lista sea igual a la registrada en la solicitud'.
+                                    "\n".'Estudiantes Lista Excel: '.$total_filas.
+                                    "\n".'Estudiantes Solicitud: '.$solicitud_practica->num_estudiantes);
+            }
 
             Excel::import(new EstudiantesImport($id),request()->file('listado_estudiantes'));            
-            $solicitud_practica =solicitud::where('id', '=', $id)->first();
             $solicitud_practica->listado_estudiantes = 1;
             $solicitud_practica->update();            
 
@@ -192,7 +201,7 @@ class ExcelController extends Controller
         catch(\Exception $ex)
         {
             DB::rollback();
-            return response()->json(['error' => 'Hubo un error al importar el archivo.'."\n".$ex], 500);
+            return response()->json(['error' => 'Hubo un error al importar el archivo.'."\n".$ex->getMessage()], 500);
             //return back()->withError('Falla al cargar, verifique el archivo. Mensaje->'.$ex->getMessage());
         }
         //return Redirect::to('solicitudes/filtrar/proy-comp')->with('success', 'Creación exitosa');

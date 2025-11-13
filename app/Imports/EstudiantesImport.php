@@ -7,8 +7,9 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 
-class EstudiantesImport implements ToModel, WithHeadingRow, WithMultipleSheets
+class EstudiantesImport implements ToModel, WithHeadingRow, WithMultipleSheets, SkipsEmptyRows
 {
     public function __construct($id_solicitud)
     {
