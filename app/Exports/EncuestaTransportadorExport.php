@@ -32,7 +32,7 @@ class EncuestaTransportadorExport implements  FromCollection, WithHeadings, Shou
         {
             $tipo_ruta=DB::table('solicitud_practica as solic_prac')
             ->select('tipo_ruta')
-            ->where('solic_prac.id_proyeccion_preliminar',$id_solic)->first();
+            ->where('solic_prac.id_programacion_practica',$id_solic)->first();
 
             if($tipo_ruta->tipo_ruta == 1)
             {
@@ -50,20 +50,20 @@ class EncuestaTransportadorExport implements  FromCollection, WithHeadings, Shou
                         'enc_trans.no_carac_solicitadas','enc_trans.comport_adecuado','enc_trans.no_comport_adecuado','enc_trans.horar_estab',
                         'enc_trans.no_horar_estab','enc_trans.nov_cron_ruta','enc_trans.con_nov_cron_ruta','enc_trans.adecuado_traslado','enc_trans.no_adecuado_traslado'
                         )
-                        ->join('proyeccion_preliminar as proy_prel','proy_prel.id','=','solic_prac.id_proyeccion_preliminar')
+                        ->join('programacion_practica as proy_prel','proy_prel.id','=','solic_prac.id_programacion_practica')
                         ->join('espacio_academico as espa','proy_prel.id_espacio_academico','=','espa.id')
                         ->join('programa_academico as prog_aca','espa.id_programa_academico','=','prog_aca.id')
                         ->join('periodo_academico as per_aca','proy_prel.id_periodo_academico','=','per_aca.id')
                         ->join('semestre_asignatura as sem_asig','proy_prel.id_semestre_asignatura','=','sem_asig.id')
                         ->join('sedes_universidad as salida_rp','proy_prel.lugar_salida_rp','=','salida_rp.id')
                         ->join('sedes_universidad as regreso_rp','proy_prel.lugar_salida_rp','=','regreso_rp.id')
-                        ->join('transporte_proyeccion as trans_proy','proy_prel.id','=','trans_proy.id')
+                        ->join('transporte_programacion as trans_proy','proy_prel.id','=','trans_proy.id')
                         ->leftjoin('tipo_transporte as tip_tra_rp1','trans_proy.id_tipo_transporte_rp_1','=','tip_tra_rp1.id')
                         ->leftjoin('tipo_transporte as tip_tra_rp2','trans_proy.id_tipo_transporte_rp_2','=','tip_tra_rp2.id')
                         ->leftjoin('tipo_transporte as tip_tra_rp3','trans_proy.id_tipo_transporte_rp_3','=','tip_tra_rp3.id')
                         ->join('users as us','proy_prel.id_docente_responsable','=','us.id')
                         ->join('encuesta_transporte as enc_trans','solic_prac.id','=','enc_trans.id')
-                        ->where('solic_prac.id_proyeccion_preliminar',$id_solic)->first();
+                        ->where('solic_prac.id_programacion_practica',$id_solic)->first();
 
                 $solicitudes->det_tipo_transporte_rp_1 = $solicitudes->det_tipo_transporte_rp_1 ==null?"N/A":$solicitudes->det_tipo_transporte_rp_1;
                 
@@ -98,13 +98,13 @@ class EncuestaTransportadorExport implements  FromCollection, WithHeadings, Shou
                         ->join('semestre_asignatura as sem_asig','proy_prel.id_semestre_asignatura','=','sem_asig.id')
                         ->join('sedes_universidad as salida_ra','proy_prel.lugar_salida_ra','=','salida_ra.id')
                         ->join('sedes_universidad as regreso_ra','proy_prel.lugar_salida_ra','=','regreso_ra.id')
-                        ->join('transporte_proyeccion as trans_proy','proy_prel.id','=','trans_proy.id')
+                        ->join('transporte_programacion as trans_proy','proy_prel.id','=','trans_proy.id')
                         ->leftjoin('tipo_transporte as tip_tra_ra1','trans_proy.id_tipo_transporte_ra_1','=','tip_tra_ra1.id')
                         ->leftjoin('tipo_transporte as tip_tra_ra2','trans_proy.id_tipo_transporte_ra_2','=','tip_tra_ra2.id')
                         ->leftjoin('tipo_transporte as tip_tra_ra3','trans_proy.id_tipo_transporte_ra_3','=','tip_tra_ra3.id')
                         ->join('users as us','proy_prel.id_docente_responsable','=','us.id')
                         ->join('encuesta_transporte as enc_trans','solic_prac.id','=','enc_trans.id')
-                        ->where('solic_prac.id_proyeccion_preliminar',$id_solic)->first();
+                        ->where('solic_prac.id_programacion_practica',$id_solic)->first();
                 
                         
                 $solicitudes->det_tipo_transporte_ra_1 = $solicitudes->det_tipo_transporte_ra_1 ==null?"N/A":$solicitudes->det_tipo_transporte_ra_1;

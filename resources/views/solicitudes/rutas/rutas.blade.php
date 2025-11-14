@@ -13,14 +13,14 @@
     <tr>
     <td><?php if($item->tipo_ruta==1) {echo 'Principal';}elseif($item->tipo_ruta==2){echo 'Contingencia';}?></td>
        <td>{{ $item->programa_academico }}</td>
-       {{-- <td>{{ $proyeccion_preliminar->codigo_espacio_academico }}</td> --}}
-       <td>{{ $proyeccion_preliminar->codigo_espacio_academico }}<?php echo "\t "?>{{ $item->espacio_academico }}</td>
+       {{-- <td>{{ $programacion_practica->codigo_espacio_academico }}</td> --}}
+       <td>{{ $programacion_practica->codigo_espacio_academico }}<?php echo "\t "?>{{ $item->espacio_academico }}</td>
        <td>{{ $item->destino }}</td>
        <td>{{ $item->fecha_salida }}</td>
        <td>{{ $item->fecha_regreso }}</td> 
        <td> 
            
-           <a href="{{route('solicitud_edit',[Crypt::encrypt($proyeccion_preliminar->id),Crypt::encrypt($item->tipo_ruta)])}}">
+           <a href="{{route('solicitud_edit',[Crypt::encrypt($programacion_practica->id),Crypt::encrypt($item->tipo_ruta)])}}">
            <button class="btn-success" style="background-color: #447161; border:0">Editar</button>
            </a> 
        </td> 

@@ -6,21 +6,21 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 use DB;
 
-class ReportProyeccionesExport implements WithMultipleSheets
+class ReportprogramacionesExport implements WithMultipleSheets
 {
 
     public function __construct($id)
     {
-        $this->id_proyeccion = $id;
+        $this->id_programacion = $id;
     }
 
     public function sheets(): array
     {
         $sheets = [];
 
-         $sheets[] = new ProyeccionesPreliminaresExport($this->id_proyeccion);
-         $sheets[] = new ProyeccionesContingenciaExport($this->id_proyeccion);
-         $sheets[] = new ProyeccionesIntegradasExport($this->id_proyeccion);
+         $sheets[] = new programacionesPreliminaresExport($this->id_programacion);
+         $sheets[] = new programacionesContingenciaExport($this->id_programacion);
+         $sheets[] = new programacionesIntegradasExport($this->id_programacion);
 
         return $sheets;
     }

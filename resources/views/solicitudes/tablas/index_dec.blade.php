@@ -14,7 +14,7 @@
             <th style="width: 45px">Total</th>
             <th style="width: 25px"></th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -66,7 +66,7 @@
             <th style="width: 45px">Total</th>
             <th style="width: 20px">Acciones</th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -141,7 +141,7 @@
             <th style="width: 35px">Transporte</th>
             <th style="width: 45px">Total</th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -188,7 +188,7 @@
             <th style="width: 45px">Total</th>
             <th style="width: 25px"></th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -224,4 +224,4 @@
     </table>
 @endif
 
-{{$proyecciones->render()}}
+{{$programaciones->render()}}

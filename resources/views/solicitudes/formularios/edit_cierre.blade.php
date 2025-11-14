@@ -13,14 +13,14 @@
                         {{ __('') }}</div>
                     
                         <div class="card-body">
-                            <form method="POST" action="{{ route('solic_cierre',[Crypt::encrypt($proyeccion_preliminar->id)]) }}">
+                            <form method="POST" action="{{ route('solic_cierre',[Crypt::encrypt($programacion_practica->id)]) }}">
                                 @method('PUT')
                                 @csrf
 
                                 @if(Auth::user()->asistenteD() || Auth::user()->admin())
-                                    @include('solicitudes.formularios.edit_asisDec',array($proyeccion_preliminar,$programas_usuario, 
+                                    @include('solicitudes.formularios.edit_asisDec',array($programacion_practica,$programas_usuario, 
                                     $espacios_academicos,$periodos_academicos,$semestres_asignaturas, $tipos_transportes, 
-                                    $all_programas_aca, $all_espacios_aca, $costos_proyeccion,
+                                    $all_programas_aca, $all_espacios_aca, $costos_programacion,
                                     $tipo_ruta))    
                                 @endif 
                                 <!-- 25 -->

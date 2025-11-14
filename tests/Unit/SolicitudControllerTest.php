@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PractiCampoUD\proyeccion;
+use PractiCampoUD\programacion;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\User;
 use Illuminate\Support\Facades\Crypt;
@@ -28,8 +28,8 @@ class SolicitudControllerTest extends TestCase
     public function test_solicitud_edit(): void{
         $user = User::find(79794356);
         $this->actingAs($user);
-        $proyeccion = proyeccion::find(1170);
-        $id = Crypt::encrypt($proyeccion->id);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
         $ruta= 1;
         $ruta= Crypt::encrypt($ruta);
         $response = $this->get("solicitudes/{$id}/{$ruta}");
@@ -43,8 +43,8 @@ class SolicitudControllerTest extends TestCase
     public function test_solicitud_update(): void{
         $user = User::find(79794356);
         $this->actingAs($user);
-        $proyeccion = proyeccion::find(1170);
-        $id = Crypt::encrypt($proyeccion->id);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
         $ruta= 1;
         $ruta= Crypt::encrypt($ruta);
         $data = [
@@ -200,8 +200,8 @@ class SolicitudControllerTest extends TestCase
     public function test_solicitud_update_coordinador(): void{
         $user = User::find(12956);
         $this->actingAs($user);
-        $proyeccion = proyeccion::find(1170);
-        $id = Crypt::encrypt($proyeccion->id);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
         $ruta = 1;
         $ruta = Crypt::encrypt($ruta);
         $data = [
@@ -220,8 +220,8 @@ class SolicitudControllerTest extends TestCase
     public function test_solicitud_update_asistente(): void{
         $user = User::find(79308666);
         $this->actingAs($user);
-        $proyeccion = proyeccion::find(1170);
-        $id = Crypt::encrypt($proyeccion->id);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
         $ruta = 1;
         $ruta = Crypt::encrypt($ruta);
         $data = [
@@ -247,8 +247,8 @@ class SolicitudControllerTest extends TestCase
     public function test_solicitud_update_decano(): void{
         $user = User::find(79494815);
         $this->actingAs($user);
-        $proyeccion = proyeccion::find(1170);
-        $id = Crypt::encrypt($proyeccion->id);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
         $ruta = 1;
         $ruta = Crypt::encrypt($ruta);
         $data = [
@@ -266,7 +266,7 @@ class SolicitudControllerTest extends TestCase
     public function test_solicitud_consec_solic(): void{
         $user = User::find(79494815);
         $this->actingAs($user);
-        $solicitud = solicitud::where('id_proyeccion_preliminar', '=', 1170)->first();
+        $solicitud = solicitud::where('id_programacion_practica', '=', 1170)->first();
         $id = $solicitud->id;
         $data = [
             'consec_dfamarena' => 123,
@@ -334,8 +334,8 @@ class SolicitudControllerTest extends TestCase
     public function test_solicitud_practica_realizada_edit(): void{
         $user = User::find(79794356);
         $this->actingAs($user);
-        $proyeccion = proyeccion::find(1170);
-        $id = Crypt::encrypt($proyeccion->id);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
         $response = $this->get("practica_realizada/{$id}");
         $response->assertStatus(200);
         $response->assertViewIs('solicitudes.index'); 
@@ -344,8 +344,8 @@ class SolicitudControllerTest extends TestCase
     public function test_solicitud_practica_realizada_update(): void{
         $user = User::find(79308666);
         $this->actingAs($user);
-        $proyeccion = proyeccion::find(1170);
-        $id = Crypt::encrypt($proyeccion->id);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
         $data = [
             'practica_realizada' => 1
         ];

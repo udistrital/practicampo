@@ -51,7 +51,7 @@ class SolicituesAprobadasExport implements  FromCollection, WithHeadings, Should
                 's.duracion_num_dias',
                 DB::raw("COALESCE(s.num_estudiantes, 0) + COALESCE(dp.num_docentes_apoyo, 0) + COALESCE(pi.cant_espa_aca, 0) + 1 AS numero_pasajeros")
             )
-            ->join('proyeccion_preliminar as p', 'p.id', '=', 's.id_proyeccion_preliminar')
+            ->join('programacion_practica as p', 'p.id', '=', 's.id_programacion_practica')
             ->leftJoin('docentes_practica as dp', 'dp.id', '=', 'p.id')
             ->join('practicas_integradas as pi', 'pi.id', '=', 'p.id')
             ->join('users as u', 'u.id', '=', 's.id_docente_creador')

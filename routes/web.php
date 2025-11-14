@@ -114,8 +114,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('exp-users-list-excel','Excel\ExcelController@exportExcel')->name('export_list_users.excel');
         Route::post('imp-users-list-excel','Excel\ExcelController@importExcel')->name('import_list_users.excel');
 
-        Route::get('exp-proyecc-list-excel','Excel\ExcelController@exportProyeccionesExcel')->name('export_list_proyecc.excel');
-        Route::post('imp-proyecc-list-excel','Excel\ExcelController@importProyeccionesExcel')->name('import_list_proyecc.excel');
+        Route::get('exp-proyecc-list-excel','Excel\ExcelController@exportprogramacionesExcel')->name('export_list_proyecc.excel');
+        Route::post('imp-proyecc-list-excel','Excel\ExcelController@importprogramacionesExcel')->name('import_list_proyecc.excel');
 
         Route::post('imp-estud-list-excel/{id}','Excel\ExcelController@importEstudiantesExcel')->name('import_list_estud.excel');
 
@@ -148,24 +148,24 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('soportes_formatos/{id}','Solicitud\SolicitudController@soportes_formatos')->name('soportes_formatos');
 
         // ------> image Routes <------
-        Route::get('exp-proyecc-plan-conting','Proyeccion\ProyeccionController@exportPlanConting')->name('export_plan_conting.img');
+        Route::get('exp-proyecc-plan-conting','programacion\programacionController@exportPlanConting')->name('export_plan_conting.img');
 
-        // ------> Proyecciones Routes <------
-        Route::get('proyecciones/filtrar/{id}','Proyeccion\ProyeccionController@filterProyeccion')->name('proyeccion_filter');
-        Route::get('proyecciones/create','Proyeccion\ProyeccionController@create')->name('proyeccion_create');
-        Route::post('proyecciones','Proyeccion\ProyeccionController@store')->name('proyeccion_store');
-        Route::get('proyecciones/{id}','Proyeccion\ProyeccionController@edit')->name('proyeccion_edit');
-        Route::put('proyecciones/{id}','Proyeccion\ProyeccionController@update')->name('proyeccion_update');
-        Route::delete('proyecciones','Proyeccion\ProyeccionController@destroy')->name('proyeccion_destroy');
-        Route::put('proyeccsend','Proyeccion\ProyeccionController@sendProy')->name('proyeccion_send');
-        Route::put('proyecc_vb','Proyeccion\ProyeccionController@vbProy')->name('proyeccion_vb');
-        Route::post('proyecc_electiva','Proyeccion\ProyeccionController@validar_electivas')->name('proyeccion_electiva');
-        // Route::get('proyecciones/buscar/proy/{id_sel}','Proyeccion\ProyeccionController@buscador')->name('proyeccion_buscar');
-        Route::get('proyecciones/buscar/proy','Proyeccion\ProyeccionController@buscador')->name('proyeccion_buscar');
-        Route::get('proyeccver/{id}','Proyeccion\ProyeccionController@ver_proyeccion')->name('proy_legalizadas');
-        Route::post('proyeccduplicar/{id}','Proyeccion\ProyeccionController@duplicar_proy')->name('proy_duplicar');
-        Route::put('cambios_proy/{id}','Proyeccion\ProyeccionController@cambios_proy')->name('proy_cambios');
-        Route::get('hab_cambios_proy/{id}','Proyeccion\ProyeccionController@hab_cambios_proy')->name('proy_hab_cambios');
+        // ------> programaciones Routes <------
+        Route::get('programaciones/filtrar/{id}','programacion\programacionController@filterprogramacion')->name('programacion_filter');
+        Route::get('programaciones/create','programacion\programacionController@create')->name('programacion_create');
+        Route::post('programaciones','programacion\programacionController@store')->name('programacion_store');
+        Route::get('programaciones/{id}','programacion\programacionController@edit')->name('programacion_edit');
+        Route::put('programaciones/{id}','programacion\programacionController@update')->name('programacion_update');
+        Route::delete('programaciones','programacion\programacionController@destroy')->name('programacion_destroy');
+        Route::put('proyeccsend','programacion\programacionController@sendProy')->name('programacion_send');
+        Route::put('proyecc_vb','programacion\programacionController@vbProy')->name('programacion_vb');
+        Route::post('proyecc_electiva','programacion\programacionController@validar_electivas')->name('programacion_electiva');
+        // Route::get('programaciones/buscar/proy/{id_sel}','programacion\programacionController@buscador')->name('programacion_buscar');
+        Route::get('programaciones/buscar/proy','programacion\programacionController@buscador')->name('programacion_buscar');
+        Route::get('proyeccver/{id}','programacion\programacionController@ver_programacion')->name('proy_legalizadas');
+        Route::post('proyeccduplicar/{id}','programacion\programacionController@duplicar_proy')->name('proy_duplicar');
+        Route::put('cambios_proy/{id}','programacion\programacionController@cambios_proy')->name('proy_cambios');
+        Route::get('hab_cambios_proy/{id}','programacion\programacionController@hab_cambios_proy')->name('proy_hab_cambios');
 
         // ------> solicitudes Routes <------
         Route::get('solicitudes/filtrar/{id}','Solicitud\SolicitudController@filterSolicitud')->name('solicitud_filter');
@@ -217,12 +217,12 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::post('mail/creacion_solic/{id}', 'Notificacion\NotificacionController@creacion_solic')->name('creacion_solic');
         Route::post('mail/creacion_solic/{id}', 'Solicitud\SolicitudController@creacion_solic')->name('creacion_solic');
         // Route::post('mail/aprob_coord_proy/{id}', 'Notificacion\NotificacionController@aprob_coord_proy')->name('aprob_coord_proy');
-        Route::post('mail/aprob_coord_proy/{id}', 'Proyeccion\ProyeccionController@aprob_coord_proy')->name('aprob_coord_proy');
-        Route::post('mail/aprob_decano_proy/{id}', 'Proyeccion\ProyeccionController@aprob_decano_proy')->name('aprob_decano_proy');
+        Route::post('mail/aprob_coord_proy/{id}', 'programacion\programacionController@aprob_coord_proy')->name('aprob_coord_proy');
+        Route::post('mail/aprob_decano_proy/{id}', 'programacion\programacionController@aprob_decano_proy')->name('aprob_decano_proy');
 
         // Route::post('mail/rechazo_coord_proy/{id}', 'Notificacion\NotificacionController@rechazo_coord_proy')->name('rechazo_coord_proy');
-        Route::post('mail/rechazo_coord_proy/{id}', 'Proyeccion\ProyeccionController@rechazo_coord_proy')->name('rechazo_coord_proy');
-        Route::post('mail/rechazo_decano_proy/{id}', 'Proyeccion\ProyeccionController@rechazo_decano_proy')->name('rechazo_decano_proy');
+        Route::post('mail/rechazo_coord_proy/{id}', 'programacion\programacionController@rechazo_coord_proy')->name('rechazo_coord_proy');
+        Route::post('mail/rechazo_decano_proy/{id}', 'programacion\programacionController@rechazo_decano_proy')->name('rechazo_decano_proy');
 
         Route::post('mail/aprob_coord_solic/{id}', 'Solicitud\SolicitudController@aprob_coord_solic')->name('aprob_coord_solic');
         // Route::post('mail/aprob_coord_solic/{id}', 'Notificacion\NotificacionController@aprob_coord_solic')->name('aprob_coord_solic');
@@ -234,8 +234,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('mail/info_solic_estudiantes/{id}', 'Solicitud\SolicitudController@info_solic_estudiantes')->name('info_solic_estudiantes');
         // Route::post('mail/info_solic_estudiantes/{id}', 'Notificacion\NotificacionController@info_solic_estudiantes')->name('info_solic_estudiantes');
         Route::post('mail/info_transp_vice/{id}', 'Notificacion\NotificacionController@info_transp_vice')->name('info_transp_vice');
-        Route::post('mail/estud_15_dias/{id}', 'Proyeccion\ProyeccionController@estud_15_dias')->name('estud_15_dias');
-        Route::post('mail/estud_8_dias/{id}', 'Proyeccion\ProyeccionController@estud_8_dias')->name('estud_8_dias');
+        Route::post('mail/estud_15_dias/{id}', 'programacion\programacionController@estud_15_dias')->name('estud_15_dias');
+        Route::post('mail/estud_8_dias/{id}', 'programacion\programacionController@estud_8_dias')->name('estud_8_dias');
         Route::post('mail/noti_transp_solic/{id}', 'Solicitud\SolicitudController@noti_transp_solic')->name('noti_transp_solic');
         // Route::post('mail/noti_transp_solic/{id}', 'Notificacion\NotificacionController@noti_transp_solic')->name('noti_transp_solic');
         Route::post('mail/pre_salida', 'Notificacion\NotificacionController@pre_salida')->name('pre_salida');

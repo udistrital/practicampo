@@ -2,7 +2,7 @@
 
 namespace PractiCampoUD\Imports;
 
-use PractiCampoUD\proyeccion;
+use PractiCampoUD\programacion;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -13,15 +13,15 @@ use Illuminate\Support\Collection;
 use Carbon\Carbon;
 use DateTime;
 use DB;
-use PractiCampoUD\costos_proyeccion;
+use PractiCampoUD\costos_programacion;
 use PractiCampoUD\docentes_practica;
-use PractiCampoUD\materiales_herramientas_proyeccion;
+use PractiCampoUD\materiales_herramientas_programacion;
 use PractiCampoUD\practicas_integradas;
 use PractiCampoUD\riesgos_amenazas_practica;
 use PractiCampoUD\transporte_menor;
-use PractiCampoUD\transporte_proyeccion;
+use PractiCampoUD\transporte_programacion;
 
-class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
+class programacionesPreliminaresImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $collection)
     {
@@ -49,7 +49,7 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
 
             if(!empty($docente_responsable) || $docente_responsable != null){
 
-                $proyeccion = proyeccion::create([
+                $programacion = programacion::create([
                     'id_estado'=>1,
                     'id_programa_academico'=>$row['id_programa_academico'],
                     'id_espacio_academico'=>$row['id_espacio_academico'],
@@ -107,7 +107,7 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
                 ]);
 
                 $docentes = docentes_practica::create([
-                    'id'=>$proyeccion->id,
+                    'id'=>$programacion->id,
                     'total_docentes_apoyo'=>$row['total_docentes_apoyo'],
                     'num_docentes_apoyo'=>$row['cant_personal_apoyo'],
                     'docente_apoyo_1'=>$row['personal_apoyo_1'],
@@ -124,13 +124,13 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
                 ]);
 
                 $practicas_integradas = practicas_integradas::create([
-                    'id'=>$proyeccion->id,
+                    'id'=>$programacion->id,
                     'cant_espa_aca'=>0,
                     
                 ]);
 
                 $transporte_menor = transporte_menor::create([
-                    'id'=>$proyeccion->id,
+                    'id'=>$programacion->id,
                     'cant_trans_menor_rp'=>$row['cant_transporte_menor_rp'],
                     'cant_trans_menor_ra'=>$row['cant_transporte_menor_rc'],
                     'trans_menor_rp_1'=>$row['transporte_menor_1_rp'],
@@ -164,8 +164,8 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
                 $costo_total_transporte_menor_rp = $this->CalcCostoTranspM($t_m_1_rp, $t_m_2_rp, $t_m_3_rp, $t_m_4_rp);
                 $costo_total_transporte_menor_ra = $this->CalcCostoTranspM($t_m_1_ra, $t_m_2_ra, $t_m_3_ra, $t_m_4_ra);
 
-                $transporte = transporte_proyeccion::create([
-                    'id'=>$proyeccion->id,
+                $transporte = transporte_programacion::create([
+                    'id'=>$programacion->id,
                     'cant_transporte_rp'=>$row['cant_vehiculos_rp'],
                     'cant_transporte_ra'=>$row['cant_vehiculos_rc'],
                     'id_tipo_transporte_rp_1'=>$row['id_tipo_vehiculo_1_rp'],
@@ -198,8 +198,8 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
 
                 ]);
 
-                $mate_herra = materiales_herramientas_proyeccion::create([
-                    'id'=>$proyeccion->id,
+                $mate_herra = materiales_herramientas_programacion::create([
+                    'id'=>$programacion->id,
                     'det_materiales_rp'=>$row['materiales_rp'],
                     'det_materiales_ra'=>$row['materiales_rc'],
                     'det_otros_boletas_rp'=>$row['boletasotros_rp'],
@@ -209,7 +209,7 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
                 ]);
 
                 $riesgo_amenaza = riesgos_amenazas_practica::create([
-                    'id'=>$proyeccion->id,
+                    'id'=>$programacion->id,
                     'areas_acuaticas_rp'=>$row['areas_acuaticas_rp'],
                     'areas_acuaticas_ra'=>$row['areas_acuaticas_rc'],
                     'alturas_rp'=>$row['alturas_rp'],
@@ -220,10 +220,10 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
                     'espacios_confinados_ra'=>$row['espacios_confinados_rc'],
                 ]);
 
-                $viaticos_estudiantes_rp=$this->calcViaticosEst($proyeccion->num_estudiantes_aprox, $proyeccion->duracion_num_dias_rp,$prog_aca);
-                $viaticos_estudiantes_ra=$this->calcViaticosEst($proyeccion->num_estudiantes_aprox, $proyeccion->duracion_num_dias_ra,$prog_aca);
-                $viaticos_docente_rp=$this->calcViaticosDoc($docentes->total_docentes_apoyo,$docentes->num_docentes_apoyo,$proyeccion->duracion_num_dias_rp);
-                $viaticos_docente_ra=$this->calcViaticosDoc($docentes->total_docentes_apoyo,$docentes->num_docentes_apoyo,$proyeccion->duracion_num_dias_ra);
+                $viaticos_estudiantes_rp=$this->calcViaticosEst($programacion->num_estudiantes_aprox, $programacion->duracion_num_dias_rp,$prog_aca);
+                $viaticos_estudiantes_ra=$this->calcViaticosEst($programacion->num_estudiantes_aprox, $programacion->duracion_num_dias_ra,$prog_aca);
+                $viaticos_docente_rp=$this->calcViaticosDoc($docentes->total_docentes_apoyo,$docentes->num_docentes_apoyo,$programacion->duracion_num_dias_rp);
+                $viaticos_docente_ra=$this->calcViaticosDoc($docentes->total_docentes_apoyo,$docentes->num_docentes_apoyo,$programacion->duracion_num_dias_ra);
 
                 $vlr_materiales_rp =$row['vlr_total_materiales_rp'];
                 $vlr_materiales_ra =$row['vlr_total_materiales_rc'];
@@ -238,8 +238,8 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
                 $total_presupuesto_rp =$total_otros_rp + $viaticos_estudiantes_rp + $viaticos_docente_rp + $costo_total_transporte_menor_rp; 
                 $total_presupuesto_ra =$total_otros_ra + $viaticos_estudiantes_ra + $viaticos_docente_ra + $costo_total_transporte_menor_ra; 
 
-                $costos = costos_proyeccion::create([
-                    'id'=>$proyeccion->id,
+                $costos = costos_programacion::create([
+                    'id'=>$programacion->id,
                     'vlr_materiales_rp'=>$row['vlr_total_materiales_rp'],
                     'vlr_materiales_ra'=>$row['vlr_total_materiales_rc'],
                     'vlr_otros_boletas_rp'=>$row['vlr_total_boletasotros_rp'],
@@ -272,7 +272,7 @@ class ProyeccionesPreliminaresImport implements ToCollection, WithHeadingRow
     public function sheets(): array
     {
         return [
-            'Proyecciones' => $this
+            'programaciones' => $this
         ];
     }
 

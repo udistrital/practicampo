@@ -1,5 +1,5 @@
 @if($filter == 'sol_realizada')
-@foreach($proyecciones as $item)
+@foreach($programaciones as $item)
 <br>
 <hr class="divider">
 <h4>Información de la práctica</h4>

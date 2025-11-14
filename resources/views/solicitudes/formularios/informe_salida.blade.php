@@ -10,17 +10,17 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    {{-- <div class="card-header">{{ __('Registro Solicitud Práctica N° ') }}<php echo $solicitud_practica->id_proyeccion_preliminar?> <php echo "\t -"?> --}}
-                        <div class="card-header">{{ __('Informe de Práctica Académica N° ') }}<?php echo $solicitud_practica->id_proyeccion_preliminar?>
+                    {{-- <div class="card-header">{{ __('Registro Solicitud Práctica N° ') }}<php echo $solicitud_practica->id_programacion_practica?> <php echo "\t -"?> --}}
+                        <div class="card-header">{{ __('Informe de Práctica Académica N° ') }}<?php echo $solicitud_practica->id_programacion_practica?>
                         {{ __('') }}</div>
                         {{-- <php if($estado_doc_respon == 1){ echo $nombre_doc_resp;} elseif ($estado_doc_respon == 2){ echo "Usuario Inactivo";}?> --}}
                     
                         <div class="card-body">
                             <form method="POST" action="">
-                                {{-- {{ route('solicitud_update',[Crypt::encrypt($proyeccion_preliminar->id), Crypt::encrypt($tipo_ruta)]) }} --}}
+                                {{-- {{ route('solicitud_update',[Crypt::encrypt($programacion_practica->id), Crypt::encrypt($tipo_ruta)]) }} --}}
                                 @method('PUT')
                                 @csrf
-                                <!-- información proyección -->
+                                <!-- información Programación -->
                                     <!-- 1 -->
                                     <div class="form-group row">
                                         <div class="col-md-5">
@@ -29,7 +29,7 @@
                                             <select name="id_programa_academico" class="form-control" required disabled>
                                                 
                                                 @foreach($programas_usuario as $pro_aca)
-                                                    <option <?php if($pro_aca['id']==$proyeccion_preliminar->id_programa_academico) echo 'selected'?> value="{{$pro_aca['id']}}">{{$pro_aca['programa_academico']}}</option>  
+                                                    <option <?php if($pro_aca['id']==$programacion_practica->id_programa_academico) echo 'selected'?> value="{{$pro_aca['id']}}">{{$pro_aca['programa_academico']}}</option>  
                                                 @endforeach
                                             </select>
                                             @error('id_programa_academico')
@@ -44,7 +44,7 @@
                                             <span class="hs-form-required">*</span>
                                             <select name="id_espacio_academico" class="form-control" required disabled>
                                                 @foreach($espacios_academicos as $esp_aca)
-                                                    <option <?php if($esp_aca->id==$proyeccion_preliminar->id_espacio_academico) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
+                                                    <option <?php if($esp_aca->id==$programacion_practica->id_espacio_academico) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
                                                     
                                                 @endforeach
                                             </select>
@@ -59,7 +59,7 @@
                                             <span class="hs-form-required" >*</span>
                                             <select name="id_periodo_academico" class="form-control" required disabled style="padding-left: 0.1rem;padding-right: 0.1rem;">
                                                 @foreach($periodos_academicos as $per_aca)
-                                                    <option <?php if($per_aca->id==$proyeccion_preliminar->id_periodo_academico) echo 'selected'?> value="{{$per_aca->id}}">{{$per_aca->periodo_academico}}</option>  
+                                                    <option <?php if($per_aca->id==$programacion_practica->id_periodo_academico) echo 'selected'?> value="{{$per_aca->id}}">{{$per_aca->periodo_academico}}</option>  
                                                     
                                                 @endforeach
                                             </select>
@@ -75,7 +75,7 @@
                                             <span class="hs-form-required">*</span>
                                             <select name="id_semestre_asignatura" class="form-control" required disabled style="padding-left: 0.1rem;padding-right: 0.1rem;">
                                                 @foreach($semestres_asignaturas as $sem_asig)
-                                                    <option <?php if($sem_asig->id==$proyeccion_preliminar->id_semestre_asignatura) echo 'selected' ?> value="{{$sem_asig->id}}">{{$sem_asig->semestre_asignatura}}</option>  
+                                                    <option <?php if($sem_asig->id==$programacion_practica->id_semestre_asignatura) echo 'selected' ?> value="{{$sem_asig->id}}">{{$sem_asig->semestre_asignatura}}</option>  
                                                     
                                                 @endforeach
                                             </select>
@@ -88,7 +88,7 @@
                                     </div>
                                     <!-- 1 -->
 
-                                <!-- información proyección -->
+                                <!-- información Programación -->
 
 
                                 @if($tipo_ruta == 1)
@@ -104,7 +104,7 @@
                                             <label for="destino_rp" class="col-form-label text-md-left">{{ __('Destino Ruta Principal') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <input id="destino_rp" type="text" class="form-control @error('destino_rp') is-invalid @enderror" name="destino_rp" 
-                                            value="{{$proyeccion_preliminar->destino_rp}}" required autocomplete="off" autofocus readonly>
+                                            value="{{$programacion_practica->destino_rp}}" required autocomplete="off" autofocus readonly>
 
                                             @error('destino_rp')
                                                 <span class="invalid-feedback" role="alert">
@@ -119,7 +119,7 @@
                                             <div class="input-group">
                                                 <input id="cant_url_rp" max="6" min="1" pattern="^[0-9]+" class="form-control @error('cant_url_rp') is-invalid @enderror" name="cant_url_rp" 
                                                 title="Cantidad de URL ruta principal"
-                                                value="{{$proyeccion_preliminar->cantidad_url_rp}}" autocomplete="off" autofocus readonly disabled>
+                                                value="{{$programacion_practica->cantidad_url_rp}}" autocomplete="off" autofocus readonly disabled>
                                                 
                                                 @error('cant_url_rp')
                                                 <span class="invalid-feedback" role="alert">
@@ -149,7 +149,7 @@
                                                             <label for="ruta_principal" class="col-form-label text-md-left">{{ __('URL Ruta') }}</label>
                                                             <div class="input-group">
                                                                 <input id="ruta_principal" type="text" class="form-control @error('ruta_principal') is-invalid @enderror" name="ruta_principal" 
-                                                                value="{{$proyeccion_preliminar->ruta_principal}}"  required autocomplete="off" autofocus readonly
+                                                                value="{{$programacion_practica->ruta_principal}}"  required autocomplete="off" autofocus readonly
                                                                 >
                                                         
                                                                 @error('ruta_principal')
@@ -174,7 +174,7 @@
                                                         <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                             <div class="input-group">
                                                                 <input id="ruta_principal_2" type="text" class="form-control @error('ruta_principal_2') is-invalid @enderror" name="ruta_principal_2" 
-                                                                value="{{$proyeccion_preliminar->ruta_principal_2}}"  required autocomplete="off" autofocus readonly
+                                                                value="{{$programacion_practica->ruta_principal_2}}"  required autocomplete="off" autofocus readonly
                                                                 >
                                                         
                                                                 @error('ruta_principal_2')
@@ -200,7 +200,7 @@
                                                         <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                             <div class="input-group">
                                                                 <input id="ruta_principal_3" type="text" class="form-control @error('ruta_principal_3') is-invalid @enderror" name="ruta_principal_3" 
-                                                                value="{{$proyeccion_preliminar->ruta_principal_3}}"  required autocomplete="off" autofocus readonly
+                                                                value="{{$programacion_practica->ruta_principal_3}}"  required autocomplete="off" autofocus readonly
                                                                 >
                                                         
                                                                 @error('ruta_principal_3')
@@ -225,7 +225,7 @@
                                                         <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                             <div class="input-group">
                                                                 <input id="ruta_principal_4" type="text" class="form-control @error('ruta_principal_4') is-invalid @enderror" name="ruta_principal_4" 
-                                                                value="{{$proyeccion_preliminar->ruta_principal_4}}"  required autocomplete="off" autofocus readonly
+                                                                value="{{$programacion_practica->ruta_principal_4}}"  required autocomplete="off" autofocus readonly
                                                                 >
                                                         
                                                                 @error('ruta_principal_4')
@@ -250,7 +250,7 @@
                                                         <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                             <div class="input-group">
                                                                 <input id="ruta_principal_5" type="text" class="form-control @error('ruta_principal_5') is-invalid @enderror" name="ruta_principal_5" 
-                                                                value="{{$proyeccion_preliminar->ruta_principal_5}}"  required autocomplete="off" autofocus readonly
+                                                                value="{{$programacion_practica->ruta_principal_5}}"  required autocomplete="off" autofocus readonly
                                                                 >
                                                         
                                                                 @error('ruta_principal_5')
@@ -275,7 +275,7 @@
                                                         <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                             <div class="input-group">
                                                                 <input id="ruta_principal_6" type="text" class="form-control @error('ruta_principal_6') is-invalid @enderror" name="ruta_principal_6" 
-                                                                value="{{$proyeccion_preliminar->ruta_principal_6}}"  required autocomplete="off" autofocus readonly
+                                                                value="{{$programacion_practica->ruta_principal_6}}"  required autocomplete="off" autofocus readonly
                                                                 >
                                                         
                                                                 @error('ruta_principal_6')
@@ -301,7 +301,7 @@
                                             <label for="det_recorrido_interno_rp" class="col-form-label text-md-left">{{ __('Detalle Recorrido') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <textarea id="det_recorrido_interno_rp" style="min-height:5rem;" type="text" class="form-control @error('det_recorrido_interno_rp') is-invalid @enderror" name="det_recorrido_interno_rp" 
-                                            required autocomplete="off" autofocus readonly><?php echo $proyeccion_preliminar->det_recorrido_interno_rp?></textarea>
+                                            required autocomplete="off" autofocus readonly><?php echo $programacion_practica->det_recorrido_interno_rp?></textarea>
                                             
                                             @error('det_recorrido_interno_rp')
                                                 <span class="invalid-feedback" role="alert">
@@ -319,7 +319,7 @@
                                             <span class="hs-form-required">*</span>
                                             <div class="input-group">
                                                 <input id="lugar_salida_rp" type="text" class="form-control @error('lugar_salida_rp') is-invalid @enderror" name="lugar_salida_rp" 
-                                                value="{{$proyeccion_preliminar->lugar_salida_rp}}" required autocomplete="off" autofocus readonly
+                                                value="{{$programacion_practica->lugar_salida_rp}}" required autocomplete="off" autofocus readonly
                                                 onchange="verf_rp(this,1)">
                                                 
                                                 @error('lugar_salida_rp')
@@ -341,7 +341,7 @@
                                                 <i class="fa fa-calendar"></i>
                                                 </div>
                                             <input class="inputDate form-control datetimepicker" name="fecha_salida_aprox_rp" id="fecha_salida_aprox_rp" type="text" required
-                                            value="{{$proyeccion_preliminar->fecha_salida_aprox_rp}}"  onchange="duracion_edit_RP(this.value)" readonly disabled>
+                                            value="{{$programacion_practica->fecha_salida_aprox_rp}}"  onchange="duracion_edit_RP(this.value)" readonly disabled>
                                             </div>
                                         </div>
 
@@ -350,7 +350,7 @@
                                             <span class="hs-form-required">*</span>
                                             <div class="input-group">
                                                 <input id="lugar_regreso_rp" type="text" class="form-control @error('lugar_regreso_rp') is-invalid @enderror" name="lugar_regreso_rp" 
-                                                value="{{$proyeccion_preliminar->lugar_regreso_rp}}" required autocomplete="off" autofocus readonly 
+                                                value="{{$programacion_practica->lugar_regreso_rp}}" required autocomplete="off" autofocus readonly 
                                                 onchange="verf_rp(this,2)"> 
                                                 
                                                 @error('lugar_regreso_rp')
@@ -371,7 +371,7 @@
                                                 <i class="fa fa-calendar"></i>
                                                 </div>
                                             <input class="inputDate form-control datetimepicker" name="fecha_regreso_aprox_rp" id="fecha_regreso_aprox_rp" type="text" required
-                                            value="{{$proyeccion_preliminar->fecha_regreso_aprox_rp}}" onchange="duracion_edit_RP(this.value)" readonly disabled>
+                                            value="{{$programacion_practica->fecha_regreso_aprox_rp}}" onchange="duracion_edit_RP(this.value)" readonly disabled>
                                             </div>
                                         </div>
 
@@ -379,7 +379,7 @@
                                             <label for="duracion_edit_rp" class="col-form-label text-md-left">{{ __('Duración Días') }}</label>
                                             {{-- <span class="hs-form-required">*</span> --}}
                                             <input id="duracion_edit_rp" type="text" class="form-control @error('duracion_edit_rp') is-invalid @enderror" name="duracion_edit_rp" 
-                                            value="{{$proyeccion_preliminar->duracion_num_dias_rp}}" autocomplete="off" autofocus  readonly>
+                                            value="{{$programacion_practica->duracion_num_dias_rp}}" autocomplete="off" autofocus  readonly>
                                             
                                             @error('duracion_edit_rp')
                                                 <span class="invalid-feedback" role="alert">
@@ -400,7 +400,7 @@
                                             <div class="input-group">
                                                 <input id="cant_transporte_rp_edit" type="number" max="3" min="1" pattern="^[1-3]+"  class="form-control @error('cant_transporte_rp_edit') is-invalid @enderror" name="cant_transporte_rp_edit" 
                                                 title="Cantidad de vehiculos requeridos"
-                                                value="{{$transporte_proyeccion->cant_transporte_rp}}" required autocomplete="off" autofocus readonly disabled>
+                                                value="{{$transporte_programacion->cant_transporte_rp}}" required autocomplete="off" autofocus readonly disabled>
                                                 
                                                 @error('cant_transporte_rp_edit')
                                                     <span class="invalid-feedback" role="alert">
@@ -429,7 +429,7 @@
                                                     <select name="id_tipo_transporte_rp_[]" class="form-control" required onchange="otroTransporte(this.value,1)"
                                                     title="Tipo de vehículo" disabled>
                                                         @foreach($tipos_transportes as $tp_trans)
-                                                            <option <?php if($tp_trans->id==$transporte_proyeccion->id_tipo_transporte_rp_1) echo 'selected'?> value="{{$tp_trans->id}}">{{$tp_trans->tipo_transporte}}</option>  
+                                                            <option <?php if($tp_trans->id==$transporte_programacion->id_tipo_transporte_rp_1) echo 'selected'?> value="{{$tp_trans->id}}">{{$tp_trans->tipo_transporte}}</option>  
 
                                                         @endforeach
                                                     </select>
@@ -445,7 +445,7 @@
                                                     <span class="hs-form-required">*</span>
                                                     <input id="otro_transporte_rp_1" type="text" class="form-control @error('otro_transporte_rp_1') is-invalid @enderror" name="otro_transporte_rp_1" 
                                                     title="Otro tipo de vehículo"
-                                                    value="{{$transporte_proyeccion->otro_tipo_transporte_rp_1}}"  autocomplete="off" autofocus required readonly>
+                                                    value="{{$transporte_programacion->otro_tipo_transporte_rp_1}}"  autocomplete="off" autofocus required readonly>
                                         
                                                     @error('otro_transporte_rp_1')
                                                         <span class="invalid-feedback" role="alert">
@@ -459,7 +459,7 @@
                                                     <span class="hs-form-required">*</span>
                                                     <input id="vlr_otro_transporte_rp_1" type="text" class="form-control @error('vlr_otro_transporte_rp_1') is-invalid @enderror" name="vlr_otro_transporte_rp_1" 
                                                     title="Valor del otro tipo de vehículo"
-                                                    value="{{$transporte_proyeccion->vlr_otro_tipo_transporte_rp_1}}"  autocomplete="off" autofocus required  onkeyup="formatVlr(this)" onchange="formatVlr(this)" readonly>
+                                                    value="{{$transporte_programacion->vlr_otro_tipo_transporte_rp_1}}"  autocomplete="off" autofocus required  onkeyup="formatVlr(this)" onchange="formatVlr(this)" readonly>
 
                                                     @error('vlr_otro_transporte_rp_1')
                                                         <span class="invalid-feedback" role="alert">
@@ -473,7 +473,7 @@
                                                     <span class="hs-form-required">*</span>
                                                     <input id="capac_transporte_rp_[]" type="text" class="form-control @error('capac_transporte_rp_[]') is-invalid @enderror" name="capac_transporte_rp_[]" 
                                                     title="Capacidad requerida del vehículo" onkeyup="onlyNmb(this)" 
-                                                    value="{{$transporte_proyeccion->capac_transporte_rp_1}}" required autocomplete="off" autofocus readonly>
+                                                    value="{{$transporte_programacion->capac_transporte_rp_1}}" required autocomplete="off" autofocus readonly>
 
                                                     @error('capac_transporte_rp_[]')
                                                         <span class="invalid-feedback" role="alert">
@@ -486,7 +486,7 @@
                                                     <label for="det_tipo_transporte_rp_[]" class="col-form-label text-md-left">{{ __('Det. Vehíc.') }}</label>
                                                     <input id="det_tipo_transporte_rp_[]" type="text" class="form-control @error('det_tipo_transporte_rp_[]') is-invalid @enderror" name="det_tipo_transporte_rp_[]" 
                                                     title="Detalle asociado al vehículo"
-                                                    value="{{$transporte_proyeccion->det_tipo_transporte_rp_1}}" autocomplete="off" autofocus readonly>
+                                                    value="{{$transporte_programacion->det_tipo_transporte_rp_1}}" autocomplete="off" autofocus readonly>
 
                                                     @error('det_tipo_transporte_rp_[]')
                                                         <span class="invalid-feedback" role="alert">
@@ -518,7 +518,7 @@
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                                 <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio" name="exclusiv_tiempo_rp_1" value="1" 
-                                                                <?php if($transporte_proyeccion->exclusiv_tiempo_rp_1 == 1) echo 'checked'?>
+                                                                <?php if($transporte_programacion->exclusiv_tiempo_rp_1 == 1) echo 'checked'?>
                                                                 title="Con disponiblidad permanente del vehículo" disabled>
                                                                 <label class="form-check-label" for="">Si</label>
                                                                 </div>
@@ -527,7 +527,7 @@
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio" name="exclusiv_tiempo_rp_1"  value="0"
-                                                                    <?php if($transporte_proyeccion->exclusiv_tiempo_rp_1 == 0) echo 'checked'?>
+                                                                    <?php if($transporte_programacion->exclusiv_tiempo_rp_1 == 0) echo 'checked'?>
                                                                     title="Sin disponiblidad permanente" disabled>
                                                                     <label class="form-check-label" for="">No</label>
                                                                 </div>
@@ -618,7 +618,7 @@
                                                     <select name="id_tipo_transporte_rp_[]" class="form-control" required onchange="otroTransporte(this.value,2)"
                                                     title="Tipo de vehículo" disabled>
                                                         @foreach($tipos_transportes as $tp_trans)
-                                                            <option <?php if($tp_trans->id==$transporte_proyeccion->id_tipo_transporte_rp_2) echo 'selected'?> value="{{$tp_trans->id}}">{{$tp_trans->tipo_transporte}}</option>  
+                                                            <option <?php if($tp_trans->id==$transporte_programacion->id_tipo_transporte_rp_2) echo 'selected'?> value="{{$tp_trans->id}}">{{$tp_trans->tipo_transporte}}</option>  
 
                                                         @endforeach
                                                     </select>
@@ -648,7 +648,7 @@
                                                     <span class="hs-form-required">*</span>
                                                     <input id="vlr_otro_transporte_rp_2" type="text" class="form-control @error('vlr_otro_transporte_rp_2') is-invalid @enderror" name="vlr_otro_transporte_rp_2" 
                                                     title="Valor del otro tipo de vehículo"
-                                                    value="{{$transporte_proyeccion->vlr_otro_tipo_transporte_rp_2}}"  autocomplete="off" autofocus required  
+                                                    value="{{$transporte_programacion->vlr_otro_tipo_transporte_rp_2}}"  autocomplete="off" autofocus required  
                                                     onkeyup="formatVlr(this)" onchange="formatVlr(this)" readonly disabled>
 
                                                     @error('vlr_otro_transporte_rp_2')
@@ -663,7 +663,7 @@
                                                     <span class="hs-form-required">*</span>
                                                     <input id="capac_transporte_rp_[]" type="text" class="form-control @error('capac_transporte_rp_[]') is-invalid @enderror" name="capac_transporte_rp_[]" 
                                                     title="Capacidad requerida del vehículo" onkeyup="onlyNmb(this)" 
-                                                    value="{{$transporte_proyeccion->capac_transporte_rp_2}}" autocomplete="off" autofocus disabled>
+                                                    value="{{$transporte_programacion->capac_transporte_rp_2}}" autocomplete="off" autofocus disabled>
 
                                                     @error('capac_transporte_rp_[]')
                                                         <span class="invalid-feedback" role="alert">
@@ -676,7 +676,7 @@
                                                     <label for="det_tipo_transporte_rp_[]" class="col-form-label text-md-left">{{ __('Det. Vehíc.') }}</label>
                                                     <input id="det_tipo_transporte_rp_[]" type="text" class="form-control @error('det_tipo_transporte_rp_[]') is-invalid @enderror" name="det_tipo_transporte_rp_[]" 
                                                     title="Detalle asociado al vehículo"
-                                                    value="{{$transporte_proyeccion->det_tipo_transporte_rp_2}}" autocomplete="off" autofocus disabled>
+                                                    value="{{$transporte_programacion->det_tipo_transporte_rp_2}}" autocomplete="off" autofocus disabled>
 
                                                     @error('det_tipo_transporte_rp_[]')
                                                         <span class="invalid-feedback" role="alert">
@@ -708,7 +708,7 @@
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                                 <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio" name="exclusiv_tiempo_rp_2" value="1" 
-                                                                <?php if($transporte_proyeccion->exclusiv_tiempo_rp_2 == 1) echo 'checked'?>
+                                                                <?php if($transporte_programacion->exclusiv_tiempo_rp_2 == 1) echo 'checked'?>
                                                                 title="Con disponiblidad permanente del vehículo" disabled>
                                                                 <label class="form-check-label" for="">Si</label>
                                                                 </div>
@@ -717,7 +717,7 @@
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio" name="exclusiv_tiempo_rp_2"  value="0"
-                                                                    <?php if($transporte_proyeccion->exclusiv_tiempo_rp_2 == 0) echo 'checked'?>
+                                                                    <?php if($transporte_programacion->exclusiv_tiempo_rp_2 == 0) echo 'checked'?>
                                                                     title="Sin disponiblidad permanente" disabled>
                                                                     <label class="form-check-label" for="">No</label>
                                                                 </div>
@@ -808,7 +808,7 @@
                                                     <select name="id_tipo_transporte_rp_[]" class="form-control" required onchange="otroTransporte(this.value,3)"
                                                     title="Tipo de vehículo" disabled>
                                                         @foreach($tipos_transportes as $tp_trans)
-                                                            <option <?php if($tp_trans->id==$transporte_proyeccion->id_tipo_transporte_rp_3) echo 'selected'?> value="{{$tp_trans->id}}">{{$tp_trans->tipo_transporte}}</option>  
+                                                            <option <?php if($tp_trans->id==$transporte_programacion->id_tipo_transporte_rp_3) echo 'selected'?> value="{{$tp_trans->id}}">{{$tp_trans->tipo_transporte}}</option>  
 
                                                         @endforeach
                                                     </select>
@@ -824,7 +824,7 @@
                                                     <span class="hs-form-required">*</span>
                                                     <input id="otro_transporte_rp_3" type="text" class="form-control @error('otro_transporte_rp_3') is-invalid @enderror" name="otro_transporte_rp_3" 
                                                     title="Otro tipo de vehículo"
-                                                    value="{{$transporte_proyeccion->otro_transporte_rp_3}}"  autocomplete="off" autofocus required readonly disabled>
+                                                    value="{{$transporte_programacion->otro_transporte_rp_3}}"  autocomplete="off" autofocus required readonly disabled>
                                         
                                                     @error('otro_transporte_rp_3')
                                                         <span class="invalid-feedback" role="alert">
@@ -837,7 +837,7 @@
                                                     <span class="hs-form-required">*</span>
                                                     <input id="vlr_otro_transporte_rp_3" type="text" class="form-control @error('vlr_otro_transporte_rp_3') is-invalid @enderror" name="vlr_otro_transporte_rp_3" 
                                                     title="Valor del otro tipo de vehículo"
-                                                    value="{{$transporte_proyeccion->vlr_otro_tipo_transporte_rp_3}}"  autocomplete="off" autofocus required  
+                                                    value="{{$transporte_programacion->vlr_otro_tipo_transporte_rp_3}}"  autocomplete="off" autofocus required  
                                                     onkeyup="formatVlr(this)" onchange="formatVlr(this)" readonly disabled>
 
                                                     @error('vlr_otro_transporte_rp_3')
@@ -852,7 +852,7 @@
                                                     <span class="hs-form-required">*</span>
                                                     <input id="capac_transporte_rp_[]" type="text" class="form-control @error('capac_transporte_rp_[]') is-invalid @enderror" name="capac_transporte_rp_[]" 
                                                     title="Capacidad requerida del vehículo" onkeyup="onlyNmb(this)" 
-                                                    value="{{$transporte_proyeccion->capac_transporte_rp_3}}" autocomplete="off" autofocus disabled>
+                                                    value="{{$transporte_programacion->capac_transporte_rp_3}}" autocomplete="off" autofocus disabled>
 
                                                     @error('capac_transporte_rp_[]')
                                                         <span class="invalid-feedback" role="alert">
@@ -865,7 +865,7 @@
                                                     <label for="det_tipo_transporte_rp_[]" class="col-form-label text-md-left">{{ __('Det. Vehíc.') }}</label>
                                                     <input id="det_tipo_transporte_rp_[]" type="text" class="form-control @error('det_tipo_transporte_rp_[]') is-invalid @enderror" name="det_tipo_transporte_rp_[]" 
                                                     title="Detalle asociado al vehículo"
-                                                    value="{{$transporte_proyeccion->det_tipo_transporte_rp_3}}" autocomplete="off" autofocus disabled>
+                                                    value="{{$transporte_programacion->det_tipo_transporte_rp_3}}" autocomplete="off" autofocus disabled>
 
                                                     @error('det_tipo_transporte_rp_[]')
                                                         <span class="invalid-feedback" role="alert">
@@ -897,7 +897,7 @@
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                                 <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio" name="exclusiv_tiempo_rp_3" value="1" 
-                                                                <?php if($transporte_proyeccion->exclusiv_tiempo_rp_3 == 1) echo 'checked'?>
+                                                                <?php if($transporte_programacion->exclusiv_tiempo_rp_3 == 1) echo 'checked'?>
                                                                 title="Con disponiblidad permanente del vehículo" disabled>
                                                                 <label class="form-check-label" for="">Si</label>
                                                                 </div>
@@ -906,7 +906,7 @@
                                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                                 <div class="form-check form-check-inline">
                                                                     <input class="form-check-input" type="radio" name="exclusiv_tiempo_rp_3"  value="0"
-                                                                    <?php if($transporte_proyeccion->exclusiv_tiempo_rp_3 == 0) echo 'checked'?>
+                                                                    <?php if($transporte_programacion->exclusiv_tiempo_rp_3 == 0) echo 'checked'?>
                                                                     title="Sin disponiblidad permanente" disabled>
                                                                     <label class="form-check-label" for="">No</label>
                                                                 </div>
@@ -999,7 +999,7 @@
                                                 <label for="destino_ra" class="col-form-label text-md-left">{{ __('Destino Ruta Contingencia') }}</label>
                                                 <span class="hs-form-required">*</span>
                                                 <input id="destino_ra" type="text" class="form-control @error('destino_ra') is-invalid @enderror" name="destino_ra" 
-                                                value="{{$proyeccion_preliminar->destino_ra}}" required autocomplete="off" autofocus readonly>
+                                                value="{{$programacion_practica->destino_ra}}" required autocomplete="off" autofocus readonly>
                                                 
                                                 @error('destino_ra')
                                                     <span class="invalid-feedback" role="alert">
@@ -1045,7 +1045,7 @@
                                                                 <div class="input-group">
                                                                     <input id="ruta_alterna" type="text" class="form-control @error('ruta_alterna') is-invalid @enderror" name="ruta_alterna" 
                                                                     title="URL tomada de google maps" onchange="verifUrl_ra(this)"
-                                                                    value="{{$proyeccion_preliminar->ruta_alterna}}"  required autocomplete="off" autofocus readonly>
+                                                                    value="{{$programacion_practica->ruta_alterna}}"  required autocomplete="off" autofocus readonly>
                                                             
                                                                     @error('ruta_alterna')
                                                                         <span class="invalid-feedback" role="alert">
@@ -1071,7 +1071,7 @@
                                                             <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                                 <div class="input-group">
                                                                     <input id="ruta_alterna_2" type="text" class="form-control @error('ruta_alterna_2') is-invalid @enderror" name="ruta_alterna_2" 
-                                                                    value="{{$proyeccion_preliminar->ruta_alterna_2}}"  required autocomplete="off" autofocus
+                                                                    value="{{$programacion_practica->ruta_alterna_2}}"  required autocomplete="off" autofocus
                                                                     title="URL tomada de google maps" onchange="verifUrl_ra(this)"
                                                                     readonly>
                                                             
@@ -1097,7 +1097,7 @@
                                                             <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                                 <div class="input-group">
                                                                     <input id="ruta_alterna_3" type="text" class="form-control @error('ruta_alterna_3') is-invalid @enderror" name="ruta_alterna_3" 
-                                                                    value="{{$proyeccion_preliminar->ruta_alterna_3}}"  required autocomplete="off" autofocus
+                                                                    value="{{$programacion_practica->ruta_alterna_3}}"  required autocomplete="off" autofocus
                                                                     title="URL tomada de google maps" onchange="verifUrl_ra(this)"
                                                                     readonly>
                                                             
@@ -1123,7 +1123,7 @@
                                                             <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                                 <div class="input-group">
                                                                     <input id="ruta_alterna_4" type="text" class="form-control @error('ruta_alterna_4') is-invalid @enderror" name="ruta_alterna_4" 
-                                                                    value="{{$proyeccion_preliminar->ruta_alterna_4}}"  required autocomplete="off" autofocus
+                                                                    value="{{$programacion_practica->ruta_alterna_4}}"  required autocomplete="off" autofocus
                                                                     title="URL tomada de google maps" onchange="verifUrl_ra(this)"
                                                                     readonly>
                                                             
@@ -1149,7 +1149,7 @@
                                                             <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                                 <div class="input-group">
                                                                     <input id="ruta_alterna_5" type="text" class="form-control @error('ruta_alterna_5') is-invalid @enderror" name="ruta_alterna_5" 
-                                                                    value="{{$proyeccion_preliminar->ruta_alterna_5}}"  required autocomplete="off" autofocus
+                                                                    value="{{$programacion_practica->ruta_alterna_5}}"  required autocomplete="off" autofocus
                                                                     title="URL tomada de google maps" onchange="verifUrl_ra(this)"
                                                                     readonly>
                                                             
@@ -1175,7 +1175,7 @@
                                                             <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                                 <div class="input-group">
                                                                     <input id="ruta_alterna_6" type="text" class="form-control @error('ruta_alterna_6') is-invalid @enderror" name="ruta_alterna_6" 
-                                                                    value="{{$proyeccion_preliminar->ruta_alterna_6}}"  required autocomplete="off" autofocus
+                                                                    value="{{$programacion_practica->ruta_alterna_6}}"  required autocomplete="off" autofocus
                                                                     title="URL tomada de google maps" onchange="verifUrl_ra(this)"
                                                                     readonly>
                                                             
@@ -1202,7 +1202,7 @@
                                                 <label for="det_recorrido_interno_ra" class="col-form-label text-md-left">{{ __('Detalle Recorrido') }}</label>
                                                 <span class="hs-form-required">*</span>
                                                 <textarea id="det_recorrido_interno_ra" style="min-height:5rem;" type="text" class="form-control @error('det_recorrido_interno_ra') is-invalid @enderror" name="det_recorrido_interno_ra" 
-                                                required autocomplete="off" autofocus readonly><?php echo $proyeccion_preliminar->det_recorrido_interno_ra?></textarea>
+                                                required autocomplete="off" autofocus readonly><?php echo $programacion_practica->det_recorrido_interno_ra?></textarea>
                                                 
                                                 @error('det_recorrido_interno_ra')
                                                     <span class="invalid-feedback" role="alert">
@@ -1220,7 +1220,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <div class="input-group">
                                                     <input id="lugar_salida_ra" type="text" class="form-control @error('lugar_salida_ra') is-invalid @enderror" name="lugar_salida_ra" 
-                                                    value="{{$proyeccion_preliminar->lugar_salida_ra}}" required autocomplete="off" autofocus disabled>
+                                                    value="{{$programacion_practica->lugar_salida_ra}}" required autocomplete="off" autofocus disabled>
                                                     
                                                     @error('lugar_salida_ra')
                                                         <span class="invalid-feedback" role="alert">
@@ -1240,7 +1240,7 @@
                                                     <i class="fa fa-calendar"></i>
                                                     </div>
                                                 <input class="inputDate form-control datetimepicker" name="fecha_salida_aprox_ra" id="fecha_salida_aprox_ra" type="text" required
-                                                value="{{$proyeccion_preliminar->fecha_salida_aprox_ra}}" onchange="duracion_edit_RA(this.value)" readonly disabled> 
+                                                value="{{$programacion_practica->fecha_salida_aprox_ra}}" onchange="duracion_edit_RA(this.value)" readonly disabled> 
                                                 </div>
                                             </div>
 
@@ -1249,7 +1249,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <div class="input-group">
                                                     <input id="lugar_regreso_ra" type="text" class="form-control @error('lugar_regreso_ra') is-invalid @enderror" name="lugar_regreso_ra" 
-                                                    value="{{$proyeccion_preliminar->lugar_regreso_ra}}" required autocomplete="off" autofocus readonly>
+                                                    value="{{$programacion_practica->lugar_regreso_ra}}" required autocomplete="off" autofocus readonly>
                                                     
                                                     @error('lugar_regreso_ra')
                                                         <span class="invalid-feedback" role="alert">
@@ -1269,7 +1269,7 @@
                                                     <i class="fa fa-calendar"></i>
                                                     </div>
                                                 <input class="inputDate form-control datetimepicker" name="fecha_regreso_aprox_ra" id="fecha_regreso_aprox_ra" type="text" required
-                                                value="{{$proyeccion_preliminar->fecha_regreso_aprox_ra}}" readonly  onchange="duracion_edit_RA(this.value)" disabled>
+                                                value="{{$programacion_practica->fecha_regreso_aprox_ra}}" readonly  onchange="duracion_edit_RA(this.value)" disabled>
                                                 </div>
                                             </div>
 
@@ -1277,7 +1277,7 @@
                                                 <label for="duracion_edit_ra" class="col-form-label text-md-left">{{ __('Duración Días') }}</label>
                                                 {{-- <span class="hs-form-required">*</span> --}}
                                                 <input id="duracion_edit_ra" type="text" class="form-control @error('duracion_edit_ra') is-invalid @enderror" name="duracion_edit_ra" 
-                                                value="{{$proyeccion_preliminar->duracion_num_dias_ra}}" autocomplete="off" autofocus  readonly>
+                                                value="{{$programacion_practica->duracion_num_dias_ra}}" autocomplete="off" autofocus  readonly>
                                                 
                                                 @error('duracion_edit_ra')
                                                     <span class="invalid-feedback" role="alert">
@@ -1333,7 +1333,7 @@
                                                 <div class="input-group">
                                                     <input id="cant_transporte_ra_edit" type="number" max="3" min="1" pattern="^[1-3]+"  class="form-control @error('cant_transporte_ra_edit') is-invalid @enderror" name="cant_transporte_ra_edit" 
                                                     title="Cantidad de vehiculos requeridos"
-                                                    value="{{$transporte_proyeccion->cant_transporte_ra}}" required autocomplete="off" autofocus readonly disabled>
+                                                    value="{{$transporte_programacion->cant_transporte_ra}}" required autocomplete="off" autofocus readonly disabled>
                                                     
                                                     @error('cant_transporte_ra_edit')
                                                         <span class="invalid-feedback" role="alert">
@@ -1360,7 +1360,7 @@
                                                 <select name="id_tipo_transporte_ra_[]" class="form-control" required onchange="otroTransporte2(this.value,1)"
                                                 title="Tipo de vehículo" disabled>
                                                     @foreach($tipos_transportes as $tp_trans)
-                                                        <option <?php if ($tp_trans->id==$transporte_proyeccion->id_tipo_transporte_ra_1) echo 'selected'?> value="{{$tp_trans->id}}" >{{$tp_trans->tipo_transporte}}</option>  
+                                                        <option <?php if ($tp_trans->id==$transporte_programacion->id_tipo_transporte_ra_1) echo 'selected'?> value="{{$tp_trans->id}}" >{{$tp_trans->tipo_transporte}}</option>  
                                                         
                                                     @endforeach
                                                 </select>
@@ -1376,7 +1376,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="otro_transporte_ra_1" type="text" class="form-control @error('otro_transporte_ra_1') is-invalid @enderror" name="otro_transporte_ra_1" 
                                                 title="Otro tipo de vehículo"
-                                                value="{{$transporte_proyeccion->otro_tipo_transporte_ra_1}}"  autocomplete="off" autofocus required readonly disabled>
+                                                value="{{$transporte_programacion->otro_tipo_transporte_ra_1}}"  autocomplete="off" autofocus required readonly disabled>
 
                                                 @error('otro_transporte_ra_1')
                                                     <span class="invalid-feedback" role="alert">
@@ -1390,7 +1390,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="vlr_otro_transporte_ra_1" type="text" class="form-control @error('vlr_otro_transporte_ra_1') is-invalid @enderror" name="vlr_otro_transporte_ra_1" 
                                                 title="Valor del otro tipo de vehículo"
-                                                value="{{$transporte_proyeccion->vlr_otro_tipo_transporte_ra_1}}"  autocomplete="off" autofocus required  onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                                                value="{{$transporte_programacion->vlr_otro_tipo_transporte_ra_1}}"  autocomplete="off" autofocus required  onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
                                                 readonly disabled>
 
                                                 @error('vlr_otro_transporte_ra_1')
@@ -1405,7 +1405,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="capac_transporte_ra_[]" type="text" class="form-control @error('capac_transporte_ra_[]') is-invalid @enderror" name="capac_transporte_ra_[]" 
                                                 title="Capacidad requerida del vehículo" onkeyup="onlyNmb(this)" 
-                                                value="{{$transporte_proyeccion->capac_transporte_ra_1}}" required autocomplete="off" autofocus disabled>
+                                                value="{{$transporte_programacion->capac_transporte_ra_1}}" required autocomplete="off" autofocus disabled>
                                                 
                                                 @error('capac_transporte_ra_[]')
                                                     <span class="invalid-feedback" role="alert">
@@ -1418,7 +1418,7 @@
                                                 <label for="det_tipo_transporte_ra_[]" class="col-form-label text-md-left">{{ __('Det. Vehíc.') }}</label>
                                                 <input id="det_tipo_transporte_ra_[]" type="text" class="form-control @error('det_tipo_transporte_ra_[]') is-invalid @enderror" name="det_tipo_transporte_ra_[]" 
                                                 title="Detalle asociado al vehículo"
-                                                value="{{$transporte_proyeccion->det_tipo_transporte_ra_1}}"  autocomplete="off" autofocus readonly>
+                                                value="{{$transporte_programacion->det_tipo_transporte_ra_1}}"  autocomplete="off" autofocus readonly>
                                                 
                                                 @error('det_tipo_transporte_ra_[]')
                                                     <span class="invalid-feedback" role="alert">
@@ -1450,7 +1450,7 @@
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                             <div class="form-check form-check-inline">
                                                             <input class="form-check-input" type="radio" name="exclusiv_tiempo_ra_1" value="1" 
-                                                            <?php if($transporte_proyeccion->exclusiv_tiempo_ra_1 == 1) echo 'checked'?>
+                                                            <?php if($transporte_programacion->exclusiv_tiempo_ra_1 == 1) echo 'checked'?>
                                                             title="Con disponiblidad permanente del vehículo" disabled>
                                                             <label class="form-check-label" for="">Si</label>
                                                             </div>
@@ -1459,7 +1459,7 @@
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio" name="exclusiv_tiempo_ra_1"  value="0"
-                                                                <?php if($transporte_proyeccion->exclusiv_tiempo_ra_1 == 0) echo 'checked'?>
+                                                                <?php if($transporte_programacion->exclusiv_tiempo_ra_1 == 0) echo 'checked'?>
                                                                 title="Sin disponiblidad permanente" disabled>
                                                                 <label class="form-check-label" for="">No</label>
                                                             </div>
@@ -1544,7 +1544,7 @@
                                                 <select name="id_tipo_transporte_ra_[]" class="form-control" required onchange="otroTransporte2(this.value,2)"
                                                 title="Tipo de vehículo" disabled>
                                                     @foreach($tipos_transportes as $tp_trans)
-                                                        <option <?php if ($tp_trans->id==$transporte_proyeccion->id_tipo_transporte_ra_2) echo 'selected'?> value="{{$tp_trans->id}}" >{{$tp_trans->tipo_transporte}}</option>  
+                                                        <option <?php if ($tp_trans->id==$transporte_programacion->id_tipo_transporte_ra_2) echo 'selected'?> value="{{$tp_trans->id}}" >{{$tp_trans->tipo_transporte}}</option>  
                                                         
                                                     @endforeach
                                                 </select>
@@ -1560,7 +1560,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="otro_transporte_ra_2" type="text" class="form-control @error('otro_transporte_ra_2') is-invalid @enderror" name="otro_transporte_ra_2" 
                                                 title="Otro tipo de vehículo"
-                                                value="{{$transporte_proyeccion->otro_tipo_transporte_ra_2}}"  autocomplete="off" autofocus required readonly disabled>
+                                                value="{{$transporte_programacion->otro_tipo_transporte_ra_2}}"  autocomplete="off" autofocus required readonly disabled>
 
                                                 @error('otro_transporte_ra_2')
                                                     <span class="invalid-feedback" role="alert">
@@ -1574,7 +1574,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="vlr_otro_transporte_ra_2" type="text" class="form-control @error('vlr_otro_transporte_ra_2') is-invalid @enderror" name="vlr_otro_transporte_ra_2" 
                                                 title="Valor del otro tipo de vehículo"
-                                                value="{{$transporte_proyeccion->vlr_otro_tipo_transporte_ra_2}}"  autocomplete="off" autofocus required  onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                                                value="{{$transporte_programacion->vlr_otro_tipo_transporte_ra_2}}"  autocomplete="off" autofocus required  onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
                                                 readonly disabled>
 
                                                 @error('vlr_otro_transporte_ra_2')
@@ -1589,7 +1589,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="capac_transporte_ra_[]" type="text" class="form-control @error('capac_transporte_ra_[]') is-invalid @enderror" name="capac_transporte_ra_[]" 
                                                 title="Capacidad requerida del vehículo" onkeyup="onlyNmb(this)" 
-                                                value="{{$transporte_proyeccion->capac_transporte_ra_2}}" autocomplete="off" autofocus readonly>
+                                                value="{{$transporte_programacion->capac_transporte_ra_2}}" autocomplete="off" autofocus readonly>
                                                 
                                                 @error('capac_transporte_ra_[]')
                                                     <span class="invalid-feedback" role="alert">
@@ -1602,7 +1602,7 @@
                                                 <label for="det_tipo_transporte_ra_[]" class="col-form-label text-md-left">{{ __('Det. Vehíc.') }}</label>
                                                 <input id="det_tipo_transporte_ra_[]" type="text" class="form-control @error('det_tipo_transporte_ra_[]') is-invalid @enderror" name="det_tipo_transporte_ra_[]" 
                                                 title="Detalle asociado al vehículo"
-                                                value="{{$transporte_proyeccion->det_tipo_transporte_ra_2}}" autocomplete="off" autofocus readonly>
+                                                value="{{$transporte_programacion->det_tipo_transporte_ra_2}}" autocomplete="off" autofocus readonly>
                                                 
                                                 @error('det_tipo_transporte_ra_[]')
                                                     <span class="invalid-feedback" role="alert">
@@ -1634,7 +1634,7 @@
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                             <div class="form-check form-check-inline">
                                                             <input class="form-check-input" type="radio" name="exclusiv_tiempo_ra_2" value="1" 
-                                                            <?php if($transporte_proyeccion->exclusiv_tiempo_ra_2 == 1) echo 'checked'?>
+                                                            <?php if($transporte_programacion->exclusiv_tiempo_ra_2 == 1) echo 'checked'?>
                                                             title="Con disponiblidad permanente del vehículo" disabled>
                                                             <label class="form-check-label" for="">Si</label>
                                                             </div>
@@ -1643,7 +1643,7 @@
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio" name="exclusiv_tiempo_ra_2"  value="0"
-                                                                <?php if($transporte_proyeccion->exclusiv_tiempo_ra_2 == 0) echo 'checked'?>
+                                                                <?php if($transporte_programacion->exclusiv_tiempo_ra_2 == 0) echo 'checked'?>
                                                                 title="Sin disponiblidad permanente" disabled>
                                                                 <label class="form-check-label" for="">No</label>
                                                             </div>
@@ -1728,7 +1728,7 @@
                                                 <select name="id_tipo_transporte_ra_[]" class="form-control" required onchange="otroTransporte2(this.value,3)"
                                                 title="Tipo de vehículo" disabled>
                                                     @foreach($tipos_transportes as $tp_trans)
-                                                        <option <?php if ($tp_trans->id==$transporte_proyeccion->id_tipo_transporte_ra_3) echo 'selected'?> value="{{$tp_trans->id}}" >{{$tp_trans->tipo_transporte}}</option>  
+                                                        <option <?php if ($tp_trans->id==$transporte_programacion->id_tipo_transporte_ra_3) echo 'selected'?> value="{{$tp_trans->id}}" >{{$tp_trans->tipo_transporte}}</option>  
                                                         
                                                     @endforeach
                                                 </select>
@@ -1744,7 +1744,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="otro_transporte_ra_3" type="text" class="form-control @error('otro_transporte_ra_3') is-invalid @enderror" name="otro_transporte_ra_3" 
                                                 title="Otro tipo de vehículo"
-                                                value="{{$transporte_proyeccion->otro_tipo_transporte_ra_3}}"  autocomplete="off" autofocus required readonly disabled>
+                                                value="{{$transporte_programacion->otro_tipo_transporte_ra_3}}"  autocomplete="off" autofocus required readonly disabled>
 
                                                 @error('otro_transporte_ra_3')
                                                     <span class="invalid-feedback" role="alert">
@@ -1758,7 +1758,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="vlr_otro_transporte_ra_3" type="text" class="form-control @error('vlr_otro_transporte_ra_3') is-invalid @enderror" name="vlr_otro_transporte_ra_3" 
                                                 title="Valor del otro tipo de vehículo"
-                                                value="{{$transporte_proyeccion->vlr_otro_tipo_transporte_ra_3}}"  autocomplete="off" autofocus required  onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                                                value="{{$transporte_programacion->vlr_otro_tipo_transporte_ra_3}}"  autocomplete="off" autofocus required  onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
                                                 readonly disabled>
 
                                                 @error('vlr_otro_transporte_ra_3')
@@ -1773,7 +1773,7 @@
                                                 <span class="hs-form-required">*</span>
                                                 <input id="capac_transporte_ra_[]" type="text" class="form-control @error('capac_transporte_ra_[]') is-invalid @enderror" name="capac_transporte_ra_[]" 
                                                 title="Capacidad requerida del vehículo" onkeyup="onlyNmb(this)" 
-                                                value="{{$transporte_proyeccion->capac_transporte_ra_3}}" autocomplete="off" autofocus disabled>
+                                                value="{{$transporte_programacion->capac_transporte_ra_3}}" autocomplete="off" autofocus disabled>
                                                 
                                                 @error('capac_transporte_ra_[]')
                                                     <span class="invalid-feedback" role="alert">
@@ -1786,7 +1786,7 @@
                                                 <label for="det_tipo_transporte_ra_[]" class="col-form-label text-md-left">{{ __('Det. Vehíc.') }}</label>
                                                 <input id="det_tipo_transporte_ra_[]" type="text" class="form-control @error('det_tipo_transporte_ra_[]') is-invalid @enderror" name="det_tipo_transporte_ra_[]" 
                                                 title="Detalle asociado al vehículo"
-                                                value="{{$transporte_proyeccion->det_tipo_transporte_ra_3}}" autocomplete="off" autofocus readonly>
+                                                value="{{$transporte_programacion->det_tipo_transporte_ra_3}}" autocomplete="off" autofocus readonly>
                                                 
                                                 @error('det_tipo_transporte_ra_[]')
                                                     <span class="invalid-feedback" role="alert">
@@ -1818,7 +1818,7 @@
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                             <div class="form-check form-check-inline" disabled>
                                                             <input class="form-check-input" type="radio" name="exclusiv_tiempo_ra_3" value="1" 
-                                                            <?php if($transporte_proyeccion->exclusiv_tiempo_ra_3 == 1) echo 'checked'?>
+                                                            <?php if($transporte_programacion->exclusiv_tiempo_ra_3 == 1) echo 'checked'?>
                                                             title="Con disponiblidad permanente del vehículo">
                                                             <label class="form-check-label" for="">Si</label>
                                                             </div>
@@ -1827,7 +1827,7 @@
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input" type="radio" name="exclusiv_tiempo_ra_3"  value="0"
-                                                                <?php if($transporte_proyeccion->exclusiv_tiempo_ra_3 == 0) echo 'checked'?>
+                                                                <?php if($transporte_programacion->exclusiv_tiempo_ra_3 == 0) echo 'checked'?>
                                                                 title="Sin disponiblidad permanente" disabled>
                                                                 <label class="form-check-label" for="">No</label>
                                                             </div>

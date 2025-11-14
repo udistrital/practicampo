@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Nueva Proyección Preliminar N°<?php echo $nueva_proyeccion->id?></title>
+        <title>Nueva Programación Preliminar N°<?php echo $nueva_programacion->id?></title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Nueva Proyección Preliminar N°<?php echo $nueva_proyeccion->id?>
+                        Nueva Programación Preliminar N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -34,16 +34,16 @@
                         <p style="font-size: 0.875rem"><strong>Docente:</strong></p>
                     @endif
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">Se ha creado una nueva proyección preliminar de práctica acádemica
-                    N°<?php echo $nueva_proyeccion->id?> con la siguiente información:</p>
+                    <p style="font-size: 0.875rem">Se ha creado una nueva Programación preliminar de práctica acádemica
+                    N°<?php echo $nueva_programacion->id?> con la siguiente información:</p>
                     <br>
                     <p style="font-size: 0.875rem">DETALLES </p>
                     <p style="font-size: 0.875rem">Programa Acádemico: 
-                        <?php echo $nueva_proyeccion->programa_academico?>
+                        <?php echo $nueva_programacion->programa_academico?>
                     </p>
                     <p style="font-size: 0.875rem">Espacio Acádemico:</p> 
                         
-                        <p style="margin: 0rem;font-family: Arial, sans-serif;font-size: 0.875rem"><?php echo $nueva_proyeccion->codigo_espacio_academico?> - <?php echo $nueva_proyeccion->espacio_academico?></p>
+                        <p style="margin: 0rem;font-family: Arial, sans-serif;font-size: 0.875rem"><?php echo $nueva_programacion->codigo_espacio_academico?> - <?php echo $nueva_programacion->espacio_academico?></p>
                         <span>
                             @foreach ($espa_pract_int as $item) 
                                 <p style="margin: 0rem;font-family: Arial, sans-serif;font-size: 0.875rem">
@@ -51,19 +51,19 @@
                                 </p>
                             @endforeach 
                         </span>
-                    <p style="font-size: 0.875rem">Período Acádemico: <?php echo $nueva_proyeccion->anio_periodo?> - <?php echo $nueva_proyeccion->periodo_academico?></p>
-                    <p style="font-size: 0.875rem">Semestre Asignatura: <?php echo $nueva_proyeccion->semestre_asignatura?></p>
-                    <p style="font-size: 0.875rem">Destino Ruta Principal: <?php echo $nueva_proyeccion->destino_rp?></p>
-                    <p style="font-size: 0.875rem">Destino Ruta Contingencia: <?php echo $nueva_proyeccion->destino_ra?></p>
+                    <p style="font-size: 0.875rem">Período Acádemico: <?php echo $nueva_programacion->anio_periodo?> - <?php echo $nueva_programacion->periodo_academico?></p>
+                    <p style="font-size: 0.875rem">Semestre Asignatura: <?php echo $nueva_programacion->semestre_asignatura?></p>
+                    <p style="font-size: 0.875rem">Destino Ruta Principal: <?php echo $nueva_programacion->destino_rp?></p>
+                    <p style="font-size: 0.875rem">Destino Ruta Contingencia: <?php echo $nueva_programacion->destino_ra?></p>
                     {{-- @if(Auth::user()->coordinador()) --}}
                     @if($email['role'] == 4)
-                    <p style="font-size: 0.875rem">Docente Responsable: <?php echo $nueva_proyeccion->full_name?></p>
-                    <p style="font-size: 0.875rem">La proyección preliminar se encuentra pendiente a aprobación por la 
+                    <p style="font-size: 0.875rem">Docente Responsable: <?php echo $nueva_programacion->full_name?></p>
+                    <p style="font-size: 0.875rem">La Programación preliminar se encuentra pendiente a aprobación por la 
                         dependencia de su cargo en el aplicativo PractiCampo. LINK:</p>  
                     @endif
                     @if($email['role'] == 5)
-                    <p style="font-size: 0.875rem">Docente Responsable: <?php echo $nueva_proyeccion->full_name?></p>
-                    <p style="font-size: 0.875rem">La proyección preliminar se encuentra pendiente al visto bueno por coordinación y la aprobación 
+                    <p style="font-size: 0.875rem">Docente Responsable: <?php echo $nueva_programacion->full_name?></p>
+                    <p style="font-size: 0.875rem">La Programación preliminar se encuentra pendiente al visto bueno por coordinación y la aprobación 
                         del consejo de carreras.</p>  
                     @endif
                     <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
@@ -95,7 +95,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Proyección Preliminar</title>
+        <title>Notificación Programación Preliminar</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
@@ -114,7 +114,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Visto Bueno Coordinación - Proyección Preliminar N°<?php echo $nueva_proyeccion->id?>
+                        Visto Bueno Coordinación - Programación Preliminar N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -122,14 +122,14 @@
                     @if($email['role'] == 5)
                     <p style="font-size: 0.875rem"><strong>Docente:</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La proyección preliminar N°<?php echo $nueva_proyeccion->id?> cuenta con V.° B.° por 
+                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
                         parte de coordinación para la consolidación en el plan de prácticas y presentación al Consejo de Factuldad para 
                         el debido trámite.</p>
                     @endif
                     @if($email['role'] == 2)
                     <p style="font-size: 0.875rem">Decanatura FAMARENA</p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La proyección preliminar N°<?php echo $nueva_proyeccion->id?> cuenta con V.° B.° por 
+                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
                         parte de coordinación para 
                         la consolidación en el plan de prácticas y presentación al Consejo de Factuldad para 
                         el debido trámite.</p>
@@ -137,7 +137,7 @@
                     @if($email['role'] == 3)
                     <p style="font-size: 0.875rem"><strong>Decanatura FAMARENA</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La proyección preliminar N°<?php echo $nueva_proyeccion->id?> cuenta con V.° B.° por 
+                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
                         parte de coordinación para la consolidación 
                         en el plan de prácticas y posterior registro del presupuesto para el transporte a contratar.</p>
                     @endif
@@ -169,7 +169,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Proyección Preliminar</title>
+        <title>Notificación Programación Preliminar</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
@@ -188,7 +188,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Rechazo Coordinación - Proyección Preliminar N°<?php echo $nueva_proyeccion->id?>
+                        Rechazo Coordinación - Programación Preliminar N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -197,10 +197,10 @@
                     @if($email['role'] == 5)
                     <p style="font-size: 0.875rem"><strong>Docente:</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La proyección preliminar N°<?php echo $nueva_proyeccion->id?> ha sido rechazada 
+                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> ha sido rechazada 
                         por parte de coordinación, se le remiten las observaciones registradas.</p>
                     
-                    <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_proyeccion->observ_coordinador?></p>
+                    <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_programacion->observ_coordinador?></p>
                     @endif
                     <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>
@@ -231,7 +231,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Proyección Preliminar</title>
+        <title>Notificación Programación Preliminar</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
@@ -250,7 +250,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Visto Bueno Decanatura - Proyección Preliminar N°<?php echo $nueva_proyeccion->id?>
+                        Visto Bueno Decanatura - Programación Preliminar N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -258,7 +258,7 @@
                     @if($email['role'] == 3)
                     <p style="font-size: 0.875rem"><strong>Decanatura FAMARENA</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La proyección preliminar N°<?php echo $nueva_proyeccion->id?> cuenta con V.° B.° por 
+                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
                         parte de la decanatura FAMARENA para la consolidación 
                         en el plan de prácticas y presentación al Consejo de Factuldad para 
                         el debido trámite.</p>
@@ -291,7 +291,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Proyección Preliminar</title>
+        <title>Notificación Programación Preliminar</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
@@ -310,7 +310,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Rechazo Decanatura - Proyección Preliminar N°<?php echo $nueva_proyeccion->id?>
+                        Rechazo Decanatura - Programación Preliminar N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -319,12 +319,12 @@
                     @if($email['role'] == 4)
                     <p style="font-size: 0.875rem"><strong>Coordinador(a):</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La proyección preliminar N°<?php echo $nueva_proyeccion->id?> ha sido rechazada por parte de
+                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> ha sido rechazada por parte de
                         la decanatura FAMARENA, 
                         se le remiten las observaciones registradas.</p>
                     
                     <br>
-                    <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_proyeccion->observ_decano?></p>
+                    <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_programacion->observ_decano?></p>
                     @endif
                     <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>
@@ -355,7 +355,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Proyección Preliminar</title>
+        <title>Notificación Programación Preliminar</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
@@ -374,7 +374,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Cierre Proyección Preliminar N°<?php echo $nueva_proyeccion->id?>
+                        Cierre Programación Preliminar N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -383,12 +383,12 @@
                     @if($email['role'] == 5)
                     <p style="font-size: 0.875rem"><strong>Docente:</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La proyección preliminar N°<?php echo $nueva_proyeccion->id?> ha sido cerrada por parte de
+                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> ha sido cerrada por parte de
                         la coordinación, 
                         se le remiten las observaciones registradas.</p>
                     
                     <br>
-                    <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_proyeccion->observ_coordinador?></p>
+                    <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_programacion->observ_coordinador?></p>
                     @endif
                     <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>

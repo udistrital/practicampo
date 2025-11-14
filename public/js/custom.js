@@ -1,6 +1,6 @@
 // import { url } from "inspector";
 $(document).ready(function(){
-    const formIdcambios = 'cambios_proyeccion';
+    const formIdcambios = 'cambios_programacion';
     const formverif = document.getElementById(formIdcambios);
     
     if (formverif) {
@@ -26,11 +26,11 @@ $(document).ready(function(){
     var id_e_aca = $("#id_espacio_academico").val();
     var num_apoyo = $("#num_apoyo").val();
     var id_docen_resp = $("#num_docen").attr('name');
-    if(form == "edit_proyeccion" || form == "edit_solicitud")
+    if(form == "edit_programacion" || form == "edit_solicitud")
     {
         recargarEspa_aca_edit(id_p_aca,id_e_aca,id_docen_resp,0);
 
-        if(form == "edit_proyeccion")
+        if(form == "edit_programacion")
         {
             revisar_soporte_pdf();
         }
@@ -120,7 +120,7 @@ $(document).ready(function(){
             cant_int = $("#cant_espa_aca").val();
             
 
-            if(form == "edit_proyeccion" || form == "edit_solicitud")
+            if(form == "edit_programacion" || form == "edit_solicitud")
             {
                 num_max_apoyo = 10 - cant_int;
             }
@@ -268,7 +268,7 @@ $(document).ready(function(){
         $("#soporte_apoyo").hide();
    }
 
-    /*transporte ruta principal - rp Proyección*/
+    /*transporte ruta principal - rp Programación*/
     var maxField_rp = 3;
     var addButton_rp = $('#add_transp_rp');
     var x_rp = 1;
@@ -280,9 +280,9 @@ $(document).ready(function(){
     var w_rp,y_rp,z_rp;
     var div_copy_rp;
     var classError_rp;
-    /*transporte ruta principal - rp Proyección*/
+    /*transporte ruta principal - rp Programación*/
 
-    /*transporte ruta alterna - ra Proyección*/
+    /*transporte ruta alterna - ra Programación*/
     var maxField_ra = 3;
     var addButton_ra = $('#add_transp_ra');
     var x_ra = 1;
@@ -294,9 +294,9 @@ $(document).ready(function(){
     var w_ra,y_ra,z_ra;
     var div_copy_ra;
     var classError_ra;
-    /*transporte ruta alterna - ra Proyección*/
+    /*transporte ruta alterna - ra Programación*/
 
-    /*transporte ruta principal - rp Edit Proyección*/
+    /*transporte ruta principal - rp Edit Programación*/
     var maxField_edit_rp = 3;
     var addButton_edit_rp = $('#add_transp_edit_rp');
     var x_edit_rp = 1;
@@ -307,9 +307,9 @@ $(document).ready(function(){
     var w_edit_rp,y_edit_rp,z_edit_rp;
     var div_copy_edit_rp;
     var classError_edit_rp;
-    /*transporte ruta principal - rp Edit Proyección*/
+    /*transporte ruta principal - rp Edit Programación*/
 
-    /*transporte ruta alterna - ra Edit Proyección*/
+    /*transporte ruta alterna - ra Edit Programación*/
     var maxField_edit_ra = 3;
     var addButton_edit_ra = $('#add_transp_ra');
     var x_edit_ra = 1;
@@ -321,9 +321,9 @@ $(document).ready(function(){
     var w_edit_ra,y_edit_ra,z_edit_ra;
     var div_copy_edit_ra;
     var classError_edit_ra;
-    /*transporte ruta alterna - ra Edit Proyección*/
+    /*transporte ruta alterna - ra Edit Programación*/
 
-    /*espacios acadeémicos - ea Proyección*/
+    /*espacios acadeémicos - ea Programación*/
     var maxField_ea = 6;
     var addButton_ea = $('#add_ea');
     var x_ea = 1;
@@ -340,9 +340,9 @@ $(document).ready(function(){
     var classError_ea;
     var lengthDiv_ea;
     
-    /*espacios acadeémicos - ea Proyección*/
+    /*espacios acadeémicos - ea Programación*/
 
-    /*ruta principal - rp Proyección*/
+    /*ruta principal - rp Programación*/
     var maxField_url_rp = 6;
     var addButton_url_rp = $('#add_url_rp');
     var x_url_rp = 1;
@@ -353,9 +353,9 @@ $(document).ready(function(){
     var newName_url_rp;
 
     var addButton_url_rp_edit = $('#add_url_rp_edit');
-    /*ruta principal - rp Proyección*/
+    /*ruta principal - rp Programación*/
 
-    /*ruta alterna - rp Proyección*/
+    /*ruta alterna - rp Programación*/
     var maxField_url_ra = 6;
     var addButton_url_ra = $('#add_url_ra');
     var x_url_ra = 1;
@@ -367,13 +367,13 @@ $(document).ready(function(){
 
     var addButton_url_ra_edit = $('#add_url_ra_edit');
     
-    /*ruta alterna - rp Proyección*/
+    /*ruta alterna - rp Programación*/
 
     /*cantidad grupos*/
     var cant_grupos_load = $("#cant_grupos").val();
     /*cantidad grupos*/
 
-    /*ruta principal - rp Proyección*/
+    /*ruta principal - rp Programación*/
     $(addButton_url_rp).click(function(e){
         e.preventDefault();
         // $("#ruta_principal").val("nameFieldInput_url_rp");
@@ -435,9 +435,9 @@ $(document).ready(function(){
             div_copy_url_rp.children().find('input[type=radio]').attr('name', w_url_rp);
         
     });
-    /*ruta principal - rp Proyección*/
+    /*ruta principal - rp Programación*/
 
-    /*ruta alterna - ra Proyección*/
+    /*ruta alterna - ra Programación*/
     $(addButton_url_ra).click(function(e){
         e.preventDefault();
         // $("#ruta_principal").val("nameFieldInput_url_rp");
@@ -501,9 +501,9 @@ $(document).ready(function(){
             div_copy_url_ra.children().find('input[type=radio]').attr('name', w_url_ra);
         
     });
-    /*ruta alterna - ra Proyección*/
+    /*ruta alterna - ra Programación*/
 
-    /*ruta principal - rp Proyección edit*/
+    /*ruta principal - rp Programación edit*/
     $(addButton_url_rp_edit).click(function(e){
         e.preventDefault();
         var rp_edit = $("input[id*='ruta_principal']");
@@ -567,9 +567,9 @@ $(document).ready(function(){
             div_copy_url_rp.children().find('input[type=radio]').attr('name', w_url_rp);
         
     });
-    /*ruta principal - rp Proyección edit*/
+    /*ruta principal - rp Programación edit*/
 
-    /*ruta alterna - ra Proyección edit*/
+    /*ruta alterna - ra Programación edit*/
     $(addButton_url_ra_edit).click(function(e){
         e.preventDefault();
         var ra_edit = $("input[id*='ruta_alterna']");
@@ -631,9 +631,9 @@ $(document).ready(function(){
         div_copy_url_ra.children().find('input[type=radio]').attr('id', w_url_ra);
         div_copy_url_ra.children().find('input[type=radio]').attr('name', w_url_ra);
     });
-    /*ruta alterna - ra Proyección edit*/
+    /*ruta alterna - ra Programación edit*/
 
-    /*transporte ruta principal - rp Proyección*/
+    /*transporte ruta principal - rp Programación*/
     $(addButton_rp).click(function(e){
         e.preventDefault();
     
@@ -703,9 +703,9 @@ $(document).ready(function(){
             // // div_copy_rp.children().find('input[type=text]').val("");
         
     });
-    /*transporte ruta principal - rp Proyección*/
+    /*transporte ruta principal - rp Programación*/
 
-    /*transporte ruta alterna - ra Proyección*/
+    /*transporte ruta alterna - ra Programación*/
     $(addButton_ra).click(function(e){
         e.preventDefault();
 
@@ -772,12 +772,12 @@ $(document).ready(function(){
             // div_copy_ra.children().find('input[type=text]').val("");
         
     });
-    /*transporte ruta alterna - ra Proyección*/
+    /*transporte ruta alterna - ra Programación*/
     
     $("#transp_rp_2").hide();
     $("#transp_rp_3").hide();
 
-    /*transporte ruta alterna - ra edit Proyección*/
+    /*transporte ruta alterna - ra edit Programación*/
     $(addButton_edit_rp).click(function(e){
         e.preventDefault();
 
@@ -838,7 +838,7 @@ $(document).ready(function(){
             // div_copy_ra.children().find('input[type=text]').val("");
         
     });
-    /*transporte ruta alterna - ra edit Proyección*/
+    /*transporte ruta alterna - ra edit Programación*/
 
     /*espacios académicos - ea registro_user*/
     $(addButton_ea).click(function(e){
@@ -945,7 +945,7 @@ $(document).ready(function(){
     // Presupuesto programa academico
     
     // Deshabilitar inputs de rutas cuando se selecciona un radio button
-    if(form == "create_proyeccion_form" || form == "edit_proyeccion"){
+    if(form == "create_programacion_form" || form == "edit_programacion"){
         // Ruta principal
         const inputDestino_rp = document.getElementById('destino_rp');
         const inputCant_url_rp = document.getElementById('cant_url_rp');
@@ -1423,7 +1423,7 @@ function recargarDocenEspaAca(input,indice)
 }
 /*Asociar docentes a espacios academicos integradas */
 
-/*OtroTransporte Proyección*/
+/*OtroTransporte Programación*/
 function otroTransporte(id, indice)
 {
     // if(id != 5)
@@ -1470,9 +1470,9 @@ function otroTransporte2(id, indice)
     // }
 }
 
-/*OtroTransporte Proyección*/
+/*OtroTransporte Programación*/
 
-/*Bloquear input number proyección*/
+/*Bloquear input number Programación*/
 $("#cant_grupos").keypress(function (e) {
     e.preventDefault();
 }).keydown(function(e){
@@ -1489,10 +1489,10 @@ $("#cant_grupos_edit").keypress(function (e) {
     }
 });
 
-/*Bloquear input number proyección*/
+/*Bloquear input number Programación*/
 
 
-/*Bloquear input number acompa proyección*/
+/*Bloquear input number acompa Programación*/
 $("#num_acompaniantes").keypress(function (e) {
     e.preventDefault();
 }).keydown(function(e){
@@ -1509,9 +1509,9 @@ $("#num_acompaniantes").keypress(function (e) {
 //     }
 // });
 
-/*Bloquear input number acompa proyección*/
+/*Bloquear input number acompa Programación*/
 
-/*Bloquear input number apoyo proyección*/
+/*Bloquear input number apoyo Programación*/
 $("#num_apoyo").keypress(function (e) {
     e.preventDefault();
 }).keydown(function(e){
@@ -1528,9 +1528,9 @@ $("#num_apoyo").keypress(function (e) {
 //     }
 // });
 
-/*Bloquear input number apoyo proyección*/
+/*Bloquear input number apoyo Programación*/
 
-/*Bloquear input number docentes apoyo proyección*/
+/*Bloquear input number docentes apoyo Programación*/
 $("#num_docentes_apoyo").keypress(function (e) {
     e.preventDefault();
 }).keydown(function(e){
@@ -1547,9 +1547,9 @@ $("#num_docentes_apoyo").keypress(function (e) {
 //     }
 // });
 
-/*Bloquear input number docentes num_docentes_apoyoapoyo proyección*/
+/*Bloquear input number docentes num_docentes_apoyoapoyo Programación*/
 
-/*Bloquear input cant vehic proyección*/
+/*Bloquear input cant vehic Programación*/
 $("#cant_transporte_rp").keypress(function (e) {
     e.preventDefault();
 }).keydown(function(e){
@@ -1565,9 +1565,9 @@ $("#cant_transporte_ra").keypress(function (e) {
         return false;
     }
 });
-/*Bloquear input cant vehic proyección*/
+/*Bloquear input cant vehic Programación*/
 
-/*Bloquear input cant url proyección*/
+/*Bloquear input cant url Programación*/
 $("#cant_url_rp").keypress(function (e){
     e.preventDefault();
 }).keydown(function (e){
@@ -1584,7 +1584,7 @@ $("#cant_url_ra").keypress(function (e) {
     }
 });
 
-/*Bloquear input cant url proyección*/
+/*Bloquear input cant url Programación*/
 
 /*Bloquear input cant transporte menor*/
 $("#cant_trans_menor_rp").keypress(function (e){
@@ -2017,11 +2017,11 @@ function duracion_edit_RA(dateText)
 }
 /*view edit duracion RP - RA */
 
-/* validar proyeccion electiva*/
+/* validar programacion electiva*/
 
 function validar_proy_electiva()
 {
-    // confirm("Una ó más proyecciones preliminares seleccionadas cuentan espacios académico con práctica electiva registrada, ¿Desea continuar de igual manera?");
+    // confirm("Una ó más programaciones preliminares seleccionadas cuentan espacios académico con práctica electiva registrada, ¿Desea continuar de igual manera?");
     var check_confirm = [];
     $('input[type=checkbox]:checked').each(function()
     {
@@ -2045,14 +2045,14 @@ function validar_proy_electiva()
 
             if(respu.length >= 1)
             {
-               var r = confirm("Una ó más proyecciones preliminares seleccionadas cuentan espacios académico con práctica electiva registrada, ¿Desea continuar de igual manera?");
+               var r = confirm("Una ó más programaciones preliminares seleccionadas cuentan espacios académico con práctica electiva registrada, ¿Desea continuar de igual manera?");
                if(r == true)
                {
                  confirm_proy();
                }
                else
                {
-                    alert("Las proyecciones que cuentan con espacios académicos que resgistran práctica electiva son: "+respu);
+                    alert("Las programaciones que cuentan con espacios académicos que resgistran práctica electiva son: "+respu);
                }
             }
             else if(respu.length == 0)
@@ -2070,7 +2070,7 @@ function validar_proy_electiva()
         });
 }
 
-/* enviar confirmacion proyeccion*/
+/* enviar confirmacion programacion*/
 function confirm_proy()
 {
     
@@ -2109,9 +2109,9 @@ function confirm_proy()
             }
         });
 }
-/* enviar confirmacion proyeccion*/
+/* enviar confirmacion programacion*/
 
-/* enviar visto bueno decanatura proyeccion*/
+/* enviar visto bueno decanatura programacion*/
 function vb_proy()
 {
     
@@ -2150,7 +2150,7 @@ function vb_proy()
             }
         });
 }
-/* enviar visto bueno decanatura proyeccion*/
+/* enviar visto bueno decanatura programacion*/
 
 /* dar formato keyup*/
 function formatVlr(input)
@@ -2317,7 +2317,7 @@ function documAdicional(input,type)
 
 function validar_proy_estudiantes()
 {
-    // confirm("Una ó más proyecciones preliminares seleccionadas cuentan espacios académico con práctica electiva registrada, ¿Desea continuar de igual manera?");
+    // confirm("Una ó más programaciones preliminares seleccionadas cuentan espacios académico con práctica electiva registrada, ¿Desea continuar de igual manera?");
     var check_confirm = [];
     $('input[type=checkbox]:checked').each(function()
     {
@@ -2340,14 +2340,14 @@ function validar_proy_estudiantes()
 
             if(respu.length >= 1)
             {
-               var r = confirm("Una ó más proyecciones preliminares seleccionadas cuentan espacios académico con práctica electiva registrada, ¿Desea continuar de igual manera?");
+               var r = confirm("Una ó más programaciones preliminares seleccionadas cuentan espacios académico con práctica electiva registrada, ¿Desea continuar de igual manera?");
                if(r == true)
                {
                  confirm_proy();
                }
                else
                {
-                    alert("Las proyecciones que cuentan con espacios académicos que resgistran práctica electiva son: "+respu);
+                    alert("Las programaciones que cuentan con espacios académicos que resgistran práctica electiva son: "+respu);
                }
             }
             else if(respu.length == 0)
@@ -2467,7 +2467,7 @@ function sel_todo_nada_proy()
             if(document.proy_buscador.elements[i].type == "checkbox")
             {
         
-                if(document.proy_buscador.elements[i].id=="proyeccion_list[]")
+                if(document.proy_buscador.elements[i].id=="programacion_list[]")
                 {
                     if(document.proy_buscador.elements[i].checked==1)
                     {
@@ -2483,7 +2483,7 @@ function sel_todo_nada_proy()
     
 }
 
-$("input[id='proyeccion_list[]']").change(function (){
+$("input[id='programacion_list[]']").change(function (){
 
     var elemento=this;
     var cant_proy=document.proy_buscador.elements.length-2;
@@ -2491,7 +2491,7 @@ $("input[id='proyeccion_list[]']").change(function (){
 
     for (i=0;i<document.proy_buscador.elements.length;i++)
     {
-        if(document.proy_buscador.elements[i].id=="proyeccion_list[]")
+        if(document.proy_buscador.elements[i].id=="programacion_list[]")
         {
             if(document.proy_buscador.elements[i].checked==1)
             {
@@ -2500,15 +2500,15 @@ $("input[id='proyeccion_list[]']").change(function (){
 
                 if(proy_sel==0 || proy_sel>300)
                 {
-                    export_proyeccion.disabled = true;
-                    export_proyeccion.style.backgroundColor= '#83bfaa';
-                    export_proyeccion.style.borderColor= '#83bfaa';
+                    export_programacion.disabled = true;
+                    export_programacion.style.backgroundColor= '#83bfaa';
+                    export_programacion.style.borderColor= '#83bfaa';
                 }
                 else if(proy_sel>0 && proy_sel<=300)
                 {
-                    export_proyeccion.disabled = false;
-                    export_proyeccion.style.backgroundColor= '#447161';
-                    export_proyeccion.style.borderColor= '#447161';
+                    export_programacion.disabled = false;
+                    export_programacion.style.backgroundColor= '#447161';
+                    export_programacion.style.borderColor= '#447161';
                 }
 
             }
@@ -2876,7 +2876,7 @@ $("input[type=checkbox]").change(function(){
 
     if(document.proy_buscador)
     {
-        $("input[id='proyeccion_list[]']").each(function(){
+        $("input[id='programacion_list[]']").each(function(){
             if($(this).is(":checked"))
                 contador++;
         });
@@ -2890,18 +2890,18 @@ $("input[type=checkbox]").change(function(){
 
     }
 
-    var export_proyeccion = document.getElementById("export_proyeccion");
+    var export_programacion = document.getElementById("export_programacion");
     var export_solicitud = document.getElementById("export_solicitud");
     var export_encusta = document.getElementById("export_encusta");
     var edit_solic_pend = document.getElementById("edit_solic_pend");
 
     if(contador == 0 || contador >300)
     {
-        if(export_proyeccion != null)
+        if(export_programacion != null)
         {
-            export_proyeccion.disabled = true;
-            export_proyeccion.style.backgroundColor= '#83bfaa';
-            export_proyeccion.style.borderColor= '#83bfaa';
+            export_programacion.disabled = true;
+            export_programacion.style.backgroundColor= '#83bfaa';
+            export_programacion.style.borderColor= '#83bfaa';
         }
 
         if(export_solicitud != null)
@@ -2927,11 +2927,11 @@ $("input[type=checkbox]").change(function(){
     }
     else if(contador > 0 && contador <=300)
     {
-        if(export_proyeccion != null)
+        if(export_programacion != null)
         {
-            export_proyeccion.disabled = false;
-            export_proyeccion.style.backgroundColor= '#447161';
-            export_proyeccion.style.borderColor= '#447161';
+            export_programacion.disabled = false;
+            export_programacion.style.backgroundColor= '#447161';
+            export_programacion.style.borderColor= '#447161';
         }
 
         if(export_solicitud != null)
@@ -3255,7 +3255,7 @@ function ocul_esp()
 
 /*Cantidad espacios academicos usuario*/
 
-/*Cantidad docentes apoyo Proyección create*/
+/*Cantidad docentes apoyo Programación create*/
 $("#apoyo").hide();
 $("#ap_1").hide();
 $("#ap_2").hide();
@@ -3492,9 +3492,9 @@ $("#num_apoyo").change('keypress', function () {
     }
 });
 
-/*Cantidad docentes apoyo Proyección create*/
+/*Cantidad docentes apoyo Programación create*/
 
-/*Cantidad Grupos Proyección create*/
+/*Cantidad Grupos Programación create*/
 $("#Grupos").show();
 $("#gp_1").show();
 $("#gp_2").hide();
@@ -3532,9 +3532,9 @@ $("#cant_grupos").change('keypress', function () {
     }
 });
 
-/*Cantidad Grupos Proyección create*/
+/*Cantidad Grupos Programación create*/
 
-/*Cantidad Grupos Proyección Edit*/
+/*Cantidad Grupos Programación Edit*/
 $("#Grupos_edit").hide();
 $("#gp_1_edit").hide();
 $("#gp_2_edit").hide();
@@ -3716,9 +3716,9 @@ function ocul_gps_proy()
     $("#cant_grupos").attr("readonly","readonly");
     $("#Grupos_edit").hide();
 }
-/*Cantidad Grupos Proyección Edit*/
+/*Cantidad Grupos Programación Edit*/
 
-/*Cantidad acompañantes  proyeccion - Solicitud edit*/
+/*Cantidad acompañantes  programacion - Solicitud edit*/
 $("#ocul_acompa").hide();
 function ver_acomp()
 {
@@ -3875,9 +3875,9 @@ function ocul_acomp()
     $("#num_acompaniantes").attr("readonly","readonly");
     $("#acompa").hide();
 }
-/*Cantidad acompañantes proyeccion - solicitud Edit*/
+/*Cantidad acompañantes programacion - solicitud Edit*/
 
-/*Cantidad docentes apoyo proyeccion - solicitud Edit*/
+/*Cantidad docentes apoyo programacion - solicitud Edit*/
 $("#ocul_apoyo").hide();
 
 function ver_apoy()
@@ -4052,7 +4052,7 @@ function ocul_apoy()
 }
 /*Cantidad docentes apoyo solicitud Edit*/
 
-/*Cantidad vehiculos proyeccion Edit*/
+/*Cantidad vehiculos programacion Edit*/
 $("#transporte_rp_1").show();
 $("#transporte_rp_2").hide();
 $("#transporte_rp_3").hide();
@@ -4418,7 +4418,7 @@ function ocul_vehic_ra()
     $("#transporte_ra_2_edit").hide();
     $("#transporte_ra_3_edit").hide();
 }
-/*Cantidad vehiculos proyeccion Edit*/
+/*Cantidad vehiculos programacion Edit*/
 
 /*Cantidad Transporte Menor create*/
 
@@ -6049,7 +6049,7 @@ function valid_edit_proy()
     }
 
     //alert("Gracias LV");
-    document.edit_proyeccion.submit();
+    document.edit_programacion.submit();
 }
 
 /* acordeon preguntas */
@@ -6216,8 +6216,8 @@ function admin_integradas(cant_int, num_apoyo)
 
 /* no conformidades transporte */
 
-/* buscador proyección */
-$("input[name='proyeccion_list[]']").change('keypress', function(){
+/* buscador Programación */
+$("input[name='programacion_list[]']").change('keypress', function(){
 
     var list_proy_sel = [];
     var cont_proy_sel = 0;
@@ -6265,9 +6265,9 @@ $("input[name='proyeccion_list[]']").change('keypress', function(){
             }
         });
 });
-/* buscador proyección */
+/* buscador Programación */
 
-/* observ. inactividad proyecciones */
+/* observ. inactividad programaciones */
 $('#div_obs_inact_proy').hide();
 function obsInactProy(inactProy)
 {
@@ -6284,7 +6284,7 @@ function obsInactProy(inactProy)
         $('#obs_inact_proy').attr('required','required');
     }
 }
-/* observ. inactividad proyecciones */
+/* observ. inactividad programaciones */
 
 /* observ. inactividad solicitudes */
 

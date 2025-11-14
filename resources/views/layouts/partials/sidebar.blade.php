@@ -45,22 +45,22 @@
   
           @if($usuario->tiene_firma == 1 || Auth::user()->admin() || Auth::user()->asistenteD() || Auth::user()->transportador())
             @if($control_sistema->estado_proy == 1 && $usuario->id_role != 7)
-            <!-- Nav Item - Pages Collapse Menu  proyecciones-->
+            <!-- Nav Item - Pages Collapse Menu  programaciones-->
               <li class="nav-item">
                 <a class="nav-link collapsed" href="#collapseTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   <i class="fas fa-fw fa-business-time"></i>
-                  <span>PROYECCIONES</span>
+                  <span>PROGRAMACIONES</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                   <div class="bg-nav py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{url('proyecciones/filtrar/all') }}">Listar Proyecciones</a>
+                    <a class="collapse-item" href="{{url('programaciones/filtrar/all') }}">Listar programaciones</a>
                     @if(Auth::user()->docente())
-                    <a class="collapse-item" href="{{route('proyeccion_create')}}">Nueva Proyección</a>
+                    <a class="collapse-item" href="{{route('programacion_create')}}">Nueva Programación</a>
                     @endif
                   </div>
                 </div>
               </li>
-            <!-- Nav Item - Pages Collapse Menu proyecciones -->
+            <!-- Nav Item - Pages Collapse Menu programaciones -->
             @endif
 
             @if($control_sistema->estado_solic == 1)
@@ -113,7 +113,7 @@
                 <a class="collapse-item" href="{{route('dwn_man_user') }}">Manual Usuario</a>
                 <a class="collapse-item" href="{{route('dwn_resol_pract_pre') }}">Resolución 090</a>
                 <a class="collapse-item" href="{{route('exp_formato_users') }}">Formato Usuarios</a>
-                <a class="collapse-item" href="{{route('exp_formato_proy') }}">Formato Proyecciones</a>
+                <a class="collapse-item" href="{{route('exp_formato_proy') }}">Formato programaciones</a>
                 <a class="collapse-item" href="{{route('exp_formato_estud') }}">Formato Estudiantes</a>
                 <a class="collapse-item" href="{{route('dwn_infor_final') }}">Formato Informe Final</a>
               </div>

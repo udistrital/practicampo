@@ -9,7 +9,7 @@
             <th style="width: 35px">Fecha Regreso</th>
             <th style="width: 25px"></th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -50,7 +50,7 @@
             <th style="width: 25px">Coord.</th>
             <th style="width: 25px">Dec.</th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -78,7 +78,7 @@
             <th style="width: 35px">Fecha Regreso</th>
             <th style="width: 20px">Ver</th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -109,7 +109,7 @@
             <th style="width: 35px">Fecha Regreso</th>
             <th style="width: 20px">Ver</th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -142,7 +142,7 @@
             <th style="width: 25px">Dec.</th>
             <th style="width: 25px"></th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -175,7 +175,7 @@
             <th style="width: 35px">Fecha Regreso</th>
             <th style="width: 20px">Ver</th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -207,7 +207,7 @@
             <th style="width: 25px">Coord.</th>
             <th style="width: 25px">Dec.</th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
             <tr>
                 <td>{{ $item->id_solicitud }}</td>
                 <td>{{ $item->programa_academico }}</td>
@@ -236,7 +236,7 @@
             <th style="width: 25px">Coord.</th>
             <th style="width: 25px">Dec.</th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             <td>{{ $item->id_solicitud }}</td>
             <td>{{ $item->programa_academico }}</td>
@@ -257,7 +257,7 @@
     <button class="btn-success" style="background-color: #447161; border:0" name="confirmar_proyecc" id="confirmar_proyecc" onclick="confirm_proy()">Confirmar</button>
 @endif
 
-{{$proyecciones->render()}}
+{{$programaciones->render()}}
 
 
 

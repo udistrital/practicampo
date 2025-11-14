@@ -16,24 +16,24 @@ use Maatwebsite\Excel\Row;
 use DB;
 use PhpParser\Node\Expr\AssignOp\Concat;
 
-class ProyeccionesIntegradasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
+class programacionesIntegradasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
 {
 
     use Exportable;
     public function __construct($id)
     {
-        $this->id_proyeccion = $id;
+        $this->id_programacion = $id;
     }
 
     public function collection()
     {
-        $lista_proyecciones = $this->id_proyeccion;
-        $proyeccion = collect();
+        $lista_programaciones = $this->id_programacion;
+        $programacion = collect();
 
-        foreach($lista_proyecciones[0]  as $id_proye)
+        foreach($lista_programaciones[0]  as $id_proye)
         {
             
-            $proyecciones=DB::table('proyeccion_preliminar as proy_prel')
+            $programaciones=DB::table('programacion_practica as proy_prel')
             ->select('proy_prel.id','prog_aca.programa_academico',
             'integ_1.codigo_espacio_academico as cod_int_1','integ_1.espacio_academico as esp_int_1',
             DB::raw('CONCAT_WS(" ", us_1.primer_nombre, us_1.segundo_nombre, us_1.primer_apellido, us_1.segundo_apellido) as full_name_1'),
@@ -69,15 +69,15 @@ class ProyeccionesIntegradasExport implements FromCollection, WithHeadings, Shou
             ->leftjoin('users as us_7','integ.id_docen_espa_aca_7','=','us_7.id')
             ->where('integ.id',$id_proye)->first();
 
-            $proyeccion->push($proyecciones);
+            $programacion->push($programaciones);
         }
 
-        return $proyeccion;
+        return $programacion;
     }
 
     public function headings():array
     {
-        return['ID PROYECCIÓN','PROGRAMA ACADÉMICO', 'CÓD. ESPACIO ACADÉMICO 1', 'ESPACIO ACADÉMICO 1', 'DOCENTE 1',
+        return['ID Programación','PROGRAMA ACADÉMICO', 'CÓD. ESPACIO ACADÉMICO 1', 'ESPACIO ACADÉMICO 1', 'DOCENTE 1',
                 'CÓD. ESPACIO ACADÉMICO 2', 'ESPACIO ACADÉMICO 2', 'DOCENTE 2',
                 'CÓD. ESPACIO ACADÉMICO 3', 'ESPACIO ACADÉMICO 3', 'DOCENTE 3',
                 'CÓD. ESPACIO ACADÉMICO 4', 'ESPACIO ACADÉMICO 4', 'DOCENTE 4',

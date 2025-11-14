@@ -5,17 +5,17 @@ namespace PractiCampoUD\Http\Controllers\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
-use PractiCampoUD\Exports\ReportProyeccionesExport;
+use PractiCampoUD\Exports\ReportprogramacionesExport;
 use PractiCampoUD\Exports\ReportSolicitudesExport;
 use PractiCampoUD\Exports\ReportUsersExport;
 use PractiCampoUD\Http\Controllers\Controller;
-use PractiCampoUD\Imports\ProyeccionesPreliminaresImport;
+use PractiCampoUD\Imports\programacionesPreliminaresImport;
 use PractiCampoUD\Imports\EstudiantesImport;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\Exports\FormatoEstudiantesExport;
 use PractiCampoUD\Exports\ReportFormatoEstudiantes;
 use PractiCampoUD\Exports\ReportEncuestaExport;
-use PractiCampoUD\Exports\ReportFormatoProyecciones;
+use PractiCampoUD\Exports\ReportFormatoprogramaciones;
 use PractiCampoUD\Exports\ReportFormatoUsers;
 use PractiCampoUD\Imports\ReportUsersImport;
 use PractiCampoUD\Exports\ReportSolicitudesAprobadasExport;
@@ -77,21 +77,21 @@ class ExcelController extends Controller
     }
 
     /**
-     * Exporta proyecciones preliminares
+     * Exporta programaciones preliminares
      *
      * @return \Illuminate\Http\Response
      */
-    public function exportProyeccionesExcel(Request $request)
+    public function exportprogramacionesExcel(Request $request)
     {
         try
         {
-            $id = $request->get('proyeccion_list');
+            $id = $request->get('programacion_list');
             $mytime=Carbon::now('America/Bogota');
-            return Excel::download(new ReportProyeccionesExport([$id]),'poyecciones_preliminares.xls');
+            return Excel::download(new ReportprogramacionesExport([$id]),'poyecciones_preliminares.xls');
         }
         catch(\Exception $ex)
         {
-            return back()->withError('Falla al descargar listado de proyecciones preliminares.');
+            return back()->withError('Falla al descargar listado de programaciones preliminares.');
         }
     }
 
@@ -113,7 +113,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * Exporta el formato para creación proyecciones
+     * Exporta el formato para creación programaciones
      *
      * @return \Illuminate\Http\Response
      */
@@ -121,11 +121,11 @@ class ExcelController extends Controller
     {
        try
        {
-            return Excel::download(new ReportFormatoProyecciones(), 'proyecciones_preliminares.xlsx');
+            return Excel::download(new ReportFormatoprogramaciones(), 'programaciones_preliminares.xlsx');
        }
        catch(\Exception $ex)
        {
-        return back()->withError('Falla al descargar el formato de proyecciones preliminares.');
+        return back()->withError('Falla al descargar el formato de programaciones preliminares.');
        }
     }
 
@@ -147,22 +147,22 @@ class ExcelController extends Controller
     }
 
     /**
-     * Importa nuevas proyecciones
+     * Importa nuevas programaciones
      *
      * @return \Illuminate\Http\Response
      */
-    public function importProyeccionesExcel()
+    public function importprogramacionesExcel()
     {
         try
         {
-            Excel::import(new ProyeccionesPreliminaresImport,request()->file('proyecciones_preliminares'));
+            Excel::import(new programacionesPreliminaresImport,request()->file('programaciones_preliminares'));
         }
         catch(\Exception $ex)
         {
             return back()->withError('Falla al cargar, verifique el archivo. Mensaje->'.$ex->getMessage());
         }
 
-        return Redirect::to('proyecciones/filtrar/all')->with('success', 'Creación exitosa');
+        return Redirect::to('programaciones/filtrar/all')->with('success', 'Creación exitosa');
     }
 
     /**

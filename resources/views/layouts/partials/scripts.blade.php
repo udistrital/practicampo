@@ -150,78 +150,78 @@ $('input:radio[name="id_estado_usuario"]').change(
        
 });
 
-function filtrar_proyecciones(value)
+function filtrar_programaciones(value)
 {
     switch(value)
     {
         case '1':
-            href = "{!! route('proyeccion_filter','all'); !!}";
+            href = "{!! route('programacion_filter','all'); !!}";
             break;
         case '2':
-            href = "{!! route('proyeccion_filter','send'); !!}";
+            href = "{!! route('programacion_filter','send'); !!}";
             break;
         case '3':
-            href = "{!! route('proyeccion_filter','not_send'); !!}";
+            href = "{!! route('programacion_filter','not_send'); !!}";
             break;
 
         case '4':
-            href = "{!! route('proyeccion_filter','ext_mu'); !!}";
+            href = "{!! route('programacion_filter','ext_mu'); !!}";
             break;
 
         case '5':
-            href = "{!! route('proyeccion_filter','sin_pres'); !!}";
+            href = "{!! route('programacion_filter','sin_pres'); !!}";
             break;
 
         case '6':
-            href = "{!! route('proyeccion_filter','elect'); !!}";
+            href = "{!! route('programacion_filter','elect'); !!}";
             break;
         
         case '7':
-            href = "{!! route('proyeccion_filter','pend'); !!}";
+            href = "{!! route('programacion_filter','pend'); !!}";
             break;
 
         case '8':
-            href = "{!! route('proyeccion_filter','not_aprob'); !!}";
+            href = "{!! route('programacion_filter','not_aprob'); !!}";
             break;
 
         case '9':
-            href = "{!! route('proyeccion_filter','aprob'); !!}";
+            href = "{!! route('programacion_filter','aprob'); !!}";
             break;
 
         case '10':
-            href = "{!! route('proyeccion_filter','no-elect'); !!}";
+            href = "{!! route('programacion_filter','no-elect'); !!}";
             break;
 
         case '11':
-            href = "{!! route('proyeccion_filter','aprob-cons'); !!}";
+            href = "{!! route('programacion_filter','aprob-cons'); !!}";
             break;
         
         case '12':
-            href = "{!! route('proyeccion_filter','no-aprob-cons'); !!}";
+            href = "{!! route('programacion_filter','no-aprob-cons'); !!}";
             break;
 
         case '13':
-            href = "{!! route('proyeccion_filter','proy_legal'); !!}";
+            href = "{!! route('programacion_filter','proy_legal'); !!}";
             break
 
         case '14':
-            href = "{!! route('proyeccion_filter','proy_recha'); !!}";
+            href = "{!! route('programacion_filter','proy_recha'); !!}";
             break
         
         case '15':
-            href = "{!! route('proyeccion_filter','not_send_docente'); !!}";
+            href = "{!! route('programacion_filter','not_send_docente'); !!}";
             break
 
         case '16':
-            href = "{!! route('proyeccion_filter','inact'); !!}";
+            href = "{!! route('programacion_filter','inact'); !!}";
             break
         
         case '17':
-        href = "{!! route('proyeccion_filter','edit_proy'); !!}";
+        href = "{!! route('programacion_filter','edit_proy'); !!}";
         break
 
 	case '18':
-        href = "{!! route('proyeccion_filter','proy_recha_cons'); !!}";
+        href = "{!! route('programacion_filter','proy_recha_cons'); !!}";
         break
 
         default:
@@ -230,9 +230,9 @@ function filtrar_proyecciones(value)
     window.location.href = href;
 }
 
-$('input:radio[name="id_filtro_proyeccion"]').change(
+$('input:radio[name="id_filtro_programacion"]').change(
     function(){
-        filtrar_proyecciones(this.value);
+        filtrar_programaciones(this.value);
        
 });
 

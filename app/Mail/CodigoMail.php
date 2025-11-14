@@ -18,10 +18,10 @@ class CodigoMail extends Mailable
      *
      * @return void
      */
-    public function __construct($filter, $nueva_proyeccion, $nueva_solicitud, $email, $correos_administrativos)
+    public function __construct($filter, $nueva_programacion, $nueva_solicitud, $email, $correos_administrativos)
     {
         $this->filter = $filter;
-        $this->nueva_proyeccion = $nueva_proyeccion;
+        $this->nueva_programacion = $nueva_programacion;
         $this->nueva_solicitud = $nueva_solicitud;
         $this->email = $email;
         $this->correos_administrativos = $correos_administrativos;
@@ -35,7 +35,7 @@ class CodigoMail extends Mailable
     public function build()
     {
         $filter= $this->filter;
-        $nueva_proyeccion = $this->nueva_proyeccion;
+        $nueva_programacion = $this->nueva_programacion;
         $nueva_solicitud = $this->nueva_solicitud;
         $email = $this->email;
         $correos_administrativos = $this->correos_administrativos;
@@ -45,7 +45,7 @@ class CodigoMail extends Mailable
 
             case "creacion_proy":
                 $pract_inte=DB::table('practicas_integradas as prac_int')
-                        ->where('prac_int.id',$nueva_proyeccion->id)
+                        ->where('prac_int.id',$nueva_programacion->id)
                         ->first();
 
                 $espa_aca=DB::table('espacio_academico as espa_aca')
@@ -75,91 +75,91 @@ class CodigoMail extends Mailable
                 }
 
                 $this->from('practicampo@udistrital.edu.co')
-                ->subject('Proyección Preliminar N°'.$nueva_proyeccion->id)
-                ->view('notificaciones.correoProyecciones',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos,'espa_pract_int'=>$espa_pract_int]);
                 break;
 
             case "creacion_solic":
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Solicitud Práctica N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "aprob_coord_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Proyección Preliminar N°'.$nueva_proyeccion->id)
-                ->view('notificaciones.correoProyecciones',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "rechazo_coord_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Proyección Preliminar N°'.$nueva_proyeccion->id)
-                ->view('notificaciones.correoProyecciones',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
             
             case "aprob_decano_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Proyección Preliminar N°'.$nueva_proyeccion->id)
-                ->view('notificaciones.correoProyecciones',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "rechazo_decano_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Proyección Preliminar N°'.$nueva_proyeccion->id)
-                ->view('notificaciones.correoProyecciones',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "cierre_coord_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Proyección Preliminar N°'.$nueva_proyeccion->id)
-                ->view('notificaciones.correoProyecciones',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "aprob_coord_solic":
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Solicitud Práctica N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "rechazo_coord_solic":
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Solicitud Práctica N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "cierre_coord_solic":
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Solicitud Práctica N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "aprob_ejec_solic":
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Solicitud Práctica N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "radic_avance_tesor_solic":
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Solicitud Práctica N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "info_solic_estudiantes":
                 $pract_inte=DB::table('practicas_integradas as prac_int')
-                        ->where('prac_int.id',$nueva_solicitud->id_proyeccion_preliminar)
+                        ->where('prac_int.id',$nueva_solicitud->id_programacion_practica)
                         ->first();
 
                 $espa_aca=DB::table('espacio_academico as espa_aca')
@@ -189,22 +189,22 @@ class CodigoMail extends Mailable
 
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Práctica de Campo N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos,'espa_pract_int'=>$espa_pract_int]);
                 break;
 
             case "info_transp_vice":
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Práctica de Campo N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "noti_transp_solic":
-                $rutas=DB::table('proyeccion_preliminar as proy_pre')
+                $rutas=DB::table('programacion_practica as proy_pre')
                 ->select('ruta_principal','ruta_principal_2','ruta_principal_3','ruta_principal_4','ruta_principal_5','ruta_principal_6',
                 'ruta_alterna','ruta_alterna_2','ruta_alterna_3','ruta_alterna_4','ruta_alterna_5','ruta_alterna_6')
-                ->where('id',$nueva_solicitud->id_proyeccion_preliminar)->first();
+                ->where('id',$nueva_solicitud->id_programacion_practica)->first();
 
                 $rutas_recorrido = [];
                 if($nueva_solicitud->tipo_ruta == 1)
@@ -221,7 +221,7 @@ class CodigoMail extends Mailable
 
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Práctica de Campo N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos,'rutas_recorrido'=>$rutas_recorrido]);
                 break;
 
@@ -234,7 +234,7 @@ class CodigoMail extends Mailable
 
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Práctica de Campo N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos, 'dias_7'=>$dias_7]);
                 break;
 
@@ -247,7 +247,7 @@ class CodigoMail extends Mailable
 
                 return $this->from('practicampo@udistrital.edu.co')
                 ->subject('Práctica de Campo N°'.$nueva_solicitud->id)
-                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_proyeccion'=>$nueva_proyeccion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
+                ->view('notificaciones.correoSolicitudes',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos, 'dias_7'=>$dias_7]);
                 break;
 

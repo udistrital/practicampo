@@ -18,7 +18,7 @@
                 <th style="width: 45px">Fecha Regreso</th>
 
             </thead>
-            @foreach ($proyecciones as $item)
+            @foreach ($programaciones as $item)
             <tr>
                 <td style="text-align:center;"><label>
                     <input type="checkbox" id="solic_aprob_list[]" name="solic_aprob_list[]" value="{{ $item->id_solicitud }}"></label>
@@ -78,8 +78,8 @@
                                 @if($item->id == 1)
                                 <td style="text-align:center;">
                                     {{-- @if($docente_responsable->id_estado == 1) --}}
-                                        {{-- <a href="{{route('giro.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}"> --}}
-                                        {{-- <a id="llll" href="{{route('giro.pdf',Crypt::encrypt($proyecciones))}}"> --}}
+                                        {{-- <a href="{{route('giro.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}"> --}}
+                                        {{-- <a id="llll" href="{{route('giro.pdf',Crypt::encrypt($programaciones))}}"> --}}
                                         <a id="giro_pdf" name="giro_pdf" href="">
                                         <button id="btn_giro_pdf" name="btn_giro_pdf" class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>  PDF</button>
                                         </a>
@@ -92,8 +92,8 @@
                                 @if($item->id == 2)
                                 <td style="text-align:center;">
                                     {{-- @if($docente_responsable->id_estado == 1) --}}
-                                        {{-- <a href="{{route('oficio.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}"> --}}
-                                        {{-- <a href="{{route('oficio.pdf',[Crypt::encrypt($proyecciones)])}}"> --}}
+                                        {{-- <a href="{{route('oficio.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}"> --}}
+                                        {{-- <a href="{{route('oficio.pdf',[Crypt::encrypt($programaciones)])}}"> --}}
                                         <a id="oficio_pdf" name="oficio_pdf" href="">
                                         <button id="btn_oficio_pdf" name="btn_oficio_pdf" class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                         </a>
@@ -106,8 +106,8 @@
                                 @if($item->id == 3)
                                 <td style="text-align:center;">
                                     {{-- @if($docente_responsable->id_estado == 1) --}}
-                                        {{-- <a href="{{route('resolucion.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}"> --}}
-                                        {{-- <a href="{{route('resolucion.pdf',[Crypt::encrypt($proyecciones)])}}"> --}}
+                                        {{-- <a href="{{route('resolucion.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}"> --}}
+                                        {{-- <a href="{{route('resolucion.pdf',[Crypt::encrypt($programaciones)])}}"> --}}
                                        <a id="resolucion_pdf" name="resolucion_pdf" href="">
                                         <button id="btn_resolucion_pdf" name="btn_resolucion_pdf" class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                         </a>
@@ -120,8 +120,8 @@
                                 @if($item->id == 6)
                                 <td style="text-align:center;">
                                     {{-- @if($docente_responsable->id_estado == 1) --}}
-                                        {{-- <a href="{{route('transporte.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}"> --}}
-                                        {{-- <a href="{{route('transporte.pdf',[Crypt::encrypt($proyecciones)])}}"> --}}
+                                        {{-- <a href="{{route('transporte.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}"> --}}
+                                        {{-- <a href="{{route('transporte.pdf',[Crypt::encrypt($programaciones)])}}"> --}}
                                         <a id="transporte_pdf" name="transporte_pdf" href="">
                                         <button id="btn_transporte_pdf" name="btn_transporte_pdf" class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                         </a>
@@ -134,8 +134,8 @@
                                 @if($item->id == 4)
                                     <td style="text-align:center;">
                                         {{-- @if($docente_responsable->id_estado == 1) --}}
-                                            {{-- <a href="{{route('avance.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}"> --}}
-                                            {{-- <a href="{{route('avance.pdf',[Crypt::encrypt($proyecciones)])}}"> --}}
+                                            {{-- <a href="{{route('avance.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}"> --}}
+                                            {{-- <a href="{{route('avance.pdf',[Crypt::encrypt($programaciones)])}}"> --}}
                                             <a id="avance_pdf" name="avance_pdf" href="">
                                                 <button id="btn_avance_pdf" name="btn_avance_pdf" class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                             </a>
@@ -148,8 +148,8 @@
                                 @if($item->id == 5)
                                     <td style="text-align:center;">
                                         {{-- @if($docente_responsable->id_estado == 1) --}}
-                                            {{-- <a href="{{route('formatoPractica.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}"> --}}
-                                            {{-- <a href="{{route('formatoPractica.pdf',[Crypt::encrypt($proyecciones)])}}"> --}}
+                                            {{-- <a href="{{route('formatoPractica.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}"> --}}
+                                            {{-- <a href="{{route('formatoPractica.pdf',[Crypt::encrypt($programaciones)])}}"> --}}
                                             <a id="practica_pdf" name="practica_pdf" href="">
                                                 <button id="btn_practica_pdf" name="btn_practica_pdf" class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                             </a>
@@ -226,7 +226,7 @@
                                 <div class="col-md-2" style="display: grid;align-items: end;">
                                     {{-- <br> --}}
                                     {{-- <a id="up_consec_dfama" name="up_consec_dfama" href=""> --}}
-                                        {{-- {{route('giro.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}} --}}
+                                        {{-- {{route('giro.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}} --}}
                                       {{-- <button class="btn-success" style="background-color: #447161; border:0">{{ __('Guardar') }}</button> --}}
                                       {{-- onclick="cons_dfama()" --}}
                                     {{-- </a> --}}
@@ -248,4 +248,4 @@
         </button> --}}
 @endif
 
-{{$proyecciones->render()}}
+{{$programaciones->render()}}

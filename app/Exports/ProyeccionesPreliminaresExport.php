@@ -16,24 +16,24 @@ use Maatwebsite\Excel\Row;
 use DB;
 use PhpParser\Node\Expr\AssignOp\Concat;
 
-class ProyeccionesPreliminaresExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
+class programacionesPreliminaresExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
 {
 
     use Exportable;
     public function __construct($id)
     {
-        $this->id_proyeccion = $id;
+        $this->id_programacion = $id;
     }
 
     public function collection()
     {
-        $lista_proyecciones = $this->id_proyeccion;
-        $proyeccion = collect();
+        $lista_programaciones = $this->id_programacion;
+        $programacion = collect();
 
-        foreach($lista_proyecciones[0]  as $id_proye)
+        foreach($lista_programaciones[0]  as $id_proye)
         {
             
-            // $proyecciones=DB::table('proyeccion_preliminar as proy_prel')
+            // $programaciones=DB::table('programacion_practica as proy_prel')
             // ->select('proy_prel.id', 'prog_aca.programa_academico', 'espa.codigo_espacio_academico','espa.espacio_academico', 'sem_asig.semestre_asignatura', 
             //         'proy_prel.anio_periodo','per_aca.periodo_academico','proy_prel.id_docente_responsable',
             //          DB::raw('CONCAT_WS(" ", us.primer_nombre, us.segundo_nombre, us.primer_apellido, us.segundo_apellido) as full_name'),
@@ -66,22 +66,22 @@ class ProyeccionesPreliminaresExport implements FromCollection, WithHeadings, Sh
             //         ->join('docentes_practica as doce_prac','proy_prel.id','=','doce_prac.id')
             //         ->join('sedes_universidad as salida_rp','proy_prel.lugar_salida_rp','=','salida_rp.id')
             //         ->join('sedes_universidad as regreso_rp','proy_prel.lugar_salida_rp','=','regreso_rp.id')
-            //         ->join('transporte_proyeccion as trans_proy','proy_prel.id','=','trans_proy.id')
+            //         ->join('transporte_programacion as trans_proy','proy_prel.id','=','trans_proy.id')
             //         ->join('transporte_menor as trans_menor','proy_prel.id','=','trans_menor.id')
-            //         ->join('materiales_herramientas_proyeccion as mate','proy_prel.id','=','mate.id')
+            //         ->join('materiales_herramientas_programacion as mate','proy_prel.id','=','mate.id')
             //         ->join('riesgos_amenazas_practica as riesgos','proy_prel.id','=','riesgos.id')
             //         ->leftjoin('tipo_transporte as tip_tra_rp1','trans_proy.id_tipo_transporte_rp_1','=','tip_tra_rp1.id')
             //         ->leftjoin('tipo_transporte as tip_tra_rp2','trans_proy.id_tipo_transporte_rp_2','=','tip_tra_rp2.id')
             //         ->leftjoin('tipo_transporte as tip_tra_rp3','trans_proy.id_tipo_transporte_rp_3','=','tip_tra_rp3.id')
             //         ->join('users as us','proy_prel.id_docente_responsable','=','us.id')
-            //         ->join('costos_proyeccion as c_proy','proy_prel.id','=','c_proy.id')
+            //         ->join('costos_programacion as c_proy','proy_prel.id','=','c_proy.id')
             //         ->join('estado as es_coor','proy_prel.aprobacion_coordinador','=','es_coor.id')
             //         ->join('estado as es_dec','proy_prel.aprobacion_decano','=','es_dec.id')
             //         ->join('estado as es_consj','proy_prel.aprobacion_consejo_facultad','=','es_consj.id')
             //         ->where('proy_prel.id',$id_proye)->first();
-            //         $proyeccion->push($proyecciones);
+            //         $programacion->push($programaciones);
 
-            $proyecciones=DB::table('proyeccion_preliminar as proy_prel')
+            $programaciones=DB::table('programacion_practica as proy_prel')
             ->select('proy_prel.id', 'prog_aca.programa_academico', 'espa.espacio_academico',
                     'proy_prel.id_docente_responsable',
                      DB::raw('CONCAT_WS(" ", us.primer_nombre, us.segundo_nombre, us.primer_apellido, us.segundo_apellido) as full_name'),
@@ -121,28 +121,28 @@ class ProyeccionesPreliminaresExport implements FromCollection, WithHeadings, Sh
                     ->join('practicas_integradas as prac_inte','proy_prel.id','=','prac_inte.id')
                     ->join('sedes_universidad as salida_rp','proy_prel.lugar_salida_rp','=','salida_rp.id')
                     ->join('sedes_universidad as regreso_rp','proy_prel.lugar_salida_rp','=','regreso_rp.id')
-                    ->join('transporte_proyeccion as trans_proy','proy_prel.id','=','trans_proy.id')
+                    ->join('transporte_programacion as trans_proy','proy_prel.id','=','trans_proy.id')
                     ->join('transporte_menor as trans_menor','proy_prel.id','=','trans_menor.id')
-                    ->join('materiales_herramientas_proyeccion as mate','proy_prel.id','=','mate.id')
+                    ->join('materiales_herramientas_programacion as mate','proy_prel.id','=','mate.id')
                     ->join('riesgos_amenazas_practica as riesgos','proy_prel.id','=','riesgos.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp1','trans_proy.id_tipo_transporte_rp_1','=','tip_tra_rp1.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp2','trans_proy.id_tipo_transporte_rp_2','=','tip_tra_rp2.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp3','trans_proy.id_tipo_transporte_rp_3','=','tip_tra_rp3.id')
                     ->join('users as us','proy_prel.id_docente_responsable','=','us.id')
-                    ->join('costos_proyeccion as c_proy','proy_prel.id','=','c_proy.id')
+                    ->join('costos_programacion as c_proy','proy_prel.id','=','c_proy.id')
                     ->join('estado as es_coor','proy_prel.aprobacion_coordinador','=','es_coor.id')
                     ->join('estado as es_dec','proy_prel.aprobacion_decano','=','es_dec.id')
                     ->join('estado as es_consj','proy_prel.aprobacion_consejo_facultad','=','es_consj.id')
                     ->where('proy_prel.id',$id_proye)->first();
-                    $proyeccion->push($proyecciones);
+                    $programacion->push($programaciones);
         }
 
-        return $proyeccion;
+        return $programacion;
     }
 
     public function headings():array
     {
-        // return['ID PROYECCIÓN','PROGRAMA ACADÉMICO', 'CÓD. ESPACIO ACADÉMICO', 'ESPACIO ACADÉMICO', 'SEM. ACA','AÑO PER.','PER. ACA',
+        // return['ID Programación','PROGRAMA ACADÉMICO', 'CÓD. ESPACIO ACADÉMICO', 'ESPACIO ACADÉMICO', 'SEM. ACA','AÑO PER.','PER. ACA',
         //         'CÉDULA','DOCENTE RESPONSABLE','GRUPO 1','GRUPO 2','GRUPO 3','GRUPO 4', 'NÚMERO DE ESTUDIANTES','NÚMERO PERSONAS APOYO',
         //         'TOTAL DOCENTES APOYO',
         //         'PERSONAL APOYO 1','PERSONAL APOYO 2','PERSONAL APOYO 3','PERSONAL APOYO 4','PERSONAL APOYO 5',
@@ -164,7 +164,7 @@ class ProyeccionesPreliminaresExport implements FromCollection, WithHeadings, Sh
         //         'E. COORD', 'E. DECANO', 'E. CONSJ. F.'];
 
         return[
-            'ID PROYECCIÓN',
+            'ID Programación',
             'PROGRAMA ACADÉMICO', 
             'ESPACIO ACADÉMICO',
             'NUM. IDENT. DOCENTE',

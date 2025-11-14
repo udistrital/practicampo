@@ -13,7 +13,7 @@
             <th style="width: 25px"></th>
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             
             <td>{{ $item->id_solicitud }}</td>
@@ -75,7 +75,7 @@
             @endif
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             
         <td>{{ $item->id_solicitud }}</td>
@@ -143,7 +143,7 @@
             <th style="width: 25px"></th>
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             
             <td>{{ $item->id_solicitud }}</td>
@@ -215,7 +215,7 @@
             <th style="width: 25px">Decan.</th>
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             <td>{{ $item->id_solicitud }}</td>
             <td>{{ $item->programa_academico }}</td>
@@ -258,7 +258,7 @@
                 <th style="width: 50px">Fecha Regreso</th>
                 
             </thead> 
-            @foreach ($proyecciones as $item) 
+            @foreach ($programaciones as $item) 
             <tr>
                 <td><input type="checkbox" id="encuesta_transporte[]" name="encuesta_transporte[]" value="{{ $item->id }}"></td>
                 <td>{{ $item->id_solicitud }}</td>
@@ -302,7 +302,7 @@
             <th style="width: 25px"></th>
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             
             <td>{{ $item->id_solicitud }}</td>
@@ -342,4 +342,4 @@
     </table>
 @endif
 
-{{$proyecciones->render()}}
+{{$programaciones->render()}}

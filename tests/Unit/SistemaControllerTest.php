@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PractiCampoUD\proyeccion;
+use PractiCampoUD\programacion;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\User;
 use Illuminate\Support\Facades\Crypt;

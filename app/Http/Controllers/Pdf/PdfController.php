@@ -68,10 +68,10 @@ class PdfController extends Controller
         
         $parrafos_modificables =DB::table('resolucion')->first();
         $fecha_solicitud = Carbon::now('America/Bogota')->format('Y');
-        $consulta_solicitud=DB::table('solicitud_practica')->select('id', 'id_proyeccion_preliminar')->whereIN('id',$list_solic)->get();
+        $consulta_solicitud=DB::table('solicitud_practica')->select('id', 'id_programacion_practica')->whereIN('id',$list_solic)->get();
         foreach($consulta_solicitud as $item)
 	{
-	   $list_doc[]=$item->id_proyeccion_preliminar;
+	   $list_doc[]=$item->id_programacion_practica;
 	}
 	$docentes_practica=docentes_practica::whereIn('id',$list_doc)->get();
 
@@ -97,18 +97,18 @@ class PdfController extends Controller
                 'tip_ident.tipo_identificacion','users.id as id_user','docen_pract.*',
                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) 
                 as full_name'))
-        ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+        ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
-        ->join('practicas_integradas as p_int','sol_prac.id_proyeccion_preliminar','=','p_int.id')
-        ->join('costos_proyeccion as c_proy','sol_prac.id_proyeccion_preliminar','=','c_proy.id')
-        ->join('docentes_practica as docen_pract','sol_prac.id_proyeccion_preliminar','=','docen_pract.id')
+        ->join('practicas_integradas as p_int','sol_prac.id_programacion_practica','=','p_int.id')
+        ->join('costos_programacion as c_proy','sol_prac.id_programacion_practica','=','c_proy.id')
+        ->join('docentes_practica as docen_pract','sol_prac.id_programacion_practica','=','docen_pract.id')
         ->join('users','p_prel.id_docente_responsable','=','users.id')
         ->join('periodo_academico as per_aca','p_prel.id_periodo_academico','=','per_aca.id')
         ->join('semestre_asignatura as sem_asig','p_prel.id_semestre_asignatura','=','sem_asig.id')
         ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
         ->join('tipo_identificacion as tip_ident','users.id_tipo_identificacion','=','tip_ident.id')
-        ->join('transporte_proyeccion as transp','p_prel.id','=','transp.id')
+        ->join('transporte_programacion as transp','p_prel.id','=','transp.id')
         ->where('id_estado_solicitud_practica','=',3)
         // ->where('si_capital','=',1)
         // ->where('tiene_resolucion','=',1)
@@ -328,8 +328,8 @@ class PdfController extends Controller
                 'prac_int.id_espa_aca_4','prac_int.id_espa_aca_5','prac_int.id_espa_aca_6','prac_int.id_espa_aca_7','prac_int.id_docen_espa_aca_1',
                 'prac_int.id_docen_espa_aca_2','prac_int.id_docen_espa_aca_3','prac_int.id_docen_espa_aca_4','prac_int.id_docen_espa_aca_5',
                 'prac_int.id_docen_espa_aca_6','prac_int.id_docen_espa_aca_7','proy_prel.practicas_integradas')
-        ->join('proyeccion_preliminar as proy_prel','prac_int.id','proy_prel.id')
-        ->join('solicitud_practica as sol_prac','proy_prel.id','sol_prac.id_proyeccion_preliminar')
+        ->join('programacion_practica as proy_prel','prac_int.id','proy_prel.id')
+        ->join('solicitud_practica as sol_prac','proy_prel.id','sol_prac.id_programacion_practica')
         ->whereIn('sol_prac.id',$list_solic)->get();
 
         $cont_prac_int=0;
@@ -915,7 +915,7 @@ class PdfController extends Controller
         //                         'viaticos_estudiante'=>$viaticos_estudiante,
         //                         'valor_est_trans'=>$valor_est_trans,
         //                         'doce_pract_int'=>$doce_pract_int,
-        //                         'costos_proyeccion'=>$costos_proyeccion,
+        //                         'costos_programacion'=>$costos_programacion,
         //                         'decano'=>$decano,
         //                         'firma_lito'=>$firma_lito,
         //                         "hoy"=>$hoy,
@@ -941,13 +941,13 @@ class PdfController extends Controller
             $total_asistentes = [];
             $mytime = Carbon::now('America/Bogota')->format('d-m-Y');
             $fecha_solicitud = $mytime;
-            $consulta_solicitud=DB::table('solicitud_practica')->select('id', 'id_proyeccion_preliminar')->where('id', '=', $id)->first();
-            //$consulta_solicitud=solicitud::where('id_proyeccion_preliminar',$id)->first();
-            $docentes_practica=docentes_practica::where('id',$consulta_solicitud->id_proyeccion_preliminar)->first();
+            $consulta_solicitud=DB::table('solicitud_practica')->select('id', 'id_programacion_practica')->where('id', '=', $id)->first();
+            //$consulta_solicitud=solicitud::where('id_programacion_practica',$id)->first();
+            $docentes_practica=docentes_practica::where('id',$consulta_solicitud->id_programacion_practica)->first();
             //$docentes_practica=docentes_practica::where('id',$id)->first();
             // $consulta_docente = user::where('id',$consulta_solicitud->id_docente_creador)->first();
-            $transporte_proyeccion = DB::table('transporte_proyeccion as transp_proy')
-            ->where('transp_proy.id','=',$consulta_solicitud->id_proyeccion_preliminar)->first();
+            $transporte_programacion = DB::table('transporte_programacion as transp_proy')
+            ->where('transp_proy.id','=',$consulta_solicitud->id_programacion_practica)->first();
             
             $solicitudes_practica =DB::table('solicitud_practica as sol_prac')
             // $solicitudes_practica_aprob =DB::table('solicitud_practica as sol_prac')
@@ -968,16 +968,16 @@ class PdfController extends Controller
                     'sol_prac.justificacion', 'sol_prac.objetivo_general', 'sol_prac.metodologia_evaluacion',
                     'sol_prac.tipo_ruta','sol_prac.id as id_solicitud', 'sol_prac.num_resolucion', 'sol_prac.id as id_solicitud', 
                     DB::raw('CONCAT_WS(" ",users.primer_nombre,users.primer_apellido) as full_name'))
-            ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+            ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
             ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
             ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
-            ->join('costos_proyeccion as c_proy','sol_prac.id_proyeccion_preliminar','=','c_proy.id')
-            ->join('docentes_practica as docen_pract','sol_prac.id_proyeccion_preliminar','=','docen_pract.id')
+            ->join('costos_programacion as c_proy','sol_prac.id_programacion_practica','=','c_proy.id')
+            ->join('docentes_practica as docen_pract','sol_prac.id_programacion_practica','=','docen_pract.id')
             ->join('users','p_prel.id_docente_responsable','=','users.id')
             ->join('periodo_academico as per_aca','p_prel.id_periodo_academico','=','per_aca.id')
             ->join('semestre_asignatura as sem_asig','p_prel.id_semestre_asignatura','=','sem_asig.id')
             ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
-            ->join('transporte_proyeccion as transp','p_prel.id','=','transp.id')
+            ->join('transporte_programacion as transp','p_prel.id','=','transp.id')
             // ->where('id_estado_solicitud_practica','=',5)
             ->where('sol_prac.aprobacion_decano','=',7)
             // ->where('si_capital','=',1)
@@ -995,7 +995,7 @@ class PdfController extends Controller
 
             if($solicitudes_practica->tipo_ruta == 1)
             {
-                $t_transporte = DB::table('transporte_proyeccion as trans')
+                $t_transporte = DB::table('transporte_programacion as trans')
                             ->select('tip_transp_1.tipo_transporte as tp_1','tip_transp_2.tipo_transporte as tp_2','tip_transp_3.tipo_transporte as tp_3',
                             'trans.capac_transporte_rp_1 as cp_1','trans.capac_transporte_rp_2 as cp_2','trans.capac_transporte_rp_3 as cp_3')
                             ->join('tipo_transporte as tip_transp_1','trans.id_tipo_transporte_rp_1','tip_transp_1.id')
@@ -1005,7 +1005,7 @@ class PdfController extends Controller
 
                 if($t_transporte == NULL)
                 {
-                    $t_transporte = DB::table('transporte_proyeccion as trans')
+                    $t_transporte = DB::table('transporte_programacion as trans')
                             ->where('trans.id',$id)->first();
                     $t_transporte->tp_1 ='N/A';            
                     $t_transporte->tp_2 ='N/A';   
@@ -1016,13 +1016,13 @@ class PdfController extends Controller
                     $t_transporte->cp_3 =0;   
                 }
 
-                switch($transporte_proyeccion->cant_transporte_rp)
+                switch($transporte_programacion->cant_transporte_rp)
                 {
                     case 0:
                         
                         $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_1)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_rp_1)->first();
                         
                         $tipo_transporte->tipo = 'N/A';
                         $tipo_transporte->capacidad = 0;
@@ -1031,38 +1031,38 @@ class PdfController extends Controller
                         
                         $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_1)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_rp_1)->first();
                         
                         $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte;
-                        $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_rp_1;
+                        $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_rp_1;
                         break;
                     case 2:
                         $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_1)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_rp_1)->first();
                         
                         $tipo_transporte_2 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_2)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_rp_2)->first();
 
                         $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte . " | " . $tipo_transporte_2->tipo_transporte;
-                        $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_rp_1 . " | " . $transporte_proyeccion->capac_transporte_rp_2;
+                        $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_rp_1 . " | " . $transporte_programacion->capac_transporte_rp_2;
                         break;
                     case 3:
                         $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_1)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_rp_1)->first();
                         
                         $tipo_transporte_2 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_2)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_rp_2)->first();
                     
                         $tipo_transporte_3 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_3)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_rp_3)->first();
                         
                         $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte . " | " . $tipo_transporte_2->tipo_transporte . " | " . $tipo_transporte_3->tipo_transporte;
-                        $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_rp_1 . " | " . $transporte_proyeccion->capac_transporte_rp_2 . " | " . $transporte_proyeccion->capac_transporte_rp_3;
+                        $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_rp_1 . " | " . $transporte_programacion->capac_transporte_rp_2 . " | " . $transporte_programacion->capac_transporte_rp_3;
 
                         break;
                     
@@ -1071,7 +1071,7 @@ class PdfController extends Controller
             else if($solicitudes_practica->tipo_ruta == 2)
             {
 
-                $t_transporte = DB::table('transporte_proyeccion as trans')
+                $t_transporte = DB::table('transporte_programacion as trans')
                             ->select('tip_transp_1.tipo_transporte as tp_1','tip_transp_2.tipo_transporte as tp_2','tip_transp_3.tipo_transporte as tp_3',
                             'trans.capac_transporte_ra_1 as cp_1','trans.capac_transporte_ra_2 as cp_2','trans.capac_transporte_ra_3 as cp_3')
                             ->join('tipo_transporte as tip_transp_1','trans.id_tipo_transporte_ra_1','tip_transp_1.id')
@@ -1081,7 +1081,7 @@ class PdfController extends Controller
 
                 if($t_transporte == NULL)
                 {
-                    $t_transporte = DB::table('transporte_proyeccion as trans')
+                    $t_transporte = DB::table('transporte_programacion as trans')
                             ->where('trans.id',$id)->first();
                     $t_transporte->tp_1 ='N/A';            
                     $t_transporte->tp_2 ='N/A';   
@@ -1092,13 +1092,13 @@ class PdfController extends Controller
                     $t_transporte->cp_3 =0;   
                 }
 
-                switch($transporte_proyeccion->cant_transporte_ra)
+                switch($transporte_programacion->cant_transporte_ra)
                 {
                     case 0:
                         
                         $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_1)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_ra_1)->first();
                         
                         $tipo_transporte->tipo = 'N/A';
                         $tipo_transporte->capacidad = 0;
@@ -1106,40 +1106,40 @@ class PdfController extends Controller
                     case 1:
                         $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_1)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_ra_1)->first();
                         
                         $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte;
-                        $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_ra_1 ;
+                        $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_ra_1 ;
                         
                         break;
                     case 2:
                         $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_1)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_ra_1)->first();
                     
                         $tipo_transporte_2 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_2)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_ra_2)->first();
                         
                         $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte . " | " . $tipo_transporte_2->tipo_transporte;
-                        $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_ra_1 . " | " . $transporte_proyeccion->capac_transporte_ra_2 ;
+                        $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_ra_1 . " | " . $transporte_programacion->capac_transporte_ra_2 ;
 
                         break;
                     case 3:
                         $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_1)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_ra_1)->first();
                         
                         $tipo_transporte_2 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_2)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_ra_2)->first();
                     
                         $tipo_transporte_3 = DB::table('tipo_transporte as tip_transp')
                             ->select('tip_transp.tipo_transporte')
-                            ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_3)->first();
+                            ->where('id',$transporte_programacion->id_tipo_transporte_ra_3)->first();
                         
                         $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte . " | " . $tipo_transporte_2->tipo_transporte . " | " . $tipo_transporte_3->tipo_transporte;
-                        $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_ra_1 . " | " . $transporte_proyeccion->capac_transporte_ra_2 . " | " . $transporte_proyeccion->capac_transporte_ra_3;
+                        $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_ra_1 . " | " . $transporte_programacion->capac_transporte_ra_2 . " | " . $transporte_programacion->capac_transporte_ra_3;
 
                         break;
                     default;
@@ -1672,7 +1672,7 @@ class PdfController extends Controller
                                 'firma_lito_decano'=>$firma_lito_decano,
                                 'firma_lito_docente'=>$firma_lito_docente,
                                 'docente_responsable'=>$docente_responsable,
-                                'transporte_proyeccion'=>$transporte_proyeccion,
+                                'transporte_programacion'=>$transporte_programacion,
                                 'tipo_transporte'=>$tipo_transporte,
                                 't_transporte'=>$t_transporte,
                                 'acompaniantes'=>$acompa,
@@ -1708,7 +1708,7 @@ class PdfController extends Controller
             //     'firma_lito_decano'=>$firma_lito_decano,
             //     'firma_lito_docente'=>$firma_lito_docente,
             //     'docente_responsable'=>$docente_responsable,
-            //     'transporte_proyeccion'=>$transporte_proyeccion,
+            //     'transporte_programacion'=>$transporte_programacion,
             //     'tipo_transporte'=>$tipo_transporte,
             //     't_transporte'=>$t_transporte,
             //     'acompaniantes'=>$acompa,
@@ -1725,7 +1725,7 @@ class PdfController extends Controller
         //     $docentes_practica= DB::table('docentes_practica as doc_prac')
         //     ->select('doc_prac.id','doc_prac.soporte_formato_avance','doc_prac.soporte_formato_practica',
         //     'doc_prac.tiene_soporte_avance','doc_prac.tiene_soporte_practica')
-        //     ->join('solicitud_practica as sol_prac','doc_prac.id','sol_prac.id_proyeccion_preliminar')
+        //     ->join('solicitud_practica as sol_prac','doc_prac.id','sol_prac.id_programacion_practica')
         //     ->where('sol_prac.id',$ids)->first();
             
         //     $fmt_practica = $docentes_practica->soporte_formato_practica;
@@ -1766,7 +1766,7 @@ class PdfController extends Controller
         
         $parrafos_modificables =DB::table('resolucion')->first();
         $fecha_solicitud = Carbon::now('America/Bogota')->format('d-m-Y');
-        $transporte_proyeccion = DB::table('transporte_proyeccion as transp_proy')
+        $transporte_programacion = DB::table('transporte_programacion as transp_proy')
         ->where('transp_proy.id','=',$id)->first();
         $practicas_integradas = DB::table('practicas_integradas')
         ->where('id','=',$id)->first();
@@ -1797,17 +1797,17 @@ class PdfController extends Controller
                 'salida_rp.direccion as direccion_salida_rp','regreso_rp.direccion as direccion_regreso_rp','salida_ra.direccion as direccion_salida_ra','regreso_ra.direccion as direccion_regreso_ra',
                 'tip_ident.tipo_identificacion','users.id as id_docente_responsable', 'tip_ident.sigla',
                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-        ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+        ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
-        ->join('costos_proyeccion as c_proy','sol_prac.id_proyeccion_preliminar','=','c_proy.id')
-        ->join('docentes_practica as docen_pract','sol_prac.id_proyeccion_preliminar','=','docen_pract.id')
+        ->join('costos_programacion as c_proy','sol_prac.id_programacion_practica','=','c_proy.id')
+        ->join('docentes_practica as docen_pract','sol_prac.id_programacion_practica','=','docen_pract.id')
         ->join('users','p_prel.id_docente_responsable','=','users.id')
         ->join('periodo_academico as per_aca','p_prel.id_periodo_academico','=','per_aca.id')
         ->join('semestre_asignatura as sem_asig','p_prel.id_semestre_asignatura','=','sem_asig.id')
         ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
         ->join('tipo_identificacion as tip_ident','users.id_tipo_identificacion','=','tip_ident.id')
-        ->join('transporte_proyeccion as transp','p_prel.id','=','transp.id')
+        ->join('transporte_programacion as transp','p_prel.id','=','transp.id')
         ->join('sedes_universidad as salida_rp','p_prel.lugar_salida_rp','=','salida_rp.id')
         ->join('sedes_universidad as regreso_rp','p_prel.lugar_regreso_rp','=','regreso_rp.id')
         ->join('sedes_universidad as salida_ra','p_prel.lugar_salida_ra','=','salida_ra.id')
@@ -1836,7 +1836,7 @@ class PdfController extends Controller
             $valor_est_trans = $solicitudes_practica->valor_estimado_transporte_rp;
             $detalle_recorrido = $solicitudes_practica->det_recorrido_interno_rp;
 
-            $t_transporte = DB::table('transporte_proyeccion as trans')
+            $t_transporte = DB::table('transporte_programacion as trans')
                         ->select('tip_transp_1.tipo_transporte as tp_1','tip_transp_2.tipo_transporte as tp_2','tip_transp_3.tipo_transporte as tp_3',
                         'trans.capac_transporte_rp_1 as cp_1','trans.capac_transporte_rp_2 as cp_2','trans.capac_transporte_rp_3 as cp_3')
                         ->join('tipo_transporte as tip_transp_1','trans.id_tipo_transporte_rp_1','tip_transp_1.id')
@@ -1846,7 +1846,7 @@ class PdfController extends Controller
 
             if($t_transporte == NULL)
             {
-                $t_transporte = DB::table('transporte_proyeccion as trans')
+                $t_transporte = DB::table('transporte_programacion as trans')
                         ->where('trans.id',$id)->first();
                 $t_transporte->tp_1 ='N/A';            
                 $t_transporte->tp_2 ='N/A';   
@@ -1857,13 +1857,13 @@ class PdfController extends Controller
                 $t_transporte->cp_3 =0;   
             }            
 
-            switch($transporte_proyeccion->cant_transporte_rp)
+            switch($transporte_programacion->cant_transporte_rp)
             {
                 case 0:
                     
                     $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_1)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_rp_1)->first();
                     
                     $tipo_transporte->tipo = 'N/A';
                     $tipo_transporte->capacidad = 0;
@@ -1880,16 +1880,16 @@ class PdfController extends Controller
                     
                     $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_1)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_rp_1)->first();
                     
                     $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte;
-                    $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_rp_1;
+                    $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_rp_1;
 
                     $t_transporte->tp_1 =$tipo_transporte_1->tipo_transporte;            
                     $t_transporte->tp_2 ='N/A';   
                     $t_transporte->tp_3 ='N/A';    
 
-                    $t_transporte->cp_1 =$transporte_proyeccion->capac_transporte_rp_1;            
+                    $t_transporte->cp_1 =$transporte_programacion->capac_transporte_rp_1;            
                     $t_transporte->cp_2 =0;   
                     $t_transporte->cp_3 =0; 
 
@@ -1897,47 +1897,47 @@ class PdfController extends Controller
                 case 2:
                     $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_1)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_rp_1)->first();
                     
                     $tipo_transporte_2 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_2)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_rp_2)->first();
 
                     $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte . " | " . $tipo_transporte_2->tipo_transporte;
-                    $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_rp_1 . " | " . $transporte_proyeccion->capac_transporte_rp_2;
+                    $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_rp_1 . " | " . $transporte_programacion->capac_transporte_rp_2;
 
                     $t_transporte->tp_1 =$tipo_transporte_1->tipo_transporte;            
                     $t_transporte->tp_2 =$tipo_transporte_2->tipo_transporte;   
                     $t_transporte->tp_3 ='N/A';    
 
-                    $t_transporte->cp_1 =$transporte_proyeccion->capac_transporte_ra_1;            
-                    $t_transporte->cp_2 =$transporte_proyeccion->capac_transporte_ra_2;   
+                    $t_transporte->cp_1 =$transporte_programacion->capac_transporte_ra_1;            
+                    $t_transporte->cp_2 =$transporte_programacion->capac_transporte_ra_2;   
                     $t_transporte->cp_3 =0; 
 
                     break;
                 case 3:
                     $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_1)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_rp_1)->first();
                     
                     $tipo_transporte_2 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_2)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_rp_2)->first();
                    
                     $tipo_transporte_3 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_rp_3)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_rp_3)->first();
                     
                     $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte . " | " . $tipo_transporte_2->tipo_transporte . " | " . $tipo_transporte_3->tipo_transporte;
-                    $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_rp_1 . " | " . $transporte_proyeccion->capac_transporte_rp_2 . " | " . $transporte_proyeccion->capac_transporte_rp_3;
+                    $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_rp_1 . " | " . $transporte_programacion->capac_transporte_rp_2 . " | " . $transporte_programacion->capac_transporte_rp_3;
 
                     $t_transporte->tp_1 =$tipo_transporte_1->tipo_transporte;            
                     $t_transporte->tp_2 =$tipo_transporte_2->tipo_transporte;   
                     $t_transporte->tp_3 =$tipo_transporte_3->tipo_transporte;    
 
-                    $t_transporte->cp_1 =$transporte_proyeccion->capac_transporte_ra_1;            
-                    $t_transporte->cp_2 =$transporte_proyeccion->capac_transporte_ra_2;   
-                    $t_transporte->cp_3 =$transporte_proyeccion->capac_transporte_ra_3; 
+                    $t_transporte->cp_1 =$transporte_programacion->capac_transporte_ra_1;            
+                    $t_transporte->cp_2 =$transporte_programacion->capac_transporte_ra_2;   
+                    $t_transporte->cp_3 =$transporte_programacion->capac_transporte_ra_3; 
 
                     break;
                 
@@ -1950,7 +1950,7 @@ class PdfController extends Controller
             $valor_est_trans = $solicitudes_practica->valor_estimado_transporte_ra;
             $detalle_recorrido = $solicitudes_practica->det_recorrido_interno_ra;
 
-            $t_transporte = DB::table('transporte_proyeccion as trans')
+            $t_transporte = DB::table('transporte_programacion as trans')
                         ->select('tip_transp_1.tipo_transporte as tp_1','tip_transp_2.tipo_transporte as tp_2','tip_transp_3.tipo_transporte as tp_3',
                         'trans.capac_transporte_ra_1 as cp_1','trans.capac_transporte_ra_2 as cp_2','trans.capac_transporte_ra_3 as cp_3')
                         ->join('tipo_transporte as tip_transp_1','trans.id_tipo_transporte_ra_1','tip_transp_1.id')
@@ -1960,7 +1960,7 @@ class PdfController extends Controller
 
             if($t_transporte == NULL)
             {
-                $t_transporte = DB::table('transporte_proyeccion as trans')
+                $t_transporte = DB::table('transporte_programacion as trans')
                         ->where('trans.id',$id)->first();
                 $t_transporte->tp_1 ='N/A';            
                 $t_transporte->tp_2 ='N/A';   
@@ -1971,13 +1971,13 @@ class PdfController extends Controller
                 $t_transporte->cp_3 =0;   
             }
 
-            switch($transporte_proyeccion->cant_transporte_ra)
+            switch($transporte_programacion->cant_transporte_ra)
             {
                 case 0:
                     
                     $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_1)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_ra_1)->first();
                     
                     $tipo_transporte->tipo = 'N/A';
                     $tipo_transporte->capacidad = 0;
@@ -1993,10 +1993,10 @@ class PdfController extends Controller
                 case 1:
                     $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_1)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_ra_1)->first();
                     
                     $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte;
-                    $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_ra_1 ;
+                    $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_ra_1 ;
 
                     $t_transporte->tp_1 =$tipo_transporte->tipo;            
                     $t_transporte->tp_2 ='N/A';   
@@ -2010,47 +2010,47 @@ class PdfController extends Controller
                 case 2:
                     $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_1)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_ra_1)->first();
                    
                     $tipo_transporte_2 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_2)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_ra_2)->first();
                     
                     $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte . " | " . $tipo_transporte_2->tipo_transporte;
-                    $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_ra_1 . " | " . $transporte_proyeccion->capac_transporte_ra_2 ;
+                    $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_ra_1 . " | " . $transporte_programacion->capac_transporte_ra_2 ;
 
                     $t_transporte->tp_1 =$tipo_transporte_1->tipo_transporte;            
                     $t_transporte->tp_2 =$tipo_transporte_2->tipo_transporte;   
                     $t_transporte->tp_3 ='N/A';    
 
-                    $t_transporte->cp_1 =$transporte_proyeccion->capac_transporte_ra_1;            
-                    $t_transporte->cp_2 =$transporte_proyeccion->capac_transporte_ra_2;   
+                    $t_transporte->cp_1 =$transporte_programacion->capac_transporte_ra_1;            
+                    $t_transporte->cp_2 =$transporte_programacion->capac_transporte_ra_2;   
                     $t_transporte->cp_3 =0;  
 
                     break;
                 case 3:
                     $tipo_transporte_1 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_1)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_ra_1)->first();
                     
                     $tipo_transporte_2 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_2)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_ra_2)->first();
                    
                     $tipo_transporte_3 = DB::table('tipo_transporte as tip_transp')
                         ->select('tip_transp.tipo_transporte')
-                        ->where('id',$transporte_proyeccion->id_tipo_transporte_ra_3)->first();
+                        ->where('id',$transporte_programacion->id_tipo_transporte_ra_3)->first();
                     
                     $tipo_transporte->tipo = $tipo_transporte_1->tipo_transporte . " | " . $tipo_transporte_2->tipo_transporte . " | " . $tipo_transporte_3->tipo_transporte;
-                    $tipo_transporte->capacidad = $transporte_proyeccion->capac_transporte_ra_1 . " | " . $transporte_proyeccion->capac_transporte_ra_2 . " | " . $transporte_proyeccion->capac_transporte_ra_3;
+                    $tipo_transporte->capacidad = $transporte_programacion->capac_transporte_ra_1 . " | " . $transporte_programacion->capac_transporte_ra_2 . " | " . $transporte_programacion->capac_transporte_ra_3;
 
                     $t_transporte->tp_1 =$tipo_transporte_1->tipo_transporte;            
                     $t_transporte->tp_2 =$tipo_transporte_2->tipo_transporte;   
                     $t_transporte->tp_3 =$tipo_transporte_3->tipo_transporte;    
 
-                    $t_transporte->cp_1 =$transporte_proyeccion->capac_transporte_ra_1;            
-                    $t_transporte->cp_2 =$transporte_proyeccion->capac_transporte_ra_2;   
-                    $t_transporte->cp_3 =$transporte_proyeccion->capac_transporte_ra_3;  
+                    $t_transporte->cp_1 =$transporte_programacion->capac_transporte_ra_1;            
+                    $t_transporte->cp_2 =$transporte_programacion->capac_transporte_ra_2;   
+                    $t_transporte->cp_3 =$transporte_programacion->capac_transporte_ra_3;  
 
                     break;
                 default;
@@ -2480,16 +2480,16 @@ class PdfController extends Controller
                     'sol_prac.justificacion', 'sol_prac.objetivo_general', 'sol_prac.metodologia_evaluacion', 'sol_prac.id as id_solicitud',
                     'sol_prac.tipo_ruta',
                     DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-            ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+            ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
             ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
             ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
-            ->join('costos_proyeccion as c_proy','sol_prac.id_proyeccion_preliminar','=','c_proy.id')
-            ->join('docentes_practica as docen_pract','sol_prac.id_proyeccion_preliminar','=','docen_pract.id')
+            ->join('costos_programacion as c_proy','sol_prac.id_programacion_practica','=','c_proy.id')
+            ->join('docentes_practica as docen_pract','sol_prac.id_programacion_practica','=','docen_pract.id')
             ->join('users','p_prel.id_docente_responsable','=','users.id')
             ->join('periodo_academico as per_aca','p_prel.id_periodo_academico','=','per_aca.id')
             ->join('semestre_asignatura as sem_asig','p_prel.id_semestre_asignatura','=','sem_asig.id')
             ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
-            ->join('transporte_proyeccion as transp','p_prel.id','=','transp.id')
+            ->join('transporte_programacion as transp','p_prel.id','=','transp.id')
             // ->where('id_estado_solicitud_practica','=',5)
             ->where('sol_prac.aprobacion_decano','=',7)
             // ->where('si_capital','=',1)
@@ -2568,7 +2568,7 @@ class PdfController extends Controller
             ->where('id',$idUser)->first();
 
             // $solicitud = DB::table('solicitud_practica as sol_prac')
-            //                 ->where('sol_prac.id_proyeccion_preliminar','=',$id)->first();
+            //                 ->where('sol_prac.id_programacion_practica','=',$id)->first();
             // $documentos_sistema = DB::table('tipo_documentacion')->orderBy('id','asc')->get();
 
             $docente_responsable = DB::table('users')
@@ -2645,7 +2645,7 @@ class PdfController extends Controller
         //     $docentes_practica= DB::table('docentes_practica as doc_prac')
         //     ->select('doc_prac.id','doc_prac.soporte_formato_avance','doc_prac.soporte_formato_practica',
         //     'doc_prac.tiene_soporte_avance','doc_prac.tiene_soporte_practica')
-        //     ->join('solicitud_practica as sol_prac','doc_prac.id','sol_prac.id_proyeccion_preliminar')
+        //     ->join('solicitud_practica as sol_prac','doc_prac.id','sol_prac.id_programacion_practica')
         //     ->where('sol_prac.id',$ids)->first();
             
         //     $fmt_avance = $docentes_practica->soporte_formato_avance;
@@ -2728,17 +2728,17 @@ class PdfController extends Controller
                 'sol_prac.num_cdp','sol_prac.num_solicitud_necesidad', 'p_prel.num_acta_consejo_facultad', 'p_prel.fecha_acta_consejo_facultad',
                 'tip_ident.tipo_identificacion','users.id as id_user', 'tip_ident.sigla', 'sol_prac.consec_dfamarena','sol_prac.consec_cordis',
                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-        ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+        ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
-        ->join('costos_proyeccion as c_proy','sol_prac.id_proyeccion_preliminar','=','c_proy.id')
-        ->join('docentes_practica as docen_pract','sol_prac.id_proyeccion_preliminar','=','docen_pract.id')
+        ->join('costos_programacion as c_proy','sol_prac.id_programacion_practica','=','c_proy.id')
+        ->join('docentes_practica as docen_pract','sol_prac.id_programacion_practica','=','docen_pract.id')
         ->join('users','p_prel.id_docente_responsable','=','users.id')
         ->join('periodo_academico as per_aca','p_prel.id_periodo_academico','=','per_aca.id')
         ->join('semestre_asignatura as sem_asig','p_prel.id_semestre_asignatura','=','sem_asig.id')
         ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
         ->join('tipo_identificacion as tip_ident','users.id_tipo_identificacion','=','tip_ident.id')
-        ->join('transporte_proyeccion as transp','p_prel.id','=','transp.id')
+        ->join('transporte_programacion as transp','p_prel.id','=','transp.id')
         ->where('id_estado_solicitud_practica','=',3)
         // ->where('si_capital','=',1)
         // ->where('tiene_resolucion','=',1)
@@ -2811,16 +2811,16 @@ class PdfController extends Controller
         }
 
         $list_solic_id_proy=DB::table('solicitud_practica as sp')
-        ->select('id_proyeccion_preliminar')
+        ->select('id_programacion_practica')
         ->whereIn('sp.id',$list_solic)->get();
-        $ids_list_solic_id_proy=$list_solic_id_proy->pluck('id_proyeccion_preliminar')->all();
+        $ids_list_solic_id_proy=$list_solic_id_proy->pluck('id_programacion_practica')->all();
         $list_pract_inte=DB::table('practicas_integradas as prac_int')
             ->select('prac_int.id as id','prac_int.cant_espa_aca','prac_int.id_espa_aca_1','prac_int.id_espa_aca_2','prac_int.id_espa_aca_3',
                     'prac_int.id_espa_aca_4','prac_int.id_espa_aca_5','prac_int.id_espa_aca_6','prac_int.id_espa_aca_7','prac_int.id_docen_espa_aca_1',
                     'prac_int.id_docen_espa_aca_2','prac_int.id_docen_espa_aca_3','prac_int.id_docen_espa_aca_4','prac_int.id_docen_espa_aca_5',
                     'prac_int.id_docen_espa_aca_6','prac_int.id_docen_espa_aca_7','proy_prel.practicas_integradas')
-            ->join('proyeccion_preliminar as proy_prel','prac_int.id','proy_prel.id')
-            ->join('solicitud_practica as sol_prac','proy_prel.id','sol_prac.id_proyeccion_preliminar')
+            ->join('programacion_practica as proy_prel','prac_int.id','proy_prel.id')
+            ->join('solicitud_practica as sol_prac','proy_prel.id','sol_prac.id_programacion_practica')
             ->whereIn('proy_prel.id',$ids_list_solic_id_proy)->get();
         //dd($list_pract_inte);
         foreach($list_pract_inte as $pract_inte)
@@ -2855,7 +2855,7 @@ class PdfController extends Controller
                                     'p_aca.programa_academico','sol_prac.fecha_salida','sol_prac.fecha_regreso')
                             ->join('espacio_academico as e_aca','prac_int.id_espa_aca_1','=','e_aca.id')
                             ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
-                            ->join('solicitud_practica as sol_prac','prac_int.id','=','sol_prac.id_proyeccion_preliminar')
+                            ->join('solicitud_practica as sol_prac','prac_int.id','=','sol_prac.id_programacion_practica')
                             ->where('prac_int.id',$pract_inte->id)
                             ->first();
     
@@ -2887,9 +2887,9 @@ class PdfController extends Controller
                             // ->join('practicas_integradas as p_int_2','espa_aca.id','p_int_1.id_espa_aca_2')
                             // ->join('practicas_integradas as prac_int','espa_aca.id','prac_int.id_espa_aca_1')
                             ->join('programa_academico as p_aca','espa_aca.id_programa_academico','=','p_aca.id')
-                            //->join('solicitud_practica as sol_prac',$pract_inte->id,'=','sol_prac.id_proyeccion_preliminar')
+                            //->join('solicitud_practica as sol_prac',$pract_inte->id,'=','sol_prac.id_programacion_practica')
                             ->join('solicitud_practica as sol_prac', function ($join) use ($pract_inte) {
-                                        $join->on('sol_prac.id_proyeccion_preliminar', '=', DB::raw($pract_inte->id));
+                                        $join->on('sol_prac.id_programacion_practica', '=', DB::raw($pract_inte->id));
                                     })
                             ->where('espa_aca.id',$pract_inte->id_espa_aca_1)
                             ->orWhere('espa_aca.id',$pract_inte->id_espa_aca_2)->get();
@@ -2927,9 +2927,9 @@ class PdfController extends Controller
                             // ->join('practicas_integradas as p_int_1','espa_aca.id','p_int_1.id_espa_aca_1')
                             // ->join('practicas_integradas as p_int_2','espa_aca.id','p_int_1.id_espa_aca_2')
                             ->join('programa_academico as p_aca','espa_aca.id_programa_academico','=','p_aca.id')
-                            //->join('solicitud_practica as sol_prac',$pract_inte->id,'=','sol_prac.id_proyeccion_preliminar')
+                            //->join('solicitud_practica as sol_prac',$pract_inte->id,'=','sol_prac.id_programacion_practica')
                             ->join('solicitud_practica as sol_prac', function ($join) use ($pract_inte) {
-                                        $join->on('sol_prac.id_proyeccion_preliminar', '=', DB::raw($pract_inte->id));
+                                        $join->on('sol_prac.id_programacion_practica', '=', DB::raw($pract_inte->id));
                                     })
                             ->where('espa_aca.id',$pract_inte->id_espa_aca_1)
                             ->orWhere('espa_aca.id',$pract_inte->id_espa_aca_2)
@@ -2968,9 +2968,9 @@ class PdfController extends Controller
                             // ->join('practicas_integradas as p_int_1','espa_aca.id','p_int_1.id_espa_aca_1')
                             // ->join('practicas_integradas as p_int_2','espa_aca.id','p_int_1.id_espa_aca_2')
                             ->join('programa_academico as p_aca','espa_aca.id_programa_academico','=','p_aca.id')
-                            //->join('solicitud_practica as sol_prac',$pract_inte->id,'=','sol_prac.id_proyeccion_preliminar')
+                            //->join('solicitud_practica as sol_prac',$pract_inte->id,'=','sol_prac.id_programacion_practica')
                             ->join('solicitud_practica as sol_prac', function ($join) use ($pract_inte) {
-                                        $join->on('sol_prac.id_proyeccion_preliminar', '=', DB::raw($pract_inte->id));
+                                        $join->on('sol_prac.id_programacion_practica', '=', DB::raw($pract_inte->id));
                                     })
                             ->where('espa_aca.id',$pract_inte->id_espa_aca_1)
                             ->orWhere('espa_aca.id',$pract_inte->id_espa_aca_2)
@@ -3011,9 +3011,9 @@ class PdfController extends Controller
                             // ->join('practicas_integradas as p_int_1','espa_aca.id','p_int_1.id_espa_aca_1')
                             // ->join('practicas_integradas as p_int_2','espa_aca.id','p_int_1.id_espa_aca_2')
                             ->join('programa_academico as p_aca','espa_aca.id_programa_academico','=','p_aca.id')
-                            //->join('solicitud_practica as sol_prac','prac_int.id','=','sol_prac.id_proyeccion_preliminar')
+                            //->join('solicitud_practica as sol_prac','prac_int.id','=','sol_prac.id_programacion_practica')
                             ->join('solicitud_practica as sol_prac', function ($join) use ($pract_inte) {
-                                        $join->on('sol_prac.id_proyeccion_preliminar', '=', DB::raw($pract_inte->id));
+                                        $join->on('sol_prac.id_programacion_practica', '=', DB::raw($pract_inte->id));
                                     })
                             ->where('espa_aca.id',$pract_inte->id_espa_aca_1)
                             ->orWhere('espa_aca.id',$pract_inte->id_espa_aca_2)
@@ -3057,7 +3057,7 @@ class PdfController extends Controller
                             // ->join('practicas_integradas as p_int_1','espa_aca.id','p_int_1.id_espa_aca_1')
                             // ->join('practicas_integradas as p_int_2','espa_aca.id','p_int_1.id_espa_aca_2')
                             ->join('programa_academico as p_aca','espa_aca.id_programa_academico','=','p_aca.id')
-                            ->join('solicitud_practica as sol_prac','prac_int.id','=','sol_prac.id_proyeccion_preliminar')
+                            ->join('solicitud_practica as sol_prac','prac_int.id','=','sol_prac.id_programacion_practica')
                             ->where('id',$pract_inte->id_espa_aca_1)
                             ->orWhere('id',$pract_inte->id_espa_aca_2)
                             ->orWhere('id',$pract_inte->id_espa_aca_3)
@@ -3100,7 +3100,7 @@ class PdfController extends Controller
                             // ->join('practicas_integradas as p_int_1','espa_aca.id','p_int_1.id_espa_aca_1')
                             // ->join('practicas_integradas as p_int_2','espa_aca.id','p_int_1.id_espa_aca_2')
                             ->join('programa_academico as p_aca','espa_aca.id_programa_academico','=','p_aca.id')
-                            ->join('solicitud_practica as sol_prac','prac_int.id','=','sol_prac.id_proyeccion_preliminar')
+                            ->join('solicitud_practica as sol_prac','prac_int.id','=','sol_prac.id_programacion_practica')
                             ->where('id',$pract_inte->id_espa_aca_1)
                             ->orWhere('id',$pract_inte->id_espa_aca_2)
                             ->orWhere('id',$pract_inte->id_espa_aca_3)
@@ -3253,21 +3253,21 @@ class PdfController extends Controller
                 'sol_prac.num_cdp','sol_prac.num_solicitud_necesidad', 'p_prel.num_acta_consejo_facultad', 'p_prel.fecha_acta_consejo_facultad',
                 'tip_ident.tipo_identificacion','users.id as id_user', 'tip_ident.sigla',
                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-        ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+        ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
-        ->join('costos_proyeccion as c_proy','sol_prac.id_proyeccion_preliminar','=','c_proy.id')
-        ->join('docentes_practica as docen_pract','sol_prac.id_proyeccion_preliminar','=','docen_pract.id')
+        ->join('costos_programacion as c_proy','sol_prac.id_programacion_practica','=','c_proy.id')
+        ->join('docentes_practica as docen_pract','sol_prac.id_programacion_practica','=','docen_pract.id')
         ->join('users','p_prel.id_docente_responsable','=','users.id')
         ->join('periodo_academico as per_aca','p_prel.id_periodo_academico','=','per_aca.id')
         ->join('semestre_asignatura as sem_asig','p_prel.id_semestre_asignatura','=','sem_asig.id')
         ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
         ->join('tipo_identificacion as tip_ident','users.id_tipo_identificacion','=','tip_ident.id')
-        ->join('transporte_proyeccion as transp','p_prel.id','=','transp.id')
+        ->join('transporte_programacion as transp','p_prel.id','=','transp.id')
         ->where('id_estado_solicitud_practica','=',3)
         // ->where('si_capital','=',1)
         // ->where('tiene_resolucion','=',1)
-        // ->whereIn('sol_prac.id_proyeccion_preliminar',$list_solic)->paginate(10);
+        // ->whereIn('sol_prac.id_programacion_practica',$list_solic)->paginate(10);
         ->whereIn('sol_prac.id',$list_solic)->paginate(10);
 
         $decano = DB::table('users')

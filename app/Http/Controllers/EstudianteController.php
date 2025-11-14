@@ -29,7 +29,7 @@ class EstudianteController extends Controller
     protected $guard ='estud';
     /**
      * Muestra formulario de documentación requerida para la
-     * proyección seleccionada
+     * Programación seleccionada
      *
      * @param  int  $id
      * @param  string  $email
@@ -150,7 +150,7 @@ class EstudianteController extends Controller
                                     ->select('sol_prac.id','p_aca.programa_academico','e_aca.espacio_academico','sol_prac.tipo_ruta',
                                             'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida',
                                             DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                                    ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+                                    ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
                                     ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                                     ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
                                     ->join('users','p_prel.id_docente_responsable','=','users.id')
@@ -185,7 +185,7 @@ class EstudianteController extends Controller
                                     ->select('sol_prac.id','p_aca.programa_academico','e_aca.espacio_academico','sol_prac.tipo_ruta',
                                             'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida',
                                             DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                                    ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+                                    ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
                                     ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                                     ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
                                     ->join('users','p_prel.id_docente_responsable','=','users.id')
@@ -306,7 +306,7 @@ class EstudianteController extends Controller
                                        "imagen10"=>$show_image10, "img10"=>$img10, "pdf10"=>$show_pdf10,
                                        "imagen11"=>$show_image11, "img11"=>$img11, "pdf11"=>$show_pdf11,
                                        "rec_doc"=>$rec_doc]);
-        // return view('proyecciones.image',["imagen"=>$show_image, "img"=>$img]);
+        // return view('programaciones.image',["imagen"=>$show_image, "img"=>$img]);
     }
 
     public function index($email)
@@ -329,7 +329,7 @@ class EstudianteController extends Controller
                         ->select('sol_prac.id','p_aca.programa_academico','e_aca.espacio_academico','sol_prac.tipo_ruta',
                                 'p_prel.destino_rp','p_prel.destino_ra','sol_prac.fecha_salida',
                                 DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
-                        ->join('proyeccion_preliminar as p_prel','sol_prac.id_proyeccion_preliminar','=','p_prel.id')
+                        ->join('programacion_practica as p_prel','sol_prac.id_programacion_practica','=','p_prel.id')
                         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
                         ->join('users','p_prel.id_docente_responsable','=','users.id')

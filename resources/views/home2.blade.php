@@ -99,15 +99,15 @@
               </div>
               {{-- </div> --}}
               <div class="col-md-12" style="padding: 1.75rem;">
-                {{-- <h5 style="text-align: justify; margin-top:0.5rem">Proyecciones Prácticas Académicas 2022 Períodos I y III</h5>
+                {{-- <h5 style="text-align: justify; margin-top:0.5rem">programaciones Prácticas Académicas 2022 Períodos I y III</h5>
                 <p style="text-align: justify; margin-top:0.5rem;">En el plan de prácticas del año 2022 se tendrán en cuenta 
-                  para los períodos académicos 2022-I y 2022-III las proyecciones de prácticas académicas de campo 
+                  para los períodos académicos 2022-I y 2022-III las programaciones de prácticas académicas de campo 
                   registradas en el sistema web PracticampoUD y que cuenten con el respectivo Visto Bueno de la coordinación
                   con fecha límite del 16 de Diciembre del 2021.</p>                
                   <hr class="divider"> --}}
                 <h5 style="text-align: justify; margin-top:0.5rem">Cierre Módulos</h5>
-                <p style="text-align: justify; margin-top:0.5rem;">Los módulos de proyecciones preliminares y solicitudes de prácticas serán inhabilitados en las siguientes fechas:</p>
-                <p style="text-align: justify; margin-top:0.5rem; font-weight:bolder; padding-left:1rem"><b>- Proyección Preliminar:</b> {{$control_sistema->fecha_cierre_proy}}.<br>
+                <p style="text-align: justify; margin-top:0.5rem;">Los módulos de programaciones preliminares y solicitudes de prácticas serán inhabilitados en las siguientes fechas:</p>
+                <p style="text-align: justify; margin-top:0.5rem; font-weight:bolder; padding-left:1rem"><b>- Programación Preliminar:</b> {{$control_sistema->fecha_cierre_proy}}.<br>
                 <strong>- Solicitud Práctica:</strong> {{$control_sistema->fecha_cierre_solic}}.</p>
                 <hr class="divider">
                 <h5 style="text-align: justify; margin-top:0.5rem; padding-top:0.938rem">Legalización Avances</h5>

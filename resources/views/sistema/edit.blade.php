@@ -84,7 +84,7 @@
                         <!-- 5 -->
 
                         <br>
-                        <h4>Proyección Preliminar</h4>
+                        <h4>Programación Preliminar</h4>
                         <hr class="divider">
                         <br>
 
@@ -94,7 +94,7 @@
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <label for="fecha_apert_proy" class="col-form-label text-md-left"><i class="fas fa-question-circle" 
                                     data-toggle="tooltip" data-placement="left" 
-                                    data-title="Seleccione la fecha de apertura del módulo de proyecciones" style="font-size: 0.813rem"></i> {{ __('Fecha Apertura Proyección') }}</label>
+                                    data-title="Seleccione la fecha de apertura del módulo de programaciones" style="font-size: 0.813rem"></i> {{ __('Fecha Apertura Programación') }}</label>
                                 <span class="hs-form-required">*</span>
                                   <div class="input-group">
                                      <div class="input-group-addon">
@@ -108,7 +108,7 @@
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <label for="fecha_cierre_proy" class="col-form-label text-md-left"><i class="fas fa-question-circle" 
                                     data-toggle="tooltip" data-placement="left" 
-                                    data-title="Seleccione la fecha de cierre del módulo de proyecciones" style="font-size: 0.813rem"></i> {{ __('Fecha Cierre Proyección') }}</label>
+                                    data-title="Seleccione la fecha de cierre del módulo de programaciones" style="font-size: 0.813rem"></i> {{ __('Fecha Cierre Programación') }}</label>
                                 <span class="hs-form-required">*</span>
                                   <div class="input-group">
                                      <div class="input-group-addon">

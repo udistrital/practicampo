@@ -153,8 +153,8 @@ header{position:fixed;}
                     </tr>
                     <tr>
                         <td class="tg-0pky" colspan="">Número de Vehiculos</td>
-                        <td class="tg-0pky" colspan="2"><?php if($solicitud_practica->tipo_ruta == 1) echo "$transporte_proyeccion->cant_transporte_rp"; 
-                        elseif ($solicitud_practica->tipo_ruta == 2) {echo $transporte_proyeccion->cant_transporte_ra;}?></td>
+                        <td class="tg-0pky" colspan="2"><?php if($solicitud_practica->tipo_ruta == 1) echo "$transporte_programacion->cant_transporte_rp"; 
+                        elseif ($solicitud_practica->tipo_ruta == 2) {echo $transporte_programacion->cant_transporte_ra;}?></td>
                         <td class="tg-0pky" colspan="9">Tipo de Vehículo</td>
                         <td class="tg-0pky" colspan="3">{{$t_transporte->tp_1}}</td>
                         <td class="tg-0pky" colspan="3">{{$t_transporte->tp_2}}</td>

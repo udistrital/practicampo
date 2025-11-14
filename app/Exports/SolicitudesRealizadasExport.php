@@ -35,7 +35,7 @@ class SolicitudesRealizadasExport  implements  FromCollection, WithHeadings, Sho
         $fecha_inicial = Carbon::parse($this->fecha_inicial)->format('Y-m-d');
         $fecha_final = Carbon::parse($this->fecha_final)->format('Y-m-d');
 
-        $solicitudes=DB::table('proyeccion_preliminar as p_prel')
+        $solicitudes=DB::table('programacion_practica as p_prel')
         ->select('s.id',
                  DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'),
                  'p_aca.programa_academico','e_aca.espacio_academico',                 
@@ -49,8 +49,8 @@ class SolicitudesRealizadasExport  implements  FromCollection, WithHeadings, Sho
         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
         ->join('users','p_prel.id_docente_responsable','=','users.id')
-	->join('solicitud_practica as s','p_prel.id','=','s.id_proyeccion_preliminar')
-        ->join('costos_proyeccion as cp','p_prel.id','=','cp.id')
+	->join('solicitud_practica as s','p_prel.id','=','s.id_programacion_practica')
+        ->join('costos_programacion as cp','p_prel.id','=','cp.id')
 	->join('estado_practica as ep', 'ep.id', '=', 's.estado_practica')
         ->where('s.aprobacion_decano', '=', 7)
         ->where('s.id_estado_solicitud_practica', '=', 3)

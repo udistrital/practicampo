@@ -101,7 +101,7 @@ class EstudiantesNoti extends Command
     public function estud_15_dias($id)
     {
         $correos_administrativos = [];
-        $nueva_proyeccion = "";
+        $nueva_programacion = "";
         $nueva_solicitud = "";
         $filter = "estud_15_dias";
 
@@ -111,7 +111,7 @@ class EstudiantesNoti extends Command
                                 'sem_asig.semestre_asignatura', 'sol_prac.tipo_ruta', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'sol_prac.fecha_salida', 'sol_prac.fecha_regreso',
                                 'sol_prac.num_estudiantes', 'sol_prac.num_acompaniantes_apoyo', 'proy_pre.id_docente_responsable',
                                 DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
-                        ->join('proyeccion_preliminar as proy_pre', 'sol_prac.id_proyeccion_preliminar', 'proy_pre.id')
+                        ->join('programacion_practica as proy_pre', 'sol_prac.id_programacion_practica', 'proy_pre.id')
                         ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
                         ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
                         ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
@@ -137,7 +137,7 @@ class EstudiantesNoti extends Command
             foreach($emails as $email)
             {
     
-                Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_proyeccion,$nueva_solicitud, $email, $correos_administrativos ));
+                Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud, $email, $correos_administrativos ));
             }
         }    
         
@@ -146,7 +146,7 @@ class EstudiantesNoti extends Command
     public function estud_8_dias($id)
     {
         $correos_administrativos = [];
-        $nueva_proyeccion = "";
+        $nueva_programacion = "";
         $nueva_solicitud = "";
         $filter = "estud_8_dias";
 
@@ -156,7 +156,7 @@ class EstudiantesNoti extends Command
                                 'sem_asig.semestre_asignatura', 'sol_prac.tipo_ruta', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'sol_prac.fecha_salida', 'sol_prac.fecha_regreso',
                                 'sol_prac.num_estudiantes', 'sol_prac.num_acompaniantes_apoyo', 'proy_pre.id_docente_responsable',
                                 DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
-                        ->join('proyeccion_preliminar as proy_pre', 'sol_prac.id_proyeccion_preliminar', 'proy_pre.id')
+                        ->join('programacion_practica as proy_pre', 'sol_prac.id_programacion_practica', 'proy_pre.id')
                         ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
                         ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
                         ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
@@ -180,7 +180,7 @@ class EstudiantesNoti extends Command
     
             foreach($emails as $email)
             {
-                Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_proyeccion,$nueva_solicitud, $email, $correos_administrativos ));
+                Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud, $email, $correos_administrativos ));
             }
         }
 

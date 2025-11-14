@@ -15,7 +15,7 @@
         <div class="row" style="background-color: #f8f9fc">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
-                    <label for="id_filtro_proyeccion">Seleccionar Filtro</label>
+                    <label for="id_filtro_programacion">Seleccionar Filtro</label>
                     <div class="row">
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                             <div class="form-check form-check-inline">
