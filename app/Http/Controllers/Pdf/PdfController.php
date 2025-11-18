@@ -2510,7 +2510,7 @@ class PdfController extends Controller
             ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
             ->join('roles as rol','users.id_role','rol.id')
             ->where('id_estado','=',1)
-            ->where('users.id','=',$id_docente_responsable)->orWhere('rol.id','=',2)->first();
+            ->where('users.id','=',$id_docente_responsable)->first();
 
             $id_pro_aca = $solicitudes_practica[0]->id_pro_aca;
             $coord = DB::table('users')
@@ -2577,7 +2577,7 @@ class PdfController extends Controller
                     ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
                     ->join('roles as rol','users.id_role','rol.id')
                     ->where('id_estado','=',1)
-                    ->where('users.id','=',$id_docente_responsable)->orWhere('rol.id','=',2)->first();
+                    ->where('users.id','=',$id_docente_responsable)->first();
             
             if($docente_responsable->tiene_firma == 1)
             {
