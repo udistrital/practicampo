@@ -1171,7 +1171,7 @@ class PdfController extends Controller
                     ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
                     ->join('roles as rol','users.id_role','rol.id')
                     ->where('id_estado','=',1)
-                    ->where('users.id','=',$solicitudes_practica->id_docente_responsable)->orWhere('rol.id','=',2)->first();
+                    ->where('users.id','=',$solicitudes_practica->id_docente_responsable)->first();
             
             $valor_diario->vlr_estud_max = number_format($valor_diario->vlr_estud_max, 0, ',','.');
             $valor_diario->vlr_estud_min = number_format($valor_diario->vlr_estud_min, 0, ',','.');
