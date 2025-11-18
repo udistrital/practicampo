@@ -525,26 +525,6 @@
                                                 </span>
                                             </div>
                                         </div>
-
-                                        <div class="col-md-2" id="cant_docen_apoyo">
-                                            <label for="total_docentes_apoyo" class="col-form-label text-md-left" title="">
-                                                <i class="fas fa-question-circle" 
-                                                    data-toggle="tooltip" data-placement="left" 
-                                                    data-title="Indique el número aproximado de docentes que hacen parte del personal de apoyo que participará en la salida de práctica académica"
-                                                    style="font-size: 0.813rem">
-                                                </i> {{ __('Cant. Docentes') }}</label>
-                                            <div class="input-group">
-                                                <input id="total_docentes_apoyo" type="number" max="10" min="0" pattern="^[0-9]+" class="form-control @error('total_docentes_apoyo') is-invalid @enderror" name="total_docentes_apoyo" 
-                                                title=""
-                                                value="{{$docentes_practica->total_docentes_apoyo}}" autocomplete="off" autofocus  readonly disabled onchange="calc_viaticos_RP()">
-                                                
-                                                @error('total_docentes_apoyo')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>    
-                                        </div>
                                     </div>
                                 <!-- 2 -->
 

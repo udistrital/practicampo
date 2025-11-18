@@ -259,11 +259,9 @@ $(document).ready(function(){
    {
         $("#soporte_apoyo").show();
         num_max_apoyo = $("#num_apoyo").val();
-        $("#total_docentes_apoyo").attr('max',num_max_apoyo);
    }
    else if(num_apoyo == 0 || num_apoyo == null)
    {
-	    $("#total_docentes_apoyo").attr('max',0);
         $("#cant_docen_apoyo").hide();
         $("#soporte_apoyo").hide();
    }
@@ -1750,7 +1748,7 @@ function calc_viaticos_RP()
             break;
     }
 
-    total_doc_apoyo = $('#total_docentes_apoyo').val();
+    total_doc_apoyo = $('#num_apoyo').val();
     pers_apoyo = $('#num_apoyo').val();
     num_doc_apoyo = parseInt(cant_int) + parseInt(total_doc_apoyo);
 
@@ -3272,27 +3270,17 @@ $("#cant_docen_apoyo").hide();
 
 $("#num_apoyo").change('keypress', function () {
     num_apoyo = $("#num_apoyo").val();
-    total_doc_apoyo = $("#total_docentes_apoyo").val();
     
     if(parseInt(num_apoyo) >= 1 && parseInt(num_apoyo) <= 10)
     {
         $("#soporte_apoyo").show();
         $("#sop_pers_apoyo").attr('required','required');
         $("#cant_docen_apoyo").show();
-        $("#total_docentes_apoyo").removeAttr('max');
-        $("#total_docentes_apoyo").attr('max',num_apoyo);
-
-        if(parseInt(total_doc_apoyo) > parseInt(num_apoyo))
-        {
-            $("#total_docentes_apoyo").val(num_apoyo);
-        }
     }
     else{
         $("#soporte_apoyo").hide();
         $("#sop_pers_apoyo").removeAttr('required','required');
         $("#cant_docen_apoyo").hide();
-		$("#total_docentes_apoyo").attr('max',0);
-		$("#total_docentes_apoyo").val(0);
     }
     
     switch(num_apoyo)
