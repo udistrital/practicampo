@@ -27,6 +27,8 @@
                   <a class="collapse-item" href="{{url('ver/documento') }}">Listar Documentos</a>
                   <a class="collapse-item" href="{{url('sistema') }}">Sistema</a>
                   <a class="collapse-item" href="{{url('presupuesto') }}">Presupuestos</a>
+                  <a class="collapse-item" href="{{url('programas_academicos') }}">Programas Académicos</a>
+                  <a class="collapse-item" href="{{url('espacios_academicos') }}">Espacios Académicos</a>
                   {{-- <a class="collapse-item" href="{{url('edicion/documento') }}">Edición Documentos</a> --}}
               </div>
             </div>

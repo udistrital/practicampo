@@ -11,7 +11,7 @@
                     <div class="card-header"><h4>{{ __('Presupuesto transporte menor') }}</h4></div>
     
                     <div class="card-body">
-                        <form method="POST" action="{{ route('presupuesto_update_tm') }}" onsubmit="return confirmarGuardarPresupuesto(event)">
+                        <form method="POST" action="{{ route('presupuesto_update_tm') }}" onsubmit="return confirmarGuardar(event)">
                             @method('PUT')
                             @csrf
 

@@ -48,6 +48,49 @@
 
 
 <!-- functions-->
+ <script>
+    $(document).on('click', '.btnEditarProgramaAcademico', function () {
+        var id = $(this).data('id');
+        var programa_academico = $(this).data('programa_academico');
+        var pregrado = $(this).data('pregrado');
+        $('#nombre_programa_academico_edit').val(programa_academico);
+
+        if(pregrado === 1){
+            $('#pregrado_edit_si').prop('checked', true);
+        }else{
+            $('#pregrado_edit_no').prop('checked', true);
+        }        
+        $('#formEditarProgramaAcademico').attr('action', '{{ route("update_programa_academico", "") }}/' + id);
+    });
+</script>
+<script>
+    $(document).on('click', '.btnEditarEspacioAcademico', function () {
+        var id = $(this).data('id');
+        var id_programa_academico = $(this).data('id_programa_academico');
+        var codigo_espacio_academico = $(this).data('codigo_espacio_academico');
+        var espacio_academico = $(this).data('nombre_espacio_academico');
+        var plan_estudios_1 = $(this).data('plan_estudios_1');
+        var plan_estudios_2 = $(this).data('plan_estudios_2');
+        var tipo_espacio = $(this).data('tipo_espacio');
+        var electiva = $(this).data('electiva');
+
+        $('#id_programa_academico_edit').val(id_programa_academico);
+        $('#codigo_espacio_academico_edit').val(codigo_espacio_academico);
+        $('#nombre_espacio_academico_edit').val(espacio_academico);
+        $('#plan_estudios_1_edit').val(plan_estudios_1);
+        $('#plan_estudios_2_edit').val(plan_estudios_2);
+        $('#tipo_espacio_edit').val(tipo_espacio);
+
+        if(electiva === 1){
+            $('#electiva_edit_si').prop('checked', true);
+        }else{
+            $('#electiva_edit_no').prop('checked', true);
+        }
+
+        $('#formEditarEspacioAcademico').attr('action', '{{ route("update_espacio_academico", "") }}/' + id);
+
+    });
+</script>
 <script>
     $('#importEstudForm').on('submit', function(event) {
         event.preventDefault();

@@ -6302,7 +6302,7 @@ function validar_realizada_bogota() {
     return true; 
 }
 
-function confirmarGuardarPresupuesto(event) {
+function confirmarGuardar(event) {
     const confirmar = confirm('¿Estás seguro(a) de que deseas guardar los cambios?');
 
     if (!confirmar) {

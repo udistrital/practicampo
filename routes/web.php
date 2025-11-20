@@ -164,8 +164,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('programaciones/buscar/proy','programacion\programacionController@buscador')->name('programacion_buscar');
         Route::get('proyeccver/{id}','programacion\programacionController@ver_programacion')->name('proy_legalizadas');
         Route::post('proyeccduplicar/{id}','programacion\programacionController@duplicar_proy')->name('proy_duplicar');
-        Route::put('cambios_proy/{id}','programacion\programacionController@cambios_proy')->name('proy_cambios');
-        Route::get('hab_cambios_proy/{id}','programacion\programacionController@hab_cambios_proy')->name('proy_hab_cambios');
+        Route::put('cambios_proy/{id}','programacion\programacionController@cambios_proy')->name('proy_cambios')->middleware('role:1,2,3');
+        Route::get('hab_cambios_proy/{id}','programacion\programacionController@hab_cambios_proy')->name('proy_hab_cambios')->middleware('role:1,2,3');
 
         // ------> solicitudes Routes <------
         Route::get('solicitudes/filtrar/{id}','Solicitud\SolicitudController@filterSolicitud')->name('solicitud_filter');
@@ -188,15 +188,25 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('encue_trans/{id}','Solicitud\SolicitudController@encuesta_transp')->name('encue_trans');
         Route::get('estud_doc/{id}','Solicitud\SolicitudController@ver_doc_estud')->name('estud_doc');
 
-        Route::get('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_edit')->name('practica_realizada_edit');
-        Route::put('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_update')->name('practica_realizada_update');
+        Route::get('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_edit')->name('practica_realizada_edit')->middleware('role:1,2,3');
+        Route::put('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_update')->name('practica_realizada_update')->middleware('role:1,2,3');
 
         Route::get('solic_legal/{id}','Solicitud\SolicitudController@solic_legal')->name('solic_legal');
         Route::put('solic_cierre/{id}','Solicitud\SolicitudController@solic_cierre')->name('solic_cierre');
         Route::get('encues_trans','Excel\ExcelController@exportEncuestaTrans')->name('encues_trans');
 
-        Route::put('cambios_sol/{id}','Solicitud\SolicitudController@cambios_sol')->name('sol_cambios');
-        Route::get('hab_cambios_sol/{id}','Solicitud\SolicitudController@hab_cambios_sol')->name('sol_hab_cambios');
+        Route::put('cambios_sol/{id}','Solicitud\SolicitudController@cambios_sol')->name('sol_cambios')->middleware('role:1,2,3');
+        Route::get('hab_cambios_sol/{id}','Solicitud\SolicitudController@hab_cambios_sol')->name('sol_hab_cambios')->middleware('role:1,2,3');
+
+        // ------> Programas Académicos Routes <------
+        Route::get('programas_academicos','ProgramaAcademico\ProgramaAcademicoController@index')->name('edit_programa_academico')->middleware('role:1,2,3');
+        Route::post('programas_academicos/create','ProgramaAcademico\ProgramaAcademicoController@create')->name('create_programa_academico')->middleware('role:1,2,3');
+        Route::put('programas_academicos/update/{id}','ProgramaAcademico\ProgramaAcademicoController@update')->name('update_programa_academico')->middleware('role:1,2,3');        
+
+        // ------> Espacios Académicos Routes <------
+        Route::get('espacios_academicos','EspacioAcademico\EspacioAcademicoController@index')->name('edit_espacio_academico')->middleware('role:1,2,3');
+        Route::post('espacios_academicos/create','EspacioAcademico\EspacioAcademicoController@create')->name('create_espacio_academico')->middleware('role:1,2,3');
+        Route::put('espacios_academicos/update/{id}','EspacioAcademico\EspacioAcademicoController@update')->name('update_espacio_academico')->middleware('role:1,2,3');  
 
         // Search Routes...
         Route::post('buscar/espa_aca','Otros\EspacioAcademicoController@searchEspaAca')->name('espa_aca');
