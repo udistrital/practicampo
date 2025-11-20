@@ -151,7 +151,7 @@
                                             <div class="form-group row">
                                                 <div class="col-md-4">
                                                     <label>Código del Espacio</label>
-                                                    <input type="text" id="codigo_espacio_academico_edit" name="codigo_espacio_academico" class="form-control">
+                                                    <input type="number" id="codigo_espacio_academico_edit" name="codigo_espacio_academico" class="form-control">
                                                 </div>
                                                 <div class="col-md-8">
                                                     <label>Nombre del Espacio</label>
@@ -175,11 +175,11 @@
                                             <div class="form-group row">
                                                 <div class="col-md-4">
                                                     <label>Plan de estudios 1</label>
-                                                    <input type="text" id="plan_estudios_1_edit" name="plan_estudios_1" class="form-control">
+                                                    <input type="number" id="plan_estudios_1_edit" name="plan_estudios_1" class="form-control">
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label>Plan de estudios 2</label>
-                                                    <input type="text" id="plan_estudios_2_edit" name="plan_estudios_2" class="form-control">
+                                                    <input type="number" id="plan_estudios_2_edit" name="plan_estudios_2" class="form-control">
                                                 </div>   
                                                 <div class="col-md-4">
                                                     <label>Tipo de Espacio</label>
