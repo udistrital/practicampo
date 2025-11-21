@@ -19,6 +19,10 @@ class CierreModulos
      */
     public function handle(Request $request, Closure $next, $modulo)
     {
+        if (app()->environment('local')) {
+            return $next($request);
+        }
+
         $control_sistema = DB::table('control_sistema')->first();
         $usuario = User::where('id', Auth::id())->first();
 
