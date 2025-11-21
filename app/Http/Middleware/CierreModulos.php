@@ -22,7 +22,7 @@ class CierreModulos
         $control_sistema = DB::table('control_sistema')->first();
         $usuario = User::where('id', Auth::id())->first();
 
-        if($usuario->hasRole('Docente')){
+        if($usuario->hasRole('Docente') || $usuario->hasRole('Coordinador Proyecto')){
             $fecha_hoy = Carbon::now('America/Bogota')->format('Y-m-d');
             switch ($modulo) {
             case 'programacion':
