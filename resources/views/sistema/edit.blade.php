@@ -17,7 +17,73 @@
                             @csrf
 
                         <br>
-                        <h4>Apoyo Viáticos</h4>
+                        <h4>Valor viáticos estimados - para programaciones</h4>
+                        <hr class="divider">
+                        <br>
+
+                        <!-- 5 -->
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                            <label for="vlr_docen_min_estimado" class="col-form-label text-md-left" title="Estudiantes (1 Día)"><i class="fas fa-question-circle" 
+                                data-toggle="tooltip" data-placement="left" 
+                                data-title="Indique valor para viáticos de los docentes 
+                                asociado a una salida de práctica académica de 1 día" style="font-size: 0.813rem"></i> {{ __('Docentes (1 Día)') }}</label>
+                                <input id="vlr_docen_min_estimado" type="text"  class="form-control @error('vlr_docen_min') is-invalid @enderror" name="vlr_docen_min_estimado" 
+                                value="{{$control_sistema->vlr_docen_min_estimado}}" autocomplete="off" autofocus title="Ingresar Valor Estudiantes (1 Día)">
+
+                                @error('vlr_docen_min')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                            <label for="vlr_docen_max_estimado" class="col-form-label text-md-left" title="Estudiantes (Más de 1 Día)"><i class="fas fa-question-circle" 
+                                data-toggle="tooltip" data-placement="left" 
+                                data-title="Indique valor para viáticos de los docentes 
+                                asociado a una salida de práctica académica de más de 1 día" style="font-size: 0.813rem"></i> {{ __('Docentes (Varios Días)') }}</label>
+                                <input id="vlr_docen_max_estimado" type="text"  class="form-control @error('vlr_docen_max') is-invalid @enderror" name="vlr_docen_max_estimado" 
+                                value="{{$control_sistema->vlr_docen_max_estimado}}" autocomplete="off" autofocus title="Ingresar Valor Estudiantes (Más de 1 Día)">
+                                
+                                @error('vlr_docen_max')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div> 
+                            <div class="col-md-3">
+                            <label for="vlr_estud_min_estimado" class="col-form-label text-md-left" title="Docentes (1 Día)"><i class="fas fa-question-circle" 
+                                data-toggle="tooltip" data-placement="left" 
+                                data-title="Indique valor para auxilio de los estudiantes 
+                                asociado a una salida de práctica académica de 1 día" style="font-size: 0.813rem"></i> {{ __('Estudiantes (1 Día)') }}</label>
+                                <input id="vlr_estud_min_estimado" type="text"  class="form-control @error('vlr_estud_min') is-invalid @enderror" name="vlr_estud_min_estimado" 
+                                value="{{$control_sistema->vlr_estud_min_estimado}}" autocomplete="off" autofocus title="Ingresar Valor Docentes (1 Día)">
+                                
+                                @error('vlr_estud_min')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                            <label for="vlr_estud_max_estimado" class="col-form-label text-md-left" title="Docentes (Más de 1 Día)"><i class="fas fa-question-circle" 
+                                data-toggle="tooltip" data-placement="left" 
+                                data-title="Indique valor para auxilio de los estudiantes 
+                                asociado a una salida de práctica académica de más de 1 día" style="font-size: 0.813rem"></i> {{ __('Estudiantes (Varios Días)') }}</label>
+                                <input id="vlr_estud_max_estimado" type="text"  class="form-control @error('vlr_estud_max') is-invalid @enderror" name="vlr_estud_max_estimado" 
+                                value="{{$control_sistema->vlr_estud_max_estimado}}" autocomplete="off" autofocus title="Ingresar Valor Docentes (Más de 1 Día)">
+                                
+                                @error('vlr_estud_max')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div> 
+                        </div>
+                        <!-- 5 -->
+
+                        <br><br>
+                        <h4>Valor viáticos reales -  para solicitudes</h4>
                         <hr class="divider">
                         <br>
 

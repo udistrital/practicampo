@@ -468,7 +468,7 @@
                                                 </i> {{ __('Estudiantes') }}</label>
                                             <span class="hs-form-required">*</span>
                                             <input id="num_estudiantes_aprox" type="text" pattern="[0-9]{1,3}" class="form-control @error('num_estudiantes_aprox') is-invalid @enderror" name="num_estudiantes_aprox" 
-                                            title="" onchange="calc_viaticos_RP()" onkeyup="onlyNmb(this)"
+                                            title="" onkeyup="onlyNmb(this)"
                                             value="{{$programacion_practica->num_estudiantes_aprox}}" required autocomplete="off" autofocus>
                                             
                                             @error('num_estudiantes_aprox')

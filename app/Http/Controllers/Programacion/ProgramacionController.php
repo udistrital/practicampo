@@ -773,8 +773,8 @@ class programacionController extends Controller
         $tipo_zona_transitar=DB::table('tipo_zona_transitar')->get();
         $tipo_transporte=DB::table('tipo_transporte')->get();
         $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
                         
 
         $prog_aca_user = [];
@@ -822,10 +822,10 @@ class programacionController extends Controller
         $idUser = Auth::user()->id;
         $mytime = Carbon::now('America/Bogota');
         $control_sistema=DB::table('control_sistema as control')->first();
-        $vlr_estud_max=$control_sistema->vlr_estud_max;
-        $vlr_estud_min=$control_sistema->vlr_estud_min;
-        $vlr_docen_max=$control_sistema->vlr_docen_max;
-        $vlr_docen_min=$control_sistema->vlr_docen_min;
+        $vlr_estud_max_estimado=$control_sistema->vlr_estud_max_estimado;
+        $vlr_estud_min_estimado=$control_sistema->vlr_estud_min_estimado;
+        $vlr_docen_max_estimado=$control_sistema->vlr_docen_max_estimado;
+        $vlr_docen_min_estimado=$control_sistema->vlr_docen_min_estimado;
 
         $tipo_transporte_rp = $request->get('id_tipo_transporte_rp_');
         $tipo_transporte_ra = $request->get('id_tipo_transporte_ra_');
@@ -1772,8 +1772,8 @@ class programacionController extends Controller
                 $sedes=DB::table('sedes_universidad')->get();
 
                 $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
                         
                 $all_prog_aca=$programa_academico;
         
@@ -2049,8 +2049,8 @@ class programacionController extends Controller
                 ->orWhere('users.id_espacio_academico_6','=',$programacion_practica->id_espacio_academico)->get();
 
                 $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
 
                 $estado_doc_respon =$usuario->id_estado;
         
@@ -2309,8 +2309,8 @@ class programacionController extends Controller
                 $all_prog_aca=$programa_academico;
 
                 $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
 
                 $num_grupos_proy = 0; 
         
@@ -2569,8 +2569,8 @@ class programacionController extends Controller
                 $semestre_asignatura=DB::table('semestre_asignatura')->get();
                 $tipo_transporte=DB::table('tipo_transporte')->get();
                 $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
         
                 $num_grupos_proy = 0; 
         
@@ -2830,8 +2830,8 @@ class programacionController extends Controller
                 $tipo_transporte=DB::table('tipo_transporte')->get();
 
                 $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
 
                 /** integradas */   
                     $docen_integ = [];
@@ -3110,8 +3110,8 @@ class programacionController extends Controller
                 $sedes=DB::table('sedes_universidad')->get();
 
                 $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
                         
                 $all_prog_aca=$programa_academico;
         
@@ -3382,8 +3382,8 @@ class programacionController extends Controller
                 ->orWhere('users.id_espacio_academico_6','=',$programacion_practica->id_espacio_academico)->get();
 
                 $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
 
                 $estado_doc_respon =$usuario->id_estado;
         
@@ -4641,8 +4641,8 @@ class programacionController extends Controller
                 $tipo_transporte=DB::table('tipo_transporte')->get();
 
                 $vlr_viaticos=DB::table('control_sistema as cs')
-                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
         
                 $num_grupos_proy = 0; 
         
@@ -6001,8 +6001,8 @@ class programacionController extends Controller
             $tipo_transporte=DB::table('tipo_transporte')->get();
 
             $vlr_viaticos=DB::table('control_sistema as cs')
-                    ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
-                    'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+                    ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                    'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
             
             $num_grupos_proy = 0; 
             
@@ -6867,16 +6867,16 @@ class programacionController extends Controller
     public function calc_viaticos_est($num_dias_rp,$num_dias_ra,$num_estud)
     {
         $control_sistema=DB::table('control_sistema as control')->first();
-        $vlr_estud_max=$control_sistema->vlr_estud_max;
-        $vlr_estud_min=$control_sistema->vlr_estud_min;
+        $vlr_estud_max_estimado=$control_sistema->vlr_estud_max_estimado;
+        $vlr_estud_min_estimado=$control_sistema->vlr_estud_min_estimado;
 
         if($num_dias_rp>1)
         {
-            $viaticos_estud_rp = $num_estud*$vlr_estud_max*$num_dias_rp;
+            $viaticos_estud_rp = $num_estud*$vlr_estud_max_estimado*$num_dias_rp;
         }
         else if($num_dias_rp==1)
         {
-            $viaticos_estud_rp = $num_estud*$vlr_estud_min*$num_dias_rp;
+            $viaticos_estud_rp = $num_estud*$vlr_estud_min_estimado*$num_dias_rp;
         }
         else if($num_dias_rp==0 || $num_dias_rp == null || isEmpty($num_dias_rp))
         {
@@ -6885,11 +6885,11 @@ class programacionController extends Controller
 
         if($num_dias_ra>1)
         {
-            $viaticos_estud_ra = $num_estud*$vlr_estud_max*$num_dias_ra;
+            $viaticos_estud_ra = $num_estud*$vlr_estud_max_estimado*$num_dias_ra;
         }
         else if($num_dias_ra==1)
         {
-            $viaticos_estud_ra = $num_estud*$vlr_estud_min*$num_dias_ra;
+            $viaticos_estud_ra = $num_estud*$vlr_estud_min_estimado*$num_dias_ra;
         }
         else if($num_dias_ra==0 || $num_dias_ra == null || isEmpty($num_dias_ra))
         {
@@ -6910,12 +6910,12 @@ class programacionController extends Controller
     public function calc_viaticos_docen($num_dias_rp,$num_dias_ra,$total_docentes)
     {
         $control_sistema=DB::table('control_sistema as control')->first();
-        $vlr_docen_max=$control_sistema->vlr_docen_max;
-        $vlr_docen_min=$control_sistema->vlr_docen_min;
+        $vlr_docen_max_estimado=$control_sistema->vlr_docen_max_estimado;
+        $vlr_docen_min_estimado=$control_sistema->vlr_docen_min_estimado;
 
         if($num_dias_rp>1)
         {
-            $viaticos_docen_rp = $total_docentes*$vlr_docen_max*($num_dias_rp-0.5);
+            $viaticos_docen_rp = $total_docentes*$vlr_docen_max_estimado*($num_dias_rp-0.5);
         }
         else if($num_dias_rp==0 || $num_dias_rp==1 || $num_dias_rp == null || isEmpty($num_dias_rp))
         {
@@ -6924,7 +6924,7 @@ class programacionController extends Controller
 
         if($num_dias_ra>1)
         {
-            $viaticos_docen_ra = $total_docentes*$vlr_docen_max*($num_dias_ra-0.5);
+            $viaticos_docen_ra = $total_docentes*$vlr_docen_max_estimado*($num_dias_ra-0.5);
         }
         else if($num_dias_ra==0 || $num_dias_ra==1 || $num_dias_ra == null || isEmpty($num_dias_ra))
         {
