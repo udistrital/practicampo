@@ -77,6 +77,7 @@ class Kernel extends HttpKernel
         'estudiante' => \PractiCampoUD\Http\Middleware\Estudiante::class,
         // 'user' =>\PractiCampoUD\Http\Middleware\User::class,
         'role' => \PractiCampoUD\Http\Middleware\CheckRole::class,
+        'verificar.fechas' => \PractiCampoUD\Http\Middleware\CierreModulos::class,
     ];
 
     /**

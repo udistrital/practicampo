@@ -152,10 +152,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         // ------> programaciones Routes <------
         Route::get('programaciones/filtrar/{id}','programacion\programacionController@filterprogramacion')->name('programacion_filter');
-        Route::get('programaciones/create','programacion\programacionController@create')->name('programacion_create');
+        Route::get('programaciones/create','programacion\programacionController@create')->name('programacion_create')->middleware('verificar.fechas:programacion');
         Route::post('programaciones','programacion\programacionController@store')->name('programacion_store');
-        Route::get('programaciones/{id}','programacion\programacionController@edit')->name('programacion_edit');
-        Route::put('programaciones/{id}','programacion\programacionController@update')->name('programacion_update');
+        Route::get('programaciones/{id}','programacion\programacionController@edit')->name('programacion_edit')->middleware('verificar.fechas:programacion');
+        Route::put('programaciones/{id}','programacion\programacionController@update')->name('programacion_update')->middleware('verificar.fechas:programacion');
         Route::delete('programaciones','programacion\programacionController@destroy')->name('programacion_destroy');
         Route::put('proyeccsend','programacion\programacionController@sendProy')->name('programacion_send');
         Route::put('proyecc_vb','programacion\programacionController@vbProy')->name('programacion_vb');
@@ -169,20 +169,20 @@ Route::group(['middleware' => 'auth'], function () {
 
         // ------> solicitudes Routes <------
         Route::get('solicitudes/filtrar/{id}','Solicitud\SolicitudController@filterSolicitud')->name('solicitud_filter');
-        Route::get('solicitudes/rutas/{id}','Solicitud\SolicitudController@showRuta')->name('solicitud_rutas');
+        Route::get('solicitudes/rutas/{id}','Solicitud\SolicitudController@showRuta')->name('solicitud_rutas')->middleware('verificar.fechas:solicitud');
         Route::post('solicitudes','Solicitud\SolicitudController@store')->name('solicitud_store');
         Route::get('solicitudes/{id}','Solicitud\SolicitudController@listado_sol_docen')->name('sol_docente');
         Route::get('list_solic/aprob/{id}','Solicitud\SolicitudController@listado_sol_aprob')->name('list_sol_aprob');
-        Route::get('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@edit')->name('solicitud_edit');
+        Route::get('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@edit')->name('solicitud_edit')->middleware('verificar.fechas:solicitud');
         Route::get('ver_solicitud/{id}','Solicitud\SolicitudController@ver_solicitud')->name('solicitud_ver');
         Route::get('dwn_form_solicitud/{id}','Solicitud\SolicitudController@dwn_form_solicitud')->name('dwn_form_solicitud');
-        Route::put('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@update')->name('solicitud_update');
+        Route::put('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@update')->name('solicitud_update')->middleware('verificar.fechas:solicitud');
         Route::delete('solicitudes','Solicitud\SolicitudController@destroy')->name('solicitud_destroy');
         Route::get('solic/buscar','Solicitud\SolicitudController@buscador')->name('solicitud_buscar');
         Route::get('solic_pend','Solicitud\SolicitudController@edit_solic_pend')->name('solic_pend_edit');
         Route::get('solic_aprob','Solicitud\SolicitudController@edit_solic_aprob')->name('solic_aprob_edit');
         Route::put('up_solic_asistD/{proy}','Solicitud\SolicitudController@update_solic_asistD')->name('up_solic_asistD');
-        Route::get('solic/{id}','Solicitud\SolicitudController@listado_estud')->name('solic_lista_estud');
+        Route::get('solic/{id}','Solicitud\SolicitudController@listado_estud')->name('solic_lista_estud')->middleware('verificar.fechas:solicitud');
         Route::get('transp/{id}/{tipoRuta}','Solicitud\SolicitudController@showTransport')->name('show_transp');
         Route::get('info_trans/{id}','Solicitud\SolicitudController@info_trans')->name('info_trans');
         Route::put('encue_trans/{id}','Solicitud\SolicitudController@encuesta_transp')->name('encue_trans');
