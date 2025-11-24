@@ -46,6 +46,7 @@
                 <th style="width: 35px">Cod.</th>
                 <th style="width: 70px">Proy. Curricular</th>
                 <th style="width: 70px">Esp. Académico</th> 
+                <th style="width: 70px">Docente</th> 
                 <th style="width: 70px">Destino Ruta Principal</th>
                 <th style="width: 35px">Fecha Salida</th>
                 <th style="width: 35px">Fecha Regreso</th>
@@ -57,7 +58,12 @@
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->programa_academico }}</td>
                     <td>{{ $item->espacio_academico }}</td>
-                    
+                    @if($item->id_estado_doc == 1)
+                    <td>{{ $item->full_name }}</td>
+                    @endif
+                    @if($item->id_estado_doc == 2)
+                        <td>Usuario Inactivo</td>
+                    @endif
                     <td>{{ $item->destino_rp }}</td>
                     <td>{{ $item->fecha_salida_aprox_rp }}</td>
                     <td>{{ $item->fecha_regreso_aprox_rp }}</td> 
@@ -74,6 +80,7 @@
             <th style="width: 35px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
             <th style="width: 70px">Esp. Académico</th> 
+            <th style="width: 70px">Docente</th> 
             <th style="width: 70px">Destino Ruta Principal</th>
             <th style="width: 35px">Fecha Salida</th>
             <th style="width: 35px">Fecha Regreso</th>
@@ -84,7 +91,12 @@
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->programa_academico }}</td>
                 <td>{{ $item->espacio_academico }}</td>
-                
+                @if($item->id_estado_doc == 1)
+                    <td>{{ $item->full_name }}</td>
+                @endif
+                @if($item->id_estado_doc == 2)
+                    <td>Usuario Inactivo</td>
+                @endif
                 <td>{{ $item->destino_rp }}</td>
                 <td>{{ $item->fecha_salida_aprox_rp }}</td>
                 <td>{{ $item->fecha_regreso_aprox_rp }}</td> 
@@ -100,6 +112,7 @@
             <th style="width: 35px">Cod.</th>
             <th style="width: 70px">Proy. Curricular</th>
             <th style="width: 70px">Esp. Académico</th>
+            <th style="width: 70px">Docente</th> 
             <th style="width: 70px">Destino Ruta Principal</th>
             <th style="width: 35px">Fecha Salida</th>
             <th style="width: 35px">Fecha Regreso</th>
@@ -110,7 +123,12 @@
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->programa_academico }}</td>
                 <td>{{ $item->espacio_academico }}</td>
-                
+                @if($item->id_estado_doc == 1)
+                    <td>{{ $item->full_name }}</td>
+                @endif
+                @if($item->id_estado_doc == 2)
+                    <td>Usuario Inactivo</td>
+                @endif
                 <td>{{ $item->destino_rp }}</td>
                 <td>{{ $item->fecha_salida_aprox_rp }}</td>
                 <td>{{ $item->fecha_regreso_aprox_rp }}</td> 
