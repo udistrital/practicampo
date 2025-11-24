@@ -203,6 +203,11 @@
                     </span>
                 @enderror
             </div>
+            <div class="mt-5">
+                <input type="checkbox" id="integrada_responsable_1" name="integrada_responsable_1" value="1"
+                <?php if(isset($practicas_integradas) && $practicas_integradas->es_responsable_1 == 1) echo 'checked' ?>>
+                <label for="integrada_responsable_1">{{ __('¿Es responsable?') }}</label>
+            </div>
         </div>
 
         <div class="form-group row" id="esp_aca_2">
@@ -239,6 +244,11 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
+            </div>
+            <div class="mt-5">
+                <input type="checkbox" id="integrada_responsable_2" name="integrada_responsable_2" value="1"
+                <?php if(isset($practicas_integradas) && $practicas_integradas->es_responsable_2 == 1) echo 'checked' ?>>
+                <label for="integrada_responsable_2">{{ __('¿Es responsable?') }}</label>
             </div>
         </div>
 
@@ -277,6 +287,11 @@
                     </span>
                 @enderror
             </div>
+            <div class="mt-5">
+                <input type="checkbox" id="integrada_responsable_3" name="integrada_responsable_3" value="1"
+                <?php if(isset($practicas_integradas) && $practicas_integradas->es_responsable_3 == 1) echo 'checked' ?>>
+                <label for="integrada_responsable_3">{{ __('¿Es responsable?') }}</label>
+            </div>
         </div>
 
         <div class="form-group row" id="esp_aca_4">
@@ -313,6 +328,11 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
+            </div>
+            <div class="mt-5">
+                <input type="checkbox" id="integrada_responsable_4" name="integrada_responsable_4" value="1"
+                <?php if(isset($practicas_integradas) && $practicas_integradas->es_responsable_4 == 1) echo 'checked' ?>>
+                <label for="integrada_responsable_4">{{ __('¿Es responsable?') }}</label>
             </div>
         </div>
 
@@ -351,6 +371,11 @@
                     </span>
                 @enderror
             </div>
+            <div class="mt-5">
+                <input type="checkbox" id="integrada_responsable_5" name="integrada_responsable_5" value="1"
+                <?php if(isset($practicas_integradas) && $practicas_integradas->es_responsable_5 == 1) echo 'checked' ?>>
+                <label for="integrada_responsable_5">{{ __('¿Es responsable?') }}</label>
+            </div>
         </div>
 
         <div class="form-group row" id="esp_aca_6">
@@ -388,6 +413,11 @@
                     </span>
                 @enderror
             </div>
+            <div class="mt-5">
+                <input type="checkbox" id="integrada_responsable_6" name="integrada_responsable_6" value="1"
+                <?php if(isset($practicas_integradas) && $practicas_integradas->es_responsable_6 == 1) echo 'checked' ?>>
+                <label for="integrada_responsable_6">{{ __('¿Es responsable?') }}</label>
+            </div>
         </div>
 
         <div class="form-group row" id="esp_aca_7">
@@ -424,6 +454,11 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
+            </div>
+            <div class="mt-5">
+                <input type="checkbox" id="integrada_responsable_7" name="integrada_responsable_7" value="1"
+                <?php if(isset($practicas_integradas) && $practicas_integradas->es_responsable_7 == 1) echo 'checked' ?>>
+                <label for="integrada_responsable_7">{{ __('¿Es responsable?') }}</label>
             </div>
             
             <div class="col-md-2" id="">
@@ -485,8 +520,8 @@
                 </div>
             </div>
 
-            <div class="col-md-2">
-                <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Personal Apoyo') }}</label>
+            <div class="col-md-3">
+                <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Docentes Acompañantes') }}</label>
                 <div class="input-group">
                     <input id="num_apoyo" type="number" max="10" min="0" pattern="^[0-9]+" class="form-control @error('num_apoyo') is-invalid @enderror" name="num_apoyo" 
                     title=""
@@ -511,7 +546,7 @@
                     <i class="fas fa-question-circle" 
                     data-toggle="tooltip" data-placement="left" 
                     data-title="Busque en su computador el soporte de autorización para el personal de apoyo que 
-                    participará en la salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('Soporte Personal Apoyo') }}</label>
+                    participará en la salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('Soporte Docente Acompañante') }}</label>
                 <input id="sop_pers_apoyo" type="file" class="form-control @error('sop_pers_apoyo') is-invalid @enderror" name="sop_pers_apoyo" 
                 style="color: rgb(243, 3, 3)" accept="application/pdf"
                 title="">
@@ -587,11 +622,22 @@
         <div  class="form-group row"  id="apoyo">
                 
             <div class="col-md-4" id="ap_1">
-                <label for="apoyo_1" class="col-form-label text-md-left">{{ __('Personal Apoyo 1') }}</label>
+                <label for="apoyo_1" class="col-form-label text-md-left">{{ __('Docente Acompañante 1') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="apoyo_1" type="text" class="form-control @error('apoyo_1') is-invalid @enderror" name="apoyo_1" 
-                title=""
-                value="{{$docentes_practica->docente_apoyo_1}}" autocomplete="off" autofocus>
+                <select id="apoyo_1" name="apoyo_1" class="form-control select2 @error('apoyo_1') is-invalid @enderror">
+                    <option value="">Seleccione un docente...</option>
+                    @foreach($docentes as $docente)
+                        <option value="{{ $docente->id }}"
+                            <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_1 == $docente->id) echo 'selected' ?>
+                        >{{ $docente->full_name }}</option>
+                    @endforeach
+                </select>
+                
+                <div>
+                    <input type="checkbox" id="apoyo_responsable_1" name="apoyo_responsable_1" value="1"
+                        <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_1 == 1) echo 'checked' ?>>
+                    <label for="apoyo_responsable_1">{{ __('¿Es responsable?') }}</label>
+                </div>
                 
                 @error('apoyo_1')
                     <span class="invalid-feedback" role="alert">
@@ -600,10 +646,21 @@
                 @enderror
             </div>
             <div class="col-md-4" id="ap_2">
-                <label for="apoyo_2" class="col-form-label text-md-left">{{ __('Personal Apoyo 2') }}</label>
-                <input id="apoyo_2" type="text" class="form-control @error('apoyo_2') is-invalid @enderror" name="apoyo_2" 
-                title=""
-                value="{{$docentes_practica->docente_apoyo_2}}" autocomplete="off" autofocus>
+                <label for="apoyo_2" class="col-form-label text-md-left">{{ __('Docente Acompañante 2') }}</label>
+                <select id="apoyo_2" name="apoyo_2" class="form-control select2 @error('apoyo_2') is-invalid @enderror">
+                    <option value="">Seleccione un docente...</option>
+                    @foreach($docentes as $docente)
+                        <option value="{{ $docente->id }}"
+                        <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_2 == $docente->id) echo 'selected' ?>
+                        >{{ $docente->full_name }}</option>
+                    @endforeach
+                </select>
+
+                <div>
+                    <input type="checkbox" id="apoyo_responsable_2" name="apoyo_responsable_2" value="1"
+                    <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_2 == 1) echo 'checked' ?>>
+                    <label for="apoyo_responsable_2">{{ __('¿Es responsable?') }}</label>
+                </div>
                 @error('apoyo_2')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -612,10 +669,21 @@
             </div>
 
             <div class="col-md-4" id="ap_3">
-                <label for="apoyo_3" class="col-form-label text-md-left">{{ __('Personal Apoyo 3') }}</label>
-                <input id="apoyo_3" type="text" class="form-control @error('apoyo_3') is-invalid @enderror" name="apoyo_3" 
-                title=""
-                value="{{$docentes_practica->docente_apoyo_3}}" autocomplete="off" autofocus>
+                <label for="apoyo_3" class="col-form-label text-md-left">{{ __('Docente Acompañante 3') }}</label>
+                <select id="apoyo_3" name="apoyo_3" class="form-control select2 @error('apoyo_3') is-invalid @enderror">
+                    <option value="">Seleccione un docente...</option>
+                    @foreach($docentes as $docente)
+                        <option value="{{ $docente->id }}"
+                        <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_3 == $docente->id) echo 'selected' ?>
+                        >{{ $docente->full_name }}</option>
+                    @endforeach
+                </select>
+
+                <div>
+                    <input type="checkbox" id="apoyo_responsable_3" name="apoyo_responsable_3" value="1"
+                    <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_3 == 1) echo 'checked' ?>>
+                    <label for="apoyo_responsable_3">{{ __('¿Es responsable?') }}</label>
+                </div>
                 @error('apoyo_3')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -624,10 +692,21 @@
             </div>
 
             <div class="col-md-4" id="ap_4">
-                <label for="apoyo_4" class="col-form-label text-md-left">{{ __('Personal Apoyo 4') }}</label>
-                <input id="apoyo_4" type="text" class="form-control @error('apoyo_4') is-invalid @enderror" name="apoyo_4" 
-                title=""
-                value="{{$docentes_practica->docente_apoyo_4}}"  autocomplete="off" autofocus>
+                <label for="apoyo_4" class="col-form-label text-md-left">{{ __('Docente Acompañante 4') }}</label>
+                <select id="apoyo_4" name="apoyo_4" class="form-control select2 @error('apoyo_4') is-invalid @enderror">
+                    <option value="">Seleccione un docente...</option>
+                    @foreach($docentes as $docente)
+                        <option value="{{ $docente->id }}"
+                        <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_4 == $docente->id) echo 'selected' ?>
+                        >{{ $docente->full_name }}</option>
+                    @endforeach
+                </select>
+                
+                <div>
+                    <input type="checkbox" id="apoyo_responsable_4" name="apoyo_responsable_4" value="1"
+                    <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_4 == 1) echo 'checked' ?>>
+                    <label for="apoyo_responsable_4">{{ __('¿Es responsable?') }}</label>
+                </div>
                 
                 @error('apoyo_4')
                     <span class="invalid-feedback" role="alert">
@@ -637,10 +716,21 @@
             </div>
 
             <div class="col-md-4" id="ap_5">
-                    <label for="apoyo_5" class="col-form-label text-md-left">{{ __('Personal Apoyo 5') }}</label>
-                    <input id="apoyo_5" type="text" class="form-control @error('apoyo_5') is-invalid @enderror" name="apoyo_5" 
-                    title=""
-                    value="{{$docentes_practica->docente_apoyo_5}}" autocomplete="off" autofocus>
+                    <label for="apoyo_5" class="col-form-label text-md-left">{{ __('Docente Acompañante 5') }}</label>
+                    <select id="apoyo_5" name="apoyo_5" class="form-control select2 @error('apoyo_5') is-invalid @enderror">
+                        <option value="">Seleccione un docente...</option>
+                        @foreach($docentes as $docente)
+                            <option value="{{ $docente->id }}"
+                            <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_5 == $docente->id) echo 'selected' ?>
+                            >{{ $docente->full_name }}</option>
+                        @endforeach
+                    </select>
+
+                    <div>
+                        <input type="checkbox" id="apoyo_responsable_5" name="apoyo_responsable_5" value="1"
+                        <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_5 == 1) echo 'checked' ?>>
+                        <label for="apoyo_responsable_5">{{ __('¿Es responsable?') }}</label>
+                    </div>
                     @error('apoyo_5')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -649,10 +739,21 @@
             </div>
 
             <div class="col-md-4" id="ap_6">
-                    <label for="apoyo_6" class="col-form-label text-md-left">{{ __('Personal Apoyo 6') }}</label>
-                    <input id="apoyo_6" type="text" class="form-control @error('apoyo_6') is-invalid @enderror" name="apoyo_6" 
-                    title=""
-                    value="{{$docentes_practica->docente_apoyo_6}}" autocomplete="off" autofocus>
+                    <label for="apoyo_6" class="col-form-label text-md-left">{{ __('Docente Acompañante 6') }}</label>
+                    <select id="apoyo_6" name="apoyo_6" class="form-control select2 @error('apoyo_6') is-invalid @enderror">
+                        <option value="">Seleccione un docente...</option>
+                        @foreach($docentes as $docente)
+                            <option value="{{ $docente->id }}"
+                            <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_6 == $docente->id) echo 'selected' ?>
+                            >{{ $docente->full_name }}</option>
+                        @endforeach
+                    </select>
+
+                    <div>
+                        <input type="checkbox" id="apoyo_responsable_6" name="apoyo_responsable_6" value="1"
+                        <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_6 == 1) echo 'checked' ?>>
+                        <label for="apoyo_responsable_6">{{ __('¿Es responsable?') }}</label>
+                    </div>
                     @error('apoyo_6')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -661,10 +762,21 @@
             </div>
 
             <div class="col-md-4" id="ap_7">
-                    <label for="apoyo_7" class="col-form-label text-md-left">{{ __('Personal Apoyo 7') }}</label>
-                    <input id="apoyo_7" type="text" class="form-control @error('apoyo_7') is-invalid @enderror" name="apoyo_7" 
-                    title=""
-                    value="{{$docentes_practica->docente_apoyo_7}}"  autocomplete="off" autofocus>
+                    <label for="apoyo_7" class="col-form-label text-md-left">{{ __('Docente Acompañante 7') }}</label>
+                    <select id="apoyo_7" name="apoyo_7" class="form-control select2 @error('apoyo_7') is-invalid @enderror">
+                        <option value="">Seleccione un docente...</option>
+                        @foreach($docentes as $docente)
+                            <option value="{{ $docente->id }}"
+                            <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_7 == $docente->id) echo 'selected' ?>
+                            >{{ $docente->full_name }}</option>
+                        @endforeach
+                    </select>
+                    
+                    <div>
+                        <input type="checkbox" id="apoyo_responsable_7" name="apoyo_responsable_7" value="1"
+                        <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_7 == 1) echo 'checked' ?>>
+                        <label for="apoyo_responsable_7">{{ __('¿Es responsable?') }}</label>
+                    </div>
                     
                     @error('apoyo_7')
                         <span class="invalid-feedback" role="alert">
@@ -674,10 +786,21 @@
             </div>
 
             <div class="col-md-4" id="ap_8">
-                    <label for="apoyo_8" class="col-form-label text-md-left">{{ __('Personal Apoyo 8') }}</label>
-                    <input id="apoyo_8" type="text" class="form-control @error('apoyo_8') is-invalid @enderror" name="apoyo_8" 
-                    title=""
-                    value="{{$docentes_practica->docente_apoyo_8}}" autocomplete="off" autofocus>
+                    <label for="apoyo_8" class="col-form-label text-md-left">{{ __('Docente Acompañante 8') }}</label>
+                    <select id="apoyo_8" name="apoyo_8" class="form-control select2 @error('apoyo_8') is-invalid @enderror">
+                        <option value="">Seleccione un docente...</option>
+                        @foreach($docentes as $docente)
+                            <option value="{{ $docente->id }}"
+                            <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_8 == $docente->id) echo 'selected' ?>
+                            >{{ $docente->full_name }}</option>
+                        @endforeach
+                    </select>
+
+                    <div>
+                        <input type="checkbox" id="apoyo_responsable_8" name="apoyo_responsable_8" value="1"
+                        <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_8 == 1) echo 'checked' ?>>
+                        <label for="apoyo_responsable_8">{{ __('¿Es responsable?') }}</label>
+                    </div>
                     @error('apoyo_8')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -686,10 +809,21 @@
             </div>
 
             <div class="col-md-4" id="ap_9">
-                    <label for="apoyo_9" class="col-form-label text-md-left">{{ __('Personal Apoyo 9') }}</label>
-                    <input id="apoyo_9" type="text" class="form-control @error('apoyo_9') is-invalid @enderror" name="apoyo_9" 
-                    title=""
-                    value="{{$docentes_practica->docente_apoyo_9}}" autocomplete="off" autofocus>
+                    <label for="apoyo_9" class="col-form-label text-md-left">{{ __('Docente Acompañante 9') }}</label>
+                    <select id="apoyo_9" name="apoyo_9" class="form-control select2 @error('apoyo_9') is-invalid @enderror">
+                        <option value="">Seleccione un docente...</option>
+                        @foreach($docentes as $docente)
+                            <option value="{{ $docente->id }}"
+                            <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_9 == $docente->id) echo 'selected' ?>
+                            >{{ $docente->full_name }}</option>
+                        @endforeach
+                    </select>
+
+                    <div>
+                        <input type="checkbox" id="apoyo_responsable_9" name="apoyo_responsable_9" value="1"
+                        <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_9 == 1) echo 'checked' ?>>
+                        <label for="apoyo_responsable_9">{{ __('¿Es responsable?') }}</label>
+                    </div>
                     @error('apoyo_9')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -698,10 +832,21 @@
             </div>
 
             <div class="col-md-4" id="ap_10">
-                    <label for="apoyo_10" class="col-form-label text-md-left">{{ __('Personal Apoyo 10') }}</label>
-                    <input id="apoyo_10" type="text" class="form-control @error('apoyo_10') is-invalid @enderror" name="apoyo_10" 
-                    title=""
-                    value="{{$docentes_practica->docente_apoyo_10}}" autocomplete="off" autofocus>
+                    <label for="apoyo_10" class="col-form-label text-md-left">{{ __('Docente Acompañante 10') }}</label>
+                    <select id="apoyo_10" name="apoyo_10" class="form-control select2 @error('apoyo_10') is-invalid @enderror">
+                        <option value="">Seleccione un docente...</option>
+                        @foreach($docentes as $docente)
+                            <option value="{{ $docente->id }}"
+                            <?php if(isset($docentes_practica) && $docentes_practica->num_doc_docente_apoyo_10 == $docente->id) echo 'selected' ?>
+                            >{{ $docente->full_name }}</option>
+                        @endforeach
+                    </select>
+
+                    <div>
+                        <input type="checkbox" id="apoyo_responsable_10" name="apoyo_responsable_10" value="1"
+                        <?php if(isset($docentes_practica) && $docentes_practica->es_responsable_10 == 1) echo 'checked' ?>>
+                        <label for="apoyo_responsable_10">{{ __('¿Es responsable?') }}</label>
+                    </div>
                     @error('apoyo_10')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

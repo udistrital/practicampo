@@ -467,8 +467,8 @@
                 </div>
             </div>
 
-            <div class="col-md-2">
-                <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Personal Apoyo') }}</label>
+            <div class="col-md-3">
+                <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Docentes Acompañantes') }}</label>
                 <div class="input-group">
                     <input id="num_apoyo" max="3" min="0" pattern="^[0-9]+" class="form-control @error('num_apoyo') is-invalid @enderror" name="num_apoyo" 
                     title=""
@@ -559,7 +559,7 @@
         <div  class="form-group row"  id="apoyo">
             
             <div class="col-md-4" id="ap_1">
-                <label for="apoyo_1" class="col-form-label text-md-left">{{ __('Personal Apoyo 1') }}</label>
+                <label for="apoyo_1" class="col-form-label text-md-left">{{ __('Docente Acompañante 1') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="apoyo_1" type="text" class="form-control @error('apoyo_1') is-invalid @enderror" name="apoyo_1" 
                 title=""
@@ -572,7 +572,7 @@
                 @enderror
             </div>
             <div class="col-md-4" id="ap_2">
-                <label for="apoyo_2" class="col-form-label text-md-left">{{ __('Personal Apoyo 2') }}</label>
+                <label for="apoyo_2" class="col-form-label text-md-left">{{ __('Docente Acompañante 2') }}</label>
                 <input id="apoyo_2" type="text" class="form-control @error('apoyo_2') is-invalid @enderror" name="apoyo_2" 
                 title=""
                 value="{{$docentes_practica->docente_apoyo_2}}" autocomplete="off" autofocus readonly>
@@ -584,7 +584,7 @@
             </div>
 
             <div class="col-md-4" id="ap_3">
-                <label for="apoyo_3" class="col-form-label text-md-left">{{ __('Personal Apoyo 3') }}</label>
+                <label for="apoyo_3" class="col-form-label text-md-left">{{ __('Docente Acompañante 3') }}</label>
                 <input id="apoyo_3" type="text" class="form-control @error('apoyo_3') is-invalid @enderror" name="apoyo_3" 
                 title=""
                 value="{{$docentes_practica->docente_apoyo_3}}" autocomplete="off" autofocus readonly>
@@ -596,7 +596,7 @@
             </div>
 
             <div class="col-md-4" id="ap_4">
-                <label for="apoyo_4" class="col-form-label text-md-left">{{ __('Personal Apoyo 4') }}</label>
+                <label for="apoyo_4" class="col-form-label text-md-left">{{ __('Docente Acompañante 4') }}</label>
                 <input id="apoyo_4" type="text" class="form-control @error('apoyo_4') is-invalid @enderror" name="apoyo_4" 
                 title=""
                 value="{{$docentes_practica->docente_apoyo_4}}"  autocomplete="off" autofocus readonly>
@@ -609,7 +609,7 @@
             </div>
 
             <div class="col-md-4" id="ap_5">
-                    <label for="apoyo_5" class="col-form-label text-md-left">{{ __('Personal Apoyo 5') }}</label>
+                    <label for="apoyo_5" class="col-form-label text-md-left">{{ __('Docente Acompañante 5') }}</label>
                     <input id="apoyo_5" type="text" class="form-control @error('apoyo_5') is-invalid @enderror" name="apoyo_5" 
                     title=""
                     value="{{$docentes_practica->docente_apoyo_5}}" autocomplete="off" autofocus readonly>
@@ -621,7 +621,7 @@
             </div>
 
             <div class="col-md-4" id="ap_6">
-                    <label for="apoyo_6" class="col-form-label text-md-left">{{ __('Personal Apoyo 6') }}</label>
+                    <label for="apoyo_6" class="col-form-label text-md-left">{{ __('Docente Acompañante 6') }}</label>
                     <input id="apoyo_6" type="text" class="form-control @error('apoyo_6') is-invalid @enderror" name="apoyo_6" 
                     title=""
                     value="{{$docentes_practica->docente_apoyo_6}}" autocomplete="off" autofocus readonly>
@@ -633,7 +633,7 @@
             </div>
 
             <div class="col-md-4" id="ap_7">
-                    <label for="apoyo_7" class="col-form-label text-md-left">{{ __('Personal Apoyo 7') }}</label>
+                    <label for="apoyo_7" class="col-form-label text-md-left">{{ __('Docente Acompañante 7') }}</label>
                     <input id="apoyo_7" type="text" class="form-control @error('apoyo_7') is-invalid @enderror" name="apoyo_7" 
                     title=""
                     value="{{$docentes_practica->docente_apoyo_7}}"  autocomplete="off" autofocus readonly>
@@ -646,7 +646,7 @@
             </div>
 
             <div class="col-md-4" id="ap_8">
-                    <label for="apoyo_8" class="col-form-label text-md-left">{{ __('Personal Apoyo 8') }}</label>
+                    <label for="apoyo_8" class="col-form-label text-md-left">{{ __('Docente Acompañante 8') }}</label>
                     <input id="apoyo_8" type="text" class="form-control @error('apoyo_8') is-invalid @enderror" name="apoyo_8" 
                     title=""
                     value="{{$docentes_practica->docente_apoyo_8}}" autocomplete="off" autofocus readonly>
@@ -658,7 +658,7 @@
             </div>
 
             <div class="col-md-4" id="ap_9">
-                    <label for="apoyo_9" class="col-form-label text-md-left">{{ __('Personal Apoyo 9') }}</label>
+                    <label for="apoyo_9" class="col-form-label text-md-left">{{ __('Docente Acompañante 9') }}</label>
                     <input id="apoyo_9" type="text" class="form-control @error('apoyo_9') is-invalid @enderror" name="apoyo_9" 
                     title=""
                     value="{{$docentes_practica->docente_apoyo_9}}" autocomplete="off" autofocu readonly>
@@ -670,7 +670,7 @@
             </div>
 
             <div class="col-md-4" id="ap_10">
-                    <label for="apoyo_10" class="col-form-label text-md-left">{{ __('Personal Apoyo 10') }}</label>
+                    <label for="apoyo_10" class="col-form-label text-md-left">{{ __('Docente Acompañante 10') }}</label>
                     <input id="apoyo_10" type="text" class="form-control @error('apoyo_10') is-invalid @enderror" name="apoyo_10" 
                     title=""
                     value="{{$docentes_practica->docente_apoyo_10}}" autocomplete="off" autofocus readonly>

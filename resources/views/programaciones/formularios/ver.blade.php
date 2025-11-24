@@ -129,8 +129,8 @@
                 </div>
             </div> --}}
 
-            <div class="col-md-2">
-                <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Personal Apoyo') }}</label>
+            <div class="col-md-3">
+                <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Docentes Acompañantes') }}</label>
                 <div class="input-group">
                     <input id="num_apoyo" max="3" min="0" pattern="^[0-9]+" class="form-control @error('num_apoyo') is-invalid @enderror" name="num_apoyo" 
                     title="Número de docentes de apoyo"

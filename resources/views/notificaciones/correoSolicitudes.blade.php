@@ -43,7 +43,7 @@
                     <p style="font-size: 0.875rem">Fecha Salida: <?php echo $nueva_solicitud->fecha_salida?></p>
                     <p style="font-size: 0.875rem">Fecha Regreso: <?php echo $nueva_solicitud->fecha_regreso?></p>
                     <p style="font-size: 0.875rem">N° Estudiantes: <?php echo $nueva_solicitud->num_estudiantes?></p>
-                    <p style="font-size: 0.875rem">N° Personal Apoyo: <?php echo $nueva_solicitud->num_docentes_apoyo?></p>
+                    <p style="font-size: 0.875rem">N° Docentes Acompañantes: <?php echo $nueva_solicitud->num_docentes_apoyo?></p>
                     
                     <p style="font-size: 0.875rem">Docente Responsable: <?php echo $nueva_solicitud->full_name?></p>
                     <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>

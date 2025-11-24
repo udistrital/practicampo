@@ -1166,12 +1166,72 @@ class PdfController extends Controller
                     ->where('id_programa_academico_coord','=',$id_pro_aca)->first();
 
             $docente_responsable = DB::table('users')
-                    ->select('users.firma_litografica','users.tiene_firma',
+                    ->select('users.firma_litografica','users.tiene_firma', 'users.id',
                         DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                     ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
                     ->join('roles as rol','users.id_role','rol.id')
                     ->where('id_estado','=',1)
                     ->where('users.id','=',$solicitudes_practica->id_docente_responsable)->first();
+            $firmas[] = [
+                'id' => $docente_responsable->id,
+                'nombre' => $docente_responsable->full_name,
+                'firma' => "data:image/png;base64,".$docente_responsable->firma_litografica
+            ];
+
+            for($i=1; $i<=$practicas_integradas->cant_espa_aca; $i++){
+                $id = "id_docen_espa_aca_$i";
+                $es_responsable = "es_responsable_$i";
+
+                if($practicas_integradas->$es_responsable == 1){
+                    $docente = DB::table('users')
+                        ->select('firma_litografica', 'tiene_firma',  'users.id',
+                            DB::raw('CONCAT_WS(" ",primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
+                        ->where('id', $practicas_integradas->$id)
+                        ->first();
+
+                    if($docente){
+                        $firmas[] = [
+                            'id' => $docente->id,
+                            'nombre' => $docente->full_name,
+                            'firma' => "data:image/png;base64,".$docente->firma_litografica
+                        ];
+                    }else{
+                        $firmas[] = [
+                            'id' => 0,
+                            'nombre' => "",
+                            'firma' => ""
+                        ];
+                    }
+                }
+            }
+
+            for($i=1; $i<=$docentes_practica->num_docentes_apoyo; $i++){
+                $id = "num_doc_docente_apoyo_$i";
+                $es_responsable = "es_responsable_$i";
+
+                if($docentes_practica->$es_responsable == 1){
+                    $docente = DB::table('users')
+                        ->select('firma_litografica', 'tiene_firma',  'users.id',
+                            DB::raw('CONCAT_WS(" ",primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
+                        ->where('id', $docentes_practica->$id)
+                        ->first();
+
+                    if($docente){
+                        $firmas[] = [
+                            'id' => $docente->id,
+                            'nombre' => $docente->full_name,
+                            'firma' => "data:image/png;base64,".$docente->firma_litografica
+                        ];
+                    }else{
+                        $firmas[] = [
+                            'id' => 0,
+                            'nombre' => "",
+                            'firma' => ""
+                        ];
+                    }
+                }
+            }
+            //dd($firmas);
             
             $valor_diario->vlr_estud_max = number_format($valor_diario->vlr_estud_max, 0, ',','.');
             $valor_diario->vlr_estud_min = number_format($valor_diario->vlr_estud_min, 0, ',','.');
@@ -1289,14 +1349,14 @@ class PdfController extends Controller
             {
                 $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_1,
                             "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_1,
-                            "tipo"=>"Apoyo",
+                            "tipo"=>"Acompañante",
                             "num_apoyo"=>1];
             }
             if($docentes_acompaniantes->docente_apoyo_2!=Null)
             {
                 $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_2,
                             "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_2,
-                            "tipo"=>"Apoyo",
+                            "tipo"=>"Acompañante",
                             "num_apoyo"=>2];
             }
             if($docentes_acompaniantes->docente_apoyo_3!=Null)
@@ -1304,21 +1364,21 @@ class PdfController extends Controller
                 
                  $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_3,
                              "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_3,
-                             "tipo"=>"Apoyo",
+                             "tipo"=>"Acompañante",
                              "num_apoyo"=>3];
              }
              if($docentes_acompaniantes->docente_apoyo_4!=Null)
              {
                  $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_4,
                              "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_4,
-                             "tipo"=>"Apoyo",
+                             "tipo"=>"Acompañante",
                              "num_apoyo"=>4];
              }
              if($docentes_acompaniantes->docente_apoyo_5!=Null)
              {
                  $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_5,
                              "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_5,
-                             "tipo"=>"Apoyo",
+                             "tipo"=>"Acompañante",
                              "num_apoyo"=>5];
              }
              if($docentes_acompaniantes->docente_apoyo_6!=Null)
@@ -1326,21 +1386,21 @@ class PdfController extends Controller
                 
                  $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_6,
                              "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_6,
-                             "tipo"=>"Apoyo",
+                             "tipo"=>"Acompañante",
                              "num_apoyo"=>6];
              }
              if($docentes_acompaniantes->docente_apoyo_7!=Null)
              {
                  $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_7,
                              "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_7,
-                             "tipo"=>"Apoyo",
+                             "tipo"=>"Acompañante",
                              "num_apoyo"=>7];
              }
              if($docentes_acompaniantes->docente_apoyo_8!=Null)
              {
                  $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_8,
                              "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_8,
-                             "tipo"=>"Apoyo",
+                             "tipo"=>"Acompañante",
                              "num_apoyo"=>8];
              }
              if($docentes_acompaniantes->docente_apoyo_9!=Null)
@@ -1348,20 +1408,19 @@ class PdfController extends Controller
                 
                  $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_9,
                              "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_9,
-                             "tipo"=>"Apoyo",
+                             "tipo"=>"Acompañante",
                              "num_apoyo"=>9];
              }
              if($docentes_acompaniantes->docente_apoyo_10!=Null)
              {
                  $acompa[] = ["nombre"=>$docentes_acompaniantes->docente_apoyo_10,
                              "identificacion"=>$docentes_acompaniantes->num_doc_docente_apoyo_10,
-                             "tipo"=>"Apoyo",
+                             "tipo"=>"Acompañante",
                              "num_apoyo"=>10];
              }
             
             $firma_lito_decano = "data:image/png;base64,$decano->firma_litografica";
-            $firma_lito_coord = "data:image/png;base64,$coord->firma_litografica";
-            $firma_lito_docente = "data:image/png;base64,$docente_responsable->firma_litografica";
+            $firma_lito_coord = "data:image/png;base64,$coord->firma_litografica";            
 
             $hoy=$this->obtenerFechaEnLetra($fecha_solicitud);
             $f_salida=$this->obtenerFechaEnLetra($solicitudes_practica->fecha_salida);
@@ -1670,7 +1729,7 @@ class PdfController extends Controller
                                 'estudiantes'=>$estudiantes,
                                 'firma_lito_coord'=>$firma_lito_coord,
                                 'firma_lito_decano'=>$firma_lito_decano,
-                                'firma_lito_docente'=>$firma_lito_docente,
+                                'firmas'=>$firmas,
                                 'docente_responsable'=>$docente_responsable,
                                 'transporte_programacion'=>$transporte_programacion,
                                 'tipo_transporte'=>$tipo_transporte,

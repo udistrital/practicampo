@@ -90,8 +90,8 @@ header{position:fixed;}
                     <tr>
                         <td class="tg-0pky" colspan="">Docente Responsable</td>
                         <td class="tg-0pky"  colspan="8">
-                            @foreach ($doce_pract_int as $item) 
-                                <p  style="margin: 0rem;font-size: 10.5px"><?= $item['full_name']?></p>
+                            @foreach ($firmas as $item) 
+                                <p  style="margin: 0rem;font-size: 10.5px"><?= $item['nombre']?></p>
                             @endforeach 
                         </td>
                         <td class="tg-0pky" colspan="6">Tipo de Vinculación</td>
@@ -237,7 +237,7 @@ header{position:fixed;}
                         <col style="width: 699px">
                     </colgroup>
                         <tr>
-                            <th class="tg-0lax"><strong>Justificación:</strong><br><?= $solicitud_practica->justificacion?></th>
+                            <td class="tg-0lax"><strong>Justificación:</strong><br><?= $solicitud_practica->justificacion?></td>
                         </tr>
                     
                         <tr>
@@ -256,16 +256,22 @@ header{position:fixed;}
                     <table style="margin: 0 auto;width: 100%;">
           
                         <tr>
-                          <td>
-                            <div  style="margin-bottom: -27px;text-align: center; height:45px;">
-                                @if($docente_responsable->tiene_firma == 1)
-                                <img src="{{ $firma_lito_docente }}" alt="" style="width: 150px; height:45px;">
-                                @endif
-                            </div>
-                            <p align="CENTER" style="font-size: 10px"><strong><span class="larger">_______________________________</strong></span></p>
-                            <p align="CENTER" style="font-size: 10px"><strong><span class="larger">Docente Responsable:</span></strong></p>
-                            <p align="CENTER" style="margin-top: 0;font-size: 10px"><strong><span class="larger">CC:{{$solicitud_practica->id_docente_responsable}}</span></strong></p>
-                          </td>
+                        @foreach(array_chunk($firmas, 4) as $chunk)
+                            <tr>
+                                @foreach($chunk as $docente_firma)
+                                    <td style="width: 160px; text-align: center; vertical-align: top;">
+                                        <div style="height:45px;margin-bottom: -15px">
+                                            <img src="{{ $docente_firma['firma'] }}" 
+                                                alt="Firma de {{ $docente_firma['nombre'] }}" 
+                                                style="width: 150px; height:45px; object-fit: contain;">
+                                        </div>
+                                        <p style="font-size: 10px; margin: 0;">_______________________________</p>
+                                        <p style="font-size: 10px; margin: 0;"><strong>Docente Responsable:</strong></p>
+                                        <p style="font-size: 10px; margin: 0;"><strong>CC: {{ $docente_firma['id'] }}</strong></p>
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endforeach
                           <td>
                             <div  style="margin-bottom: -27px;text-align: center; height:45px;">
                               <img src="{{ $firma_lito_coord }}" alt="" style="width: 150px; height:45px;">
@@ -290,7 +296,7 @@ header{position:fixed;}
                 <p style="margin-top: 100; text-align: center"><strong><span class="larger">FORMATO PARA PRESENTAR LISTAS DE ESTUDIANTES</strong></span></p>
 
                 @if($num_apoyo > 0)
-                    <p align="JUSTIFY"><strong><span class="larger">PERSONAL DE APOYO</strong></span></p>
+                    <p align="JUSTIFY"><strong><span class="larger">DOCENTES ACOMPAÑANTES</strong></span></p>
                     <table class="tg" style="margin: 0 auto;width: 94%">
                         <colgroup>
                             <col style="width: 10px">

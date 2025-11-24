@@ -35,8 +35,9 @@ $(document).ready(function(){
             revisar_soporte_pdf();
         }
     }
-    else{
-
+    else if (form == "cambios_solicitud" || form == "cambios_programacion"){
+        
+    }else{        
         recargarEspacios_aca(id_p_aca,id_docen_resp,1);
     }
 
@@ -3297,69 +3298,37 @@ $("#num_apoyo").change('keypress', function () {
             $("#apoyo_8").val("");
             $("#apoyo_9").val("");
             $("#apoyo_10").val("");
+            for (let i = 1; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+            }
             break;
         case "1":
             $("#apoyo").show();
             $("#ap_1").show();
-            $("#apoyo_2").val("");
-            $("#apoyo_3").val("");
-            $("#apoyo_4").val("");
-            $("#apoyo_5").val("");
-            $("#apoyo_6").val("");
-            $("#apoyo_7").val("");
-            $("#apoyo_8").val("");
-            $("#apoyo_9").val("");
-            $("#apoyo_10").val("");
-            $("#ap_2").hide();
-            $("#ap_3").hide();
-            $("#ap_4").hide();
-            $("#ap_5").hide();
-            $("#ap_6").hide();
-            $("#ap_7").hide();
-            $("#ap_8").hide();
-            $("#ap_9").hide();
-            $("#ap_10").hide();
+
+            for (let i = 2; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "2":
             $("#apoyo").show();
             $("#ap_1").show();
             $("#ap_2").show();
-            $("#apoyo_3").val("");
-            $("#apoyo_4").val("");
-            $("#apoyo_5").val("");
-            $("#apoyo_6").val("");
-            $("#apoyo_7").val("");
-            $("#apoyo_8").val("");
-            $("#apoyo_9").val("");
-            $("#apoyo_10").val("");
-            $("#ap_3").hide();
-            $("#ap_4").hide();
-            $("#ap_5").hide();
-            $("#ap_6").hide();
-            $("#ap_7").hide();
-            $("#ap_8").hide();
-            $("#ap_9").hide();
-            $("#ap_10").hide();
+            for (let i = 3; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "3":
             $("#apoyo").show();
             $("#ap_1").show();
             $("#ap_2").show();
             $("#ap_3").show();
-            $("#ap_4").hide();
-            $("#apoyo_5").val("");
-            $("#apoyo_6").val("");
-            $("#apoyo_7").val("");
-            $("#apoyo_8").val("");
-            $("#apoyo_9").val("");
-            $("#apoyo_10").val("");
-            $("#ap_4").hide();
-            $("#ap_5").hide();
-            $("#ap_6").hide();
-            $("#ap_7").hide();
-            $("#ap_8").hide();
-            $("#ap_9").hide();
-            $("#ap_10").hide();
+            for (let i = 4; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "4":
             $("#apoyo").show();
@@ -3367,18 +3336,10 @@ $("#num_apoyo").change('keypress', function () {
             $("#ap_2").show();
             $("#ap_3").show();
             $("#ap_4").show();
-            $("#apoyo_5").val("");
-            $("#apoyo_6").val("");
-            $("#apoyo_7").val("");
-            $("#apoyo_8").val("");
-            $("#apoyo_9").val("");
-            $("#apoyo_10").val("");
-            $("#ap_5").hide();
-            $("#ap_6").hide();
-            $("#ap_7").hide();
-            $("#ap_8").hide();
-            $("#ap_9").hide();
-            $("#ap_10").hide();
+            for (let i = 5; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "5":
             $("#apoyo").show();
@@ -3388,16 +3349,10 @@ $("#num_apoyo").change('keypress', function () {
             $("#ap_4").show();
             $("#ap_4").show();
             $("#ap_5").show();
-            $("#apoyo_6").val("");
-            $("#apoyo_7").val("");
-            $("#apoyo_8").val("");
-            $("#apoyo_9").val("");
-            $("#apoyo_10").val("");
-            $("#ap_6").hide();
-            $("#ap_7").hide();
-            $("#ap_8").hide();
-            $("#ap_9").hide();
-            $("#ap_10").hide();
+            for (let i = 6; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "6":
             $("#apoyo").show();
@@ -3410,14 +3365,10 @@ $("#num_apoyo").change('keypress', function () {
             $("#ap_4").show();
             $("#ap_5").show();
             $("#ap_6").show();
-            $("#apoyo_7").val("");
-            $("#apoyo_8").val("");
-            $("#apoyo_9").val("");
-            $("#apoyo_10").val("");
-            $("#ap_7").hide();
-            $("#ap_8").hide();
-            $("#ap_9").hide();
-            $("#ap_10").hide();
+            for (let i = 7; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "7":
             $("#apoyo").show();
@@ -3428,12 +3379,10 @@ $("#num_apoyo").change('keypress', function () {
             $("#ap_5").show();
             $("#ap_6").show();
             $("#ap_7").show();
-            $("#apoyo_8").val("");
-            $("#apoyo_9").val("");
-            $("#apoyo_10").val("");
-            $("#ap_8").hide();
-            $("#ap_9").hide();
-            $("#ap_10").hide();
+            for (let i = 8; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "8":
             $("#apoyo").show();
@@ -3445,10 +3394,10 @@ $("#num_apoyo").change('keypress', function () {
             $("#ap_6").show();
             $("#ap_7").show();
             $("#ap_8").show();
-            $("#apoyo_9").val("");
-            $("#apoyo_10").val("");
-            $("#ap_9").hide();
-            $("#ap_10").hide();
+            for (let i = 9; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "9":
             $("#apoyo").show();
@@ -3461,8 +3410,10 @@ $("#num_apoyo").change('keypress', function () {
             $("#ap_7").show();
             $("#ap_8").show();
             $("#ap_9").show();
-            $("#apoyo_10").val("");
-            $("#ap_10").hide();
+            for (let i = 10; i <= 10; i++) {
+                $("#apoyo_" + i).val("").trigger('change');
+                $("#ap_" + i).hide();
+            }
             break;
         case "10":
             $("#apoyo").show();

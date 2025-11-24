@@ -114,6 +114,11 @@ class SolicitudController extends Controller
                     $docentes_activos->full_name = 'No hay docentes activos';
                     $docentes_activos->push($docentes_activos);
                 } 
+                $docentes=DB::table('users')
+                ->select('users.id',DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                ->where('id_role',5)
+                ->orderBy('users.primer_nombre','ASC')
+                ->get();  
                 
 
                 $estado_doc_respon =$usuario->id_estado;
@@ -334,7 +339,8 @@ class SolicitudController extends Controller
                                                 "usuario"=>$usuario,
                                                 'vlr_viaticos'=>$vlr_viaticos,
                                                 'lista_estudiantes'=>$lista_estudiantes,
-                                                'control_sistema'=>$control_sistema
+                                                'control_sistema'=>$control_sistema,
+                                                'docentes'=>$docentes
         
                 ]);
                 
@@ -410,28 +416,24 @@ class SolicitudController extends Controller
                     $programacion_practica->grupo_2=$request->get('grupo_2');
                     $programacion_practica->grupo_3=$request->get('grupo_3');
                     $programacion_practica->grupo_4=$request->get('grupo_4');
-    
+
+                    /**Tabla practicas_integradas */
+                    for ($i = 1; $i <= 7; $i++) {
+                        if ($i <= $practicas_integradas->cant_espa_aca) {
+                            $practicas_integradas->{"es_responsable_$i"} = (int) $request->get("integrada_responsable_$i");
+                        } else {
+                            $practicas_integradas->{"es_responsable_$i"} = null;
+                        }
+                    }
+                    /**Tabla practicas_integradas */
                     /**Tabla docentes_practica */
-                        $docentes_practica->num_doc_docente_apoyo_1=$request->get('doc_apoyo_1');
-                        $docentes_practica->num_doc_docente_apoyo_2=$request->get('doc_apoyo_2');
-                        $docentes_practica->num_doc_docente_apoyo_3=$request->get('doc_apoyo_3');
-                        $docentes_practica->num_doc_docente_apoyo_4=$request->get('doc_apoyo_4');
-                        $docentes_practica->num_doc_docente_apoyo_5=$request->get('doc_apoyo_5');
-                        $docentes_practica->num_doc_docente_apoyo_6=$request->get('doc_apoyo_6');
-                        $docentes_practica->num_doc_docente_apoyo_7=$request->get('doc_apoyo_7');
-                        $docentes_practica->num_doc_docente_apoyo_8=$request->get('doc_apoyo_8');
-                        $docentes_practica->num_doc_docente_apoyo_9=$request->get('doc_apoyo_9');
-                        $docentes_practica->num_doc_docente_apoyo_10=$request->get('doc_apoyo_10');
-                        $docentes_practica->docente_apoyo_1=$request->get('apoyo_1');
-                        $docentes_practica->docente_apoyo_2=$request->get('apoyo_2');
-                        $docentes_practica->docente_apoyo_3=$request->get('apoyo_3');
-                        $docentes_practica->docente_apoyo_4=$request->get('apoyo_4');
-                        $docentes_practica->docente_apoyo_5=$request->get('apoyo_5');
-                        $docentes_practica->docente_apoyo_6=$request->get('apoyo_6');
-                        $docentes_practica->docente_apoyo_7=$request->get('apoyo_7');
-                        $docentes_practica->docente_apoyo_8=$request->get('apoyo_8');
-                        $docentes_practica->docente_apoyo_9=$request->get('apoyo_9');
-                        $docentes_practica->docente_apoyo_10=$request->get('apoyo_10');
+                    for ($i = 1; $i <= 10; $i++) {
+                        if ($i <= $docentes_practica->num_docentes_apoyo) {
+                            $docentes_practica->{"es_responsable_$i"} = (int) $request->get("apoyo_responsable_$i");
+                        } else {
+                            $docentes_practica->{"es_responsable_$i"} = null;
+                        }
+                    }
                     /**Tabla docentes_practica */
     
                     /**Tabla documentos_requeridos */
@@ -745,6 +747,7 @@ class SolicitudController extends Controller
                     //$transporte_menor->update();
                     $mater_herra_programacion->update();
                     $solicitud_practica->update();
+                    $practicas_integradas->update();
                 }
             break;
         }
@@ -1892,6 +1895,11 @@ class SolicitudController extends Controller
                 $semestre_asignatura=DB::table('semestre_asignatura')->get();
                 $tipo_transporte=DB::table('tipo_transporte')->get();
                 $num_grupos_proy = 0; 
+                $docentes=DB::table('users')
+                ->select('users.id',DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                ->where('id_role',5)
+                ->orderBy('users.primer_nombre','ASC')
+                ->get();  
         
                 $prog_aca_user = [];
                 $esp_aca_user = [];
@@ -2105,7 +2113,8 @@ class SolicitudController extends Controller
                                                 "tipo_ruta"=>$tipo_ruta,
                                                 "usuario"=>$usuario,
                                                 'vlr_viaticos'=>$vlr_viaticos,
-                                                'control_sistema'=>$control_sistema
+                                                'control_sistema'=>$control_sistema,
+                                                'docentes'=>$docentes
         
                 ]);
             break;
@@ -2446,29 +2455,162 @@ class SolicitudController extends Controller
                             $practicas_integradas->id_docen_espa_aca_7=$request->get('id_docen_espa_aca_7');
                             break;
                     }
+                    for ($i = 1; $i <= 7; $i++) {
+                        if ($i <= $practicas_integradas->cant_espa_aca) {
+                            $practicas_integradas->{"es_responsable_$i"} = (int) $request->get("integrada_responsable_$i");
+                        } else {
+                            $practicas_integradas->{"es_responsable_$i"} = null;
+                        }
+                    }
                 /**Tabla practicas_integradas */
                 
                 /**Tabla docentes_practica */
-                    $docentes_practica->num_doc_docente_apoyo_1=$request->get('doc_apoyo_1');
-                    $docentes_practica->num_doc_docente_apoyo_2=$request->get('doc_apoyo_2');
-                    $docentes_practica->num_doc_docente_apoyo_3=$request->get('doc_apoyo_3');
-                    $docentes_practica->num_doc_docente_apoyo_4=$request->get('doc_apoyo_4');
-                    $docentes_practica->num_doc_docente_apoyo_5=$request->get('doc_apoyo_5');
-                    $docentes_practica->num_doc_docente_apoyo_6=$request->get('doc_apoyo_6');
-                    $docentes_practica->num_doc_docente_apoyo_7=$request->get('doc_apoyo_7');
-                    $docentes_practica->num_doc_docente_apoyo_8=$request->get('doc_apoyo_8');
-                    $docentes_practica->num_doc_docente_apoyo_9=$request->get('doc_apoyo_9');
-                    $docentes_practica->num_doc_docente_apoyo_10=$request->get('doc_apoyo_10');
-                    $docentes_practica->docente_apoyo_1=$request->get('apoyo_1');
-                    $docentes_practica->docente_apoyo_2=$request->get('apoyo_2');
-                    $docentes_practica->docente_apoyo_3=$request->get('apoyo_3');
-                    $docentes_practica->docente_apoyo_4=$request->get('apoyo_4');
-                    $docentes_practica->docente_apoyo_5=$request->get('apoyo_5');
-                    $docentes_practica->docente_apoyo_6=$request->get('apoyo_6');
-                    $docentes_practica->docente_apoyo_7=$request->get('apoyo_7');
-                    $docentes_practica->docente_apoyo_8=$request->get('apoyo_8');
-                    $docentes_practica->docente_apoyo_9=$request->get('apoyo_9');
-                    $docentes_practica->docente_apoyo_10=$request->get('apoyo_10');
+                    $docentes_practica->num_docentes_apoyo=$request->get('num_apoyo');
+                    $docentes_practica->total_docentes_apoyo=$request->get('num_apoyo');                    
+                    switch($docentes_practica->num_docentes_apoyo=$request->get('num_apoyo'))
+                    {
+                        case "1":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=null;
+                            $docentes_practica->num_doc_docente_apoyo_3=null;
+                            $docentes_practica->num_doc_docente_apoyo_4=null;
+                            $docentes_practica->num_doc_docente_apoyo_5=null;
+                            $docentes_practica->num_doc_docente_apoyo_6=null;
+                            $docentes_practica->num_doc_docente_apoyo_7=null;
+                            $docentes_practica->num_doc_docente_apoyo_8=null;
+                            $docentes_practica->num_doc_docente_apoyo_9=null;
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "2":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('apoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=null;
+                            $docentes_practica->num_doc_docente_apoyo_4=null;
+                            $docentes_practica->num_doc_docente_apoyo_5=null;
+                            $docentes_practica->num_doc_docente_apoyo_6=null;
+                            $docentes_practica->num_doc_docente_apoyo_7=null;
+                            $docentes_practica->num_doc_docente_apoyo_8=null;
+                            $docentes_practica->num_doc_docente_apoyo_9=null;
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "3":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('apoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=$request->get('apoyo_3');
+                            $docentes_practica->num_doc_docente_apoyo_4=null;
+                            $docentes_practica->num_doc_docente_apoyo_5=null;
+                            $docentes_practica->num_doc_docente_apoyo_6=null;
+                            $docentes_practica->num_doc_docente_apoyo_7=null;
+                            $docentes_practica->num_doc_docente_apoyo_8=null;
+                            $docentes_practica->num_doc_docente_apoyo_9=null;
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "4":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('apoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=$request->get('apoyo_3');
+                            $docentes_practica->num_doc_docente_apoyo_4=$request->get('apoyo_4');
+                            $docentes_practica->num_doc_docente_apoyo_5=null;
+                            $docentes_practica->num_doc_docente_apoyo_6=null;
+                            $docentes_practica->num_doc_docente_apoyo_7=null;
+                            $docentes_practica->num_doc_docente_apoyo_8=null;
+                            $docentes_practica->num_doc_docente_apoyo_9=null;
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "5":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('apoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=$request->get('apoyo_3');
+                            $docentes_practica->num_doc_docente_apoyo_4=$request->get('apoyo_4');
+                            $docentes_practica->num_doc_docente_apoyo_5=$request->get('apoyo_5');
+                            $docentes_practica->num_doc_docente_apoyo_6=null;
+                            $docentes_practica->num_doc_docente_apoyo_7=null;
+                            $docentes_practica->num_doc_docente_apoyo_8=null;
+                            $docentes_practica->num_doc_docente_apoyo_9=null;
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "6":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('apoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=$request->get('apoyo_3');
+                            $docentes_practica->num_doc_docente_apoyo_4=$request->get('apoyo_4');
+                            $docentes_practica->num_doc_docente_apoyo_5=$request->get('apoyo_5');
+                            $docentes_practica->num_doc_docente_apoyo_6=$request->get('apoyo_6');
+                            $docentes_practica->num_doc_docente_apoyo_7=null;
+                            $docentes_practica->num_doc_docente_apoyo_8=null;
+                            $docentes_practica->num_doc_docente_apoyo_9=null;
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "7":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('dapoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=$request->get('apoyo_3');
+                            $docentes_practica->num_doc_docente_apoyo_4=$request->get('apoyo_4');
+                            $docentes_practica->num_doc_docente_apoyo_5=$request->get('apoyo_5');
+                            $docentes_practica->num_doc_docente_apoyo_6=$request->get('apoyo_6');
+                            $docentes_practica->num_doc_docente_apoyo_7=$request->get('apoyo_7');
+                            $docentes_practica->num_doc_docente_apoyo_8=null;
+                            $docentes_practica->num_doc_docente_apoyo_9=null;
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "8":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('apoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=$request->get('apoyo_3');
+                            $docentes_practica->num_doc_docente_apoyo_4=$request->get('apoyo_4');
+                            $docentes_practica->num_doc_docente_apoyo_5=$request->get('apoyo_5');
+                            $docentes_practica->num_doc_docente_apoyo_6=$request->get('apoyo_6');
+                            $docentes_practica->num_doc_docente_apoyo_7=$request->get('apoyo_7');
+                            $docentes_practica->num_doc_docente_apoyo_8=$request->get('apoyo_8');
+                            $docentes_practica->num_doc_docente_apoyo_9=null;
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "9":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('apoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=$request->get('apoyo_3');
+                            $docentes_practica->num_doc_docente_apoyo_4=$request->get('apoyo_4');
+                            $docentes_practica->num_doc_docente_apoyo_5=$request->get('apoyo_5');
+                            $docentes_practica->num_doc_docente_apoyo_6=$request->get('apoyo_6');
+                            $docentes_practica->num_doc_docente_apoyo_7=$request->get('apoyo_7');
+                            $docentes_practica->num_doc_docente_apoyo_8=$request->get('apoyo_8');
+                            $docentes_practica->num_doc_docente_apoyo_9=$request->get('apoyo_9');
+                            $docentes_practica->num_doc_docente_apoyo_10=null;
+                            break;
+                        case "10":
+                            $docentes_practica->num_doc_docente_apoyo_1=$request->get('apoyo_1');
+                            $docentes_practica->num_doc_docente_apoyo_2=$request->get('apoyo_2');
+                            $docentes_practica->num_doc_docente_apoyo_3=$request->get('apoyo_3');
+                            $docentes_practica->num_doc_docente_apoyo_4=$request->get('apoyo_4');
+                            $docentes_practica->num_doc_docente_apoyo_5=$request->get('apoyo_5');
+                            $docentes_practica->num_doc_docente_apoyo_6=$request->get('apoyo_6');
+                            $docentes_practica->num_doc_docente_apoyo_7=$request->get('apoyo_7');
+                            $docentes_practica->num_doc_docente_apoyo_8=$request->get('apoyo_8');
+                            $docentes_practica->num_doc_docente_apoyo_9=$request->get('apoyo_9');
+                            $docentes_practica->num_doc_docente_apoyo_10=$request->get('apoyo_10');
+                            break;
+                    }
+                    for ($i = 1; $i <= 10; $i++) {
+                        $docente_id = $request->get("apoyo_$i");
+
+                        if ($docente_id) {
+                            $nombre_docente = DB::table('users')
+                                ->select(DB::raw('CONCAT_WS(" ", primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
+                                ->where('id', $docente_id)
+                                ->first();
+
+                            $docentes_practica->{"docente_apoyo_$i"} = $nombre_docente->full_name;
+                        } else {
+                            $docentes_practica->{"docente_apoyo_$i"} = null;
+                        }
+                    }
+                    for ($i = 1; $i <= 10; $i++) {
+                        if ($i <= $docentes_practica->num_docentes_apoyo) {
+                            $docentes_practica->{"es_responsable_$i"} = (int) $request->get("apoyo_responsable_$i");
+                        } else {
+                            $docentes_practica->{"es_responsable_$i"} = null;
+                        }
+                    }  
                 /**Tabla docentes_practica */
 
                 /**Tabla documentos_requeridos */
