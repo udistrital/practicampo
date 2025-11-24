@@ -3218,8 +3218,11 @@
                 data-title="Indique el cronograma a detalle del recorrido que realizará en la salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('Cronograma Recorrido') }}</label>
             <span class="hs-form-required">*</span>
             <textarea id="cronograma" style="min-height:5rem;" type="text" class="form-control @error('cronograma') is-invalid @enderror" name="cronograma" 
-            required autocomplete="off" autofocus><?php echo $solicitud_practica->cronograma?></textarea>
-            
+            required autocomplete="off" autofocus maxlength="1000"
+            onchange="actualizar_caracteres_restantes(this)" oninput="actualizar_caracteres_restantes(this)"><?php echo $solicitud_practica->cronograma?></textarea>
+            <small id="cronograma-count" class="form-text text-muted">
+            1000 caracteres restantes
+            </small>
             @error('cronograma')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

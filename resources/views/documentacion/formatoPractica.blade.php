@@ -55,7 +55,7 @@ header{position:fixed;}
         <table style="margin: 0 auto;width: 94%">
             <div style="margin: 0 auto;width: 94%">
                 <p align="center"><strong><span class="larger">FORMATO DE PRÁCTICAS ACADÉMICAS</strong></span></p>
-                <p style="margin-left: 50px"><strong><span class="larger">1. Información básica práctica académica:
+                <p style="margin-left: 50px"><strong><span class="larger" style="margin-bottom: -1px;">1. Información básica práctica académica:
                     @foreach ($espa_pract_int as $item) 
                         <?= $item['espacio_academico']?>
                     @endforeach
@@ -90,27 +90,27 @@ header{position:fixed;}
                     <tr>
                         <td class="tg-0pky" colspan="">Docente Responsable</td>
                         <td class="tg-0pky"  colspan="8">
-                            @foreach ($firmas as $item) 
+                            @foreach ($docentes_responsables as $item) 
                                 <p  style="margin: 0rem;font-size: 10.5px"><?= $item['nombre']?></p>
                             @endforeach 
                         </td>
-                        <td class="tg-0pky" colspan="6">Tipo de Vinculación</td>
-                        <td class="tg-0pky" colspan="6">
-                            @foreach ($doce_pract_int as $item) 
+                        <td class="tg-0pky" colspan="2">Tipo de Vinculación</td>
+                        <td class="tg-0pky" colspan="10">
+                            @foreach ($docentes_responsables as $item) 
                                 <p  style="margin: 0rem;font-size: 10.5px"><?= $item['tipo_vinculacion']?></p>
                             @endforeach 
                         </td><br>
                     </tr>
                     <tr>
                         <td class="tg-0pky" colspan="">Teléfono de Contacto</td>
-                        <td class="tg-0pky" colspan="6">
-                            @foreach ($doce_pract_int as $item) 
+                        <td class="tg-0pky" colspan="5">
+                            @foreach ($docentes_responsables as $item) 
                                 <p style="margin: 0rem;font-size: 10.5px"><?= $item['celular']?></p>
                             @endforeach 
                         </td>
-                        <td class="tg-0pky" colspan="6">Correo Docente</td>
-                        <td class="tg-0pky" colspan="8">
-                            @foreach ($doce_pract_int as $item) 
+                        <td class="tg-0pky" colspan="4">Correo Docente</td>
+                        <td class="tg-0pky" colspan="11">
+                            @foreach ($docentes_responsables as $item) 
                                 <p style="margin: 0rem;font-size: 10.5px"><?= $item['email']?></p>
                             @endforeach
                         </td><br>
@@ -162,17 +162,15 @@ header{position:fixed;}
                     </tr>
     
                     <tr>
-                        <td class="tg-0pky" colspan="" style="margin: 0rem;font-size: 9.5px">CRONOGRAMA</td>
-                        <td class="tg-0pky" colspan="20" style="margin: 0rem;font-size: 9.5px"><?= $solicitud_practica->cronograma?>
+                        <td class="tg-0pky" colspan="" style="width: 100px;">CRONOGRAMA</td>
+                        <td class="tg-0pky" colspan="20" style="font-size: 9px"><?= $solicitud_practica->cronograma?>
                         <br></td>
                         <br>
                     </tr>
                     </tbody>
                 </table>
-                <div class="page-break">
-                </div>
                 {{-- <br> --}}
-                <p style="margin-left: 50px; margin-top: 130px"><strong><span class="larger">2. Detalle del Presupuesto</strong></span></p>
+                <p style="margin-left: 50px; margin-top: 10px;"><strong><span class="larger" style="margin-bottom: -1px;">2. Detalle del Presupuesto</strong></span></p>
                 <table class="tg" style="margin: 0 auto;width: 90%;">
                     <colgroup>
                     <col style="width: 159px">
@@ -214,7 +212,7 @@ header{position:fixed;}
                         </tr>
                         <tr>
                             <td class="tg-cly1">Servicios de Transporte</td>
-                            <td class="tg-0lax" colspan="3">Nota: valor sujeto al transporte que se contrata en sitio por parte del docente responsable.</td>
+                            <td class="tg-0lax" colspan="3" style="font-size: 9.5px">Nota: valor sujeto al transporte que se contrata en sitio por parte del docente responsable.</td>
                             <td class="tg-0lax" style="text-align: center">$ <?= number_format($transporte_menor, 0, ',','.')?></td>
                         </tr>
                         <tr>
@@ -222,16 +220,14 @@ header{position:fixed;}
                             <td class="tg-0lax" style="text-align: center">$ {{ number_format($presupuesto, 0, ',','.') }}</td>
                         </tr>
                         <tr>
-                            <th class="tg-0lax" colspan="5"><strong>Observaciones:</strong> <br><?= $solicitud_practica->observaciones?></th>
+                            <th class="tg-0lax" colspan="5" style="font-size: 9.5px"><strong>Observaciones: </strong><?= $solicitud_practica->observaciones?></th>
                         </tr>
                     </tbody>
                 </table>
-                {{-- <br>  --}}
-                {{-- <br> --}}
-
-                
-
-                <p style="margin-left: 50;margin-top: 20;"><strong><span class="larger">3. Presentación Práctica Académica</strong></span></p>
+            <div class="page-break">
+            </div>
+            <br><br><br><br><br>
+                <p style="margin-left: 50px;margin-top: 25;"><strong><span class="larger">3. Presentación Práctica Académica</strong></span></p>
                 <table class="tg" style="margin: 0 auto;width: 90%;">
                     <colgroup>
                         <col style="width: 699px">
@@ -254,38 +250,37 @@ header{position:fixed;}
                 {{-- <br> --}}
                 <div style="margin: 0 auto;width: 100%">
                     <table style="margin: 0 auto;width: 100%;">
-          
+                        @foreach(array_chunk($docentes_responsables, 4) as $chunk)
                         <tr>
-                        @foreach(array_chunk($firmas, 4) as $chunk)
-                            <tr>
-                                @foreach($chunk as $docente_firma)
-                                    <td style="width: 160px; text-align: center; vertical-align: top;">
-                                        <div style="height:45px;margin-bottom: -15px">
-                                            <img src="{{ $docente_firma['firma'] }}" 
-                                                alt="Firma de {{ $docente_firma['nombre'] }}" 
-                                                style="width: 150px; height:45px; object-fit: contain;">
-                                        </div>
-                                        <p style="font-size: 10px; margin: 0;">_______________________________</p>
-                                        <p style="font-size: 10px; margin: 0;"><strong>Docente Responsable:</strong></p>
-                                        <p style="font-size: 10px; margin: 0;"><strong>CC: {{ $docente_firma['id'] }}</strong></p>
-                                    </td>
-                                @endforeach
-                            </tr>
+                            @foreach($chunk as $docente_firma)
+                                <td style="width: 160px; text-align: center; vertical-align: top;">
+                                    <div style="height:45px;margin-bottom: -15px">
+                                        <img src="{{ $docente_firma['firma'] }}" 
+                                            alt="Firma de {{ $docente_firma['nombre'] }}" 
+                                            style="width: 150px; height:45px; object-fit: contain;">
+                                    </div>
+                                    <p style="font-size: 10px; margin: 0;">_______________________________</p>
+                                    <p style="font-size: 10px; margin: 0;"><strong>Docente Responsable:</strong></p>
+                                    <p style="font-size: 10px; margin: 0;"><strong>CC: {{ $docente_firma['id'] }}</strong></p>
+                                </td>
+                            @endforeach
+                        </tr>
                         @endforeach
-                          <td>
+                        <tr>
+                          <td style="padding-top: 10px;">
                             <div  style="margin-bottom: -27px;text-align: center; height:45px;">
                               <img src="{{ $firma_lito_coord }}" alt="" style="width: 150px; height:45px;">
                             </div>
                             <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">_______________________________</strong></span></p>
-                            <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">V°B° Consejo de carrera:</span></strong></p>
+                            <p align="JUSTIFY" style="text-align: center;font-size: 10px; margin-bottom: -10px"><strong><span class="larger">V°B° Consejo de carrera:</span></strong></p>
                             <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">Coordinador Proyecto Curricular</span></strong></p>
                           </td>
-                          <td>
+                          <td style="padding-top: 10px;">
                             <div  style="margin-bottom: -27px;text-align: center; height:45px;">
                               <img src="{{ $firma_lito_decano }}" alt="" style="width: 150px; height:45px;">
                             </div>
                             <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">_______________________________</strong></span></p>
-                            <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">V°B° Ordenador del gasto:</span></strong></p>
+                            <p align="JUSTIFY" style="text-align: center;font-size: 10px; margin-bottom: -10px"><strong><span class="larger">V°B° Ordenador del gasto:</span></strong></p>
                             <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">Decano de la facultad</span></strong></p>
                           </td>
                         </tr>
@@ -296,8 +291,8 @@ header{position:fixed;}
                 <p style="margin-top: 100; text-align: center"><strong><span class="larger">FORMATO PARA PRESENTAR LISTAS DE ESTUDIANTES</strong></span></p>
 
                 @if($num_apoyo > 0)
-                    <p align="JUSTIFY"><strong><span class="larger">DOCENTES ACOMPAÑANTES</strong></span></p>
-                    <table class="tg" style="margin: 0 auto;width: 94%">
+                    <p align="center"><strong><span class="larger">Docentes Acompañantes</strong></span></p>
+                    <table class="tg" style="margin: 0 auto;width: 90%">
                         <colgroup>
                             <col style="width: 10px">
                             <col style="width: 453px">

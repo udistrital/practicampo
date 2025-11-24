@@ -1166,16 +1166,21 @@ class PdfController extends Controller
                     ->where('id_programa_academico_coord','=',$id_pro_aca)->first();
 
             $docente_responsable = DB::table('users')
-                    ->select('users.firma_litografica','users.tiene_firma', 'users.id',
+                    ->select('users.firma_litografica','users.tiene_firma', 'users.id', 'tip_vinc.tipo_vinculacion as tipo_vinculacion',
+                        'users.celular','users.email',
                         DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                     ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
                     ->join('roles as rol','users.id_role','rol.id')
+                    ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
                     ->where('id_estado','=',1)
                     ->where('users.id','=',$solicitudes_practica->id_docente_responsable)->first();
-            $firmas[] = [
+            $docentes_responsables[] = [
                 'id' => $docente_responsable->id,
                 'nombre' => $docente_responsable->full_name,
-                'firma' => "data:image/png;base64,".$docente_responsable->firma_litografica
+                'firma' => "data:image/png;base64,".$docente_responsable->firma_litografica,
+                'tipo_vinculacion' => $docente_responsable->tipo_vinculacion,
+                'celular' => $docente_responsable->celular,
+                'email' => $docente_responsable->email
             ];
 
             for($i=1; $i<=$practicas_integradas->cant_espa_aca; $i++){
@@ -1184,22 +1189,30 @@ class PdfController extends Controller
 
                 if($practicas_integradas->$es_responsable == 1){
                     $docente = DB::table('users')
-                        ->select('firma_litografica', 'tiene_firma',  'users.id',
+                        ->select('firma_litografica', 'tiene_firma',  'users.id', 'tip_vinc.tipo_vinculacion as tipo_vinculacion',
+                            'users.celular','users.email',
                             DB::raw('CONCAT_WS(" ",primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
-                        ->where('id', $practicas_integradas->$id)
+                        ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
+                        ->where('users.id', $practicas_integradas->$id)
                         ->first();
 
                     if($docente){
-                        $firmas[] = [
+                        $docentes_responsables[] = [
                             'id' => $docente->id,
                             'nombre' => $docente->full_name,
-                            'firma' => "data:image/png;base64,".$docente->firma_litografica
+                            'firma' => "data:image/png;base64,".$docente->firma_litografica,
+                            'tipo_vinculacion' => $docente->tipo_vinculacion,
+                            'celular' => $docente->celular,
+                            'email' => $docente->email
                         ];
                     }else{
-                        $firmas[] = [
+                        $docentes_responsables[] = [
                             'id' => 0,
                             'nombre' => "",
-                            'firma' => ""
+                            'firma' => "",
+                            'tipo_vinculacion' => "",
+                            'celular' => 0,
+                            'email' => ""
                         ];
                     }
                 }
@@ -1211,27 +1224,34 @@ class PdfController extends Controller
 
                 if($docentes_practica->$es_responsable == 1){
                     $docente = DB::table('users')
-                        ->select('firma_litografica', 'tiene_firma',  'users.id',
+                        ->select('firma_litografica', 'tiene_firma',  'users.id', 'tip_vinc.tipo_vinculacion as tipo_vinculacion',
+                            'users.celular','users.email',
                             DB::raw('CONCAT_WS(" ",primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
-                        ->where('id', $docentes_practica->$id)
+                        ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
+                        ->where('users.id', $docentes_practica->$id)
                         ->first();
 
                     if($docente){
-                        $firmas[] = [
+                        $docentes_responsables[] = [
                             'id' => $docente->id,
                             'nombre' => $docente->full_name,
-                            'firma' => "data:image/png;base64,".$docente->firma_litografica
+                            'firma' => "data:image/png;base64,".$docente->firma_litografica,
+                            'tipo_vinculacion' => $docente->tipo_vinculacion,
+                            'celular' => $docente->celular,
+                            'email' => $docente->email
                         ];
                     }else{
-                        $firmas[] = [
+                        $docentes_responsables[] = [
                             'id' => 0,
                             'nombre' => "",
-                            'firma' => ""
+                            'firma' => "",
+                            'tipo_vinculacion' => "",
+                            'celular' => 0,
+                            'email' => ""
                         ];
                     }
                 }
             }
-            //dd($firmas);
             
             $valor_diario->vlr_estud_max = number_format($valor_diario->vlr_estud_max, 0, ',','.');
             $valor_diario->vlr_estud_min = number_format($valor_diario->vlr_estud_min, 0, ',','.');
@@ -1729,7 +1749,7 @@ class PdfController extends Controller
                                 'estudiantes'=>$estudiantes,
                                 'firma_lito_coord'=>$firma_lito_coord,
                                 'firma_lito_decano'=>$firma_lito_decano,
-                                'firmas'=>$firmas,
+                                'docentes_responsables'=>$docentes_responsables,
                                 'docente_responsable'=>$docente_responsable,
                                 'transporte_programacion'=>$transporte_programacion,
                                 'tipo_transporte'=>$tipo_transporte,

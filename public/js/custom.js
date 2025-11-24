@@ -6430,3 +6430,14 @@ function habilitar_inputs_cambios(formId) {
         console.error(`No se encontró un formulario con el ID "${formId}"`);
     }
 }
+function actualizar_caracteres_restantes(textarea) {
+    const maxLength = textarea.getAttribute('maxlength');
+    const remaining = maxLength - textarea.value.length;
+    const countDisplay = document.getElementById('cronograma-count');
+    countDisplay.textContent = remaining + " caracteres restantes";
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('cronograma');
+    updateCount(textarea);
+});
