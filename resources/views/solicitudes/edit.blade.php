@@ -15,7 +15,7 @@
                         {{-- <php if($estado_doc_respon == 1){ echo $nombre_doc_resp;} elseif ($estado_doc_respon == 2){ echo "Usuario Inactivo";}?> --}}
                     
                         <div class="card-body">
-                            <form method="POST" action="{{ route('solicitud_update',[Crypt::encrypt($programacion_practica->id), Crypt::encrypt($tipo_ruta)]) }}" id="edit_solicitud">
+                            <form method="POST" action="{{ route('solicitud_update',[Crypt::encrypt($programacion_practica->id), Crypt::encrypt($tipo_ruta)]) }}" id="edit_solicitud" onsubmit="return confirmarGuardar(event)">
                                 @method('PUT')
                                 @csrf
 

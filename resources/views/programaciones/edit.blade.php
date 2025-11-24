@@ -14,7 +14,7 @@
                         {{-- <php if($estado_doc_respon == 1){ echo $nombre_doc_resp;} elseif ($estado_doc_respon == 2){ echo "Usuario Inactivo";}?> --}}
                     
                     <div class="card-body">
-                        <form method="POST" action="{{ route('programacion_update',Crypt::encrypt($programacion_practica->id)) }}" id="edit_programacion" enctype="multipart/form-data"
+                        <form method="POST" action="{{ route('programacion_update',Crypt::encrypt($programacion_practica->id)) }}" id="edit_programacion" enctype="multipart/form-data" onsubmit="return confirmarGuardar(event)"
                             onreset="recargarEspa_aca_edit(this.value,'<?php echo $programacion_practica->id_espacio_academico?>','<?php echo $programacion_practica->id_docente_responsable?>',0)">
                             @method('PUT')
                             @csrf

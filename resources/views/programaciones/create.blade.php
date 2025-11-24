@@ -13,7 +13,7 @@
     
                     <div class="card-body">
                         <form method="POST" action="{{ route('programacion_store') }}" enctype="multipart/form-data" id="create_programacion_form"
-                        onsubmit="return validar_realizada_bogota()">
+                        onsubmit="return validar_realizada_bogota() && confirmarGuardar(event)">
                             @csrf
                             <!-- información Programación -->
                                 <!-- 1 -->

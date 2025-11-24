@@ -83,7 +83,7 @@
                     <div class="card-header">{{ __('Editar Presupuesto de los programas académicos') }}</div>
     
                     <div class="card-body">
-                        <form method="POST" action="{{ route('presupuesto_update') }}" onsubmit="return confirmarGuardarPresupuesto(event)">
+                        <form method="POST" action="{{ route('presupuesto_update') }}" onsubmit="return confirmarGuardar(event)">
                             @method('PUT')
                             @csrf
 
