@@ -6,71 +6,166 @@
     @section('contenido')
 <div class="container">
         <div class="row justify-content-center mb-4">
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"><h4>{{ __('Presupuesto transporte menor') }}</h4></div>
-    
+                    <div class="card-header"><h4>{{ __('Presupuesto Transporte Menor') }}</h4></div>    
                     <div class="card-body">
-                        <form method="POST" action="{{ route('presupuesto_update_tm') }}" onsubmit="return confirmarGuardar(event)">
-                            @method('PUT')
-                            @csrf
+                        <br>
+                        <table id="" class="table table-bordered table-condensed table-hover table-sm header_table">
+                            <thead>
+                                <th style="width: 10px">ID Pres.</th>
+                                <th style="width: 70px">Presupuesto Inicial</th>                                
+                                <th style="width: 70px">Presupuesto Restante</th>
+                                <th style="width: 100px">Acciones</th>
+                            </thead>
+                            <tr>
+                                <td>{{ $presupuesto_transporte_menor->id }}</td>
+                                <td>{{ number_format($presupuesto_transporte_menor->presupuesto_inicial,0,',','.') }}</td>
+                                <td>{{ number_format($presupuesto_transporte_menor->presupuesto_restante,0,',','.') }}</td>
+                                <td style="text-align: center">
+                                    <button 
+                                        class="btn btn-success btnSumarPresupuestoTransporteMenor" 
+                                        style="background-color: #447161; border:0"
+                                        data-id="{{ $presupuesto_transporte_menor->id }}"
+                                        data-presupuesto_inicial_tm="{{ $presupuesto_transporte_menor->presupuesto_inicial }}"
+                                        data-presupuesto_restante_tm="{{ $presupuesto_transporte_menor->presupuesto_restante }}"                                     
+                                        data-toggle="modal"
+                                        data-target="#sumarModalTM">
+                                        Sumar
+                                    </button>
+                                    <button 
+                                        class="btn btn-success btnActualizarPresupuestoTransporteMenor" 
+                                        style="background-color: #447161; border:0"
+                                        data-id="{{ $presupuesto_transporte_menor->id }}"
+                                        data-presupuesto_inicial_tm="{{ $presupuesto_transporte_menor->presupuesto_inicial }}"
+                                        data-presupuesto_restante_tm="{{ $presupuesto_transporte_menor->presupuesto_restante }}"                                         
+                                        data-toggle="modal"
+                                        data-target="#actualizarModalTM">
+                                        Actualizar
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
 
-                            <br>                            
-                            <div class="card border-secondary">
-                                <div class="form-group row ml-1">
-                                    <div class="col-md-8">
-                                    <label for="presupuesto_inicial_transporte_menor" class="col-form-label text-md-left col-md-12" title=""><i class="" 
-                                        data-toggle="tooltip" data-placement="left" 
-                                        data-title="" style="font-size: 0.813rem"></i>Presupuesto dado al transporte menor</label>
-                                        <input id="presupuesto_inicial_transporte_menor" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-12"
-                                        name="presupuesto_inicial_transporte_menor" 
-                                        value="$ {{number_format($presupuesto_transporte_menor->presupuesto_inicial,'0',',','.')}}" autocomplete="off" autofocus title="" disabled>
-                                    </div> 
-                                    <div class="col-md-4">
-                                    <label for="presupuesto_restante_transporte_menor" class="col-form-label text-md-left col-md-12" title=""><i class="" 
-                                        data-toggle="tooltip" data-placement="left" 
-                                        data-title="" style="font-size: 0.813rem"></i> Presupuesto restante</label>
-                                        <input id="presupuesto_restante_transporte_menor" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-8"
-                                        name="presupuesto_restante_transporte_menor" 
-                                        value="$ {{number_format($presupuesto_transporte_menor->presupuesto_restante,'0',',','.')}}" autocomplete="off" autofocus title="" disabled>
-
-                                        @error('vlr_docen_min')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>                                 
-                                </div>  
-                                <div class="form-group row ml-1">
-                                    <div class="col-md-8">
-                                    <label for="presupuesto_transporte_menor" class="col-form-label text-md-left col-md-12" title=""><i class="" 
-                                        data-toggle="tooltip" data-placement="left" 
-                                        data-title="" style="font-size: 0.813rem"></i> Asignar Nuevo Presupuesto al transporte menor</label>
-                                        <input id="presupuesto_transporte_menor" type="text" class="form-control @error('vlr_docen_min') is-invalid @enderror col-md-12"
-                                        name="presupuesto_transporte_menor" 
-                                        value="0" autocomplete="off" autofocus title="" onchange="formatVlr(this)" oninput="checkEmptyInput(this)"
-                                        onfocus="clearDefaultValue(this)" onblur="restoreDefaultValue(this)" >
-                                    </div>                               
-                                </div>
-                            </div>  
-                            <hr class="divider">
-                            <!-- 5 -->
-
-                            
-
-                            <!-- submit -->
-                                <!-- 8 -->
-                                <div class="form-group row mb-0">
-                                    <div class="col-md-5 offset-md-5">
-                                        <br>
-                                        <button id="btnGuardarPresupuestoTM" type="submit" class="btn btn-success" name="submit">
-                                            {{ __('Actualizar') }}
-                                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="sumarModalTM" tabindex="-1" role="dialog">
+                            <br><br><br><br><br><br><br>
+                            <div class="modal-dialog mt-5" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">  
+                                        <div class="w-100">
+                                            <h5 class="modal-title mb-0">Sumar Presupuesto Transporte Menor</h5>
+                                            <p class="modal-title mt-0">(formulario para sumar más presupuesto al presupuesto actual)</p>
+                                        </div>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div>
+                                    <form id="formSumarPresupuestoTransporteMenor" method="POST" onsubmit="return confirmarGuardar(event)">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-body">
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label>ID Pres.</label>
+                                                    <input type="number" id="id_transporte_menor_sum" name="id_transporte_menor_sum" class="form-control" readonly>
+                                                </div>                                             
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-6">
+                                                    <label>Presupuesto inicial</label>
+                                                    <input type="text" id="presupuesto_inicial_tm_sum" name="presupuesto_inicial_tm_sum" class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Presupuesto restante</label>
+                                                    <input type="text" id="presupuesto_restante_tm_sum" name="presupuesto_restante_tm_sum" class="form-control" disabled>
+                                                </div>                                                
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <label>Ingresar presupuesto a sumar</label>
+                                                    <input type="text" id="sumar_presupuesto_transporte_menor" name="sumar_presupuesto_transporte_menor"
+                                                        class="form-control" value="0" autocomplete="off" autofocus title="" onchange="formatVlr(this)"
+                                                        oninput="checkEmptyInput(this)" onfocus="clearDefaultValue(this)" onblur="restoreDefaultValue(this)" required>
+                                                </div>                                              
+                                            </div>
+                                            <hr class="divider">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <h5>Previsualización Nuevo Presupuesto</h5>
+                                                </div>
+                                                    <div class="col-md-6">
+                                                    <label>Presupuesto inicial</label>
+                                                    <input type="text" id="prev_nuevo_presupuesto_inicial_tm" name="prev_nuevo_presupuesto_inicial_tm" class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Presupuesto restante</label>
+                                                    <input type="text" id="prev_nuevo_presupuesto_restante_tm" name="prev_nuevo_presupuesto_restante_tm" class="form-control" disabled>
+                                                </div>                                                                                            
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btnSumarPresupuestoTranspoteMenor" type="submit" class="btn btn-success" name="btnSumarPresupuestoTranspoteMenor">
+                                            {{ __('Guardar') }}
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <!-- 8 -->
-                            <!-- submit -->
-                        </form>                        
+                            </div>
+                        </div>
+                        <!-- Modal -->
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="actualizarModalTM" tabindex="-1" role="dialog">
+                            <br><br><br><br><br><br><br>
+                            <div class="modal-dialog mt-5" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">  
+                                        <div class="w-100">
+                                            <h5 class="modal-title mb-0">Actualizar Presupuesto Transporte Menor</h5>
+                                            <p class="modal-title mt-0">(formulario para reemplazar el presupuesto por uno nuevo )</p>
+                                        </div>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <form id="formActualizarPresupuestoTransporteMenor" method="POST" onsubmit="return confirmarGuardar(event)">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-body">
+                                            <div class="form-group row">
+                                                <div class="col-md-3">
+                                                    <label>ID Pres.</label>
+                                                    <input type="number" id="id_transporte_menor" name="id_transporte_menor" class="form-control" readonly>
+                                                </div>                                              
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-6">
+                                                    <label>Presupuesto inicial</label>
+                                                    <input type="text" id="presupuesto_inicial_tm" name="presupuesto_inicial_tm" class="form-control" disabled>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Presupuesto restante</label>
+                                                    <input type="text" id="presupuesto_restante_tm" name="presupuesto_restante_tm" class="form-control" disabled>
+                                                </div>                                                
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <label>Asignar nuevo presupuesto</label>
+                                                    <input type="text" id="nuevo_presupuesto_transporte_menor" name="nuevo_presupuesto_transporte_menor"
+                                                        class="form-control" value="0" autocomplete="off" autofocus title="" onchange="formatVlr(this)"
+                                                        oninput="checkEmptyInput(this)" onfocus="clearDefaultValue(this)" onblur="restoreDefaultValue(this)" required>
+                                                </div>                                             
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="btnActualizarPresupuestoTransporteMenor" type="submit" class="btn btn-success" name="btnActualizarPresupuestoTransporteMenor">
+                                            {{ __('Guardar') }}
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal -->             
                     </div>
                 </div>
             </div>

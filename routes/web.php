@@ -101,7 +101,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('presupuesto/update/{id}','Presupuesto\PresupuestoController@update')->name('presupuesto_update')->middleware('role:1,2,3');
         Route::put('presupuesto/sum/{id}','Presupuesto\PresupuestoController@sum')->name('presupuesto_sum')->middleware('role:1,2,3');
         Route::put('presupuesto_tm/update','Presupuesto\PresupuestoController@update_presupuesto_tm')->name('presupuesto_update_tm')->middleware('role:1,2,3');
-        Route::put('presupuesto_tm/sum','Presupuesto\PresupuestoController@sum_presupuesto_tm')->name('presupuesto_sum_tm')->middleware('role:1,2,3');
+        Route::put('presupuesto_tm/sum/{id}','Presupuesto\PresupuestoController@sum_presupuesto_tm')->name('presupuesto_sum_tm')->middleware('role:1,2,3');
         // ------> Presupuesto programas academicos <------
         
     });

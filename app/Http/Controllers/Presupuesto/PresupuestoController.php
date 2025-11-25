@@ -83,7 +83,8 @@ use DB;
         try{
         DB::beginTransaction(); 
             $presupuesto_programa_academico = presupuesto_programa_academico::where('id', '=', $id)->first();
-            $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('nuevo_presupuesto_programa_academico'));            
+            $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('nuevo_presupuesto_programa_academico'));
+            if($valor_formateado > 0){           
             $presupuesto_programa_academico->presupuesto_inicial = $valor_formateado;
             $presupuesto_programa_academico->presupuesto_actual = $valor_formateado;
              
@@ -95,6 +96,9 @@ use DB;
             $historico_presupuesto_programa_academico->fecha_update = $mytime;
             $presupuesto_programa_academico->update();
             $historico_presupuesto_programa_academico->save();
+            }else{
+                throw new \Exception('El nuevo presupuesto debe ser mayor a cero (0)');
+            }
         DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
@@ -116,7 +120,8 @@ use DB;
         try{
         DB::beginTransaction(); 
             $presupuesto_programa_academico = presupuesto_programa_academico::where('id', '=', $id)->first();
-            $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('sumar_presupuesto_programa_academico'));            
+            $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('sumar_presupuesto_programa_academico'));
+            if($valor_formateado > 0){       
             $presupuesto_programa_academico->presupuesto_inicial = $presupuesto_programa_academico->presupuesto_inicial + $valor_formateado;
             $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $valor_formateado;
              
@@ -128,6 +133,9 @@ use DB;
             $historico_presupuesto_programa_academico->fecha_update = $mytime;
             $presupuesto_programa_academico->update();
             $historico_presupuesto_programa_academico->save();
+            }else{
+                throw new \Exception('El nuevo presupuesto debe ser mayor a cero (0)');
+            }
         DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
@@ -148,9 +156,8 @@ use DB;
         $mytime = Carbon::now('America/Bogota');
         try{
         DB::beginTransaction();
-        $presupuesto_transporte_menor = presupuesto_transporte_menor::orderBy('id', 'desc')->first();
-        $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_transporte_menor'));
-        if($valor_formateado != 0){
+        $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('nuevo_presupuesto_transporte_menor'));
+        if($valor_formateado > 0){
         $presupuesto_transporte_menor = new presupuesto_transporte_menor;
         $presupuesto_transporte_menor->presupuesto_inicial = $valor_formateado;
         $presupuesto_transporte_menor->presupuesto_restante = $valor_formateado;
@@ -160,61 +167,42 @@ use DB;
         }else{
             throw new \Exception('El nuevo presupuesto debe ser mayor a cero (0)');
         }
-
-
         DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
             \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto del transporte menor: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto del transporte menor. Intentalo nuevamente. ' . $e->getMessage());
         }
-
-        $control_sistema = DB::table('control_sistema')->first();
-        $idUser = Auth::user()->id;
-        $usuario=DB::table('users')
-        ->where('id',$idUser)->first();
-        return view('home2',['usuario'=>$usuario,
-                            'control_sistema'=>$control_sistema,]);
-
+        return redirect()->back();
     }
 
     /**
-     * Actualiza el presupuesto del transporte menor
+     * Suma el presupuesto del transporte menor
      *
      * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function sum_presupuesto_tm(Request $request){
+    public function sum_presupuesto_tm(Request $request, $id){
         $mytime = Carbon::now('America/Bogota');
         try{
         DB::beginTransaction();
-        $presupuesto_transporte_menor = presupuesto_transporte_menor::orderBy('id', 'desc')->first();
-        $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_transporte_menor'));
-        if($valor_formateado != 0){
-        $presupuesto_transporte_menor = new presupuesto_transporte_menor;
-        $presupuesto_transporte_menor->presupuesto_inicial = $valor_formateado;
-        $presupuesto_transporte_menor->presupuesto_restante = $valor_formateado;
+        $presupuesto_transporte_menor = presupuesto_transporte_menor::where('id', $id)->first();
+        $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('sumar_presupuesto_transporte_menor'));
+        if($valor_formateado > 0){
+        $presupuesto_transporte_menor->presupuesto_inicial = $presupuesto_transporte_menor->presupuesto_inicial + $valor_formateado;
+        $presupuesto_transporte_menor->presupuesto_restante = $presupuesto_transporte_menor->presupuesto_restante + $valor_formateado;
         $presupuesto_transporte_menor->id_user_update = Auth::user()->id;
         $presupuesto_transporte_menor->fecha_update = $mytime;
-        $presupuesto_transporte_menor->save();
+        $presupuesto_transporte_menor->update();
         }else{
             throw new \Exception('El nuevo presupuesto debe ser mayor a cero (0)');
         }
-
-
         DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
             \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto del transporte menor: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto del transporte menor. Intentalo nuevamente. ' . $e->getMessage());
         }
-
-        $control_sistema = DB::table('control_sistema')->first();
-        $idUser = Auth::user()->id;
-        $usuario=DB::table('users')
-        ->where('id',$idUser)->first();
-        return view('home2',['usuario'=>$usuario,
-                            'control_sistema'=>$control_sistema,]);
-
+        return redirect()->back();
     }
 }

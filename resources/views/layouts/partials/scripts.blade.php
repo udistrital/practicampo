@@ -103,6 +103,53 @@
     });
 </script>
 <script>
+    $(document).on('click', '.btnActualizarPresupuestoTransporteMenor', function () {
+        var id = $(this).data('id');
+        var presupuesto_inicial = Number($(this).data('presupuesto_inicial_tm'))
+                                                .toLocaleString('es-CO');
+        var presupuesto_restante = Number($(this).data('presupuesto_restante_tm'))
+                                                .toLocaleString('es-CO');
+
+        $('#id_transporte_menor').val(id);
+        $('#presupuesto_inicial_tm').val('$ '+presupuesto_inicial);
+        $('#presupuesto_restante_tm').val('$ '+presupuesto_restante);
+
+        $('#formActualizarPresupuestoTransporteMenor').attr('action', '{{ route("presupuesto_update_tm", "") }}');
+
+    });
+</script>
+<script>
+    $(document).on('click', '.btnSumarPresupuestoTransporteMenor', function () {
+        var id = $(this).data('id');
+        var presupuesto_inicial = Number($(this).data('presupuesto_inicial_tm'))
+                                                .toLocaleString('es-CO');
+        var presupuesto_restante = Number($(this).data('presupuesto_restante_tm'))
+                                                .toLocaleString('es-CO');
+
+        $('#id_transporte_menor_sum').val(id);
+        $('#presupuesto_inicial_tm_sum').val(presupuesto_inicial);
+        $('#presupuesto_restante_tm_sum').val(presupuesto_restante);
+
+        $('#formSumarPresupuestoTransporteMenor').attr('action', '{{ route("presupuesto_sum_tm", "") }}/' + id);
+
+    });
+    $('#sumar_presupuesto_transporte_menor').on('input', function () {
+
+        var presupuesto_inicial = Number($('#presupuesto_inicial_tm_sum').val().replace(/\D/g, ""));  
+        var presupuesto_actual  = Number($('#presupuesto_restante_tm_sum').val().replace(/\D/g, ""));
+
+        var nuevo = Number($(this).val().replace(/\D/g, ""));
+
+        if (isNaN(nuevo)) nuevo = 0;
+
+        var nuevo_inicial  = Number(presupuesto_inicial + nuevo).toLocaleString('es-CO');
+        var nuevo_restante = Number(presupuesto_actual + nuevo).toLocaleString('es-CO');
+
+        $('#prev_nuevo_presupuesto_inicial_tm').val(nuevo_inicial);
+        $('#prev_nuevo_presupuesto_restante_tm').val(nuevo_restante);
+    });
+</script>
+<script>
     $(document).on('click', '.btnEditarProgramaAcademico', function () {
         var id = $(this).data('id');
         var programa_academico = $(this).data('programa_academico');
