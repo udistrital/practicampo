@@ -50,6 +50,68 @@
 
 <!-- functions-->
 <script>
+    $(document).on('click', '.btnTraspasarProgramacion', function (event) {
+        var id = $(this).data('id');
+
+        $.ajax({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/programaciones/cargar_docentes_traspaso/' + id,
+            type: 'POST',
+            success: function(response) {
+                var select = $('#selectDocentes');
+                select.empty();
+                if(response.docentes.length > 0){
+                    response.docentes.forEach(function(docente){
+                        var selected = (docente.id == response.id_docente_responsable) ? 'selected' : '';
+                        select.append('<option value="'+docente.id+'" '+selected+'>'+docente.full_name+'</option>')
+                    });
+                } else {
+                    select.append('<option value="">No hay docentes disponibles</option>');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                if(jqXHR.responseJSON && jqXHR.responseJSON.error){
+                    alert(jqXHR.responseJSON.error);
+                } else {
+                    alert("Ocurrió un error al cargar los docentes. Código: " + jqXHR.status);
+                }
+            }         
+        });
+        $('#formTraspasarProgramacion').attr('action', '{{ route("programacion_traspasar_update", "") }}/' + id);
+    });
+</script>
+<script>
+    $(document).on('click', '.btnTraspasarSolicitud', function (event) {
+        var id = $(this).data('id');
+
+        $.ajax({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/solicitudes/cargar_docentes_traspaso/' + id,
+            type: 'POST',
+            success: function(response) {
+                var select = $('#selectDocentes');
+                select.empty();
+                if(response.docentes.length > 0){
+                    response.docentes.forEach(function(docente){
+                        var selected = (docente.id == response.id_docente_responsable) ? 'selected' : '';
+                        select.append('<option value="'+docente.id+'" '+selected+'>'+docente.full_name+'</option>')
+                    });
+                } else {
+                    select.append('<option value="">No hay docentes disponibles</option>');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                if(jqXHR.responseJSON && jqXHR.responseJSON.error){
+                    alert(jqXHR.responseJSON.error);
+                } else {
+                    alert("Ocurrió un error al cargar los docentes. Código: " + jqXHR.status);
+                }
+            }         
+        });
+        $('#formTraspasarSolicitud').attr('action', '{{ route("solicitud_traspasar_update", "") }}/' + id);
+    });
+</script>
+<script>
     $(document).on('click', '.btnActualizarPresupuestoProgramaAcademico', function () {
         var id = $(this).data('id');
         var id_programa_academico = $(this).data('id_programa_academico');
@@ -372,8 +434,12 @@ function filtrar_programaciones(value)
         href = "{!! route('programacion_filter','edit_proy'); !!}";
         break
 
-	case '18':
-        href = "{!! route('programacion_filter','proy_recha_cons'); !!}";
+        case '18':
+            href = "{!! route('programacion_filter','proy_recha_cons'); !!}";
+            break
+
+        case '19':
+        href = "{!! route('programacion_filter','traspasar'); !!}";
         break
 
         default:
@@ -506,6 +572,10 @@ function filtrar_solicitudes(value)
 
         case '24':
         href = "{!! route('solicitud_filter','edit_sol'); !!}";
+        break
+
+        case '25':
+        href = "{!! route('solicitud_filter','traspasar'); !!}";
         break
 
         default:

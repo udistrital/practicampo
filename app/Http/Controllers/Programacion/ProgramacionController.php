@@ -734,6 +734,26 @@ class programacionController extends Controller
                         
                     break;
 
+                    case 'traspasar':
+                        $programacion=DB::table('programacion_practica as p_prel')
+                        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico',
+                                'p_prel.destino_rp','p_prel.fecha_salida_aprox_rp','p_prel.fecha_regreso_aprox_rp','es_coor.abrev as ab_coor',
+                                'es_dec.abrev  as ab_dec','es_consj.abrev  as es_consj','p_prel.confirm_creador',
+                                'p_prel.created_at as f_creacion')
+                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                        ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
+                        ->join('estado as es_dec','p_prel.aprobacion_decano','=','es_dec.id')
+                        ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
+                        ->where('id_docente_responsable','=',$idUser)
+                        ->where('p_prel.id_estado','=',1)
+                        ->whereIn('p_prel.aprobacion_coordinador', ['5','4'])
+                        ->whereIn('p_prel.aprobacion_decano', ['5','4'])
+                        
+                        ->paginate(10000);
+                        
+                    break;
+
                     default;
                 }
             break;
@@ -4455,6 +4475,67 @@ class programacionController extends Controller
         }
         return redirect('programaciones/filtrar/edit_proy');
     }
+
+    /**
+     * Carga de docentes para traspasar programación
+     * @param \Illuminate\Http\Request
+     * @param  Int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function cargar_docentes_traspaso($id){
+        $programacion = DB::table('programacion_practica')->where('id', $id)->first();
+        if(!$programacion){
+          return response()->json('No se ha encontrado la programación');
+        }
+        $docentes = DB::table('users as u')
+        ->where(function($q) use ($programacion){
+            $q->where('id_espacio_academico_1', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_2', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_3', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_4', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_5', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_6', $programacion->id_espacio_academico);
+        })
+        ->select('id',DB::raw('CONCAT_WS(" ", primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
+        ->get();
+
+        return response()->json([
+        'docentes' => $docentes,
+        'id_docente_responsable' => $programacion->id_docente_responsable ?? null
+    ]);
+    }
+
+    /**
+     * Traspasar Programación
+     * @param \Illuminate\Http\Request
+     * @param  Int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function traspasar_update(Request $request, $id){
+        try {
+            DB::beginTransaction();
+            $programacion = programacion::where('id', $id)->first();
+            $nuevo_docente = DB::table('users')
+            ->select('id',DB::raw('CONCAT_WS(" ", primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))        
+            ->where('id',$request->get('id_docente'));
+            $programacion->id_docente_responsable = $request->get('id_docente');
+            $transporte_menor = transporte_menor::where('id', $id)->first();
+            if($transporte_menor->cant_trans_menor_rp > 0){
+                $transporte_menor->docente_resp_t_menor_rp= $nuevo_docente->full_name;
+            }
+            if($transporte_menor->cant_trans_menor_ra > 0){
+                $transporte_menor->docente_resp_t_menor_ra= $nuevo_docente->full_name;
+            }
+            $programacion->update();
+            $transporte_menor->update();
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el docente responsable de la programación. Intentalo nuevamente. ' . $e->getMessage());
+        }
+        return redirect('programaciones/filtrar/traspasar');        
+    }
+
     /**
      * Ver Programación preliminar
      *

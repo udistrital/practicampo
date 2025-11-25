@@ -753,6 +753,75 @@ class SolicitudController extends Controller
         }
         return redirect('solicitudes/filtrar/edit_sol');
     }
+
+    /**
+     * Carga de docentes para traspasar programación
+     * @param \Illuminate\Http\Request
+     * @param  Int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function cargar_docentes_traspaso($id){
+        $programacion = DB::table('programacion_practica')->where('id', $id)->first();
+        if(!$programacion){
+          return response()->json('No se ha encontrado la programación');
+        }
+        $docentes = DB::table('users as u')
+        ->where(function($q) use ($programacion){
+            $q->where('id_espacio_academico_1', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_2', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_3', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_4', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_5', $programacion->id_espacio_academico)
+              ->orWhere('id_espacio_academico_6', $programacion->id_espacio_academico);
+        })
+        ->select('id',DB::raw('CONCAT_WS(" ", primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
+        ->get();
+
+        return response()->json([
+        'docentes' => $docentes,
+        'id_docente_responsable' => $programacion->id_docente_responsable ?? null
+    ]);
+    }
+
+    /**
+     * Traspasar Programación
+     * @param \Illuminate\Http\Request
+     * @param  Int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function traspasar_update(Request $request, $id){
+        try {
+            DB::beginTransaction();
+            $solicitud = solicitud::where('id_programacion_practica', $id)->first();
+            $programacion = programacion::where('id', $id)->first();
+            $nuevo_docente = DB::table('users')
+            ->select('id',DB::raw('CONCAT_WS(" ", primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))        
+            ->where('id',$request->get('id_docente'));
+            $programacion->id_docente_responsable = $request->get('id_docente');
+            $transporte_menor = transporte_menor::where('id', $id)->first();
+            if($solicitud->confirm_creador == 1){
+                $solicitud->id_docente_creador = $request->get('id_docente');
+            }
+            if($solicitud->confirm_docente == 1){
+                $solicitud->id_docente_confirm = $request->get('id_docente');
+            }
+            if($transporte_menor->cant_trans_menor_rp > 0){
+                $transporte_menor->docente_resp_t_menor_rp= $nuevo_docente->full_name;
+            }
+            if($transporte_menor->cant_trans_menor_ra > 0){
+                $transporte_menor->docente_resp_t_menor_ra= $nuevo_docente->full_name;
+            }
+            $solicitud->update();
+            $programacion->update();
+            $transporte_menor->update();
+            DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el docente responsable de la programación. Intentalo nuevamente. ' . $e->getMessage());
+        }
+        return redirect('programaciones/filtrar/traspasar');        
+    }
+    
     /**
      * Muestra formulario de solicitud
      *
@@ -4349,11 +4418,11 @@ class SolicitudController extends Controller
                         ->where('p_prel.aprobacion_consejo_facultad','=',3)
                         ->where('sol_prac.id_estado_solicitud_practica','=',5)
                         ->where('sol_prac.listado_estudiantes','=',0)
-			->where(function($query) {
-                            $query->where('sol_prac.aprobacion_coordinador', '=', 5)
-                                  ->orWhereNull('sol_prac.aprobacion_coordinador');
-                        })
-			->paginate(10000);
+                        ->where(function($query) {
+                                        $query->where('sol_prac.aprobacion_coordinador', '=', 5)
+                                            ->orWhereNull('sol_prac.aprobacion_coordinador');
+                                    })
+                        ->paginate(10000);
                         
                         return view('solicitudes.index',['programaciones'=>$programacion,
                                                             'programacion_practica'=>$programacion, 
@@ -4474,7 +4543,7 @@ class SolicitudController extends Controller
                         //$estudiantes=DB::table('estudiantes_solicitud_practica')->get();
                     break;
 
-		    case 'all':
+		            case 'all':
                         $espacios = DB::table('espacio_academico as esp_aca')
                         ->where('electiva','=',1)->get();
                         $programacion=DB::table('programacion_practica as p_prel')
@@ -4622,6 +4691,40 @@ class SolicitudController extends Controller
                                                             'usuario'=>$user_DB,
                                                             'control_sistema'=>$control_sistema]);
                     
+                    break;
+
+                    case 'traspasar':
+                        $programacion=DB::table('programacion_practica as p_prel')
+                        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico',
+                                'p_prel.destino_rp','p_prel.fecha_salida_aprox_rp','p_prel.fecha_regreso_aprox_rp','es_coor.abrev as ap_coor',
+                                'es_dec.abrev  as ap_dec','es_consj.abrev  as es_consj','p_prel.confirm_creador',
+                                'sol_prac.id as id_solicitud','sol_prac.aprobacion_coordinador as ap_coord','sol_prac.aprobacion_decano  as ap_deca',
+                                'sol_prac.tipo_ruta as tipo_ruta','sol_prac.listado_estudiantes', 'sol_prac.confirm_creador','sol_prac.confirm_docente')
+                        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+                        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+                        ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_programacion_practica')
+                        ->leftJoin('estado as es_coor', 'sol_prac.aprobacion_coordinador', '=', 'es_coor.id')
+                        ->leftJoin('estado as es_dec', 'sol_prac.aprobacion_decano', '=', 'es_dec.id')
+                        ->join('estado as es_consj','p_prel.aprobacion_consejo_facultad','=','es_consj.id')
+                        //->where('sol_prac.aprobacion_coordinador','!=',4)
+                        ->where('p_prel.confirm_creador','=',1)
+                        ->where('p_prel.confirm_docente','=',1)
+                        ->where('p_prel.confirm_coord','=',1)
+                        ->where('p_prel.confirm_asistD','=',1)
+                        ->where('p_prel.id_docente_responsable','=',$idUser)
+                        ->where('p_prel.id_estado','=',1)
+                        ->where('p_prel.aprobacion_consejo_facultad','=',3)
+                        ->where('sol_prac.id_estado_solicitud_practica','=',5)
+                        ->where('sol_prac.listado_estudiantes','=',0)
+                        ->where(function($query) {
+                            $query->whereIn('sol_prac.aprobacion_coordinador', [4,5])
+                                ->orWhereNull('sol_prac.aprobacion_coordinador');
+                        })
+                        ->where(function($query) {
+                            $query->whereIn('sol_prac.aprobacion_decano', [4,5])
+                                ->orWhereNull('sol_prac.aprobacion_decano');
+                        })
+                        ->paginate(10000);
                     break;
                     
                     default;

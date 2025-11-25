@@ -208,7 +208,14 @@ Route::group(['middleware' => 'auth'], function () {
         // ------> Espacios Académicos Routes <------
         Route::get('espacios_academicos','EspacioAcademico\EspacioAcademicoController@index')->name('edit_espacio_academico')->middleware('role:1,2,3');
         Route::post('espacios_academicos/create','EspacioAcademico\EspacioAcademicoController@create')->name('create_espacio_academico')->middleware('role:1,2,3');
-        Route::put('espacios_academicos/update/{id}','EspacioAcademico\EspacioAcademicoController@update')->name('update_espacio_academico')->middleware('role:1,2,3');  
+        Route::put('espacios_academicos/update/{id}','EspacioAcademico\EspacioAcademicoController@update')->name('update_espacio_academico')->middleware('role:1,2,3'); 
+        
+        // ------> Traspasar Programación/Solicitud <------
+        Route::post('/programaciones/cargar_docentes_traspaso/{id}', 'Programacion\ProgramacionController@cargar_docentes_traspaso')->middleware('role:5');
+        Route::put('programaciones/traspasar/update/{id}','Programacion\ProgramacionController@traspasar_update')->name('programacion_traspasar_update')->middleware('role:5');
+        Route::post('/solicitudes/cargar_docentes_traspaso/{id}', 'Solicitud\SolicitudController@cargar_docentes_traspaso')->middleware('role:5');
+        Route::put('solicitudes/traspasar/update/{id}','Solicitud\SolicitudController@traspasar_update')->name('solicitud_traspasar_update')->middleware('role:5');
+        // ------> Traspasar Programación/Solicitud <------
 
         // Search Routes...
         Route::post('buscar/espa_aca','Otros\EspacioAcademicoController@searchEspaAca')->name('espa_aca');
