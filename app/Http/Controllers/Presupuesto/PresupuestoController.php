@@ -42,8 +42,11 @@ use DB;
     public function index()
     {
         $control_sistema = DB::table('control_sistema')->first();
-	$presupuesto_programa_academico =DB::table('presupuesto_programa_academico')->get();
-	$presupuesto_transporte_menor = DB::table('presupuesto_transporte_menor')
+	    $presupuesto_programa_academico =DB::table('presupuesto_programa_academico as ppa')
+        ->select('ppa.*', 'pa.programa_academico')
+        ->join('programa_academico as pa','ppa.id_programa_academico','=','pa.id')
+        ->get();
+	    $presupuesto_transporte_menor = DB::table('presupuesto_transporte_menor')
             ->orderBy('id', 'desc')
             ->first();
         $idUser = Auth::user()->id;
@@ -63,43 +66,107 @@ use DB;
         ->get();
         return view('presupuesto.edit',['control_sistema'=>$control_sistema,
                                     'presupuesto_programa_academico'=>$presupuesto_programa_academico,
-				    'presupuesto_transporte_menor'=>$presupuesto_transporte_menor,
-				    'programa_academico'=>$programas_academicos,
+                                    'presupuesto_transporte_menor'=>$presupuesto_transporte_menor,
+                                    'programa_academico'=>$programas_academicos,
                                     'usuario'=>$usuario]);
     }
 
     /**
-     * Actualiza el presupuesto de los programas académicos
+     * Actualiza el presupuesto del programa académico
      *
      * @param  \Illuminate\Http\Request
+     * @param id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request){
+    public function update(Request $request, $id){
         $mytime = Carbon::now('America/Bogota');
         try{
         DB::beginTransaction(); 
-        $presupuesto_programa_academico =presupuesto_programa_academico::get();
-        foreach ($presupuesto_programa_academico as $presu_pa){
-            $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get($presu_pa->id_programa_academico));
-            if($valor_formateado != 0){                
-                $presu_pa->presupuesto_inicial = $valor_formateado;
-                $presu_pa->presupuesto_actual = $valor_formateado;
-                $presu_pa->update();
-
-                $historico_presupuesto_programa_academico = new historico_presupuesto_programa_academico;                      
-                $historico_presupuesto_programa_academico->id_presupuesto_programa = $presu_pa->id;
-                $historico_presupuesto_programa_academico->id_programa_academico = $presu_pa->id_programa_academico;
-                $historico_presupuesto_programa_academico->presupuesto_inicial_historico = $presu_pa->presupuesto_inicial;
-                $historico_presupuesto_programa_academico->id_user_update = Auth::user()->id;
-                $historico_presupuesto_programa_academico->fecha_update = $mytime;
-                $historico_presupuesto_programa_academico->save();
-            }            
-        };
+            $presupuesto_programa_academico = presupuesto_programa_academico::where('id', '=', $id)->first();
+            $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('nuevo_presupuesto_programa_academico'));            
+            $presupuesto_programa_academico->presupuesto_inicial = $valor_formateado;
+            $presupuesto_programa_academico->presupuesto_actual = $valor_formateado;
+             
+            $historico_presupuesto_programa_academico = new historico_presupuesto_programa_academico;                      
+            $historico_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
+            $historico_presupuesto_programa_academico->id_programa_academico = $presupuesto_programa_academico->id_programa_academico;
+            $historico_presupuesto_programa_academico->presupuesto_inicial_historico = $presupuesto_programa_academico->presupuesto_inicial;
+            $historico_presupuesto_programa_academico->id_user_update = Auth::user()->id;
+            $historico_presupuesto_programa_academico->fecha_update = $mytime;
+            $presupuesto_programa_academico->update();
+            $historico_presupuesto_programa_academico->save();
         DB::commit();
         }catch(\Exception $e){
             DB::rollBack();
             \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto inicial: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto. Intentalo nuevamente. ' . $e->getMessage());
+        }
+        return redirect()->back();
+
+    }
+
+    /**
+     * Suma el presupuesto del programa académico
+     *
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function sum(Request $request, $id){
+        $mytime = Carbon::now('America/Bogota');
+        try{
+        DB::beginTransaction(); 
+            $presupuesto_programa_academico = presupuesto_programa_academico::where('id', '=', $id)->first();
+            $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('sumar_presupuesto_programa_academico'));            
+            $presupuesto_programa_academico->presupuesto_inicial = $presupuesto_programa_academico->presupuesto_inicial + $valor_formateado;
+            $presupuesto_programa_academico->presupuesto_actual = $presupuesto_programa_academico->presupuesto_actual + $valor_formateado;
+             
+            $historico_presupuesto_programa_academico = new historico_presupuesto_programa_academico;                      
+            $historico_presupuesto_programa_academico->id_presupuesto_programa = $presupuesto_programa_academico->id;
+            $historico_presupuesto_programa_academico->id_programa_academico = $presupuesto_programa_academico->id_programa_academico;
+            $historico_presupuesto_programa_academico->presupuesto_inicial_historico = $valor_formateado;
+            $historico_presupuesto_programa_academico->id_user_update = Auth::user()->id;
+            $historico_presupuesto_programa_academico->fecha_update = $mytime;
+            $presupuesto_programa_academico->update();
+            $historico_presupuesto_programa_academico->save();
+        DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto inicial: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto. Intentalo nuevamente. ' . $e->getMessage());
+        }
+        return redirect()->back();
+
+    }
+
+    /**
+     * Actualiza el presupuesto del transporte menor
+     *
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function update_presupuesto_tm(Request $request){
+        $mytime = Carbon::now('America/Bogota');
+        try{
+        DB::beginTransaction();
+        $presupuesto_transporte_menor = presupuesto_transporte_menor::orderBy('id', 'desc')->first();
+        $valor_formateado = (int) str_replace(['$', '.', ' '], '', $request->get('presupuesto_transporte_menor'));
+        if($valor_formateado != 0){
+        $presupuesto_transporte_menor = new presupuesto_transporte_menor;
+        $presupuesto_transporte_menor->presupuesto_inicial = $valor_formateado;
+        $presupuesto_transporte_menor->presupuesto_restante = $valor_formateado;
+        $presupuesto_transporte_menor->id_user_update = Auth::user()->id;
+        $presupuesto_transporte_menor->fecha_update = $mytime;
+        $presupuesto_transporte_menor->save();
+        }else{
+            throw new \Exception('El nuevo presupuesto debe ser mayor a cero (0)');
+        }
+
+
+        DB::commit();
+        }catch(\Exception $e){
+            DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Error al guardar presupuesto del transporte menor: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el presupuesto del transporte menor. Intentalo nuevamente. ' . $e->getMessage());
         }
 
         $control_sistema = DB::table('control_sistema')->first();
@@ -117,7 +184,7 @@ use DB;
      * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
-    public function update_presupuesto_tm(Request $request){
+    public function sum_presupuesto_tm(Request $request){
         $mytime = Carbon::now('America/Bogota');
         try{
         DB::beginTransaction();

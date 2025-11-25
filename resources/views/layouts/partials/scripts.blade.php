@@ -49,7 +49,60 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- functions-->
- <script>
+<script>
+    $(document).on('click', '.btnActualizarPresupuestoProgramaAcademico', function () {
+        var id = $(this).data('id');
+        var id_programa_academico = $(this).data('id_programa_academico');
+        var programa_academico = $(this).data('programa_academico');
+        var presupuesto_inicial = Number($(this).data('presupuesto_inicial'))
+                                                .toLocaleString('es-CO');
+        var presupuesto_actual = Number($(this).data('presupuesto_actual'))
+                                                .toLocaleString('es-CO');
+
+        $('#id_programa_academico').val(id_programa_academico);
+        $('#programa_academico').val(programa_academico);
+        $('#presupuesto_inicial').val('$ '+presupuesto_inicial);
+        $('#presupuesto_actual').val('$ '+presupuesto_actual);
+
+        $('#formActualizarPresupuestoProgramaAcademico').attr('action', '{{ route("presupuesto_update", "") }}/' + id);
+
+    });
+</script>
+<script>
+    $(document).on('click', '.btnSumarPresupuestoProgramaAcademico', function () {
+        var id = $(this).data('id');
+        var id_programa_academico = $(this).data('id_programa_academico');
+        var programa_academico = $(this).data('programa_academico');
+        var presupuesto_inicial = Number($(this).data('presupuesto_inicial'))
+                                                .toLocaleString('es-CO');
+        var presupuesto_actual = Number($(this).data('presupuesto_actual'))
+                                                .toLocaleString('es-CO');
+
+        $('#id_programa_academico_sum').val(id_programa_academico);
+        $('#programa_academico_sum').val(programa_academico);
+        $('#presupuesto_inicial_sum').val(presupuesto_inicial);
+        $('#presupuesto_actual_sum').val(presupuesto_actual);
+
+        $('#formSumarPresupuestoProgramaAcademico').attr('action', '{{ route("presupuesto_sum", "") }}/' + id);
+
+    });
+    $('#sumar_presupuesto_programa_academico').on('input', function () {
+
+        var presupuesto_inicial = Number($('#presupuesto_inicial_sum').val().replace(/\D/g, ""));  
+        var presupuesto_actual  = Number($('#presupuesto_actual_sum').val().replace(/\D/g, ""));
+
+        var nuevo = Number($(this).val().replace(/\D/g, ""));
+
+        if (isNaN(nuevo)) nuevo = 0;
+
+        var nuevo_inicial  = Number(presupuesto_inicial + nuevo).toLocaleString('es-CO');
+        var nuevo_restante = Number(presupuesto_actual + nuevo).toLocaleString('es-CO');
+
+        $('#prev_nuevo_presupuesto_inicial').val(nuevo_inicial);
+        $('#prev_nuevo_presupuesto_actual').val(nuevo_restante);
+    });
+</script>
+<script>
     $(document).on('click', '.btnEditarProgramaAcademico', function () {
         var id = $(this).data('id');
         var programa_academico = $(this).data('programa_academico');
