@@ -45,7 +45,7 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
         $datos = [
             [""],
             ["","REPORTE PROGRAMACIONES APROBADAS POR CONSEJO DE FACULTAD",],
-            [""],
+            ["","(tener en cuenta la última fecha en que fue asignado el presupuesto)"],
             ["","Presupuesto Asignado:","","", $presupuesto->presupuesto_inicial,"","","Última Fecha de asignación de presupuesto:","","", $historico_presupuesto->fecha_update],
             [""],
             ["",
@@ -64,7 +64,7 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
                 "VALOR TRANSPORTE MENOR",
                 "VALOR GUIAS/BAQUIANOS",
                 "VALOR OTROS/BOLETAS",
-                "OBSERVACIONES"
+                "VALOR TOTAL"
             ],
             [""],
         ];
@@ -88,7 +88,13 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
                 'cp.viaticos_estudiantes_rp',
                 'cp.costo_total_transporte_menor_rp',
                 'cp.vlr_guias_baquianos_rp',
-                'cp.vlr_otros_boletas_rp',                
+                'cp.vlr_otros_boletas_rp',  
+                 DB::raw(' 
+                    COALESCE(cp.viaticos_docente_rp, 0) + 
+                    COALESCE(cp.viaticos_estudiantes_rp, 0) + 
+                    COALESCE(cp.costo_total_transporte_menor_rp, 0) + 
+                    COALESCE(cp.vlr_guias_baquianos_rp, 0) + 
+                    COALESCE(cp.vlr_otros_boletas_rp, 0) AS vlr_total'),             
             )
             ->leftJoin('docentes_practica as dp', 'dp.id', '=', 'p.id')
             ->join('practicas_integradas as pi', 'pi.id', '=', 'p.id')
@@ -122,6 +128,7 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
                 $p->costo_total_transporte_menor_rp,
                 $p->vlr_guias_baquianos_rp,
                 $p->vlr_otros_boletas_rp,
+                $p->vlr_total,
             ];
         }
         return $datos;
@@ -132,6 +139,7 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
         $lastRow = $sheet->getHighestRow();
 
         $sheet->mergeCells('B2:Q2');
+        $sheet->mergeCells('B3:D3');
         $sheet->mergeCells('B4:D4');
         $sheet->mergeCells('E4:G4');
         $sheet->mergeCells('H4:J4');
@@ -168,6 +176,10 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
             ]);
         
         }
+
+        $sheet->getStyle('B3')->applyFromArray([
+                'font' => ['bold' => true],
+            ]);
 
         $sheet->getStyle('B1:Q7')->applyFromArray([
             'alignment' => ['horizontal' => 'center', 'vertical' => 'center'],
@@ -209,7 +221,7 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
             ]);
         }
 
-        $sheet->getStyle('L:P')->applyFromArray([
+        $sheet->getStyle('L:Q')->applyFromArray([
             'numberFormat' => [
                 'formatCode' => '$ #,##0',
             ],
