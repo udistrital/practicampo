@@ -35,13 +35,25 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
 
     public function array(): array
     {
+        $usuario = DB::table('users as u')
+            ->select('id_programa_academico_coord')
+            ->where('id',Auth::user()->id)->first();
+        $presupuesto = DB::table('presupuesto_programa_academico')
+            ->where('id_programa_academico',$usuario->id_programa_academico_coord)->first();
+        $historico_presupuesto = DB::table('historico_presupuesto_programa_academico')
+            ->where('id_programa_academico',$usuario->id_programa_academico_coord)->orderBy('id', 'desc')->first();
         $datos = [
             [""],
-            ["","REPORTE PROGRAMACIONES APROBADAS POR CONSEJO DE FACULTAD"],
+            ["","REPORTE PROGRAMACIONES APROBADAS POR CONSEJO DE FACULTAD",],
+            [""],
+            ["","Presupuesto Asignado:","","", $presupuesto->presupuesto_inicial,"","","Última Fecha de asignación de presupuesto:","","", $historico_presupuesto->fecha_update],
             [""],
             ["",
+                "ID Prog.",
                 "PROGRAMA ACADÉMICO",
                 "ESPACIO ACADÉMICO",
+                "CÉDULA DOCENTE",
+                "NOMBRE DOCENTE",
                 "RUTA DESARROLLO SALIDA DE CAMPO",
                 "PERIODO ACADÉMICO",
                 "NÚMERO DE DÍAS",
@@ -60,14 +72,13 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
         $anio = $this->anio;
         $periodo = $this->periodo;
 
-        $usuario = DB::table('users as u')
-            ->select('id_programa_academico_coord')
-            ->where('id',Auth::user()->id)->first();
-
         $programaciones = DB::table('programacion_practica as p')
             ->select(
+                'p.id',
                 'pa.programa_academico',
                 'ea.espacio_academico',
+                'u.id as id_user',
+                DB::raw('CONCAT_WS(" ",u.primer_nombre, u.segundo_nombre, u.primer_apellido, u.segundo_apellido) as full_name'),
                 'p.det_recorrido_interno_rp',
                 DB::raw("CONCAT(p.anio_periodo, '-', p.id_periodo_academico) as periodo_academico"),
                 'p.duracion_num_dias_rp',
@@ -75,6 +86,7 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
                 DB::raw("COALESCE(dp.num_docentes_apoyo, 0) + COALESCE(pi.cant_espa_aca, 0) + 1 AS numero_docentes"),
                 'cp.viaticos_docente_rp',
                 'cp.viaticos_estudiantes_rp',
+                'cp.costo_total_transporte_menor_rp',
                 'cp.vlr_guias_baquianos_rp',
                 'cp.vlr_otros_boletas_rp',                
             )
@@ -95,8 +107,11 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
         foreach ($programaciones as $p) {
             $datos[] = [
                 "",
+                $p->id,
                 $p->programa_academico,
                 $p->espacio_academico,
+                $p->id_user,
+                $p->full_name,
                 $p->det_recorrido_interno_rp,
                 $p->periodo_academico,
                 $p->duracion_num_dias_rp,
@@ -104,9 +119,9 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
                 $p->numero_docentes,
                 $p->viaticos_docente_rp,
                 $p->viaticos_estudiantes_rp,
+                $p->costo_total_transporte_menor_rp,
                 $p->vlr_guias_baquianos_rp,
                 $p->vlr_otros_boletas_rp,
-                ""
             ];
         }
         return $datos;
@@ -116,13 +131,17 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
     {
         $lastRow = $sheet->getHighestRow();
 
-        $sheet->mergeCells('B2:N2');
-        $columnas = range('B', 'N');
+        $sheet->mergeCells('B2:Q2');
+        $sheet->mergeCells('B4:D4');
+        $sheet->mergeCells('E4:G4');
+        $sheet->mergeCells('H4:J4');
+        $sheet->mergeCells('K4:Q4');
+        $columnas = range('B', 'Q');
         foreach ($columnas as $col) {
-            $sheet->mergeCells("{$col}4:{$col}5");
+            $sheet->mergeCells("{$col}6:{$col}7");
         }
 
-        $sheet->getStyle("A1:O{$lastRow}")->applyFromArray([
+        $sheet->getStyle("A1:R{$lastRow}")->applyFromArray([
             'fill' => [
                 'fillType' => 'solid',
                 'color' => ['rgb' => 'FFFFFF']
@@ -131,7 +150,8 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
 
         $celdas = [
             'B2',
-            'B4','C4','D4','E4','F4','G4','H4','I4','J4','K4','L4','M4','N4'
+            'B4','H4',
+            'B6','C6','D6','E6','F6','G6','H6','I6','J6','K6','L6','M6','N6','O6','P6','Q6'
         ];
         foreach ($celdas as $celda){
             $sheet->getStyle($celda)->applyFromArray([
@@ -149,7 +169,7 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
         
         }
 
-        $sheet->getStyle('B1:N5')->applyFromArray([
+        $sheet->getStyle('B1:Q7')->applyFromArray([
             'alignment' => ['horizontal' => 'center', 'vertical' => 'center'],
         ]);
         
@@ -159,13 +179,13 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
             ]
         ]);
         
-        $sheet->getStyle("B4:N{$lastRow}")->applyFromArray([
+        $sheet->getStyle("B4:Q{$lastRow}")->applyFromArray([
             'font' => [
                 'size' => 14,
             ]
         ]);
 
-        $sheet->getStyle("A1:O{$lastRow}")->applyFromArray([
+        $sheet->getStyle("A1:R{$lastRow}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE
@@ -174,8 +194,9 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
         ]);
 
         $ranges = [
-            'B2:N2',
-            "B4:N{$lastRow}"
+            'B2:Q2',
+            'B4:Q4',
+            "B6:Q{$lastRow}"
         ];
         foreach ($ranges as $range) {
             $sheet->getStyle($range)->applyFromArray([
@@ -188,7 +209,12 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
             ]);
         }
 
-        $sheet->getStyle('I:M')->applyFromArray([
+        $sheet->getStyle('L:P')->applyFromArray([
+            'numberFormat' => [
+                'formatCode' => '$ #,##0',
+            ],
+        ]);
+        $sheet->getStyle('E4')->applyFromArray([
             'numberFormat' => [
                 'formatCode' => '$ #,##0',
             ],
@@ -217,19 +243,22 @@ class ProgramacionesAprobadasConsFacExport implements ShouldAutoSize, WithTitle,
     {
         return [
             'A' => 2.41,
-            'B' => 45.52,
-            'C' => 45.52,
-            'D' => 55.60,
-            'E' => 15,
-            'F' => 15,
-            'G' => 30,
+            'B' => 10,
+            'C' => 30,
+            'D' => 30,
+            'E' => 20,
+            'F' => 45.52,
+            'G' => 55.6015,
             'H' => 30,
-            'I' => 25,
+            'I' => 30,
             'J' => 25,
-            'K' => 30,
+            'K' => 25,
             'L' => 30,
-            'M' => 19,
+            'M' => 30,
             'N' => 19,
+            'O' => 19,
+            'P' => 19,
+            'Q' => 19,
         ];
     }
 }

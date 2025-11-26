@@ -352,7 +352,7 @@ class ExcelController extends Controller
             $anio = $request->input('anio');
             $periodo = $request->input('periodo');
             $mytime = Carbon::now('America/Bogota')->toDateString();
-            return Excel::download(new ReportProgramacionesAprobadasConsFac($anio,$periodo),'Programaciones_Aprobadas_Coordinacion_'.$anio.'-'.$periodo.'.xlsx');
+            return Excel::download(new ReportProgramacionesAprobadasConsFac($anio,$periodo),'Programaciones_Aprobadas_Consejo_Facultad_'.$anio.'-'.$periodo.'.xlsx');
         }
         catch(\Exception $ex)
         {
