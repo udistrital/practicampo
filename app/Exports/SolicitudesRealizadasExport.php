@@ -39,13 +39,13 @@ class SolicitudesRealizadasExport  implements  FromCollection, WithHeadings, Sho
         ->select('s.id',
                  DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'),
                  'p_aca.programa_academico','e_aca.espacio_academico',                 
-		 'p_prel.destino_rp','s.fecha_salida as fecha_salida_aprox_rp','s.fecha_regreso as fecha_regreso_aprox_rp',
-		 DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.viaticos_docente_rp ELSE cp.viaticos_docente_ra END AS viaticos_docente'),
+		        'p_prel.destino_rp','s.fecha_salida as fecha_salida_aprox_rp','s.fecha_regreso as fecha_regreso_aprox_rp',
+		        DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.viaticos_docente_rp ELSE cp.viaticos_docente_ra END AS viaticos_docente'),
                 DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.viaticos_estudiantes_rp ELSE cp.viaticos_estudiantes_ra END AS viaticos_estudiantes'),
                 DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.vlr_otros_boletas_rp ELSE cp.vlr_otros_boletas_ra END AS valor_otros_boletas'),
                 DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.vlr_guias_baquianos_rp ELSE cp.vlr_guias_baquianos_ra END AS valor_guias_baquianos'),
                 DB::raw('CASE WHEN s.tipo_ruta = 1 THEN cp.costo_total_transporte_menor_rp ELSE cp.costo_total_transporte_menor_ra END AS transporte_menor'),
-		 'ep.estado')
+		         'ep.estado')
         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
         ->join('users','p_prel.id_docente_responsable','=','users.id')

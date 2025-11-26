@@ -25,6 +25,9 @@ use Carbon\Carbon;
 use DB;
 use Exception;
 use PractiCampoUD\Exports\ReportPlanSalidasExport;
+use PractiCampoUD\Exports\ReportProgramacionesAprobadasConsFac;
+use PractiCampoUD\Exports\ReportProgramacionesAprobadasCoord;
+use PractiCampoUD\Exports\ReportSolicitudesAprobadasCoord;
 
 /**
  * Manejador de documentos 
@@ -292,7 +295,6 @@ class ExcelController extends Controller
             $fechaInicial = $request->input('fecha_inicial');
             $fechaFinal = $request->input('fecha_final');
             $mytime = Carbon::now('America/Bogota')->toDateString();
-            //dd("Solicitudes Aprobadas: ",$fechaInicial,$fechaFinal);
             return Excel::download(new ReportSolicitudesAprobadasExport($fechaInicial,$fechaFinal),'Solicitud_Transporte_'.$mytime.'.xlsx');
         }
         catch(\Exception $ex)
@@ -312,8 +314,64 @@ class ExcelController extends Controller
             $fechaInicial = $request->input('fecha_inicial');
             $fechaFinal = $request->input('fecha_final');
             $mytime = Carbon::now('America/Bogota')->toDateString();
-            //dd("Solicitudes Reazliadas: ",$fechaInicial,$fechaFinal);
             return Excel::download(new ReportSolicitudesRealizadasExport($fechaInicial,$fechaFinal),'Solicitudes_Realizadas_'.$mytime.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+
+    /**
+     * Exporta las programaciones aprobadas por coordinación
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_programaciones_aprobadas_coord(Request $request){
+        try
+        {
+            $anio = $request->input('anio');
+            $periodo = $request->input('periodo');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            return Excel::download(new ReportProgramacionesAprobadasCoord($anio,$periodo),'Programaciones_Aprobadas_Coordinacion_'.$anio.'-'.$periodo.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+
+    /**
+     * Exporta las programaciones aprobadas por consejo de facultad
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_programaciones_aprobadas_cons_fac(Request $request){
+        try
+        {
+            $anio = $request->input('anio');
+            $periodo = $request->input('periodo');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            return Excel::download(new ReportProgramacionesAprobadasConsFac($anio,$periodo),'Programaciones_Aprobadas_Coordinacion_'.$anio.'-'.$periodo.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+
+    /**
+     * Exporta las solicitudes aprobadas por coordinación
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_solicitudes_aprobadas_coord(Request $request){
+        try
+        {
+            $anio = $request->input('anio');
+            $periodo = $request->input('periodo');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            return Excel::download(new ReportSolicitudesAprobadasCoord($anio,$periodo),'Solicitudes_Aprobadas_Coordinacion_'.$anio.'-'.$periodo.'.xlsx');
         }
         catch(\Exception $ex)
         {

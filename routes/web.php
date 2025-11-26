@@ -129,10 +129,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('exp_formato_users','Excel\ExcelController@exportFormatoUsers')->name('exp_formato_users');
 
         // ------> Descargar Excel de solicitudes <------
-        Route::get('excel_solicitudes','Excel\ExcelController@excel_solicitudes_edit')->name('excel_solicitudes_edit')->middleware('role:1,2,3');
+        Route::get('excel_solicitudes','Excel\ExcelController@excel_solicitudes_edit')->name('excel_solicitudes_edit')->middleware('role:1,2,3,4');
         Route::get('excel_programaciones_plan_salidas','Excel\ExcelController@excel_programaciones_plan_salidas')->name('excel_programaciones_plan_salidas')->middleware('role:1,2,3');
+        Route::get('excel_historico_presupuestos','Excel\ExcelController@excel_historico_presupuestos')->name('excel_historico_presupuestos')->middleware('role:1,2,3');
         Route::get('excel_solicitudes_aprobadas_transporte','Excel\ExcelController@excel_solicitudes_aprobadas_transporte')->name('excel_solicitudes_aprobadas_transporte')->middleware('role:1,2,3');
         Route::get('excel_solicitudes_realizadas','Excel\ExcelController@excel_solicitudes_realizadas')->name('excel_solicitudes_realizadas')->middleware('role:1,2,3');
+        Route::get('excel_programaciones_aprobadas_coord','Excel\ExcelController@excel_programaciones_aprobadas_coord')->name('excel_programaciones_aprobadas_coord')->middleware('role:4');
+        Route::get('excel_programaciones_aprobadas_cons_fac','Excel\ExcelController@excel_programaciones_aprobadas_cons_fac')->name('excel_programaciones_aprobadas_cons_fac')->middleware('role:4');
+        Route::get('excel_solicitudes_aprobadas_coord','Excel\ExcelController@excel_solicitudes_aprobadas_coord')->name('excel_solicitudes_aprobadas_coord')->middleware('role:4');
         // ------> Descargar Excel de solicitudes <------
 
         // ------> PDF Routes <------
