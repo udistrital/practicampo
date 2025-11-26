@@ -76,15 +76,30 @@
                   <div class="bg-nav py-2 collapse-inner rounded">
                     {{-- @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD() || Auth::user()->coordinador() || Auth::user()->docente() || Auth::user()->transportador()) --}}
                     <a class="collapse-item" href="{{url('solicitudes/filtrar/all') }}">Listar Solicitudes </a>
-                      @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD() || Auth::user()->coordinador())            
-                        <a class="collapse-item" href="{{url('excel_solicitudes') }}"> Generar Reportes </a>
-                      @endif
                     {{-- @endif --}}                    
                   </div>
                 </div>
               </li>
               <!-- Nav Item - Pages Collapse Menu solicitudes -->
             @endif
+
+            <!-- Nav Item - Pages Collapse Menu solicitudes -->
+            @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD() || Auth::user()->coordinador())   
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="#collapseTFour" data-toggle="collapse" data-target="#collapseTFour" aria-expanded="true" aria-controls="collapseThree">
+                  <i class="fas fa-fw fa-clipboard-check"></i>
+                  <span>REPORTES</span>
+                </a>
+                <div id="collapseTFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
+                  <div class="bg-nav py-2 collapse-inner rounded">
+                               
+                        <a class="collapse-item" href="{{url('excel_solicitudes') }}"> Generar Reportes </a>
+                                     
+                  </div>
+                </div>
+              </li>
+            @endif   
+            <!-- Nav Item - Pages Collapse Menu solicitudes -->
           
           @endif
           <!-- Nav Item - Pages Collapse Menu Firma litográfica -->
