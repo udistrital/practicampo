@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DB;
 use Exception;
+use PractiCampoUD\Exports\ReportPlanSalidasExport;
 
 /**
  * Manejador de documentos 
@@ -262,6 +263,25 @@ class ExcelController extends Controller
     }
 
     /**
+     * Exporta las programaciones para el plan de salidas de campo
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_programaciones_plan_salidas(Request $request){
+        try
+        {
+            $fechaInicial = $request->input('fecha_inicial');
+            $fechaFinal = $request->input('fecha_final');
+            $mytime = Carbon::now('America/Bogota')->year + 1;
+            //dd("Solicitudes Aprobadas: ",$fechaInicial,$fechaFinal);
+            return Excel::download(new ReportPlanSalidasExport($fechaInicial,$fechaFinal),'Plan_salidas_de_campo_'.$mytime.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+    /**
      * Exporta las prácticas aprobadas para la solicitud de transporte
      *
      * @return \Illuminate\Http\Response
@@ -277,7 +297,7 @@ class ExcelController extends Controller
         }
         catch(\Exception $ex)
         {
-            return back()->withError('Falla al descargar excel');
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
         }
     }
 
@@ -297,7 +317,7 @@ class ExcelController extends Controller
         }
         catch(\Exception $ex)
         {
-            return back()->withError('Falla al descargar excel'.$ex);
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
         }
     }
 

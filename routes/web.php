@@ -130,6 +130,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         // ------> Descargar Excel de solicitudes <------
         Route::get('excel_solicitudes','Excel\ExcelController@excel_solicitudes_edit')->name('excel_solicitudes_edit')->middleware('role:1,2,3');
+        Route::get('excel_programaciones_plan_salidas','Excel\ExcelController@excel_programaciones_plan_salidas')->name('excel_programaciones_plan_salidas')->middleware('role:1,2,3');
         Route::get('excel_solicitudes_aprobadas_transporte','Excel\ExcelController@excel_solicitudes_aprobadas_transporte')->name('excel_solicitudes_aprobadas_transporte')->middleware('role:1,2,3');
         Route::get('excel_solicitudes_realizadas','Excel\ExcelController@excel_solicitudes_realizadas')->name('excel_solicitudes_realizadas')->middleware('role:1,2,3');
         // ------> Descargar Excel de solicitudes <------
