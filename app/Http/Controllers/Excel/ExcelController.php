@@ -293,7 +293,7 @@ class ExcelController extends Controller
             $fechaFinal = $request->input('fecha_final');
             $mytime = Carbon::now('America/Bogota')->toDateString();
             //dd("Solicitudes Aprobadas: ",$fechaInicial,$fechaFinal);
-            return Excel::download(new ReportSolicitudesAprobadasExport($fechaInicial,$fechaFinal),'Solicitudes_Aprobadas_'.$mytime.'.xlsx');
+            return Excel::download(new ReportSolicitudesAprobadasExport($fechaInicial,$fechaFinal),'Solicitud_Transporte_'.$mytime.'.xlsx');
         }
         catch(\Exception $ex)
         {

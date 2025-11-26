@@ -15,9 +15,7 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-use function PHPSTORM_META\map;
-
-class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithStyles, WithDrawings, WithColumnWidths
+class SolicitudesAprobadasExport implements ShouldAutoSize, WithTitle, FromArray, WithStyles, WithDrawings, WithColumnWidths
 {
     use Exportable;
 
@@ -40,79 +38,92 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
     {
         $datos = [
             [""],
-            ["","", "FORMATO: PLAN DE SALIDAS DE CAMPO", "", "","","", "","","", "Código: GD-PR-010-FR-XXX", "", ""],
-            ["","", "Macroproceso: Direccionamiento Estratégico", "", "","","", "","","", "Verisón: 001", "", ""],
-            ["","", "Proceso: Currículo y Calidad", "", "","","", "","","", "Fecha de Aprobación:", "", ""],
+            ["","", "FORMATO: PLAN DE SALIDAS DE CAMPO", "", "","","", "","","","","","","","","", "Código: GD-PR-010-FR-XXX", "", ""],
+            ["","", "Macroproceso: Direccionamiento Estratégico", "", "","","", "","","","","","","","","", "Verisón: 001", "", ""],
+            ["","", "Proceso: Currículo y Calidad", "", "","","", "","","","","","","","","", "Fecha de Aprobación:", "", ""],
             [""],
-            ["","FACULTAD", "MEDIO AMBIENTE Y RECURSOS NATURALES"],
+            ["","FACULTAD", "Medio Ambiente y Recursos Naturales"],
             ["","VIGENCIA", ""],
             [""],
-            ["","APROBACIÓN CONSEJO DE FACULTAD", "NÚMERO DE ACTA:","","","","", "FECHA DE APROBACIÓN:","",""],
-            [""],
-            ["","PLAN DE SALIDAS DE CAMPO"],
+            ["","SOLICITUD DE TRANSPORTE SALIDAS DE CAMPO"],
             [""],
             ["",
-                "PROGRAMA ACADÉMICO",
-                "ESPACIO ACADÉMICO",
-                "RUTA DESARROLLO SALIDA DE CAMPO",
-                "PERIODO ACADÉMICO",
-                "NÚMERO DE DÍAS",
-                "NÚMERO ESTUDIANTES",
-                "NÚMERO DOCENTES",
-                "VIÁTICOS DOCENTES",
-                "VIÁTICOS ESTUDIANTES",
-                "VALOR TRANSPORTE MENOR",
-                "VALOR GUIAS/BAQUIANOS",
-                "VALOR OTROS/BOLETAS",
-                "OBSERVACIONES"
+                "No",
+                "CONSECUTIVO SOLICITUD DE FACULTAD",
+                "FACULTAD",
+                "FECHA DE SOLICITUD",
+                "ITEM (EMPRESA DE TRANSPORTE)",
+                "RECORRIDO INTERNO (EMPRESA DE TRANSPORTE)",
+                "RUTA SALIDA DE CAMPO",
+                "SEDE SALIDA",
+                "SEDE REGRESO",
+                "DIAS SERVICIO",
+                "No PASAJEROS",
+                "FECHA SALIDA",
+                "HORA SALIDA",
+                "FECHA REGRESO",
+                "HORA REGRESO",
+                "DOCENTE ENCARGADO",
+                "CÉDULA",
+                "CELULAR DE CONTACTO",
+                "OBSERVACIÓN",
             ],
             [""],
         ];
 
         $fecha_inicial = Carbon::parse($this->fecha_inicial)->format('Y-m-d');
         $fecha_final = Carbon::parse($this->fecha_final)->format('Y-m-d');
-
-        $programaciones = DB::table('programacion_practica as p')
+        $mytime = Carbon::now('America/Bogota')->toDateString();
+        $solicitudes = DB::table('solicitud_practica as s')
             ->select(
-                'pa.programa_academico',
-                'ea.espacio_academico',
-                'p.det_recorrido_interno_rp',
-                DB::raw("CONCAT(p.anio_periodo, '-', p.id_periodo_academico) as periodo_academico"),
-                'p.duracion_num_dias_rp',
-                DB::raw("COALESCE(p.num_estudiantes_aprox, 0) AS numero_estudiantes"),
-                DB::raw("COALESCE(dp.num_docentes_apoyo, 0) + COALESCE(pi.cant_espa_aca, 0) + 1 AS numero_docentes"),
-                'cp.viaticos_docente_rp',
-                'cp.viaticos_estudiantes_rp',
-                'cp.vlr_guias_baquianos_rp',
-                'cp.vlr_otros_boletas_rp',
-                
+                's.id',                
+                's.consec_dfamarena',
+                DB::raw("CASE WHEN s.tipo_ruta = 1 THEN p.destino_rp ELSE p.destino_ra END AS destino"),
+                DB::raw("CASE WHEN s.tipo_ruta = 1 THEN p.det_recorrido_interno_rp ELSE p.det_recorrido_interno_ra END AS ruta"),
+                DB::raw("CASE WHEN s.tipo_ruta = 1 THEN (SELECT CONCAT('SEDE ',sede,' ',direccion) FROM sedes_universidad WHERE id = p.lugar_salida_rp) ELSE (SELECT CONCAT('SEDE ',sede,' ',direccion) FROM sedes_universidad WHERE id = p.lugar_salida_ra) END AS sede_salida"),
+                DB::raw("CASE WHEN s.tipo_ruta = 1 THEN (SELECT CONCAT('SEDE ',sede,' ',direccion) FROM sedes_universidad WHERE id = p.lugar_regreso_rp) ELSE (SELECT CONCAT('SEDE ',sede,' ',direccion) FROM sedes_universidad WHERE id = p.lugar_regreso_ra) END AS sede_regreso"),
+                's.duracion_num_dias',
+                 DB::raw("COALESCE(s.num_estudiantes, 0) + COALESCE(dp.num_docentes_apoyo, 0) + COALESCE(pi.cant_espa_aca, 0) + 1 AS numero_pasajeros"),
+                's.fecha_salida',
+                's.hora_salida',
+                's.fecha_regreso',
+                's.hora_regreso',
+                DB::raw("CONCAT(u.primer_nombre, ' ', u.primer_apellido) as nombre_docente"),
+                'u.id as id_user',                
+                'u.celular',
             )
+            ->join('programacion_practica as p', 'p.id', '=', 's.id_programacion_practica')
             ->leftJoin('docentes_practica as dp', 'dp.id', '=', 'p.id')
             ->join('practicas_integradas as pi', 'pi.id', '=', 'p.id')
-            ->join('users as u', 'u.id', '=', 'p.id_docente_responsable')
+            ->join('users as u', 'u.id', '=', 's.id_docente_creador')
             ->join('programa_academico as pa', 'pa.id', '=', 'p.id_programa_academico')
             ->join('espacio_academico as ea', 'ea.id', '=', 'p.id_espacio_academico')
-            ->join('costos_programacion as cp', 'cp.id', '=', 'p.id')
-            ->where('p.aprobacion_decano', '=', 7)
-            ->where('p.aprobacion_consejo_facultad', '=', 3)
-            ->whereBetween('p.fecha_salida_aprox_rp', [$fecha_inicial, $fecha_final])
-            ->orderBy('pa.programa_academico','ASC')
+            ->where('s.aprobacion_decano', '=', 7)
+            ->where('s.id_estado_solicitud_practica', '=', 3)
+            ->whereBetween('s.fecha_salida', [$fecha_inicial, $fecha_final])
             ->get();
 
-        foreach ($programaciones as $p) {
+        foreach ($solicitudes as $s) {
             $datos[] = [
                 "",
-                $p->programa_academico,
-                $p->espacio_academico,
-                $p->det_recorrido_interno_rp,
-                $p->periodo_academico,
-                $p->duracion_num_dias_rp,
-                $p->numero_estudiantes,
-                $p->numero_docentes,
-                $p->viaticos_docente_rp,
-                $p->viaticos_estudiantes_rp,
-                $p->vlr_guias_baquianos_rp,
-                $p->vlr_otros_boletas_rp,
+                $s->id,
+                $s->consec_dfamarena,
+                "MEDIO AMBIENTE Y RECURSOS NATURALES",
+                $mytime,
+                "",
+                $s->destino,
+                $s->ruta,
+                $s->sede_salida,
+                $s->sede_regreso,
+                $s->duracion_num_dias,
+                $s->numero_pasajeros,
+                $s->fecha_salida,
+                $s->hora_salida,
+                $s->fecha_regreso,
+                $s->hora_regreso,
+                $s->nombre_docente,
+                $s->id_user,
+                $s->celular,
                 ""
             ];
         }
@@ -124,33 +135,31 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
         $lastRow = $sheet->getHighestRow();
 
         $sheet->mergeCells('B2:B4');
-        $sheet->mergeCells('C2:J2');
-        $sheet->mergeCells('C3:J3');
-        $sheet->mergeCells('C4:J4');
-        $sheet->mergeCells('K2:L2');
-        $sheet->mergeCells('K3:L3');
-        $sheet->mergeCells('K4:L4');
-        $sheet->mergeCells('M2:N4');
-        $sheet->mergeCells('C6:N6');
-        $sheet->mergeCells('C7:N7');
-        $sheet->mergeCells('D9:G9');
-        $sheet->mergeCells('I9:N9');
-        $sheet->mergeCells('B11:N11');
-        $columnas = range('B', 'N');
+        $sheet->mergeCells('C2:P2');
+        $sheet->mergeCells('C3:P3');
+        $sheet->mergeCells('C4:P4');
+        $sheet->mergeCells('Q2:R2');
+        $sheet->mergeCells('Q3:R3');
+        $sheet->mergeCells('Q4:R4');
+        $sheet->mergeCells('S2:T4');
+        $sheet->mergeCells('C6:T6');
+        $sheet->mergeCells('C7:T7');
+        $sheet->mergeCells('B9:T9');
+        $columnas = range('B', 'T');
         foreach ($columnas as $col) {
-            $sheet->mergeCells("{$col}13:{$col}14");
+            $sheet->mergeCells("{$col}11:{$col}12");
         }
 
-        $sheet->getStyle("A1:O{$lastRow}")->applyFromArray([
+        $sheet->getStyle("A1:U{$lastRow}")->applyFromArray([
             'fill' => [
                 'fillType' => 'solid',
                 'color' => ['rgb' => 'FFFFFF']
             ],
         ]);
         $celdas = [
-            'K2','L2',
-            'C3','D3','E3','F3','G3','H3','I3','J3','K3', 'L3',
-            'C4','D4','E4','F4','G4','H4','I4','J4','K4', 'L4',
+            'Q2','R2',
+            'C3','D3','E3','F3','G3','H3','I3','J3','K3', 'L3', 'M3', 'N3', 'O3', 'P3', 'Q3', 'R3',
+            'C4','D4','E4','F4','G4','H4','I4','J4','K4', 'L4', 'M4', 'N4', 'O4', 'P4', 'Q4', 'R4',
         ];
 
         foreach ($celdas as $celda) {
@@ -176,9 +185,9 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
         $celdas = [
             'B6',
             'B7',
-            'C9','H9',
-            'B11','C11','D11','E11','F11','G11','H11','I11', 'J11', 'K11', 'L11', 'M11', 'N11',
-            'B13','C13','D13','E13','F13','G13','H13','I13', 'J13', 'K13', 'L13', 'M13', 'N13',
+            'B9','C9','D9','E9','F9','G9','H9','I9','J9','K9','L9','M9','N9','O9','P9','Q9','R9','S9','T9',
+            'B11','C11','D11','E11','F11','G11','H11','I11', 'J11', 'K11', 'L11', 'M11', 'N11', 'O11', 'P11', 'Q11', 'R11', 'S11', 'T11',
+            
         ];
         foreach ($celdas as $celda){
             $sheet->getStyle($celda)->applyFromArray([
@@ -196,30 +205,23 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
         
         }
 
-        $sheet->getStyle('B9')->applyFromArray([
-                'fill' => [
-                    'fillType' => 'solid',
-                    'color' => ['rgb' => 'F2F2F2']
-                ],
-            ]);
-
-        $sheet->getStyle('B1:N13')->applyFromArray([
+        $sheet->getStyle('B1:T11')->applyFromArray([
             'alignment' => ['horizontal' => 'center', 'vertical' => 'center'],
         ]);
         
-        $sheet->getStyle('B2:N4')->applyFromArray([
+        $sheet->getStyle('B2:T4')->applyFromArray([
             'font' => [
                 'size' => 16,
             ]
         ]);
         
-        $sheet->getStyle("B6:N{$lastRow}")->applyFromArray([
+        $sheet->getStyle("B6:T{$lastRow}")->applyFromArray([
             'font' => [
                 'size' => 14,
             ]
         ]);
 
-        $sheet->getStyle("A1:O{$lastRow}")->applyFromArray([
+        $sheet->getStyle("A1:U{$lastRow}")->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_NONE
@@ -227,11 +229,11 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
             ]
         ]);
         $ranges = [
-            'B2:N4',
-            'B6:N7',
-            'B9:N9',
-            'B11:N11',
-            "B13:N{$lastRow}"
+            'B2:T4',
+            'B6:T7',
+            'B9:T9',
+            'B9:T9',
+            "B11:T{$lastRow}"
         ];
 
         foreach ($ranges as $range) {
@@ -245,18 +247,12 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
             ]);
         }
 
-        $sheet->getStyle('I:M')->applyFromArray([
-            'numberFormat' => [
-                'formatCode' => '$ #,##0',
-            ],
-        ]);
-
-        $filas = [2, 3, 4, 6, 7, 9, 11];
+        $filas = [2, 3, 4, 6, 7, 9];
         foreach ($filas as $fila) {
             $sheet->getRowDimension($fila)->setRowHeight(40);
         }
 
-        for ($i = 13; $i <= $lastRow; $i++) {
+        for ($i = 11; $i <= $lastRow; $i++) {
             $sheet->getRowDimension($i)->setRowHeight(40);
         }
 
@@ -287,7 +283,7 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
         $logo2->setPath(public_path('img/sigud2.jpg'));
         $logo2->setHeight(150);
         $logo2->setWidth(240);
-        $logo2->setCoordinates('M2');
+        $logo2->setCoordinates('S2');
         $logo2->setOffsetX(15);
         $logo2->setOffsetY(55);
 
@@ -307,10 +303,16 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
             'H' => 30,
             'I' => 25,
             'J' => 25,
-            'K' => 30,
-            'L' => 30,
-            'M' => 19,
-            'N' => 19,
+            'K' => 15,
+            'L' => 15,
+            'M' => 25,
+            'N' => 15,
+            'O' => 25,
+            'P' => 15,
+            'Q' => 25,
+            'R' => 25,
+            'S' => 19,
+            'T' => 19,
         ];
     }
 }

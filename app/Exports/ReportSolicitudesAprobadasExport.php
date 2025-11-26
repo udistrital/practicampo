@@ -19,7 +19,7 @@ class ReportSolicitudesAprobadasExport implements WithMultipleSheets
     {
         $sheets = [];
 
-         $sheets[] = new SolicituesAprobadasExport($this->fecha_inicial,$this->fecha_final);
+         $sheets[] = new SolicitudesAprobadasExport($this->fecha_inicial,$this->fecha_final);
          
         return $sheets;
     }
