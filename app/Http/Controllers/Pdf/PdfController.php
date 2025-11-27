@@ -1902,7 +1902,93 @@ class PdfController extends Controller
                 ->join('roles as rol','users.id_role','rol.id')
                 ->where('id_estado','=',1)
                 ->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+        $docente_responsable = DB::table('users')
+                    ->select('users.firma_litografica','users.tiene_firma', 'users.id', 'tip_vinc.tipo_vinculacion as tipo_vinculacion',
+                        'users.celular','users.email',
+                        DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                    ->join('solicitud_practica as sol_prac','users.id','sol_prac.id_docente_creador')
+                    ->join('roles as rol','users.id_role','rol.id')
+                    ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
+                    ->where('id_estado','=',1)
+                    ->where('users.id','=',$solicitudes_practica->id_docente_responsable)->first();
+            $docentes_responsables[] = [
+                'id' => $docente_responsable->id,
+                'nombre' => $docente_responsable->full_name,
+                'firma' => "data:image/png;base64,".$docente_responsable->firma_litografica,
+                'tipo_vinculacion' => $docente_responsable->tipo_vinculacion,
+                'celular' => $docente_responsable->celular,
+                'email' => $docente_responsable->email
+            ];
 
+            for($i=1; $i<=$practicas_integradas->cant_espa_aca; $i++){
+                $id = "id_docen_espa_aca_$i";
+                $es_responsable = "es_responsable_$i";
+
+                if($practicas_integradas->$es_responsable == 1){
+                    $docente = DB::table('users')
+                        ->select('firma_litografica', 'tiene_firma',  'users.id', 'tip_vinc.tipo_vinculacion as tipo_vinculacion',
+                            'users.celular','users.email',
+                            DB::raw('CONCAT_WS(" ",primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
+                        ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
+                        ->where('users.id', $practicas_integradas->$id)
+                        ->first();
+
+                    if($docente){
+                        $docentes_responsables[] = [
+                            'id' => $docente->id,
+                            'nombre' => $docente->full_name,
+                            'firma' => "data:image/png;base64,".$docente->firma_litografica,
+                            'tipo_vinculacion' => $docente->tipo_vinculacion,
+                            'celular' => $docente->celular,
+                            'email' => $docente->email
+                        ];
+                    }else{
+                        $docentes_responsables[] = [
+                            'id' => 0,
+                            'nombre' => "",
+                            'firma' => "",
+                            'tipo_vinculacion' => "",
+                            'celular' => 0,
+                            'email' => ""
+                        ];
+                    }
+                }
+            }
+
+            for($i=1; $i<=$docentes_practica->num_docentes_apoyo; $i++){
+                $id = "num_doc_docente_apoyo_$i";
+                $es_responsable = "es_responsable_$i";
+
+                if($docentes_practica->$es_responsable == 1){
+                    $docente = DB::table('users')
+                        ->select('firma_litografica', 'tiene_firma',  'users.id', 'tip_vinc.tipo_vinculacion as tipo_vinculacion',
+                            'users.celular','users.email',
+                            DB::raw('CONCAT_WS(" ",primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) as full_name'))
+                        ->join('tipo_vinculacion as tip_vinc','users.id_tipo_vinculacion','=','tip_vinc.id')
+                        ->where('users.id', $docentes_practica->$id)
+                        ->first();
+
+                    if($docente){
+                        $docentes_responsables[] = [
+                            'id' => $docente->id,
+                            'nombre' => $docente->full_name,
+                            'firma' => "data:image/png;base64,".$docente->firma_litografica,
+                            'tipo_vinculacion' => $docente->tipo_vinculacion,
+                            'celular' => $docente->celular,
+                            'email' => $docente->email
+                        ];
+                    }else{
+                        $docentes_responsables[] = [
+                            'id' => 0,
+                            'nombre' => "",
+                            'firma' => "",
+                            'tipo_vinculacion' => "",
+                            'celular' => 0,
+                            'email' => ""
+                        ];
+                    }
+                }
+            }
         $tipo_transporte = new stdClass;
         $tipo_transporte_1 = new stdClass;
         $tipo_transporte_2 = new stdClass;
@@ -2155,8 +2241,6 @@ class PdfController extends Controller
         // $espa_pract_int[] =['espacio_academico'=>$solicitudes_practica->espacio_academico,
         //                     'codigo_espacio_academico'=>$solicitudes_practica->codigo_espacio_academico];
 
-        $docentes_acompanantes = DB::table('docentes_practica as acompa')->select('acompa.id','acompa.total_docentes_apoyo','acompa.num_doc_docente_apoyo_1','acompa.num_doc_docente_apoyo_2','acompa.num_doc_docente_apoyo_3','acompa.num_doc_docente_apoyo_4','acompa.num_doc_docente_apoyo_5','acompa.num_doc_docente_apoyo_6','acompa.num_doc_docente_apoyo_7','acompa.num_doc_docente_apoyo_8','acompa.num_doc_docente_apoyo_9','acompa.num_doc_docente_apoyo_10','acompa.docente_apoyo_1','acompa.docente_apoyo_2','acompa.docente_apoyo_3','acompa.docente_apoyo_4','acompa.docente_apoyo_5','acompa.docente_apoyo_6','acompa.docente_apoyo_7','acompa.docente_apoyo_8','acompa.docente_apoyo_9','acompa.docente_apoyo_10')->where('acompa.id','=',$id)->first();
-
         if($docentes_practica->total_docentes_apoyo > 0)
         {
         if($docentes_practica->id_tipo_personal_apoyo_1 == 1)
@@ -2206,30 +2290,6 @@ class PdfController extends Controller
         $total_asistentes[0] = ['id_proy'=>$solicitudes_practica->id,
                             'num_estudiantes'=>$solicitudes_practica->num_estudiantes,
                             'num_docentes'=>1 + $practicas_integradas->cant_espa_aca];
-        }
-
-        $acompa = [];
-
-        if($docentes_acompanantes->total_docentes_apoyo==0)
-        {
-        $acompa[] = ["nombre"=>"N/A",
-                "identificacion"=>"N/A",
-                "tipo"=>"N/A",
-                "num_apoyo"=>0];
-        }
-        if($docentes_acompanantes->personal_apoyo_1!=Null)
-        {
-        $acompa[] = ["nombre"=>$docentes_acompaniantes->personal_apoyo_1,
-                "identificacion"=>$docentes_acompaniantes->num_doc_personal_apoyo_1,
-                "tipo"=>($docentes_acompaniantes->tipo_personal_apoyo_1)==Null?"":"Apoyo",
-                "num_apoyo"=>1];
-        }
-        if($docentes_acompanantes->personal_apoyo_1!=Null)
-        {
-        $acompa[] = ["nombre"=>$docentes_acompaniantes->personal_apoyo_2,
-                "identificacion"=>$docentes_acompaniantes->num_doc_personal_apoyo_2,
-                "tipo"=>($docentes_acompaniantes->tipo_personal_apoyo_2)==Null?"":"Apoyo",
-                "num_apoyo"=>2];
         }
         
         switch($pract_inte->cant_espa_aca)
@@ -2460,6 +2520,8 @@ class PdfController extends Controller
                 break;
         }
 
+        $total_docentes = $practicas_integradas->cant_espa_aca + $docentes_practica->num_docentes_apoyo + 1;
+
         $anio_resolucion = $solicitudes_practica->fecha_resolucion;
 
         $firma_lito_decano = "data:image/png;base64,$decano->firma_litografica";
@@ -2474,8 +2536,8 @@ class PdfController extends Controller
                                 'fecha_solicitud'=>$fecha_solicitud,
                                 'anio_resolucion'=>$anio_resolucion,
                                 'doce_pract_int'=>$doce_pract_int,
-                                'total_asistentes'=>$total_asistentes,
-                                'docentes_acompaniantes'=>$docentes_acompaniantes,
+                                'total_docentes'=>$total_docentes,
+                                'docentes_responsables'=>$docentes_responsables,
                                 'viaticos_docente'=>$viaticos_docente,
                                 'viaticos_estudiante'=>$viaticos_estudiante,
                                 'valor_est_trans'=>$valor_est_trans,
