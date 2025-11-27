@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DB;
 use Exception;
+use PractiCampoUD\Exports\ReportHistoricoPresupuestosExport;
 use PractiCampoUD\Exports\ReportPlanSalidasExport;
 use PractiCampoUD\Exports\ReportProgramacionesAprobadasConsFac;
 use PractiCampoUD\Exports\ReportProgramacionesAprobadasCoord;
@@ -372,6 +373,25 @@ class ExcelController extends Controller
             $periodo = $request->input('periodo');
             $mytime = Carbon::now('America/Bogota')->toDateString();
             return Excel::download(new ReportSolicitudesAprobadasCoord($anio,$periodo),'Solicitudes_Aprobadas_Coordinacion_'.$anio.'-'.$periodo.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+
+    /**
+     * Exporta el histórico de presupuestos de programas academicos y el gasto de cada solicitud
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_historico_presupuestos(Request $request){
+        try
+        {
+            $fechaInicial = $request->input('fecha_inicial');
+            $fechaFinal = $request->input('fecha_final');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            return Excel::download(new ReportHistoricoPresupuestosExport($fechaInicial,$fechaFinal),'Historico_Presupuestos_'.$mytime.'.xlsx');
         }
         catch(\Exception $ex)
         {
