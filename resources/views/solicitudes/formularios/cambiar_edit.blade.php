@@ -3778,6 +3778,43 @@
                                 </div>
                             <!-- Resolución - CDP - SiCapital-->
 
+                            <!-- estado decano -->
+                            <br>
+                            <h4>Estado Decano</h4>
+                            <hr class="divider">
+                            <div class="form-group row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="aprobacion_decano" value="5"
+                                                    <?php if($solicitud_practica->aprobacion_decano == 5) echo 'checked'?> disabled>
+                                                    <label class="form-check-label" for="">Pendiente</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                                    <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="aprobacion_decano" value="7"
+                                                    <?php if($solicitud_practica->aprobacion_decano == 7) echo 'checked'?> disabled>
+                                                    <label class="form-check-label" for="">Aprobado</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mt-2">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="checkbox" name="devolver_docente"  value="1">
+                                                        <label class="form-check-label" for="">Devolver a docente</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- estado decano -->
+
                             <br>
                             <h4>Estado práctica</h4>
                             <hr class="divider">
