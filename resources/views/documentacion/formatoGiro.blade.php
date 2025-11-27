@@ -65,7 +65,7 @@
       <p align="justify"><span class="larger">Bogotá, {{$hoy['num']}} de {{ucfirst($hoy['mes'])}} de {{$hoy['anio']}}</span><br></p>
 
 
-      <p align="justify">Yo {{mb_strtoupper($decano->full_name)}} en calidad de Ordenador del Gasto del (los) Rubro(s) Prácticas Académicas
+      <p align="justify">Yo {{mb_strtoupper($decano->full_name)}} en calidad de Ordenador del Gasto del (los) Rubro(s) Salidas de Campo
         Facultad del Medio Ambiente y Recursos Naturales y Servicios de transporte de pasajeros, diferente al transporte local y
         turístico de pasajeros, anexo los documentos detallados en la presente, como soporte a la orden de pago correspondiente.<br>
 

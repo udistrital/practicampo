@@ -34,7 +34,7 @@ header{position:fixed;}
             <thead>
             <tr>
                 <th class="tg-0lax" rowspan="3"><p style="text-align: center; margin:0;" width="120"><img src="{{ public_path('img/logo_ud.png') }}" alt="" width="120" height="100"/></p></th>
-                <th class="tg-nrix" colspan="2"><span style="font-weight:bold">FORMATO DE PRÁCTICAS ACADÉMICAS</span></th>
+                <th class="tg-nrix" colspan="2"><span style="font-weight:bold">FORMATO SOLICITUD DE SALIDAS DE CAMPO</span></th>
                 <th class="tg-nrix">Código: GS-PR-010-FR-008</th>
                 <th class="tg-0lax" rowspan="3"><p style="text-align: center; margin:0;padding-top: 10px;"><img src="{{ public_path('img/SIGUD.png') }}" alt="" height="80"/></p></th>
             </tr>
@@ -54,8 +54,8 @@ header{position:fixed;}
     <div style="text-align:center; margin-top: 90;">
         <table style="margin: 0 auto;width: 94%">
             <div style="margin: 0 auto;width: 94%">
-                <p align="center"><strong><span class="larger">FORMATO DE PRÁCTICAS ACADÉMICAS</strong></span></p>
-                <p style="margin-left: 50px"><strong><span class="larger" style="margin-bottom: -1px;">1. Información básica práctica académica:
+                <p align="center"><strong><span class="larger">FORMATO SOLICITUD DE SALIDAS DE CAMPO</strong></span></p>
+                <p style="margin-left: 50px"><strong><span class="larger" style="margin-bottom: -1px;">1. Información básica Salida de Campo:
                     @foreach ($espa_pract_int as $item) 
                         <?= $item['espacio_academico']?>
                     @endforeach
@@ -227,7 +227,7 @@ header{position:fixed;}
             <div class="page-break">
             </div>
             <br><br><br><br><br>
-                <p style="margin-left: 50px;margin-top: 25;"><strong><span class="larger">3. Presentación Práctica Académica</strong></span></p>
+                <p style="margin-left: 50px;margin-top: 25;"><strong><span class="larger">3. Presentación Salida de Campo:</strong></span></p>
                 <table class="tg" style="margin: 0 auto;width: 90%;">
                     <colgroup>
                         <col style="width: 699px">
@@ -391,7 +391,7 @@ header{position:fixed;}
 
                 {{-- <p align="JUSTIFY"><strong><span class="larger">Observaciones</strong></span></p>
                 <p align="JUSTIFY"><span class="larger">1.	La lista de estudiantes debe estar conforme a la presentación de los documentos soporte 
-                    de cada estudiante que participara en la Práctica académica.</span></p>
+                    de cada estudiante que participara en la Salida de Campo.</span></p>
                 <p align="JUSTIFY"><span class="larger">2.	La presentación de los documentos soportes de cada estudiante se debe realizar en una sola hoja por ambas caras.</span></p> --}}
             </div>
         </table>

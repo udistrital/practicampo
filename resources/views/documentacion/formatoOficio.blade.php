@@ -60,14 +60,14 @@
 		<p align="justify">Comedidamente me dirijo a usted con el fin de solicitarle se sirva expedir Registro Presupuestal y tramitar 
 			avance académico a nombre del docente {{$solicitud_practica[0]->full_name}} {{$solicitud_practica[0]->tipo_identificacion}} 
 			con No.{{$solicitud_practica[0]->id_docente_responsable}} por valor de ${{ number_format($presupuesto,0,',','.')}} con cargo 
-			al rubro PRÁCTICAS ACADÉMICAS de la Facultad del Medio Ambiente y Recursos Naturales, discriminado así: 
+			al rubro SALIDAS DE CAMPO de la Facultad del Medio Ambiente y Recursos Naturales, discriminado así: 
 			@if($viaticos_docente >0)Viático docente: ${{number_format($viaticos_docente,0,',','.')}},@endif 
 			Auxilio estudiantes: ${{number_format($viaticos_estudiante,0,',','.')}}
 			@if($vlr_materiales >0), Materiales: ${{number_format($vlr_materiales,0,',','.')}}@endif
 			@if($vlr_baquianos >0), Baquianos/Guías: ${{number_format($vlr_baquianos,0,',','.')}}@endif
 			@if($vlr_boletas >0), Boletas/Otros: ${{number_format($vlr_boletas,0,',','.')}}@endif
 			@if($transporte_menor >0) y Transporte Menor/Local: ${{number_format($transporte_menor,0,',','.')}}@endif
-			; lo anterior, para garantizar el desarrollo de la práctica académica 
+			; lo anterior, para garantizar el desarrollo de la salida de campo
 			@foreach($espa_pract_int as $item)
 				@if($item['fecha_salida']['num'] == $item['fecha_regreso']['num'])
 					<?php echo $item['espacio_academico'].', a realizarse el '.$item['fecha_salida']['num'].' de '.$item['fecha_regreso']['mes'].' del '.$item['fecha_regreso']['anio'].
@@ -77,7 +77,7 @@
 					' del Proyecto Curricular de '.$item['programa_academico'].'. '?>
 				@endif
 			@endforeach 
-			La(s) práctica(s) objeto del presente oficio hace(n) parte del Plan de Prácticas del año {{$f_plan_prac['anio']}}, el cual fue aprobado por el 
+			La(s) salida(s) objeto del presente oficio hace(n) parte del Plan de Salidas del año {{$f_plan_prac['anio']}}, el cual fue aprobado por el 
 			Consejo de Facultad en sesión del {{$f_plan_prac['num']}} de {{ucfirst($f_plan_prac['mes'])}} Acta No {{$solicitud_practica[0]->num_acta_consejo_facultad}}; por lo cual me permito anexar la documentación soporte 
 			correspondiente. </p>
 
@@ -88,7 +88,7 @@
 			<li>Oficio {{$parrafos_modificables->parr_1}}{{$solicitud_practica[0]->consec_dfamarena}}-{{$hoy['anio']}}, 
 				Resolución N° <?php if($solicitud_practica[0]->num_resolucion == NULL) {echo '____';}else{echo $solicitud_practica[0]->num_resolucion;} ?> de {{$f_resol['num']}} de {{ucfirst($f_resol['mes'])}} de {{$f_resol['anio']}}, 
 				Autorización de Giro, 
-				Solicitud de Avance y Formato de Solicitud de las prácticas, consolidados en un archivo pdf.</li>
+				Solicitud de Avance y Formato de Solicitud de las salidas de campo, consolidados en un archivo pdf.</li>
                         @php
                            $arr_necesidad = array();
                            $arr_cdp = array();
