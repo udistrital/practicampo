@@ -35,8 +35,8 @@ $(document).ready(function(){
             revisar_soporte_pdf();
         }
     }
-    else if (form == "cambios_solicitud" || form == "cambios_programacion"){
-        
+    else if (form == "cambios_programacion"){
+        recargarEspa_aca_edit(id_p_aca,id_e_aca,id_docen_resp,0);
     }else{        
         recargarEspacios_aca(id_p_aca,id_docen_resp,1);
     }
@@ -2748,59 +2748,61 @@ $("input[type=checkbox]").change(function (){
     
     var lis_sol_sel= [];
     var value_item;
-
-    $("input[type=checkbox]").each(function(){
-        if($(this).is(":checked"))
-        {
-            var $row = $(this).closest('tr');
-            var num_resolucion_disabled = $row.find('td:nth-child(5)').text();
-            if(num_resolucion_disabled == null || num_resolucion_disabled == ""){
-                btn_resolucion_pdf.disabled = true;
-            }else{
-                btn_resolucion_pdf.disabled = false;
-            }
-            if(this.id == 'solic_aprob_list[]')
+    var form = document.forms[1].id;
+    if(form !== 'cambios_programacion' && form !== 'cambios_solicitud' && form !== 'edit_programacion' && form !== 'edit_solicitud'){
+        $("input[type=checkbox]").each(function(){
+            if($(this).is(":checked"))
             {
-                contador++;
-                value_item =this.value;
-                lis_sol_sel[contador-1]=value_item;
+                var $row = $(this).closest('tr');
+                var num_resolucion_disabled = $row.find('td:nth-child(5)').text();
+                if(num_resolucion_disabled == null || num_resolucion_disabled == ""){
+                    btn_resolucion_pdf.disabled = true;
+                }else{
+                    btn_resolucion_pdf.disabled = false;
+                }
+                if(this.id == 'solic_aprob_list[]')
+                {
+                    contador++;
+                    value_item =this.value;
+                    lis_sol_sel[contador-1]=value_item;
 
-                giro_pdf.href = giro_pdf.origin+'/giropdf/'+lis_sol_sel;
-                oficio_pdf.href = oficio_pdf.origin+'/oficiopdf/'+lis_sol_sel;
-                resolucion_pdf.href = resolucion_pdf.origin+'/resolucionpdf/'+lis_sol_sel;
-                avance_pdf.href = avance_pdf.origin+'/avancepdf/'+lis_sol_sel;
-                fom_consec_dfama.action = avance_pdf.origin+'/consec_solic/'+lis_sol_sel;
+                    giro_pdf.href = giro_pdf.origin+'/giropdf/'+lis_sol_sel;
+                    oficio_pdf.href = oficio_pdf.origin+'/oficiopdf/'+lis_sol_sel;
+                    resolucion_pdf.href = resolucion_pdf.origin+'/resolucionpdf/'+lis_sol_sel;
+                    avance_pdf.href = avance_pdf.origin+'/avancepdf/'+lis_sol_sel;
+                    fom_consec_dfama.action = avance_pdf.origin+'/consec_solic/'+lis_sol_sel;
+                }
             }
+        });  
+
+        if(contador > 1)
+        {
+            transporte_pdf.href = "";
+            practica_pdf.href = ""
+
+            btn_transporte_pdf.disabled = true;
+            btn_transporte_pdf.style.backgroundColor= '#83bfaa';
+            btn_transporte_pdf.style.borderColor= '#83bfaa';
+
+            btn_practica_pdf.disabled = true;
+            btn_practica_pdf.style.backgroundColor= '#83bfaa';
+            btn_practica_pdf.style.borderColor= '#83bfaa';
+            
         }
-    });
+        else if(contador == 1)
+        {
 
-    if(contador > 1)
-    {
-        transporte_pdf.href = "";
-        practica_pdf.href = ""
+            transporte_pdf.href = transporte_pdf.origin+'/transportepdf/'+lis_sol_sel;
+            practica_pdf.href = practica_pdf.origin+'/formatoPracticapdf/'+lis_sol_sel;
 
-        btn_transporte_pdf.disabled = true;
-        btn_transporte_pdf.style.backgroundColor= '#83bfaa';
-        btn_transporte_pdf.style.borderColor= '#83bfaa';
+            btn_transporte_pdf.disabled = false;
+            btn_transporte_pdf.style.backgroundColor= '#447161';
+            btn_transporte_pdf.style.borderColor= '#447161';
 
-        btn_practica_pdf.disabled = true;
-        btn_practica_pdf.style.backgroundColor= '#83bfaa';
-        btn_practica_pdf.style.borderColor= '#83bfaa';
-        
-    }
-    else if(contador == 1)
-    {
-
-        transporte_pdf.href = transporte_pdf.origin+'/transportepdf/'+lis_sol_sel;
-        practica_pdf.href = practica_pdf.origin+'/formatoPracticapdf/'+lis_sol_sel;
-
-        btn_transporte_pdf.disabled = false;
-        btn_transporte_pdf.style.backgroundColor= '#447161';
-        btn_transporte_pdf.style.borderColor= '#447161';
-
-        btn_practica_pdf.disabled = false;
-        btn_practica_pdf.style.backgroundColor= '#447161';
-        btn_practica_pdf.style.borderColor= '#447161';
+            btn_practica_pdf.disabled = false;
+            btn_practica_pdf.style.backgroundColor= '#447161';
+            btn_practica_pdf.style.borderColor= '#447161';
+        }
     }
 });
 

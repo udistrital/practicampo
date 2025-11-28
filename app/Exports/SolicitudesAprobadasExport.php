@@ -38,7 +38,7 @@ class SolicitudesAprobadasExport implements ShouldAutoSize, WithTitle, FromArray
     {
         $datos = [
             [""],
-            ["","", "FORMATO: PLAN DE SALIDAS DE CAMPO", "", "","","", "","","","","","","","","", "Código: GD-PR-010-FR-XXX", "", ""],
+            ["","", "FORMATO: SOLICITUD DE TRANSPORTE SALIDAS DE CAMPO", "", "","","", "","","","","","","","","", "Código: GD-PR-010-FR-XXX", "", ""],
             ["","", "Macroproceso: Direccionamiento Estratégico", "", "","","", "","","","","","","","","", "Verisón: 001", "", ""],
             ["","", "Proceso: Currículo y Calidad", "", "","","", "","","","","","","","","", "Fecha de Aprobación:", "", ""],
             [""],

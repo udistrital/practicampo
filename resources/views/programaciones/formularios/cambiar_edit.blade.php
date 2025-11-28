@@ -66,7 +66,8 @@
                                 <div class="form-group row">
                                     <div class="col-md-4">
                                         <label for="id_programa_academico" class="col-form-label text-md-right">{{ __('Programa Académico') }}</label>
-                                        <select id="id_programa_academico" name="id_programa_academico" class="form-control" required >
+                                        <select id="id_programa_academico" name="id_programa_academico" class="form-control" required 
+                                            onchange="recargarEspa_aca_edit(this.value,'<?php echo $programacion_practica->id_espacio_academico?>','<?php echo $programacion_practica->id_docente_responsable?>',1)">
                                             @foreach($programas_usuario as $pro_aca)
                                                 <option <?php if($pro_aca['id']==$programacion_practica->id_programa_academico) echo 'selected'?> value="{{$pro_aca['id']}}">{{$pro_aca['programa_academico']}}</option>  
                                             @endforeach
@@ -232,7 +233,7 @@
 
                                     <div class="col-md-5" id="">
                                         <label for="id_espa_aca_1" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
-                                        <select id="id_espa_aca_1" name="id_espa_aca_1" class="form-control" required
+                                        <select id="id_espa_aca_1" name="id_espa_aca_1" class="form-control"
                                         title=""
                                         onchange="recargarDocenEspaAca(this.value, 1)"
                                          >
@@ -275,7 +276,7 @@
                                 <div class="form-group row" id="esp_aca_2">
                                     <div class="col-md-5" id="">
                                         <label for="id_espa_aca_2" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
-                                        <select id="id_espa_aca_2" name="id_espa_aca_2" class="form-control" required
+                                        <select id="id_espa_aca_2" name="id_espa_aca_2" class="form-control"
                                         title=""
                                         onchange="recargarDocenEspaAca(this.value, 2)"
                                          >
@@ -317,7 +318,7 @@
                                 <div class="form-group row" id="esp_aca_3">
                                     <div class="col-md-5" id="">
                                         <label for="id_espa_aca_3" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
-                                        <select id="id_espa_aca_3" name="id_espa_aca_3" class="form-control" required
+                                        <select id="id_espa_aca_3" name="id_espa_aca_3" class="form-control"
                                         title=""
                                         onchange="recargarDocenEspaAca(this.value, 3)"
                                          >
@@ -359,7 +360,7 @@
                                 <div class="form-group row" id="esp_aca_4">
                                     <div class="col-md-5" id="">
                                         <label for="id_espa_aca_4" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
-                                        <select id="id_espa_aca_4" name="id_espa_aca_4" class="form-control" required
+                                        <select id="id_espa_aca_4" name="id_espa_aca_4" class="form-control"
                                         title=""
                                         onchange="recargarDocenEspaAca(this.value, 4)"
                                          >
@@ -401,7 +402,7 @@
                                 <div class="form-group row" id="esp_aca_5">
                                     <div class="col-md-5" id="">
                                         <label for="id_espa_aca_5" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
-                                        <select id="id_espa_aca_5" name="id_espa_aca_5" class="form-control" required
+                                        <select id="id_espa_aca_5" name="id_espa_aca_5" class="form-control"
                                         title=""
                                         onchange="recargarDocenEspaAca(this.value, 5)"
                                          >
@@ -443,7 +444,7 @@
                                 <div class="form-group row" id="esp_aca_6">
                                     <div class="col-md-5" id="">
                                         <label for="id_espa_aca_6" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
-                                        <select id="id_espa_aca_6" name="id_espa_aca_6" class="form-control" required
+                                        <select id="id_espa_aca_6" name="id_espa_aca_6" class="form-control"
                                         title=""
                                         onchange="recargarDocenEspaAca(this.value, 6)"
                                          >
@@ -485,7 +486,7 @@
                                 <div class="form-group row" id="esp_aca_7">
                                     <div class="col-md-5" id="">
                                         <label for="id_espa_aca_7" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
-                                        <select id="id_espa_aca_7" name="id_espa_aca_7" class="form-control" required
+                                        <select id="id_espa_aca_7" name="id_espa_aca_7" class="form-control"
                                         title=""
                                         onchange="recargarDocenEspaAca(this.value, 7)"
                                          >
@@ -1957,7 +1958,7 @@
                                         <div class="input-group">
                                             <input id="cant_url_ra" max="6" min="1" pattern="^[0-9]+" class="form-control @error('cant_url_ra') is-invalid @enderror" name="cant_url_ra" 
                                             title=""
-                                            value="{{$programacion_practica->cantidad_url_ra}}" autocomplete="off" autofocus required  >
+                                            value="{{$programacion_practica->cantidad_url_ra}}" autocomplete="off" autofocus>
                                             
                                             @error('cant_url_ra')
                                             <span class="invalid-feedback" role="alert">
@@ -2013,7 +2014,7 @@
                                                     <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                         <div class="input-group">
                                                             <input id="ruta_alterna_2" type="text" class="form-control @error('ruta_alterna_2') is-invalid @enderror" name="ruta_alterna_2" 
-                                                            value="{{$programacion_practica->ruta_alterna_2}}"  required autocomplete="off" autofocus
+                                                            value="{{$programacion_practica->ruta_alterna_2}}" autocomplete="off" autofocus
                                                             title="" onchange="verifUrl_ra(this)"
                                                             >
                                                     
@@ -2039,7 +2040,7 @@
                                                     <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                         <div class="input-group">
                                                             <input id="ruta_alterna_3" type="text" class="form-control @error('ruta_alterna_3') is-invalid @enderror" name="ruta_alterna_3" 
-                                                            value="{{$programacion_practica->ruta_alterna_3}}"  required autocomplete="off" autofocus
+                                                            value="{{$programacion_practica->ruta_alterna_3}}" autocomplete="off" autofocus
                                                             title="" onchange="verifUrl_ra(this)"
                                                             >
                                                     
@@ -2065,7 +2066,7 @@
                                                     <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                         <div class="input-group">
                                                             <input id="ruta_alterna_4" type="text" class="form-control @error('ruta_alterna_4') is-invalid @enderror" name="ruta_alterna_4" 
-                                                            value="{{$programacion_practica->ruta_alterna_4}}"  required autocomplete="off" autofocus
+                                                            value="{{$programacion_practica->ruta_alterna_4}}" autocomplete="off" autofocus
                                                             title="" onchange="verifUrl_ra(this)"
                                                             >
                                                     
@@ -2091,7 +2092,7 @@
                                                     <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                         <div class="input-group">
                                                             <input id="ruta_alterna_5" type="text" class="form-control @error('ruta_alterna_5') is-invalid @enderror" name="ruta_alterna_5" 
-                                                            value="{{$programacion_practica->ruta_alterna_5}}"  required autocomplete="off" autofocus
+                                                            value="{{$programacion_practica->ruta_alterna_5}}"  autocomplete="off" autofocus
                                                             title="" onchange="verifUrl_ra(this)"
                                                             >
                                                     
@@ -2117,7 +2118,7 @@
                                                     <div class="col-md-12" style="padding-left: 0;padding-right: 0;">
                                                         <div class="input-group">
                                                             <input id="ruta_alterna_6" type="text" class="form-control @error('ruta_alterna_6') is-invalid @enderror" name="ruta_alterna_6" 
-                                                            value="{{$programacion_practica->ruta_alterna_6}}"  required autocomplete="off" autofocus
+                                                            value="{{$programacion_practica->ruta_alterna_6}}" autocomplete="off" autofocus
                                                             title="" onchange="verifUrl_ra(this)"
                                                             >
                                                     
