@@ -4,15 +4,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Nueva Programación Preliminar N°<?php echo $nueva_programacion->id?></title>
+        <title>Nueva Programación Práctica N°<?php echo $nueva_programacion->id?></title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
             <tbody>
                 <tr>
                     <td>
-                        <a href="http://practicampo.udistrital.edu.co/">
-                        <img src="https://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
+                        <a href="https://practicampo.udistrital.edu.co/">
+                        <img src="httpss://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
                         style="display: grid; top: 28px; margin: 0 auto;width:50%">
                         </a>
                         <br>
@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Nueva Programación Preliminar N°<?php echo $nueva_programacion->id?>
+                        Nueva Programación Práctica N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -34,7 +34,7 @@
                         <p style="font-size: 0.875rem"><strong>Docente:</strong></p>
                     @endif
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">Se ha creado una nueva Programación preliminar de práctica acádemica
+                    <p style="font-size: 0.875rem">Se ha creado una nueva Programación Práctica de práctica acádemica
                     N°<?php echo $nueva_programacion->id?> con la siguiente información:</p>
                     <br>
                     <p style="font-size: 0.875rem">DETALLES </p>
@@ -58,15 +58,15 @@
                     {{-- @if(Auth::user()->coordinador()) --}}
                     @if($email['role'] == 4)
                     <p style="font-size: 0.875rem">Docente Responsable: <?php echo $nueva_programacion->full_name?></p>
-                    <p style="font-size: 0.875rem">La Programación preliminar se encuentra pendiente a aprobación por la 
+                    <p style="font-size: 0.875rem">La Programación Práctica se encuentra pendiente a aprobación por la 
                         dependencia de su cargo en el aplicativo PractiCampo. LINK:</p>  
                     @endif
                     @if($email['role'] == 5)
                     <p style="font-size: 0.875rem">Docente Responsable: <?php echo $nueva_programacion->full_name?></p>
-                    <p style="font-size: 0.875rem">La Programación preliminar se encuentra pendiente al visto bueno por coordinación y la aprobación 
+                    <p style="font-size: 0.875rem">La Programación Práctica se encuentra pendiente al visto bueno por coordinación y la aprobación 
                         del consejo de carreras.</p>  
                     @endif
-                    <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
+                    <p style="font-size: 0.875rem">Ingrese al siguiente link: https://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>
                     <p style="font-size: 0.875rem;color:#9a9a9a">
                         Este correo fue generado de manera automática por el software PractiCampoUD Versión 1.0 desarrollado por 
@@ -95,15 +95,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Programación Preliminar</title>
+        <title>Notificación Programación Práctica</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
             <tbody>
                 <tr>
                     <td>
-                        <a href="http://practicampo.udistrital.edu.co/">
-                        <img src="https://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
+                        <a href="https://practicampo.udistrital.edu.co/">
+                        <img src="httpss://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
                         style="display: grid; top: 28px; margin: 0 auto;width:50%">
                         </a>
                         <br>
@@ -114,7 +114,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Visto Bueno Coordinación - Programación Preliminar N°<?php echo $nueva_programacion->id?>
+                        Visto Bueno Coordinación - Programación Práctica N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -122,14 +122,14 @@
                     @if($email['role'] == 5)
                     <p style="font-size: 0.875rem"><strong>Docente:</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
+                    <p style="font-size: 0.875rem">La Programación Práctica N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
                         parte de coordinación para la consolidación en el plan de prácticas y presentación al Consejo de Factuldad para 
                         el debido trámite.</p>
                     @endif
                     @if($email['role'] == 2)
                     <p style="font-size: 0.875rem">Decanatura FAMARENA</p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
+                    <p style="font-size: 0.875rem">La Programación Práctica N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
                         parte de coordinación para 
                         la consolidación en el plan de prácticas y presentación al Consejo de Factuldad para 
                         el debido trámite.</p>
@@ -137,11 +137,11 @@
                     @if($email['role'] == 3)
                     <p style="font-size: 0.875rem"><strong>Decanatura FAMARENA</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
+                    <p style="font-size: 0.875rem">La Programación Práctica N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
                         parte de coordinación para la consolidación 
                         en el plan de prácticas y posterior registro del presupuesto para el transporte a contratar.</p>
                     @endif
-                    <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
+                    <p style="font-size: 0.875rem">Ingrese al siguiente link: https://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>
                     <p style="font-size: 0.875rem;color:#9a9a9a">
                         Este correo fue generado de manera automática por el software PractiCampoUD Versión 1.0 desarrollado por 
@@ -169,15 +169,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Programación Preliminar</title>
+        <title>Notificación Programación Práctica</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
             <tbody>
                 <tr>
                     <td>
-                        <a href="http://practicampo.udistrital.edu.co/">
-                        <img src="https://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
+                        <a href="https://practicampo.udistrital.edu.co/">
+                        <img src="httpss://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
                         style="display: grid; top: 28px; margin: 0 auto;width:50%">
                         </a>
                         <br>
@@ -188,7 +188,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Rechazo Coordinación - Programación Preliminar N°<?php echo $nueva_programacion->id?>
+                        Rechazo Coordinación - Programación Práctica N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -197,12 +197,12 @@
                     @if($email['role'] == 5)
                     <p style="font-size: 0.875rem"><strong>Docente:</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> ha sido rechazada 
+                    <p style="font-size: 0.875rem">La Programación Práctica N°<?php echo $nueva_programacion->id?> ha sido rechazada 
                         por parte de coordinación, se le remiten las observaciones registradas.</p>
                     
                     <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_programacion->observ_coordinador?></p>
                     @endif
-                    <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
+                    <p style="font-size: 0.875rem">Ingrese al siguiente link: https://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>
                     <p style="font-size: 0.875rem;color:#9a9a9a">
                         Este correo fue generado de manera automática por el software PractiCampoUD Versión 1.0 desarrollado por 
@@ -231,15 +231,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Programación Preliminar</title>
+        <title>Notificación Programación Práctica</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
             <tbody>
                 <tr>
                     <td>
-                        <a href="http://practicampo.udistrital.edu.co/">
-                        <img src="https://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
+                        <a href="https://practicampo.udistrital.edu.co/">
+                        <img src="httpss://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
                         style="display: grid; top: 28px; margin: 0 auto;width:50%">
                         </a>
                         <br>
@@ -250,7 +250,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Visto Bueno Decanatura - Programación Preliminar N°<?php echo $nueva_programacion->id?>
+                        Visto Bueno Decanatura - Programación Práctica N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -258,12 +258,12 @@
                     @if($email['role'] == 3)
                     <p style="font-size: 0.875rem"><strong>Decanatura FAMARENA</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
+                    <p style="font-size: 0.875rem">La Programación Práctica N°<?php echo $nueva_programacion->id?> cuenta con V.° B.° por 
                         parte de la decanatura FAMARENA para la consolidación 
                         en el plan de prácticas y presentación al Consejo de Factuldad para 
                         el debido trámite.</p>
                     @endif
-                    <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
+                    <p style="font-size: 0.875rem">Ingrese al siguiente link: https://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>
                     <p style="font-size: 0.875rem;color:#9a9a9a">
                         Este correo fue generado de manera automática por el software PractiCampoUD Versión 1.0 desarrollado por 
@@ -291,15 +291,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Programación Preliminar</title>
+        <title>Notificación Programación Práctica</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
             <tbody>
                 <tr>
                     <td>
-                        <a href="http://practicampo.udistrital.edu.co/">
-                        <img src="https://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
+                        <a href="https://practicampo.udistrital.edu.co/">
+                        <img src="httpss://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
                         style="display: grid; top: 28px; margin: 0 auto;width:50%">
                         </a>
                         <br>
@@ -310,7 +310,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Rechazo Decanatura - Programación Preliminar N°<?php echo $nueva_programacion->id?>
+                        Rechazo Decanatura - Programación Práctica N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -319,14 +319,14 @@
                     @if($email['role'] == 4)
                     <p style="font-size: 0.875rem"><strong>Coordinador(a):</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> ha sido rechazada por parte de
+                    <p style="font-size: 0.875rem">La Programación Práctica N°<?php echo $nueva_programacion->id?> ha sido rechazada por parte de
                         la decanatura FAMARENA, 
                         se le remiten las observaciones registradas.</p>
                     
                     <br>
                     <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_programacion->observ_decano?></p>
                     @endif
-                    <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
+                    <p style="font-size: 0.875rem">Ingrese al siguiente link: https://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>
                     <p style="font-size: 0.875rem;color:#9a9a9a">
                         Este correo fue generado de manera automática por el software PractiCampoUD Versión 1.0 desarrollado por 
@@ -355,15 +355,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Notificación Programación Preliminar</title>
+        <title>Notificación Programación Práctica</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
             <tbody>
                 <tr>
                     <td>
-                        <a href="http://practicampo.udistrital.edu.co/">
-                        <img src="https://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
+                        <a href="https://practicampo.udistrital.edu.co/">
+                        <img src="httpss://www.udistrital.edu.co/themes/custom/versh/logo.png" alt=""
                         style="display: grid; top: 28px; margin: 0 auto;width:50%">
                         </a>
                         <br>
@@ -374,7 +374,7 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Cierre Programación Preliminar N°<?php echo $nueva_programacion->id?>
+                        Cierre Programación Práctica N°<?php echo $nueva_programacion->id?>
                         <br>
                     </h3>
                 </tr>
@@ -383,14 +383,14 @@
                     @if($email['role'] == 5)
                     <p style="font-size: 0.875rem"><strong>Docente:</strong></p>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">La Programación preliminar N°<?php echo $nueva_programacion->id?> ha sido cerrada por parte de
+                    <p style="font-size: 0.875rem">La Programación Práctica N°<?php echo $nueva_programacion->id?> ha sido cerrada por parte de
                         la coordinación, 
                         se le remiten las observaciones registradas.</p>
                     
                     <br>
                     <p style="font-size: 0.875rem"><strong>Observaciones: </strong><?php echo $nueva_programacion->observ_coordinador?></p>
                     @endif
-                    <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
+                    <p style="font-size: 0.875rem">Ingrese al siguiente link: https://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>
                     <p style="font-size: 0.875rem;color:#9a9a9a">
                         Este correo fue generado de manera automática por el software PractiCampoUD Versión 1.0 desarrollado por 

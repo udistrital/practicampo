@@ -75,7 +75,7 @@ class CodigoMail extends Mailable
                 }
 
                 $this->from('practicampo@udistrital.edu.co')
-                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->subject('Programación Práctica N°'.$nueva_programacion->id)
                 ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos,'espa_pract_int'=>$espa_pract_int]);
                 break;
@@ -89,35 +89,35 @@ class CodigoMail extends Mailable
 
             case "aprob_coord_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->subject('Programación Práctica N°'.$nueva_programacion->id)
                 ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "rechazo_coord_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->subject('Programación Práctica N°'.$nueva_programacion->id)
                 ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
             
             case "aprob_decano_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->subject('Programación Práctica N°'.$nueva_programacion->id)
                 ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "rechazo_decano_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->subject('Programación Práctica N°'.$nueva_programacion->id)
                 ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;
 
             case "cierre_coord_proy":
                 return $this->from('practicampo@udistrital.edu.co')
-                ->subject('Programación Preliminar N°'.$nueva_programacion->id)
+                ->subject('Programación Práctica N°'.$nueva_programacion->id)
                 ->view('notificaciones.correoprogramaciones',['filter'=>$filter, 'nueva_programacion'=>$nueva_programacion, 'nueva_solicitud'=>$nueva_solicitud, 'email'=>$email, 
                 'correos_administrativos'=>$correos_administrativos]);
                 break;

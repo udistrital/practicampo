@@ -6321,7 +6321,7 @@ class programacionController extends Controller
             $emails[] = ["email"=>$creador->email, "role"=>$creador->id_role];
             $emails[] = ["email"=>$coord->email, "role"=>$coord->id_role];
             
-            /*foreach($emails as $email){
+            foreach($emails as $email){
                 try {
                     Mail::bcc($email['email'])
                         ->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud,$email, $correos_administrativos));
@@ -6329,7 +6329,7 @@ class programacionController extends Controller
                     \Illuminate\Support\Facades\Log::error("$filter -- Error enviando correo a {$email['email']}: " . $e->getMessage());
                     continue;
                 }
-            }*/
+            }
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("$filter -- Ha ocurrido un error al enviar notificación por correo. " . $e->getMessage());
         }        
@@ -6343,47 +6343,38 @@ class programacionController extends Controller
      */
     public function aprob_coord_proy($id)
     {
-        try {
-            $correos_administrativos = [];
-            $nueva_programacion = "";
-            $nueva_solicitud = "";
-            $filter = "aprob_coord_proy";
+        $correos_administrativos = [];
+        $nueva_programacion = "";
+        $nueva_solicitud = "";
+        $filter = "aprob_coord_proy";
 
-            $nueva_programacion = DB::table('programacion_practica as proy_pre')
-                                ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
-                                        'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca',
-                                        'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
-                                        DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
-                                ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
-                                ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
-                                ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
-                                ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
-                                ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
-                                ->where('proy_pre.id','=',$id)->first();
+        $nueva_programacion = DB::table('programacion_practica as proy_pre')
+                            ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
+                                    'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca',
+                                    'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
+                                    DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
+                            ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
+                            ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
+                            ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
+                            ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
+                            ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
+                            ->where('proy_pre.id','=',$id)->first();
 
-            $id_creador = $nueva_programacion->id_docente_responsable;
-            $creador=DB::table('users')->where('id','=',$id_creador)->first();
-            $id_pro_aca = $nueva_programacion->id_pro_aca;
-            $coord =DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('id_programa_academico_coord','=',$id_pro_aca)->first();
-            $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
-            $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->get();
-            $emails = [];
+        $id_creador = $nueva_programacion->id_docente_responsable;
+        $creador=DB::table('users')->where('id','=',$id_creador)->first();
+        $id_pro_aca = $nueva_programacion->id_pro_aca;
+        $coord =DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('id_programa_academico_coord','=',$id_pro_aca)->first();
+        $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+        $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->get();
+        $emails = [];
 
-            $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
-            $emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
+        $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
+        $emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
 
-            /*foreach($emails as $email){
-                try {
-                    Mail::bcc($email['email'])
-                        ->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud,$email, $correos_administrativos));
-                } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error("$filter -- Error enviando correo a {$email['email']}: " . $e->getMessage());
-                    continue;
-                }
-            }*/
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("$filter -- Ha ocurrido un error al enviar notificación por correo. " . $e->getMessage());
-        } 
+        foreach($emails as $email)
+        {
+            Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud, $email, $correos_administrativos ));
+        }
     }
 
     /**
@@ -6394,49 +6385,40 @@ class programacionController extends Controller
      */
     public function rechazo_coord_proy($id)
     {
-        try {
-            $correos_administrativos = [];
-            $nueva_programacion = "";
-            $nueva_solicitud = "";
-            $filter = "rechazo_coord_proy";
+        $correos_administrativos = [];
+        $nueva_programacion = "";
+        $nueva_solicitud = "";
+        $filter = "rechazo_coord_proy";
 
-            $nueva_programacion = DB::table('programacion_practica as proy_pre')
-                                ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
-                                        'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca', 'proy_pre.observ_coordinador',
-                                        'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
-                                        DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
-                                ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
-                                ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
-                                ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
-                                ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
-                                ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
-                                ->where('proy_pre.id','=',$id)->first();
+        $nueva_programacion = DB::table('programacion_practica as proy_pre')
+                            ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
+                                    'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca', 'proy_pre.observ_coordinador',
+                                    'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
+                                    DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
+                            ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
+                            ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
+                            ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
+                            ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
+                            ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
+                            ->where('proy_pre.id','=',$id)->first();
 
-            $id_creador = $nueva_programacion->id_docente_responsable;
-            $creador=DB::table('users')->where('id','=',$id_creador)->first();
-            // $id_esp_aca = $nueva_programacion->id_esp_aca;
-            $id_pro_aca = $nueva_programacion->id_pro_aca;
-            $coord =DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('id_programa_academico_coord','=',$id_pro_aca)->first();
-            $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
-            $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->get();
-            $emails = [];
+        $id_creador = $nueva_programacion->id_docente_responsable;
+        $creador=DB::table('users')->where('id','=',$id_creador)->first();
+        // $id_esp_aca = $nueva_programacion->id_esp_aca;
+        $id_pro_aca = $nueva_programacion->id_pro_aca;
+        $coord =DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('id_programa_academico_coord','=',$id_pro_aca)->first();
+        $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+        $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->get();
+        $emails = [];
 
-            $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
-            //$emails[] = ["email"=>$coord->email,"role"=>$coord->id_role];
-            //$emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
+        $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
+        //$emails[] = ["email"=>$coord->email,"role"=>$coord->id_role];
+        //$emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
 
-            /*foreach($emails as $email){
-                try {
-                    Mail::bcc($email['email'])
-                        ->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud,$email, $correos_administrativos));
-                } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error("$filter -- Error enviando correo a {$email['email']}: " . $e->getMessage());
-                    continue;
-                }
-            }*/
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("$filter -- Ha ocurrido un error al enviar notificación por correo. " . $e->getMessage());
-        } 
+        foreach($emails as $email)
+        {
+            Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud, $email, $correos_administrativos ));
+        }
     }
 
     /**
@@ -6447,50 +6429,41 @@ class programacionController extends Controller
      */
     public function aprob_decano_proy($id)
     {
-        try{
-            $correos_administrativos = [];
-            $nueva_programacion = "";
-            $nueva_solicitud = "";
-            $filter = "aprob_decano_proy";
+        $correos_administrativos = [];
+        $nueva_programacion = "";
+        $nueva_solicitud = "";
+        $filter = "aprob_decano_proy";
 
-            $nueva_programacion = DB::table('programacion_practica as proy_pre')
-                                ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
-                                        'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca',
-                                        'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
-                                        DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
-                                ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
-                                ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
-                                ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
-                                ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
-                                ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
-                                ->where('proy_pre.id','=',$id)->first();
+        $nueva_programacion = DB::table('programacion_practica as proy_pre')
+                            ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
+                                    'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca',
+                                    'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
+                                    DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
+                            ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
+                            ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
+                            ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
+                            ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
+                            ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
+                            ->where('proy_pre.id','=',$id)->first();
 
-            $id_creador = $nueva_programacion->id_docente_responsable;
-            $creador=DB::table('users')->where('id','=',$id_creador)->first();
-            $id_pro_aca = $nueva_programacion->id_pro_aca;
-            $coord =DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('id_programa_academico_coord','=',$id_pro_aca)->first();
-            $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
-            $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->get();
-            $emails = [];
+        $id_creador = $nueva_programacion->id_docente_responsable;
+        $creador=DB::table('users')->where('id','=',$id_creador)->first();
+        $id_pro_aca = $nueva_programacion->id_pro_aca;
+        $coord =DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('id_programa_academico_coord','=',$id_pro_aca)->first();
+        $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+        $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->get();
+        $emails = [];
 
-            $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
-            //$emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
-            foreach ($AsisD as $user) {
-                $emails[] = ["email" => $user->email,"role"  => $user->id_role];
-            }
+        $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
+        //$emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
+        foreach ($AsisD as $user) {
+            $emails[] = ["email" => $user->email,"role"  => $user->id_role];
+        }
 
-            /*foreach($emails as $email){
-                try {
-                    Mail::bcc($email['email'])
-                        ->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud,$email, $correos_administrativos));
-                } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error("$filter -- Error enviando correo a {$email['email']}: " . $e->getMessage());
-                    continue;
-                }
-            }*/
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("$filter -- Ha ocurrido un error al enviar notificación por correo. " . $e->getMessage());
-        } 
+        foreach($emails as $email)
+        {
+            Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud, $email, $correos_administrativos ));
+        }
     }
 
     /**
@@ -6501,50 +6474,41 @@ class programacionController extends Controller
      */
     public function rechazo_decano_proy($id)
     {
-        try{
-            $correos_administrativos = [];
-            $nueva_programacion = "";
-            $nueva_solicitud = "";
-            $filter = "rechazo_decano_proy";
+        $correos_administrativos = [];
+        $nueva_programacion = "";
+        $nueva_solicitud = "";
+        $filter = "rechazo_decano_proy";
 
-            $nueva_programacion = DB::table('programacion_practica as proy_pre')
-                                ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
-                                        'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca', 'proy_pre.observ_coordinador','proy_pre.observ_decano',
-                                        'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
-                                        DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
-                                ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
-                                ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
-                                ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
-                                ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
-                                ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
-                                ->where('proy_pre.id','=',$id)->first();
+        $nueva_programacion = DB::table('programacion_practica as proy_pre')
+                            ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
+                                    'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca', 'proy_pre.observ_coordinador','proy_pre.observ_decano',
+                                    'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
+                                    DB::raw('CONCAT(users.primer_nombre, " ", users.segundo_nombre, " ", users.primer_apellido, " ", users.segundo_apellido) as full_name'))
+                            ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
+                            ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
+                            ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
+                            ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
+                            ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
+                            ->where('proy_pre.id','=',$id)->first();
 
-            $id_creador = $nueva_programacion->id_docente_responsable;
-            $creador=DB::table('users')->where('id','=',$id_creador)->first();
-            // $id_esp_aca = $nueva_programacion->id_esp_aca;
-            $id_pro_aca = $nueva_programacion->id_pro_aca;
-            $coord =DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('id_programa_academico_coord','=',$id_pro_aca)->first();
-            $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
-            $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->first();
-            $emails = [];
+        $id_creador = $nueva_programacion->id_docente_responsable;
+        $creador=DB::table('users')->where('id','=',$id_creador)->first();
+        // $id_esp_aca = $nueva_programacion->id_esp_aca;
+        $id_pro_aca = $nueva_programacion->id_pro_aca;
+        $coord =DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('id_programa_academico_coord','=',$id_pro_aca)->first();
+        $decano = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Decano")->orWhere('rol.id','=',2)->first();
+        $AsisD = DB::table('users')->join('roles as rol','users.id_role','rol.id')->where('rol.name','=',"Asistente Decanatura")->orWhere('rol.id','=',3)->first();
+        $emails = [];
 
-            // $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
-            $emails[] = ["email"=>$coord->email,"role"=>$coord->id_role];
-            // $emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
-            // $emails[] = ["email"=>$AsisD->email,"role"=>$AsisD->id_role];
+        // $emails[] = ["email"=>$creador->email,"role"=>$creador->id_role];
+        $emails[] = ["email"=>$coord->email,"role"=>$coord->id_role];
+        // $emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
+        // $emails[] = ["email"=>$AsisD->email,"role"=>$AsisD->id_role];
 
-            /*foreach($emails as $email){
-                try {
-                    Mail::bcc($email['email'])
-                        ->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud,$email, $correos_administrativos));
-                } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error("$filter -- Error enviando correo a {$email['email']}: " . $e->getMessage());
-                    continue;
-                }
-            }*/
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("$filter -- Ha ocurrido un error al enviar notificación por correo. " . $e->getMessage());
-        } 
+        foreach($emails as $email)
+        {
+            Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud, $email, $correos_administrativos ));
+        }
     }
 
     /**
@@ -6555,7 +6519,6 @@ class programacionController extends Controller
      */
     public function cierre_coord_proy($id)
     {
-        try{
         $correos_administrativos = [];
         $nueva_programacion = "";
         $nueva_solicitud = "";
@@ -6587,18 +6550,10 @@ class programacionController extends Controller
         // $emails[] = ["email"=>$decano->email,"role"=>$decano->id_role];
         // $emails[] = ["email"=>$AsisD->email,"role"=>$AsisD->id_role];
 
-            /*foreach($emails as $email){
-                try {
-                    Mail::bcc($email['email'])
-                        ->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud,$email, $correos_administrativos));
-                } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error("$filter -- Error enviando correo a {$email['email']}: " . $e->getMessage());
-                    continue;
-                }
-            }*/
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("$filter -- Ha ocurrido un error al enviar notificación por correo. " . $e->getMessage());
-        } 
+        foreach($emails as $email)
+        {
+            Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud, $email, $correos_administrativos ));
+        }
     }
 
     /**
@@ -6611,62 +6566,61 @@ class programacionController extends Controller
     {
         try
         {
-            $nueva_programacion = [];
-            $nueva_solicitud = "";
-            $filter = "vb_decano_proy";
-            
-
-            foreach($list_proy as $item)
-            {
-                $programacion = DB::table('programacion_practica as proy_pre')
-                                ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
-                                        'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca', 'proy_pre.anio_periodo',
-                                        'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
-                                        'proy_pre.fecha_salida_aprox_rp','proy_pre.fecha_regreso_aprox_rp','proy_pre.fecha_salida_aprox_ra','proy_pre.fecha_regreso_aprox_ra',
-                                        DB::raw('CONCAT(users.primer_nombre, " ", users.primer_apellido) as full_name'))
-                                ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
-                                ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
-                                ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
-                                ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
-                                ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
-                                ->where('proy_pre.id','=',$item)->first();   
+                $nueva_programacion = [];
+                $nueva_solicitud = "";
+                $filter = "vb_decano_proy";
                 
-                $nueva_programacion[] = ['id'=>$programacion->id,
-                                        'programa_academico'=>$programacion->programa_academico,
-                                        'espacio_academico'=>$programacion->espacio_academico,
-                                        'sem_academico'=>$programacion->semestre_asignatura,
-                                        'anio'=>$programacion->anio_periodo,
-                                        'per_academico'=>$programacion->periodo_academico,
-                                        'docente_responsable'=>$programacion->full_name,
-                                        'destino_rp'=>$programacion->destino_rp,
-                                        'fecha_salida_aprox_rp'=>$programacion->fecha_salida_aprox_rp,
-                                        'fecha_regreso_aprox_rp'=>$programacion->fecha_regreso_aprox_rp,
-                                        'destino_ra'=>$programacion->destino_ra,
-                                        'fecha_salida_aprox_ra'=>$programacion->fecha_salida_aprox_ra,
-                                        'fecha_regreso_aprox_ra'=>$programacion->fecha_regreso_aprox_ra];
-            }
-        
-            $sec_acad =DB::table('correos_administrativos as c_admin')
-                    ->where('c_admin.id','=',1)
-                    ->orWhere('c_admin.area_dependencia','=','Secretaría Académica')
-                    ->first();
+
+                foreach($list_proy as $item)
+                {
+                    $programacion = DB::table('programacion_practica as proy_pre')
+                                    ->select('proy_pre.id', 'pro_aca.programa_academico', 'esp_aca.espacio_academico', 'esp_aca.codigo_espacio_academico', 
+                                            'esp_aca.id as id_esp_aca', 'pro_aca.id as id_pro_aca', 'proy_pre.anio_periodo',
+                                            'per_aca.periodo_academico','sem_asig.semestre_asignatura', 'proy_pre.destino_rp', 'proy_pre.destino_ra', 'proy_pre.id_docente_responsable',
+                                            'proy_pre.fecha_salida_aprox_rp','proy_pre.fecha_regreso_aprox_rp','proy_pre.fecha_salida_aprox_ra','proy_pre.fecha_regreso_aprox_ra',
+                                            DB::raw('CONCAT(users.primer_nombre, " ", users.primer_apellido) as full_name'))
+                                    ->join('programa_academico as pro_aca', 'proy_pre.id_programa_academico', 'pro_aca.id')
+                                    ->join('espacio_academico as esp_aca', 'proy_pre.id_espacio_academico', 'esp_aca.id')
+                                    ->join('periodo_academico as per_aca', 'proy_pre.id_periodo_academico', 'per_aca.id')
+                                    ->join('semestre_asignatura as sem_asig', 'proy_pre.id_semestre_asignatura', 'sem_asig.id')
+                                    ->join('users', 'proy_pre.id_docente_responsable', 'users.id')
+                                    ->where('proy_pre.id','=',$item)->first();   
                     
-            $emails = [];
-            $emails[] = ["email"=>$sec_acad->correo,"dependencia"=>$sec_acad->area_dependencia];
-        
-            $correos_administrativos = $emails;
-            /*foreach($emails as $email){
-                try {
-                    Mail::bcc($email['email'])
-                        ->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud,$email, $correos_administrativos));
-                } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::error("$filter -- Error enviando correo a {$email['email']}: " . $e->getMessage());
-                    continue;
+                    $nueva_programacion[] = ['id'=>$programacion->id,
+                                            'programa_academico'=>$programacion->programa_academico,
+                                            'espacio_academico'=>$programacion->espacio_academico,
+                                            'sem_academico'=>$programacion->semestre_asignatura,
+                                            'anio'=>$programacion->anio_periodo,
+                                            'per_academico'=>$programacion->periodo_academico,
+                                            'docente_responsable'=>$programacion->full_name,
+                                            'destino_rp'=>$programacion->destino_rp,
+                                            'fecha_salida_aprox_rp'=>$programacion->fecha_salida_aprox_rp,
+                                            'fecha_regreso_aprox_rp'=>$programacion->fecha_regreso_aprox_rp,
+                                            'destino_ra'=>$programacion->destino_ra,
+                                            'fecha_salida_aprox_ra'=>$programacion->fecha_salida_aprox_ra,
+                                            'fecha_regreso_aprox_ra'=>$programacion->fecha_regreso_aprox_ra];
                 }
-            }*/
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("$filter -- Ha ocurrido un error al enviar notificación por correo. " . $e->getMessage());
-        } 
+            
+                $sec_acad =DB::table('correos_administrativos as c_admin')
+                        ->where('c_admin.id','=',1)
+                        ->orWhere('c_admin.area_dependencia','=','Secretaría Académica')
+                        ->first();
+                      
+                $emails = [];
+                $emails[] = ["email"=>$sec_acad->correo,"dependencia"=>$sec_acad->area_dependencia];
+            
+                $correos_administrativos = $emails;
+                // foreach($emails as $email)
+                // {
+                    
+                //     Mail::bcc($email['email'])->send(new CodigoMail($filter,$nueva_programacion,$nueva_solicitud,$email, $correos_administrativos));
+                    
+                // }
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al enviar notificación.');
+        }
     }
 
 
