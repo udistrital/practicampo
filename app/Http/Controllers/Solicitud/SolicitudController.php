@@ -5001,15 +5001,8 @@ class SolicitudController extends Controller
         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
         ->join('users','p_prel.id_docente_responsable','=','users.id')
         ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_programacion_practica')
-        ->where('sol_prac.id','=',$id)->paginate(1);
-        $idUser = Auth::user()->id;
-        $user_DB= DB::table('users')
-        ->where('id',$idUser)->first();
-        $control_sistema =DB::table('control_sistema')->first();
-        return view('solicitudes.index',['programaciones'=>$solicitud,
-                                        'filter'=>$filter,
-                                        'usuario'=>$user_DB, 
-                                        'control_sistema'=>$control_sistema]);
+        ->where('sol_prac.id','=',$id)->first();
+        return view('solicitudes.tablas.index_sol_realizada',['solicitud'=>$solicitud]);
     }
 
     /**
@@ -5020,11 +5013,33 @@ class SolicitudController extends Controller
      */
     public function practica_realizada_update(Request $request, $id){
         $id = Crypt::decrypt($id);
-        $solicitud = solicitud::where('id_programacion_practica', '=', $id)->first();
+        $solicitud = solicitud::where('id_programacion_practica', $id)->firstOrFail();
+
         $solicitud->estado_practica = $request->get('practica_realizada');
-        $solicitud->update();
-        return redirect('solicitudes/filtrar/sol_realizadas');
+        $solicitud->save();
+
+        $estadoTexto="";
+        switch($solicitud->estado_practica){
+            case 1:
+                $estadoTexto="Realizada";
+                break;
+            case 2:
+                $estadoTexto="No Realizada";
+                break;
+            case 3:
+                $estadoTexto="No Validada";
+                break;
+            default:
+                $estadoTexto="Desconocido";
+                break;
+        }
+
+        return response()->json([
+            'id' => $solicitud->id,
+            'estado' => $estadoTexto
+        ]);
     }
+
     /**
      * Listado de estudiantes registrados en la solicitud
      *

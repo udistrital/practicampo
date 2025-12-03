@@ -50,6 +50,54 @@
 
 <!-- functions-->
 <script>
+    $(document).on('click', '.btnEditarRealizada', function (event) {
+
+        const modalContent = $('#modalContent')
+        const url = $(this).data('url');
+
+        modalContent.html(`
+            <div class="text-center p-4">
+                <span class="spinner-border"></span>
+            </div>
+        `);
+
+        $('#modalPracticaRealizada').modal('show');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                modalContent.html(html);
+            })
+            .catch(err => {
+                modalContent.html(`<div class="alert alert-danger">Error al cargar</div>`);
+            });
+    });
+    $(document).on('submit', '#formPracticaRealizada', function (event) {
+        event.preventDefault();
+
+        let form = $(this);
+        let url = form.attr('action');
+        let data = form.serialize();        
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: data,
+            success: function (response) {
+                $('#modalPracticaRealizada').modal('hide');
+                var id = response.id;
+                var nuevoEstado = response.estado;
+                $(".estado-" + id).text(nuevoEstado);
+
+                alert("¡Actualizado correctamente!");
+            },
+            error: function () {
+                alert("Error al guardar. Intente nuevamente.");
+            }
+        });
+    });
+</script>
+<script>
     $(document).on('click', '.btnTraspasarProgramacion', function (event) {
         var id = $(this).data('id');
 

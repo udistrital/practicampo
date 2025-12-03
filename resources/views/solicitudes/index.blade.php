@@ -259,9 +259,6 @@
               @endif 
 
               @if(Auth::user()->asistenteD())
-                @if($filter == 'sol_realizada')
-                  @include('solicitudes.tablas.index_sol_realizada',$programaciones)
-                @endif
                 @if($filter == 'aprob_solic')
                   @include('solicitudes.tablas.index_docpdf_descarga',$programaciones)
                 @else

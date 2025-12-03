@@ -1,10 +1,4 @@
-@if($filter == 'sol_realizada')
-@foreach($programaciones as $item)
-<br>
-<hr class="divider">
-<h4>Información de la práctica</h4>
-<hr class="divider">
-<form action="{{route('practica_realizada_update',[Crypt::encrypt($item->id)])}}" method="post">
+<form id="formPracticaRealizada" action="{{route('practica_realizada_update',[Crypt::encrypt($solicitud->id)])}}" method="post">
 @csrf
 @method('PUT')
     <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
@@ -19,22 +13,22 @@
             <th style="width: 50px">Estado</th>
         </thead>     
         <tr>            
-            <td>{{ $item->id_solicitud }}</td>
-            <td>{{ $item->programa_academico }}</td>
-            <td>{{ $item->espacio_academico }}</td>
-            @if($item->id_estado_doc == 1)
-                <td>{{ $item->full_name }}</td>
+            <td>{{ $solicitud->id_solicitud }}</td>
+            <td>{{ $solicitud->programa_academico }}</td>
+            <td>{{ $solicitud->espacio_academico }}</td>
+            @if($solicitud->id_estado_doc == 1)
+                <td>{{ $solicitud->full_name }}</td>
             @endif
-            @if($item->id_estado_doc == 2)
+            @if($solicitud->id_estado_doc == 2)
                 <td>Usuario Inactivo</td>
             @endif
-            <td>{{ $item->destino_rp }}</td>
-            <td>{{ $item->fecha_salida_aprox_rp }}</td>
-            <td>{{ $item->fecha_regreso_aprox_rp }}</td>
-            @if($item->estado_practica == 3)
+            <td>{{ $solicitud->destino_rp }}</td>
+            <td>{{ $solicitud->fecha_salida_aprox_rp }}</td>
+            <td>{{ $solicitud->fecha_regreso_aprox_rp }}</td>
+            @if($solicitud->estado_practica == 3)
             <td>No Validada</td>
             @else
-            <td>{{ $item->estado_practica == 2 ? 'No Realizada' : 'Realizada' }}</td>
+            <td>{{ $solicitud->estado_practica == 2 ? 'No Realizada' : 'Realizada' }}</td>
             @endif
 
         </tr>
@@ -49,7 +43,7 @@
                     <div class="col-lg-1 col-md-2 col-sm-2 col-xs-8">
                         <div class="form-check form-check-inline">
                         <input id="practica_realizada" class="form-check-input" type="radio" name="practica_realizada" value="1"
-                        <?php if($item->estado_practica == 1) echo 'checked'?>>
+                        <?php if($solicitud->estado_practica == 1) echo 'checked'?>>
                         <label class="form-check-label" for="">Realizada</label>
                         </div>
                     </div>
@@ -57,7 +51,7 @@
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8">
                         <div class="form-check form-check-inline">
                         <input id="practica_realizada" class="form-check-input" type="radio" name="practica_realizada" value="2"
-                        <?php if($item->estado_practica == 2) echo 'checked'?>>
+                        <?php if($solicitud->estado_practica == 2) echo 'checked'?>>
                         <label class="form-check-label" for="">No realizada</label>
                         </div>
                     </div>
@@ -68,5 +62,3 @@
     <button class="btn-success" style="background-color: #447161; border:0">Guardar</button>
     <!-- estado práctica -->
 </form>
-@endforeach
-@endif
