@@ -21,7 +21,7 @@ use PractiCampoUD\riesgos_amenazas_practica;
 use PractiCampoUD\transporte_menor;
 use PractiCampoUD\transporte_programacion;
 
-class programacionesPreliminaresImport implements ToCollection, WithHeadingRow
+class programacionesPracticasImport implements ToCollection, WithHeadingRow
 {
     public function collection(Collection $collection)
     {

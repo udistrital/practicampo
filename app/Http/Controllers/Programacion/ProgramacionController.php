@@ -27,7 +27,7 @@ use DB;
 use Exception;
 
 /**
- * programaciones preliminares
+ * programaciones practicas
  * 
  * PHP version 7.2
  * 
@@ -51,7 +51,7 @@ class programacionController extends Controller
     }
 
     /**
-     * Listado de programaciones preliminares
+     * Listado de programaciones practicas
      *
      * @param  string  $filter
      * @return \Illuminate\Http\Response
@@ -480,7 +480,8 @@ class programacionController extends Controller
                         ->select('p_prel.id','e_aca.id_programa_academico','p_aca.programa_academico','e_aca.espacio_academico',
                                 'p_prel.destino_rp','p_prel.fecha_salida_aprox_rp','p_prel.fecha_regreso_aprox_rp','es_coor.abrev as ab_coor',
                                 'es_dec.abrev  as ab_dec','es_consj.abrev as es_consj','users.id_estado as id_estado_doc','p_prel.confirm_coord',
-                                'p_prel.created_at as f_creacion')
+                                'p_prel.created_at as f_creacion',
+                                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
                         ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
@@ -507,7 +508,8 @@ class programacionController extends Controller
                         $programacion=DB::table('programacion_practica as p_prel')
                         ->select('p_prel.id','e_aca.id_programa_academico','p_aca.programa_academico','e_aca.espacio_academico',
                                 'p_prel.destino_rp','p_prel.fecha_salida_aprox_rp','p_prel.fecha_regreso_aprox_rp','es_coor.abrev as ab_coor',
-                                'es_dec.abrev  as ab_dec','es_consj.abrev  as es_consj','e_aca.electiva','p_prel.confirm_coord','users.id_estado as id_estado_doc')
+                                'es_dec.abrev  as ab_dec','es_consj.abrev  as es_consj','e_aca.electiva','p_prel.confirm_coord','users.id_estado as id_estado_doc',
+                                DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
                         ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
@@ -768,7 +770,7 @@ class programacionController extends Controller
 
     /**
      * Muestra el formulario para registro de nueva 
-     * Programación preliminar
+     * Programación practica
      *
      * @return \Illuminate\Http\Response
      */
@@ -837,7 +839,7 @@ class programacionController extends Controller
     }
 
     /**
-     * Registro de nueva Programación preliminar
+     * Registro de nueva Programación practica
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -1681,7 +1683,7 @@ class programacionController extends Controller
     }
 
     /**
-     * Muestra formulario para editar Programación preliminar
+     * Muestra formulario para editar Programación practica
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -3978,7 +3980,6 @@ class programacionController extends Controller
                 /**Tabla docentes_practica */
                     $docentes_practica->num_docentes_apoyo=$request->get('num_apoyo');
                     $docentes_practica->total_docentes_apoyo=$request->get('num_apoyo');
-                    $docentes_practica->soporte_personal_apoyo = $request->file('sop_pers_apoyo') != null ? base64_encode(file_get_contents($request->file('sop_pers_apoyo')->path())) : null;
 
                     switch($docentes_practica->num_docentes_apoyo=$request->get('num_apoyo'))
                     {
@@ -4538,7 +4539,7 @@ class programacionController extends Controller
     }
 
     /**
-     * Ver Programación preliminar
+     * Ver Programación practica
      *
      * @param  string  $filter
      * @return \Illuminate\Http\Response
@@ -4629,7 +4630,7 @@ class programacionController extends Controller
     }
 
     /**
-     * Actualización Programación preliminar
+     * Actualización Programación practica
      *
      * @param  int  $id
      * @param  \Illuminate\Http\Request  $request
@@ -6129,7 +6130,7 @@ class programacionController extends Controller
     }
 
     /**
-     * Programación preliminar enviada-confirmada
+     * Programación practica enviada-confirmada
      *
      * @return \Illuminate\Http\Response
      */
@@ -6191,7 +6192,7 @@ class programacionController extends Controller
     }
 
     /**
-     * Programación preliminar visto bueno decanatura
+     * Programación practica visto bueno decanatura
      *
      * @return \Illuminate\Http\Response
      */

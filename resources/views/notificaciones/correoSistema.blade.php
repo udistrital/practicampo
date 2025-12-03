@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Módulo de Programación Preliminar Activo</title>
+        <title>Módulo de Programación  Activo</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
@@ -23,13 +23,13 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Módulo de Programación Preliminar
+                        Módulo de Programación 
                         <br>
                     </h3>
                 </tr>
                 <tr>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">El sistema web PractiCampoUD le informa que el módulo de Programación preliminar se encuentra 
+                    <p style="font-size: 0.875rem">El sistema web PractiCampoUD le informa que el módulo de Programación  se encuentra 
                         habilitado desde el <?= $control_sistema->fecha_apert_proy ?> y hasta el <?= $control_sistema->fecha_cierre_proy ?>, fecha en la cual 
                         se inhabilitará nuevamente.</p>
                     <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
@@ -62,7 +62,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Módulo de Programación Preliminar Inactivo</title>
+        <title>Módulo de Programación  Inactivo</title>
     </head>
     <body>
         <table style="background-color: transparent; text-align:justify" align="center" width="60%">
@@ -81,13 +81,13 @@
                 </tr>
                 <tr>
                     <h3 style="line-height: 120%;">
-                        Módulo de Programación Preliminar
+                        Módulo de Programación 
                         <br>
                     </h3>
                 </tr>
                 <tr>
                     <p style="font-size: 0.875rem">Cordial Saludo,</p>
-                    <p style="font-size: 0.875rem">El sistema web PractiCampoUD le informa que el módulo de Programación preliminar se encuentra 
+                    <p style="font-size: 0.875rem">El sistema web PractiCampoUD le informa que el módulo de Programación  se encuentra 
                         inhabilitado desde el <?= $control_sistema->fecha_cierre_proy ?> y hasta el <?= $control_sistema->fecha_apert_proy ?>, fecha en la cual se habilitará nuevamente.</p>
                     <p style="font-size: 0.875rem">Ingrese al siguiente link: http://practicampo.udistrital.edu.co para hacer seguimiento.</p>
                     <br>

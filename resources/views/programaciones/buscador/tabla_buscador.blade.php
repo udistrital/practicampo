@@ -3,7 +3,7 @@
 
   
   <div class="container-fluid" id="sel_proy_buscador">
-      <div class="card-header">{{ __('Resultado Búsqueda programaciones Preliminares:'.$cant_resul.' Resultados Obtenidos') }}</div>
+      <div class="card-header">{{ __('Resultado Búsqueda programaciones:'.$cant_resul.' Resultados Obtenidos') }}</div>
         <div class="row">
             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
             <div class="form-group">

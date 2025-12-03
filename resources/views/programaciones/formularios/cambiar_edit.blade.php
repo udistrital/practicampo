@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-12 col-lg-12 col-md-12">
                 <div class="card">
-                    <div class="card-header" id="num_docen" name="{{$programacion_practica->id_docente_responsable}}">{{ __('Realizar cambios a Programación Preliminar N° ') }}<?php echo $programacion_practica->id?><?php echo "\t - "?>
+                    <div class="card-header" id="num_docen" name="{{$programacion_practica->id_docente_responsable}}">{{ __('Realizar cambios a Programación  N° ') }}<?php echo $programacion_practica->id?><?php echo "\t - "?>
                         <?php echo $nombre_doc_resp?>{{ __('') }}</div>
                         {{-- <php if($estado_doc_respon == 1){ echo $nombre_doc_resp;} elseif ($estado_doc_respon == 2){ echo "Usuario Inactivo";}?> --}}
                     
@@ -3053,7 +3053,7 @@
                                                     <label for="estado_programacion">
                                                         <i class="fas fa-question-circle" 
                                                         data-toggle="tooltip" data-placement="left" 
-                                                        data-title="Asigne uno de los estados a la salida de práctica académica" style="font-size: 0.813rem"></i> Estado Programación Preliminar</label>
+                                                        data-title="Asigne uno de los estados a la salida de práctica académica" style="font-size: 0.813rem"></i> Estado Programación </label>
                                                     <div class="row">
 
                                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

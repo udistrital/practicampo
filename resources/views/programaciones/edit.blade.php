@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-12 col-lg-12 col-md-12">
                 <div class="card">
-                    <div class="card-header" id="num_docen" name="{{$programacion_practica->id_docente_responsable}}">{{ __('Registro Programación Preliminar N° ') }}<?php echo $programacion_practica->id?><?php echo "\t - "?>
+                    <div class="card-header" id="num_docen" name="{{$programacion_practica->id_docente_responsable}}">{{ __('Registro Programación  N° ') }}<?php echo $programacion_practica->id?><?php echo "\t - "?>
                         <?php echo $nombre_doc_resp?>{{ __('') }}</div>
                         {{-- <php if($estado_doc_respon == 1){ echo $nombre_doc_resp;} elseif ($estado_doc_respon == 2){ echo "Usuario Inactivo";}?> --}}
                     

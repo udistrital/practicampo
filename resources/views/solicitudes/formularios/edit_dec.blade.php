@@ -3088,7 +3088,7 @@
                             <div class="form-group row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="form-group">
-                                        <label for="estado_programacion">Estado Programación Preliminar</label>
+                                        <label for="estado_programacion">Estado Programación </label>
                                         <div class="row">
 
                                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

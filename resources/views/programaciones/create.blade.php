@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header" id="num_docen" name="{{$usuario->id}}">{{ __('Registro Programación Preliminar') }}</div>
+                    <div class="card-header" id="num_docen" name="{{$usuario->id}}">{{ __('Registro Programación ') }}</div>
     
                     <div class="card-body">
                         <form method="POST" action="{{ route('programacion_store') }}" enctype="multipart/form-data" id="create_programacion_form"

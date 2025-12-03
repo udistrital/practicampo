@@ -150,7 +150,7 @@
                         <!-- 5 -->
 
                         <br>
-                        <h4>Programación Preliminar</h4>
+                        <h4>Programación </h4>
                         <hr class="divider">
                         <br>
 

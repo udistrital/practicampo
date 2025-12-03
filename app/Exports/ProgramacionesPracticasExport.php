@@ -16,7 +16,7 @@ use Maatwebsite\Excel\Row;
 use DB;
 use PhpParser\Node\Expr\AssignOp\Concat;
 
-class programacionesPreliminaresExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
+class programacionesPracticasExport implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
 {
 
     use Exportable;

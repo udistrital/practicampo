@@ -616,11 +616,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Módulo de Programación Preliminar Inactivo</title>
+        <title>Módulo de Programación  Inactivo</title>
     </head>
     <body>
         <br>
-        <p>El módulo deProgramación preliminar se encuentra inactivo desde <?php ?>.</p>
+        <p>El módulo deProgramación  se encuentra inactivo desde <?php ?>.</p>
         <p></p>
         <br>
         {{-- <p>Ingrese al sistema para hacer seguimiento.</p> --}}
@@ -635,11 +635,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-        <title>Módulo de Programación Preliminar Inactivo</title>
+        <title>Módulo de Programación  Inactivo</title>
     </head>
     <body>
         <br>
-        <p>El módulo deProgramación preliminar se encuentra inactivo desde <?php ?>.</p>
+        <p>El módulo deProgramación  se encuentra inactivo desde <?php ?>.</p>
         <p></p>
         <br>
         {{-- <p>Ingrese al sistema para hacer seguimiento.</p> --}}

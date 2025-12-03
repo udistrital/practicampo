@@ -106,8 +106,8 @@
                   con fecha límite del 16 de Diciembre del 2021.</p>                
                   <hr class="divider"> --}}
                 <h5 style="text-align: justify; margin-top:0.5rem">Cierre Módulos</h5>
-                <p style="text-align: justify; margin-top:0.5rem;">Los módulos de programaciones preliminares y solicitudes de prácticas serán inhabilitados en las siguientes fechas:</p>
-                <p style="text-align: justify; margin-top:0.5rem; font-weight:bolder; padding-left:1rem"><b>- Programación Preliminar:</b> {{$control_sistema->fecha_cierre_proy}}.<br>
+                <p style="text-align: justify; margin-top:0.5rem;">Los módulos de programaciones y solicitudes de prácticas serán inhabilitados en las siguientes fechas:</p>
+                <p style="text-align: justify; margin-top:0.5rem; font-weight:bolder; padding-left:1rem"><b>- Programación:</b> {{$control_sistema->fecha_cierre_proy}}.<br>
                 <strong>- Solicitud Práctica:</strong> {{$control_sistema->fecha_cierre_solic}}.</p>
                 <hr class="divider">
                 <h5 style="text-align: justify; margin-top:0.5rem; padding-top:0.938rem">Legalización Avances</h5>

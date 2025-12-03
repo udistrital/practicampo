@@ -3480,7 +3480,7 @@
                                 <label for="estado_programacion">
                                     <i class="fas fa-question-circle" 
                                     data-toggle="tooltip" data-placement="left" 
-                                    data-title="Asigne uno de los estados a la salida de práctica académica" style="font-size: 0.813rem"></i> Estado Programación Preliminar</label>
+                                    data-title="Asigne uno de los estados a la salida de práctica académica" style="font-size: 0.813rem"></i> Estado Programación </label>
                                 <div class="row">
 
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

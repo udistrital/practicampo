@@ -235,7 +235,7 @@
         
         <thead style="text-align: center" style="margin-right: 20%;margin-left: 20%; width: 60%;">
             {{-- <th style="width: 425pxpx"> --}}
-            ESPACIOS ACADÉMICOS NO ELECTIVOS SIN programacionES PRELIMINARES REGISTRADAS
+            ESPACIOS ACADÉMICOS NO ELECTIVOS SIN PROGRAMACIONES REGISTRADAS
             {{-- </th> --}}
         </thead> 
         <thead>

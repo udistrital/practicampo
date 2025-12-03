@@ -5,7 +5,7 @@
     {{-- <img src="{{ asset('img/descarga.jpg') }}" width="100%" height="100%"> --}}
     <div class="row">
       <div class="col-md-5"></div>
-      <div class="card-header">{{ __('Listado de programaciones Preliminares') }}</div>
+      <div class="card-header">{{ __('Listado de programaciones') }}</div>
       {{-- <div class="col-md-4"></div> --}}
     </div>
     <div class="row">

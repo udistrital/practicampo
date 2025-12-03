@@ -36,7 +36,7 @@ class InstructivoSolicitudesExport implements FromCollection,  ShouldAutoSize, W
             ['','RECUERDE: NO SE DEBE CAMBIAR EL NOMBRE DEL DOCUMENTO, ESTE DEBE SER "INFORMACION_SOLICITUDES" EN MINÚSCULA TODO Y SIN TÍLDES.'],
             [''],
             ['','CAMPO','DETALLE','FORMATO'],
-            ['','ID Programación','Indique el ID de la Programación preliminar que corresponda para completar','Solo números'],
+            ['','ID Programación','Indique el ID de la Programación Practica que corresponda para completar','Solo números'],
             // ['','ID PROGRAMA ACADÉMICO','Indique el ID del Programa Académico que corresponda','Solo números'],
             // ['','ID ESPACIO ACADÉMICO','Indique el ID del Espacio Académico que corresponda','Solo números'],
             // ['','SEM. ASIG','Indique el ID del Semestre de Asignatura que corresponda','Solo números'],

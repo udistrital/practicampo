@@ -18,7 +18,7 @@ class ReportprogramacionesExport implements WithMultipleSheets
     {
         $sheets = [];
 
-         $sheets[] = new programacionesPreliminaresExport($this->id_programacion);
+         $sheets[] = new programacionesPracticasExport($this->id_programacion);
          $sheets[] = new programacionesContingenciaExport($this->id_programacion);
          $sheets[] = new programacionesIntegradasExport($this->id_programacion);
 

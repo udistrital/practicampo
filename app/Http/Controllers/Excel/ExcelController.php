@@ -9,7 +9,7 @@ use PractiCampoUD\Exports\ReportprogramacionesExport;
 use PractiCampoUD\Exports\ReportSolicitudesExport;
 use PractiCampoUD\Exports\ReportUsersExport;
 use PractiCampoUD\Http\Controllers\Controller;
-use PractiCampoUD\Imports\programacionesPreliminaresImport;
+use PractiCampoUD\Imports\programacionesPracticasImport;
 use PractiCampoUD\Imports\EstudiantesImport;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\Exports\FormatoEstudiantesExport;
@@ -82,7 +82,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * Exporta programaciones preliminares
+     * Exporta programaciones practicas
      *
      * @return \Illuminate\Http\Response
      */
@@ -92,11 +92,11 @@ class ExcelController extends Controller
         {
             $id = $request->get('programacion_list');
             $mytime=Carbon::now('America/Bogota');
-            return Excel::download(new ReportprogramacionesExport([$id]),'poyecciones_preliminares.xls');
+            return Excel::download(new ReportprogramacionesExport([$id]),'programaciones_practicas.xls');
         }
         catch(\Exception $ex)
         {
-            return back()->withError('Falla al descargar listado de programaciones preliminares.');
+            return back()->withError('Falla al descargar listado de programaciones.');
         }
     }
 
@@ -126,11 +126,11 @@ class ExcelController extends Controller
     {
        try
        {
-            return Excel::download(new ReportFormatoprogramaciones(), 'programaciones_preliminares.xlsx');
+            return Excel::download(new ReportFormatoprogramaciones(), 'programaciones_practicas.xlsx');
        }
        catch(\Exception $ex)
        {
-        return back()->withError('Falla al descargar el formato de programaciones preliminares.');
+        return back()->withError('Falla al descargar el formato de programaciones.');
        }
     }
 
@@ -160,7 +160,7 @@ class ExcelController extends Controller
     {
         try
         {
-            Excel::import(new programacionesPreliminaresImport,request()->file('programaciones_preliminares'));
+            Excel::import(new programacionesPracticasImport,request()->file('programaciones_practicas'));
         }
         catch(\Exception $ex)
         {

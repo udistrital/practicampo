@@ -17,7 +17,7 @@ class ReportprogramacionesImport implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            new programacionesPreliminaresImport()
+            new programacionesPracticasImport()
         ];
     }
 }

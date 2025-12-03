@@ -9,7 +9,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Registro Programación Preliminar N° ') }}<?php echo $programacion_practica->id?><?php echo "\t -"?>
+                    <div class="card-header">{{ __('Registro Programación  N° ') }}<?php echo $programacion_practica->id?><?php echo "\t -"?>
                         {{ __('') }}</div>
                         {{-- <php if($estado_doc_respon == 1){ echo $nombre_doc_resp;} elseif ($estado_doc_respon == 2){ echo "Usuario Inactivo";}?> --}}
                     
