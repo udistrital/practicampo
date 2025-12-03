@@ -89,7 +89,6 @@
                 var nuevoEstado = response.estado;
                 $(".estado-" + id).text(nuevoEstado);
 
-                alert("¡Actualizado correctamente!");
             },
             error: function () {
                 alert("Error al guardar. Intente nuevamente.");
