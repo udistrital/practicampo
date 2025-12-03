@@ -27,8 +27,8 @@
                   <a class="collapse-item" href="{{url('ver/documento') }}">Listar Documentos</a>
                   <a class="collapse-item" href="{{url('sistema') }}">Sistema</a>
                   <a class="collapse-item" href="{{url('presupuesto') }}">Presupuestos</a>
-                  <a class="collapse-item" href="{{url('programas_academicos') }}">Programas Académicos</a>
-                  <a class="collapse-item" href="{{url('espacios_academicos') }}">Espacios Académicos</a>
+                  <!-- <a class="collapse-item" href="{{url('programas_academicos') }}">Programas Académicos</a>
+                  <a class="collapse-item" href="{{url('espacios_academicos') }}">Espacios Académicos</a> -->
                   {{-- <a class="collapse-item" href="{{url('edicion/documento') }}">Edición Documentos</a> --}}
               </div>
             </div>
@@ -83,8 +83,8 @@
               <!-- Nav Item - Pages Collapse Menu solicitudes -->
             @endif
 
-            <!-- Nav Item - Pages Collapse Menu solicitudes -->
-            @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD() || Auth::user()->coordinador())   
+            <!-- Nav Item - Pages Collapse Menu solicitudes --> <!-- || Auth::user()->coordinador() -->
+            @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD() )   
               <li class="nav-item">
                 <a class="nav-link collapsed" href="#collapseTFour" data-toggle="collapse" data-target="#collapseTFour" aria-expanded="true" aria-controls="collapseThree">
                   <i class="fas fa-fw fa-clipboard-check"></i>

@@ -39,25 +39,82 @@ class EstudianteController extends Controller
     {
         $id=Crypt::decrypt($id);
         $email=Crypt::decrypt($email);
-        // $cod_est=Crypt::decrypt($cod_est);
-        $id_solicitud = $id;
+        $id_sol = $id;
         $estudiante = DB::table('estudiantes_solicitud_practica as esp')
                         ->where('email','=',$email)
-                        // ->where('cod_estudiantil','=',$cod_est)
-                        ->where('id_solicitud_practica','=',$id_solicitud)->first();
-        
-        $tipo_identificacion=DB::table('tipo_identificacion')->get();
-
-        $doc_req_solicitud = DB::table('documentos_requeridos_solicitud as doc_req')
-                ->select('doc_req.vacuna_fiebre_amarilla', 'doc_req.vacuna_tetanos', 'doc_req.permiso_acudiente', 
-                         'doc_req.certificado_adicional_1', 'doc_req.certificado_adicional_2', 'doc_req.certificado_adicional_3',
-                         'doc_req.detalle_certificado_adcional_1', 'doc_req.detalle_certificado_adcional_2', 'doc_req.detalle_certificado_adcional_3')
-                ->where('id',$id_solicitud)->first();
-        
-        return view('estudiantes.cargue_docs_est',["estudiante"=>$estudiante,
+                        ->where('id_solicitud_practica','=',$id_sol)->first();
+        if($estudiante->verificacion_asistencia == 0){            
+            $tipo_identificacion=DB::table('tipo_identificacion')->get();
+            $doc_req_solicitud = DB::table('documentos_requeridos_solicitud as doc_req')
+                    ->select('doc_req.vacuna_fiebre_amarilla', 'doc_req.vacuna_tetanos', 'doc_req.permiso_acudiente', 
+                            'doc_req.certificado_adicional_1', 'doc_req.certificado_adicional_2', 'doc_req.certificado_adicional_3',
+                            'doc_req.detalle_certificado_adcional_1', 'doc_req.detalle_certificado_adcional_2', 'doc_req.detalle_certificado_adcional_3')
+                    ->where('id',$id_sol)->first();
+            
+            return view('estudiantes.cargue_docs_est',["estudiante"=>$estudiante,
                                                    "tipos_identificaciones"=>$tipo_identificacion,
                                                    "doc_req_solicitud"=>$doc_req_solicitud]);
-        
+        }else if($estudiante->verificacion_asistencia == 1){
+            $rec_doc= DB::table('estudiantes_solicitud_practica')
+                    ->where('email', '=', $email)
+                    ->where('id_solicitud_practica','=',$id_sol)->first();
+
+            $ccc1 = $rec_doc->seguro_estudiantil;
+            $show_image1 = base64_decode($ccc1);
+            $show_pdf1="data:application/pdf;base64,$ccc1";
+            $img1="data:image/png;base64,$ccc1";
+
+            $ccc2 = $rec_doc->documento_identificacion;
+            $show_image2 = base64_decode($ccc2);
+            $show_pdf2="data:application/pdf;base64,$ccc2";
+            $img2="data:image/png;base64,$ccc2";
+
+            $ccc4 = $rec_doc->certificado_eps;
+            $show_image4 = base64_decode($ccc4);
+            $show_pdf4="data:application/pdf;base64,$ccc4";
+            $img4="data:image/png;base64,$ccc4";
+
+            $ccc5 = $rec_doc->permiso_acudiente;
+            $show_image5 = base64_decode($ccc5);
+            $show_pdf5="data:application/pdf;base64,$ccc5";
+            $img5="data:image/png;base64,$ccc5";
+
+            $ccc6 = $rec_doc->vacuna_fiebre_amarilla;
+            $show_image6 = base64_decode($ccc6);
+            $show_pdf6="data:application/pdf;base64,$ccc6";
+            $img6="data:image/png;base64,$ccc6";
+
+            $ccc7 = $rec_doc->vacuna_tetanos;
+            $show_image7 = base64_decode($ccc7);
+            $show_pdf7="data:application/pdf;base64,$ccc7";
+            $img7="data:image/png;base64,$ccc7";
+            
+            $ccc9 = $rec_doc->certificado_adicional_1;
+            $show_image9 = base64_decode($ccc9);
+            $show_pdf9="data:application/pdf;base64,$ccc9";
+            $img9="data:image/png;base64,$ccc9";
+            
+            $ccc10 = $rec_doc->certificado_adicional_2;
+            $show_image10 = base64_decode($ccc10);
+            $show_pdf10="data:application/pdf;base64,$ccc10";
+            $img10="data:image/png;base64,$ccc10";
+
+            $ccc11 = $rec_doc->certificado_adicional_3;
+            $show_image11 = base64_decode($ccc11);
+            $show_pdf11="data:application/pdf;base64,$ccc11";
+            $img11="data:image/png;base64,$ccc11";
+
+            return view('estudiantes.ppp',["imagen1"=>$show_image1, "img1"=>$img1, "pdf1"=>$show_pdf1,
+                                        "imagen2"=>$show_image2, "img2"=>$img2, "pdf2"=>$show_pdf2,
+                                        "imagen4"=>$show_image4, "img4"=>$img4, "pdf4"=>$show_pdf4,
+                                        "imagen5"=>$show_image5, "img5"=>$img5, "pdf5"=>$show_pdf5,
+                                        "imagen6"=>$show_image6, "img6"=>$img6, "pdf6"=>$show_pdf6,
+                                        "imagen7"=>$show_image7, "img7"=>$img7, "pdf7"=>$show_pdf7,
+                                        "imagen9"=>$show_image9, "img9"=>$img9, "pdf9"=>$show_pdf9,
+                                        "imagen10"=>$show_image10, "img10"=>$img10, "pdf10"=>$show_pdf10,
+                                        "imagen11"=>$show_image11, "img11"=>$img11, "pdf11"=>$show_pdf11,
+                                        "rec_doc"=>$rec_doc]);
+        }
     }
 
     /**
@@ -107,8 +164,7 @@ class EstudianteController extends Controller
             $filter=null;
             if($estudiante == null || $estudiante->estado_estudiante != 1 )
             {
-                Abort('401');
-                // return view('auth.fallida_est');
+                return redirect('/loginEst')->with('error', 'Error: No se encuentra el usuario en la base de datos o no está activo');
             }
             else if($estudiante != null || $estudiante->estado_estudiante == 1)
             {
@@ -118,7 +174,7 @@ class EstudianteController extends Controller
             }
         }
         else {
-            Abort('401');
+            return redirect('/loginEst')->with('error', 'Error: Credenciales inválidas');
         }
     }
 
@@ -130,8 +186,6 @@ class EstudianteController extends Controller
                     ->where('email','=',$email_estudiante)->first();
         $id_solicitudes =DB::table('estudiantes_solicitud_practica as est_prac')
                             ->select('est_prac.id_solicitud_practica')
-                            ->where('aprob_terminos_condiciones',0)
-                            ->where('verificacion_asistencia',0)
                             ->where('email',$email_estudiante)->get();        
         switch ($filter){
             case 'sol_estudiante':
@@ -156,6 +210,9 @@ class EstudianteController extends Controller
                                     ->join('users','p_prel.id_docente_responsable','=','users.id')
                                     ->join('estudiantes_solicitud_practica as est_sol','sol_prac.id','=','est_sol.id_solicitud_practica')
                                     ->where('sol_prac.id',$id_solic->id_solicitud_practica)
+                                    ->where('sol_prac.confirm_creador',1)
+                                    //->where('sol_prac.confirm_docente',0) //habilitar al finalizar, aca es paso intermedio antes de enviar a coord
+                                    ->where('sol_prac.estado_practica',2)
                                     ->where('est_sol.habilitado',1)->first();
                         
                         if(!empty($solic) || $solic != null)

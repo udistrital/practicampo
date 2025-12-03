@@ -23,7 +23,7 @@
                                 <label class="form-check-label" for="">Solicitudes Estudiante</label>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12" hidden>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="id_filtro_estudiante"  @if(isset($filter) and ($filter == 'sol_evaluacion')) checked="true" @endif onclick="filtrar_solicutudes_estudiante(this.value)" value="2">
                                 <label class="form-check-label" for="">Evaluar Prácticas</label>
