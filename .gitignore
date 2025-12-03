@@ -13,3 +13,4 @@ yarn-error.log
 /db_backup/*.sql
 /letsencrypt
 /app/Http/Middleware/ForceHttps.php
+/documentos_solicitud_estudiantes

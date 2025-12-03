@@ -192,7 +192,7 @@
             <input type="file"  name="plan_contingencia" style="color: rgb(243, 3, 3)">
         </div>
         <div class="form-group">
-          <button class="btn btn-success" name="import_proyecciones" title="Importar Archivo Excel"><i class="fas fa-file-import"></i>     CSV</button></a>
+          <button class="btn btn-success" name="import_programaciones" title="Importar Archivo Excel"><i class="fas fa-file-import"></i>     CSV</button></a>
         </div>
       </div>
 
@@ -201,7 +201,7 @@
             <div class="form-group">
               <label for=""></label>
               <div class="row">
-                <a href="{{route('proyeccion_preliminar.pdf')}}"><button class="btn btn-success" ><i class="fas fa-download"></i>     PDF</button></a>
+                <a href="{{route('programacion_practica.pdf')}}"><button class="btn btn-success" ><i class="fas fa-download"></i>     PDF</button></a>
               </div>
           </div>
         </div> --}}

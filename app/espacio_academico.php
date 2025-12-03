@@ -14,8 +14,11 @@ class espacio_academico extends Model
             'espacio_academico',
             'plan_estudios_1',
             'plan_estudios_2', 
-            'tipo_espacio',   		
+            'tipo_espacio',
+            'electiva' 		
     ];
+
+    public $timestamps = false;
 
     public function prog_academico()
     {

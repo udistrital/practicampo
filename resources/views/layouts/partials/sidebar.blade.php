@@ -27,6 +27,8 @@
                   <a class="collapse-item" href="{{url('ver/documento') }}">Listar Documentos</a>
                   <a class="collapse-item" href="{{url('sistema') }}">Sistema</a>
                   <a class="collapse-item" href="{{url('presupuesto') }}">Presupuestos</a>
+                  <!-- <a class="collapse-item" href="{{url('programas_academicos') }}">Programas Académicos</a>
+                  <a class="collapse-item" href="{{url('espacios_academicos') }}">Espacios Académicos</a> -->
                   {{-- <a class="collapse-item" href="{{url('edicion/documento') }}">Edición Documentos</a> --}}
               </div>
             </div>
@@ -45,22 +47,22 @@
   
           @if($usuario->tiene_firma == 1 || Auth::user()->admin() || Auth::user()->asistenteD() || Auth::user()->transportador())
             @if($control_sistema->estado_proy == 1 && $usuario->id_role != 7)
-            <!-- Nav Item - Pages Collapse Menu  proyecciones-->
+            <!-- Nav Item - Pages Collapse Menu  programaciones-->
               <li class="nav-item">
                 <a class="nav-link collapsed" href="#collapseTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   <i class="fas fa-fw fa-business-time"></i>
-                  <span>PROYECCIONES</span>
+                  <span>PROGRAMACIONES</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                   <div class="bg-nav py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{url('proyecciones/filtrar/all') }}">Listar Proyecciones</a>
+                    <a class="collapse-item" href="{{url('programaciones/filtrar/all') }}">Listar programaciones</a>
                     @if(Auth::user()->docente())
-                    <a class="collapse-item" href="{{route('proyeccion_create')}}">Nueva Proyección</a>
+                    <a class="collapse-item" href="{{route('programacion_create')}}">Nueva Programación</a>
                     @endif
                   </div>
                 </div>
               </li>
-            <!-- Nav Item - Pages Collapse Menu proyecciones -->
+            <!-- Nav Item - Pages Collapse Menu programaciones -->
             @endif
 
             @if($control_sistema->estado_solic == 1)
@@ -74,15 +76,30 @@
                   <div class="bg-nav py-2 collapse-inner rounded">
                     {{-- @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD() || Auth::user()->coordinador() || Auth::user()->docente() || Auth::user()->transportador()) --}}
                     <a class="collapse-item" href="{{url('solicitudes/filtrar/all') }}">Listar Solicitudes </a>
-                      @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD())            
-                        <a class="collapse-item" href="{{url('excel_solicitudes') }}"> Descargar Excel </a>
-                      @endif
                     {{-- @endif --}}                    
                   </div>
                 </div>
               </li>
               <!-- Nav Item - Pages Collapse Menu solicitudes -->
             @endif
+
+            <!-- Nav Item - Pages Collapse Menu solicitudes --> <!-- || Auth::user()->coordinador() -->
+            @if(Auth::user()->admin() || Auth::user()->decano() || Auth::user()->asistenteD() )   
+              <li class="nav-item">
+                <a class="nav-link collapsed" href="#collapseTFour" data-toggle="collapse" data-target="#collapseTFour" aria-expanded="true" aria-controls="collapseThree">
+                  <i class="fas fa-fw fa-clipboard-check"></i>
+                  <span>REPORTES</span>
+                </a>
+                <div id="collapseTFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
+                  <div class="bg-nav py-2 collapse-inner rounded">
+                               
+                        <a class="collapse-item" href="{{url('excel_solicitudes') }}"> Generar Reportes </a>
+                                     
+                  </div>
+                </div>
+              </li>
+            @endif   
+            <!-- Nav Item - Pages Collapse Menu solicitudes -->
           
           @endif
           <!-- Nav Item - Pages Collapse Menu Firma litográfica -->
@@ -113,7 +130,7 @@
                 <a class="collapse-item" href="{{route('dwn_man_user') }}">Manual Usuario</a>
                 <a class="collapse-item" href="{{route('dwn_resol_pract_pre') }}">Resolución 090</a>
                 <a class="collapse-item" href="{{route('exp_formato_users') }}">Formato Usuarios</a>
-                <a class="collapse-item" href="{{route('exp_formato_proy') }}">Formato Proyecciones</a>
+                <a class="collapse-item" href="{{route('exp_formato_proy') }}">Formato programaciones</a>
                 <a class="collapse-item" href="{{route('exp_formato_estud') }}">Formato Estudiantes</a>
                 <a class="collapse-item" href="{{route('dwn_infor_final') }}">Formato Informe Final</a>
               </div>

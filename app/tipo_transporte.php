@@ -16,6 +16,6 @@ class tipo_transporte extends Model
 
     public function transporte()
     {
-        return $this->hasMany(transporte_proyeccion::class);
+        return $this->hasMany(transporte_programacion::class);
     }
 }

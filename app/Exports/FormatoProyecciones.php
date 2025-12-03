@@ -13,10 +13,10 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use PractiCampoUD\Exports\collection;
 use PractiCampoUD\categoria;
 use PractiCampoUD\formatoExportProy;
-use PractiCampoUD\proyeccion;
+use PractiCampoUD\programacion;
 use stdClass;
 
-class FormatoProyecciones implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
+class Formatoprogramaciones implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
 {
     use Exportable;
     public function __construct()
@@ -206,7 +206,7 @@ class FormatoProyecciones implements FromCollection, WithHeadings, ShouldAutoSiz
 
     public function title(): string
     {
-        $titleSheet = "proyecciones";
+        $titleSheet = "programaciones";
         return $titleSheet;
     }
 }

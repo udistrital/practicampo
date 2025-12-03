@@ -26,7 +26,7 @@
                         <th style="width: 25px">Coord.</th>
                         <th style="width: 25px">Decan.</th>
                     </thead> 
-                    @foreach ($proyecciones as $item) 
+                    @foreach ($programaciones as $item) 
                     <tr>
                        <td style="text-align:center;"><label>
                            <input type="checkbox" id="solicitud_list[]" name="solicitud_list[]" value="{{ $item->id_solicitud }}"></label></td> 

@@ -11,7 +11,7 @@
     <th style="width: 20px">Acciones</th>
     
 </thead> 
-@foreach ($proyecciones as $item) 
+@foreach ($programaciones as $item) 
 <tr>
     {{-- <form name="proy_buscador"> --}}
    <td>{{ $item->id_solicitud }}</td>
@@ -37,4 +37,4 @@
 @endforeach 
 </table>
 
-{{$proyecciones->render()}}
+{{$programaciones->render()}}

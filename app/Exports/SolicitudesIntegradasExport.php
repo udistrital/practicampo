@@ -33,10 +33,10 @@ class SolicitudesIntegradasExport implements FromCollection, WithHeadings, Shoul
         foreach($lista_solicitudes[0]  as $id_solicitud)
         {
             $id_proye = DB::table('solicitud_practica as sol_prac')
-            ->select('sol_prac.id_proyeccion_preliminar')
+            ->select('sol_prac.id_programacion_practica')
             ->where('sol_prac.id',$id_solicitud)->first();
 
-            $solicitudes=DB::table('proyeccion_preliminar as proy_prel')
+            $solicitudes=DB::table('programacion_practica as proy_prel')
             ->select('proy_prel.id','sol_prac.id as id_solicitud','prog_aca.programa_academico',
             'integ_1.codigo_espacio_academico as cod_int_1','integ_1.espacio_academico as esp_int_1',
             DB::raw('CONCAT_WS(" ", us_1.primer_nombre, us_1.segundo_nombre, us_1.primer_apellido, us_1.segundo_apellido) as full_name_1'),
@@ -53,7 +53,7 @@ class SolicitudesIntegradasExport implements FromCollection, WithHeadings, Shoul
             'integ_7.codigo_espacio_academico as cod_int_7','integ_7.espacio_academico as esp_int_7',
             DB::raw('CONCAT_WS(" ", us_7.primer_nombre, us_7.segundo_nombre, us_7.primer_apellido, us_7.segundo_apellido) as full_name_7')
             )
-            ->join('solicitud_practica as sol_prac','proy_prel.id','=','sol_prac.id_proyeccion_preliminar')
+            ->join('solicitud_practica as sol_prac','proy_prel.id','=','sol_prac.id_programacion_practica')
             ->join('espacio_academico as espa','proy_prel.id_espacio_academico','=','espa.id')
             ->join('programa_academico as prog_aca','espa.id_programa_academico','=','prog_aca.id')
             ->join('practicas_integradas as integ','proy_prel.id','=','integ.id')
@@ -71,7 +71,7 @@ class SolicitudesIntegradasExport implements FromCollection, WithHeadings, Shoul
             ->leftjoin('users as us_5','integ.id_docen_espa_aca_5','=','us_5.id')
             ->leftjoin('users as us_6','integ.id_docen_espa_aca_6','=','us_6.id')
             ->leftjoin('users as us_7','integ.id_docen_espa_aca_7','=','us_7.id')
-            ->where('integ.id',$id_proye->id_proyeccion_preliminar)->first();
+            ->where('integ.id',$id_proye->id_programacion_practica)->first();
 
             $solicitud->push($solicitudes);
         }
@@ -81,7 +81,7 @@ class SolicitudesIntegradasExport implements FromCollection, WithHeadings, Shoul
 
     public function headings():array
     {
-        return['ID PROYECCIÓN','ID SOLICITUD','PROGRAMA ACADÉMICO', 'CÓD. ESPACIO ACADÉMICO 1', 'ESPACIO ACADÉMICO 1', 'DOCENTE 1',
+        return['ID Programación','ID SOLICITUD','PROGRAMA ACADÉMICO', 'CÓD. ESPACIO ACADÉMICO 1', 'ESPACIO ACADÉMICO 1', 'DOCENTE 1',
                 'CÓD. ESPACIO ACADÉMICO 2', 'ESPACIO ACADÉMICO 2', 'DOCENTE 2',
                 'CÓD. ESPACIO ACADÉMICO 3', 'ESPACIO ACADÉMICO 3', 'DOCENTE 3',
                 'CÓD. ESPACIO ACADÉMICO 4', 'ESPACIO ACADÉMICO 4', 'DOCENTE 4',

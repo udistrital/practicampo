@@ -105,7 +105,7 @@
                             
                             <br>
                             <div class="form-group">
-                                <a href="{{route('doc_est_ind',[Crypt::encrypt($rec_doc->email)])}}" class="btn btn-success">
+                                <a href="/Estudiante/filtrar/sol_estudiante" class="btn btn-success">
                                     Inicio
                                 </a>
                             </div>

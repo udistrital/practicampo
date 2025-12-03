@@ -3,7 +3,7 @@
 
   
   <div class="container-fluid">
-      <div class="card-header">{{ __('Listado de Rutas - Proyección Preliminar N° ') }}<?php echo $proyeccion_preliminar->id?></div>
+      <div class="card-header">{{ __('Listado de Rutas - Programación Preliminar N° ') }}<?php echo $programacion_practica->id?></div>
     <div class="row">
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
           <div class="form-group">
@@ -21,19 +21,19 @@
 
           
         {{-- @if(Auth::user()->admin())
-          @include('solicitudes.tablas.index_admin',$proyecciones)
+          @include('solicitudes.tablas.index_admin',$programaciones)
         @endif  
 
         @if(Auth::user()->decano())
-          @include('solicitudes.tablas.index_dec',$proyecciones)
+          @include('solicitudes.tablas.index_dec',$programaciones)
         @endif 
 
         @if(Auth::user()->asistenteD())
-          @include('solicitudes.tablas.index_asisDec',$proyecciones)
+          @include('solicitudes.tablas.index_asisDec',$programaciones)
         @endif 
 
         @if(Auth::user()->coordinador())
-          @include('solicitudes.tablas.index_coord',$proyecciones)
+          @include('solicitudes.tablas.index_coord',$programaciones)
         @endif  --}}
 
         
@@ -41,9 +41,9 @@
         @if(Auth::user()->coordinador() || Auth::user()->docente() || Auth::user()->admin())
         
 
-          {{-- @if($proyeccion_preliminar->listado_estudiantes == 0) --}}
+          {{-- @if($programacion_practica->listado_estudiantes == 0) --}}
           
-            @if(Auth::user()->admin() ||Auth::user()->docente() || Auth::user()->id == $proyeccion_preliminar->id_docente_responsable)
+            @if(Auth::user()->admin() ||Auth::user()->docente() || Auth::user()->id == $programacion_practica->id_docente_responsable)
               @include('solicitudes.rutas.rutas',$rutas)
             @endif
           @endif

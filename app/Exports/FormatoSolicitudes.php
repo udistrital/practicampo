@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use PractiCampoUD\Exports\collection;
 use PractiCampoUD\categoria;
 use PractiCampoUD\formatoExportSolic;
-use PractiCampoUD\proyeccion;
+use PractiCampoUD\programacion;
 use stdClass;
 
 class FormatoSolicitudes implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents, WithTitle
@@ -64,7 +64,7 @@ class FormatoSolicitudes implements FromCollection, WithHeadings, ShouldAutoSize
     public function headings():array
     {
         return[
-            'ID PROYECCIÓN',
+            'ID Programación',
             // 'ID PROGRAMA ACADÉMICO', 
             // 'ID ESPACIO ACADÉMICO',
             // 'SEM. ASIG',

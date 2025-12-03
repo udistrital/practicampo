@@ -14,6 +14,9 @@
                     
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 1.1rem">
+                    @if(Auth::guard('estud')->check())
+                    <span class="hidden-xs">{{ Auth::guard('estud')->user()->email }}</span>
+                    @endif
                     </a>
                     <div class="dropdown-menu ml-auto" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ url('/logout') }}" style="color: #090808"

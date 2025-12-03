@@ -1101,7 +1101,7 @@ class UsersController extends Controller
             
         }
         else{
-            return redirect('proyecciones/filtrar/all');
+            return redirect('programaciones/filtrar/all');
         }
         return view('auth.buscador.tabla_buscador',['resultadoUsuarios'=>$searchUser, 
                                                                 'searchText'=>$query, 

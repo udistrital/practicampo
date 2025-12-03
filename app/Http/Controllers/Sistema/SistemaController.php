@@ -101,6 +101,10 @@ class SistemaController extends Controller
         $control_sistema->vlr_docen_max = $request->get('vlr_docen_max');
         $control_sistema->vlr_estud_min = $request->get('vlr_estud_min');
         $control_sistema->vlr_estud_max = $request->get('vlr_estud_max');
+        $control_sistema->vlr_docen_min_estimado = $request->get('vlr_docen_min_estimado');
+        $control_sistema->vlr_docen_max_estimado = $request->get('vlr_docen_max_estimado');
+        $control_sistema->vlr_estud_min_estimado = $request->get('vlr_estud_min_estimado');
+        $control_sistema->vlr_estud_max_estimado = $request->get('vlr_estud_max_estimado');
         $control_sistema->fecha_actualizacion = $mytime->toDateString();
         $control_sistema->id_usuer_update = Auth::user()->id;
         $idUser = Auth::user()->id;

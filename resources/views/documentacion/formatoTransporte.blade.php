@@ -4,9 +4,6 @@
 
 <title>FORMATO</title>
 <style>
-  @page{
-    margin-bottom: 0;
-  }
 P{font-family:"Arial, sans-serif";font-size:10pt}
 .tg  {border-collapse:collapse;border-spacing:0;}
 .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:10px;
@@ -30,10 +27,7 @@ P{font-family:"Arial, sans-serif";font-size:10pt}
 margin-bottom: 0; */
 page-break-after: always;
 }
-header{position:fixed;margin-bottom: 500px !important}
-
-body{margin-bottom: 0 !important;
-  page-break-inside: avoid;}
+header{position:fixed;}
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -43,13 +37,13 @@ body{margin-bottom: 0 !important;
 <body>
 
   <header>
-    <table class="tg" style="undefined;table-layout:fixed;width:100%;">
+    <table class="tg" style="table-layout:fixed;width:699px;">
         <thead>
         <tr>
-            <th class="tg-0lax" rowspan="3"><p style="text-align: center; margin:0;"><img src="{{ asset('img/logo_ud.png') }}" alt="" height="100"/></p></th>
+            <th class="tg-0lax" rowspan="3"><p style="text-align: center; margin:0;"><img src="{{ public_path('img/logo_ud.png') }}" alt="" height="100"/></p></th>
             <th class="tg-nrix" colspan="2"><span style="font-weight:bold">FORMATO SOLICITUD TRANSPORTE TERRESTRE</span></th>
             <th class="tg-nrix">Código: GD-PR-010-FR-034</th>
-            <th class="tg-0lax" rowspan="3"><p style="text-align: center; margin:0;padding-top: 10px;"><img src="{{ asset('img/SIGUD.png') }}" alt="" height="80"/></p></th>
+            <th class="tg-0lax" rowspan="3"><p style="text-align: center; margin:0;padding-top: 10px;"><img src="{{ public_path('img/SIGUD.png') }}" alt="" height="80"/></p></th>
         </tr>
         <tr>
             
@@ -100,10 +94,10 @@ body{margin-bottom: 0 !important;
               <td class="tg-9wq8" colspan="12">{{$solicitud_practica->programa_academico}}</td>
             </tr>
             <tr>
-              <td class="tg-9wq8" colspan="6">Docente Responsable</td>
+              <td class="tg-9wq8" colspan="6">Docente(s) Responsable(s)</td>
               <td class="tg-9wq8" colspan="6">
-                @foreach ($doce_pract_int as $item) 
-                  <p style="margin: 0rem;font-size: 10.5px"><?= $item['full_name']?></p>
+                @foreach ($docentes_responsables as $item) 
+                  <p style="margin: 0rem;font-size: 10.5px"><?= $item['nombre']?></p>
                   {{-- <td class="tg-9wq8" colspan="2">{{$solicitud_practica->full_name}}</td> --}}
                 @endforeach 
               </td>
@@ -113,14 +107,14 @@ body{margin-bottom: 0 !important;
             <tr>
               <td class="tg-9wq8" colspan="3">Teléfono de contacto Docente</td>
               <td class="tg-9wq8" colspan="3">
-                @foreach ($doce_pract_int as $item) 
+                @foreach ($docentes_responsables as $item) 
                   <p style="margin: 0rem;font-size: 10.5px"><?= $item['celular']?></p>
                 @endforeach
               </td>
               <td class="tg-9wq8" colspan="3">Correo de Contacto Docente</td>
               <td class="tg-9wq8" colspan="9">
                 {{-- <= $solicitud_practica->email?>@<= $solicitud_practica->dominio?> --}}
-                @foreach ($doce_pract_int as $item) 
+                @foreach ($docentes_responsables as $item) 
                   <p style="margin: 0rem;font-size: 10.5px"><?= $item['email']?></p>
                 @endforeach
               </td>

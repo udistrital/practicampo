@@ -98,8 +98,10 @@ Route::group(['middleware' => 'auth'], function () {
 
         // ------> Presupuesto programas academicos <------
         Route::get('presupuesto','Presupuesto\PresupuestoController@index')->name('presupuesto_edit')->middleware('role:1,2,3');
-	Route::put('presupuesto','Presupuesto\PresupuestoController@update')->name('presupuesto_update')->middleware('role:1,2,3');
-	Route::put('presupuesto_tm','Presupuesto\PresupuestoController@update_presupuesto_tm')->name('presupuesto_update_tm')->middleware('role:1,2,3');
+        Route::put('presupuesto/update/{id}','Presupuesto\PresupuestoController@update')->name('presupuesto_update')->middleware('role:1,2,3');
+        Route::put('presupuesto/sum/{id}','Presupuesto\PresupuestoController@sum')->name('presupuesto_sum')->middleware('role:1,2,3');
+        Route::put('presupuesto_tm/update','Presupuesto\PresupuestoController@update_presupuesto_tm')->name('presupuesto_update_tm')->middleware('role:1,2,3');
+        Route::put('presupuesto_tm/sum/{id}','Presupuesto\PresupuestoController@sum_presupuesto_tm')->name('presupuesto_sum_tm')->middleware('role:1,2,3');
         // ------> Presupuesto programas academicos <------
         
     });
@@ -114,8 +116,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('exp-users-list-excel','Excel\ExcelController@exportExcel')->name('export_list_users.excel');
         Route::post('imp-users-list-excel','Excel\ExcelController@importExcel')->name('import_list_users.excel');
 
-        Route::get('exp-proyecc-list-excel','Excel\ExcelController@exportProyeccionesExcel')->name('export_list_proyecc.excel');
-        Route::post('imp-proyecc-list-excel','Excel\ExcelController@importProyeccionesExcel')->name('import_list_proyecc.excel');
+        Route::get('exp-proyecc-list-excel','Excel\ExcelController@exportprogramacionesExcel')->name('export_list_proyecc.excel');
+        Route::post('imp-proyecc-list-excel','Excel\ExcelController@importprogramacionesExcel')->name('import_list_proyecc.excel');
 
         Route::post('imp-estud-list-excel/{id}','Excel\ExcelController@importEstudiantesExcel')->name('import_list_estud.excel');
 
@@ -127,9 +129,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('exp_formato_users','Excel\ExcelController@exportFormatoUsers')->name('exp_formato_users');
 
         // ------> Descargar Excel de solicitudes <------
-        Route::get('excel_solicitudes','Excel\ExcelController@excel_solicitudes_edit')->name('excel_solicitudes_edit')->middleware('role:1,2,3');
+        Route::get('excel_solicitudes','Excel\ExcelController@excel_solicitudes_edit')->name('excel_solicitudes_edit')->middleware('role:1,2,3,4');
+        Route::get('excel_programaciones_plan_salidas','Excel\ExcelController@excel_programaciones_plan_salidas')->name('excel_programaciones_plan_salidas')->middleware('role:1,2,3');
+        Route::get('excel_historico_presupuestos','Excel\ExcelController@excel_historico_presupuestos')->name('excel_historico_presupuestos')->middleware('role:1,2,3');
         Route::get('excel_solicitudes_aprobadas_transporte','Excel\ExcelController@excel_solicitudes_aprobadas_transporte')->name('excel_solicitudes_aprobadas_transporte')->middleware('role:1,2,3');
         Route::get('excel_solicitudes_realizadas','Excel\ExcelController@excel_solicitudes_realizadas')->name('excel_solicitudes_realizadas')->middleware('role:1,2,3');
+        Route::get('excel_programaciones_aprobadas_coord','Excel\ExcelController@excel_programaciones_aprobadas_coord')->name('excel_programaciones_aprobadas_coord')->middleware('role:4');
+        Route::get('excel_programaciones_aprobadas_cons_fac','Excel\ExcelController@excel_programaciones_aprobadas_cons_fac')->name('excel_programaciones_aprobadas_cons_fac')->middleware('role:4');
+        Route::get('excel_solicitudes_aprobadas_coord','Excel\ExcelController@excel_solicitudes_aprobadas_coord')->name('excel_solicitudes_aprobadas_coord')->middleware('role:4');
         // ------> Descargar Excel de solicitudes <------
 
         // ------> PDF Routes <------
@@ -148,55 +155,72 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('soportes_formatos/{id}','Solicitud\SolicitudController@soportes_formatos')->name('soportes_formatos');
 
         // ------> image Routes <------
-        Route::get('exp-proyecc-plan-conting','Proyeccion\ProyeccionController@exportPlanConting')->name('export_plan_conting.img');
+        Route::get('exp-proyecc-plan-conting','programacion\programacionController@exportPlanConting')->name('export_plan_conting.img');
 
-        // ------> Proyecciones Routes <------
-        Route::get('proyecciones/filtrar/{id}','Proyeccion\ProyeccionController@filterProyeccion')->name('proyeccion_filter');
-        Route::get('proyecciones/create','Proyeccion\ProyeccionController@create')->name('proyeccion_create');
-        Route::post('proyecciones','Proyeccion\ProyeccionController@store')->name('proyeccion_store');
-        Route::get('proyecciones/{id}','Proyeccion\ProyeccionController@edit')->name('proyeccion_edit');
-        Route::put('proyecciones/{id}','Proyeccion\ProyeccionController@update')->name('proyeccion_update');
-        Route::delete('proyecciones','Proyeccion\ProyeccionController@destroy')->name('proyeccion_destroy');
-        Route::put('proyeccsend','Proyeccion\ProyeccionController@sendProy')->name('proyeccion_send');
-        Route::put('proyecc_vb','Proyeccion\ProyeccionController@vbProy')->name('proyeccion_vb');
-        Route::post('proyecc_electiva','Proyeccion\ProyeccionController@validar_electivas')->name('proyeccion_electiva');
-        // Route::get('proyecciones/buscar/proy/{id_sel}','Proyeccion\ProyeccionController@buscador')->name('proyeccion_buscar');
-        Route::get('proyecciones/buscar/proy','Proyeccion\ProyeccionController@buscador')->name('proyeccion_buscar');
-        Route::get('proyeccver/{id}','Proyeccion\ProyeccionController@ver_proyeccion')->name('proy_legalizadas');
-        Route::post('proyeccduplicar/{id}','Proyeccion\ProyeccionController@duplicar_proy')->name('proy_duplicar');
-        Route::put('cambios_proy/{id}','Proyeccion\ProyeccionController@cambios_proy')->name('proy_cambios');
-        Route::get('hab_cambios_proy/{id}','Proyeccion\ProyeccionController@hab_cambios_proy')->name('proy_hab_cambios');
+        // ------> programaciones Routes <------
+        Route::get('programaciones/filtrar/{id}','programacion\programacionController@filterprogramacion')->name('programacion_filter');
+        Route::get('programaciones/create','programacion\programacionController@create')->name('programacion_create')->middleware('verificar.fechas:programacion');
+        Route::post('programaciones','programacion\programacionController@store')->name('programacion_store');
+        Route::get('programaciones/{id}','programacion\programacionController@edit')->name('programacion_edit')->middleware('verificar.fechas:programacion');
+        Route::put('programaciones/{id}','programacion\programacionController@update')->name('programacion_update')->middleware('verificar.fechas:programacion');
+        Route::delete('programaciones','programacion\programacionController@destroy')->name('programacion_destroy');
+        Route::put('proyeccsend','programacion\programacionController@sendProy')->name('programacion_send');
+        Route::put('proyecc_vb','programacion\programacionController@vbProy')->name('programacion_vb');
+        Route::post('proyecc_electiva','programacion\programacionController@validar_electivas')->name('programacion_electiva');
+        // Route::get('programaciones/buscar/proy/{id_sel}','programacion\programacionController@buscador')->name('programacion_buscar');
+        Route::get('programaciones/buscar/proy','programacion\programacionController@buscador')->name('programacion_buscar');
+        Route::get('proyeccver/{id}','programacion\programacionController@ver_programacion')->name('proy_legalizadas');
+        Route::post('proyeccduplicar/{id}','programacion\programacionController@duplicar_proy')->name('proy_duplicar');
+        Route::put('cambios_proy/{id}','programacion\programacionController@cambios_proy')->name('proy_cambios')->middleware('role:1,2,3');
+        Route::get('hab_cambios_proy/{id}','programacion\programacionController@hab_cambios_proy')->name('proy_hab_cambios')->middleware('role:1,2,3');
 
         // ------> solicitudes Routes <------
         Route::get('solicitudes/filtrar/{id}','Solicitud\SolicitudController@filterSolicitud')->name('solicitud_filter');
-        Route::get('solicitudes/rutas/{id}','Solicitud\SolicitudController@showRuta')->name('solicitud_rutas');
+        Route::get('solicitudes/rutas/{id}','Solicitud\SolicitudController@showRuta')->name('solicitud_rutas')->middleware('verificar.fechas:solicitud');
         Route::post('solicitudes','Solicitud\SolicitudController@store')->name('solicitud_store');
         Route::get('solicitudes/{id}','Solicitud\SolicitudController@listado_sol_docen')->name('sol_docente');
         Route::get('list_solic/aprob/{id}','Solicitud\SolicitudController@listado_sol_aprob')->name('list_sol_aprob');
-        Route::get('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@edit')->name('solicitud_edit');
+        Route::get('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@edit')->name('solicitud_edit')->middleware('verificar.fechas:solicitud');
         Route::get('ver_solicitud/{id}','Solicitud\SolicitudController@ver_solicitud')->name('solicitud_ver');
         Route::get('dwn_form_solicitud/{id}','Solicitud\SolicitudController@dwn_form_solicitud')->name('dwn_form_solicitud');
-        Route::put('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@update')->name('solicitud_update');
+        Route::put('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@update')->name('solicitud_update')->middleware('verificar.fechas:solicitud');
         Route::delete('solicitudes','Solicitud\SolicitudController@destroy')->name('solicitud_destroy');
         Route::get('solic/buscar','Solicitud\SolicitudController@buscador')->name('solicitud_buscar');
         Route::get('solic_pend','Solicitud\SolicitudController@edit_solic_pend')->name('solic_pend_edit');
         Route::get('solic_aprob','Solicitud\SolicitudController@edit_solic_aprob')->name('solic_aprob_edit');
         Route::put('up_solic_asistD/{proy}','Solicitud\SolicitudController@update_solic_asistD')->name('up_solic_asistD');
-        Route::get('solic/{id}','Solicitud\SolicitudController@listado_estud')->name('solic_lista_estud');
+        Route::get('solic/{id}','Solicitud\SolicitudController@listado_estud')->name('solic_lista_estud')->middleware('verificar.fechas:solicitud');
         Route::get('transp/{id}/{tipoRuta}','Solicitud\SolicitudController@showTransport')->name('show_transp');
         Route::get('info_trans/{id}','Solicitud\SolicitudController@info_trans')->name('info_trans');
         Route::put('encue_trans/{id}','Solicitud\SolicitudController@encuesta_transp')->name('encue_trans');
         Route::get('estud_doc/{id}','Solicitud\SolicitudController@ver_doc_estud')->name('estud_doc');
 
-        Route::get('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_edit')->name('practica_realizada_edit');
-        Route::put('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_update')->name('practica_realizada_update');
+        Route::get('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_edit')->name('practica_realizada_edit')->middleware('role:1,2,3');
+        Route::put('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_update')->name('practica_realizada_update')->middleware('role:1,2,3');
 
         Route::get('solic_legal/{id}','Solicitud\SolicitudController@solic_legal')->name('solic_legal');
         Route::put('solic_cierre/{id}','Solicitud\SolicitudController@solic_cierre')->name('solic_cierre');
         Route::get('encues_trans','Excel\ExcelController@exportEncuestaTrans')->name('encues_trans');
 
-        Route::put('cambios_sol/{id}','Solicitud\SolicitudController@cambios_sol')->name('sol_cambios');
-        Route::get('hab_cambios_sol/{id}','Solicitud\SolicitudController@hab_cambios_sol')->name('sol_hab_cambios');
+        Route::put('cambios_sol/{id}','Solicitud\SolicitudController@cambios_sol')->name('sol_cambios')->middleware('role:1,2,3');
+        Route::get('hab_cambios_sol/{id}','Solicitud\SolicitudController@hab_cambios_sol')->name('sol_hab_cambios')->middleware('role:1,2,3');
+
+        // ------> Programas Académicos Routes <------
+        Route::get('programas_academicos','ProgramaAcademico\ProgramaAcademicoController@index')->name('edit_programa_academico')->middleware('role:1,2,3');
+        Route::post('programas_academicos/create','ProgramaAcademico\ProgramaAcademicoController@create')->name('create_programa_academico')->middleware('role:1,2,3');
+        Route::put('programas_academicos/update/{id}','ProgramaAcademico\ProgramaAcademicoController@update')->name('update_programa_academico')->middleware('role:1,2,3');        
+
+        // ------> Espacios Académicos Routes <------
+        Route::get('espacios_academicos','EspacioAcademico\EspacioAcademicoController@index')->name('edit_espacio_academico')->middleware('role:1,2,3');
+        Route::post('espacios_academicos/create','EspacioAcademico\EspacioAcademicoController@create')->name('create_espacio_academico')->middleware('role:1,2,3');
+        Route::put('espacios_academicos/update/{id}','EspacioAcademico\EspacioAcademicoController@update')->name('update_espacio_academico')->middleware('role:1,2,3'); 
+        
+        // ------> Traspasar Programación/Solicitud <------
+        Route::post('/programaciones/cargar_docentes_traspaso/{id}', 'Programacion\ProgramacionController@cargar_docentes_traspaso')->middleware('role:5');
+        Route::put('programaciones/traspasar/update/{id}','Programacion\ProgramacionController@traspasar_update')->name('programacion_traspasar_update')->middleware('role:5');
+        Route::post('/solicitudes/cargar_docentes_traspaso/{id}', 'Solicitud\SolicitudController@cargar_docentes_traspaso')->middleware('role:5');
+        Route::put('solicitudes/traspasar/update/{id}','Solicitud\SolicitudController@traspasar_update')->name('solicitud_traspasar_update')->middleware('role:5');
+        // ------> Traspasar Programación/Solicitud <------
 
         // Search Routes...
         Route::post('buscar/espa_aca','Otros\EspacioAcademicoController@searchEspaAca')->name('espa_aca');
@@ -217,12 +241,12 @@ Route::group(['middleware' => 'auth'], function () {
         // Route::post('mail/creacion_solic/{id}', 'Notificacion\NotificacionController@creacion_solic')->name('creacion_solic');
         Route::post('mail/creacion_solic/{id}', 'Solicitud\SolicitudController@creacion_solic')->name('creacion_solic');
         // Route::post('mail/aprob_coord_proy/{id}', 'Notificacion\NotificacionController@aprob_coord_proy')->name('aprob_coord_proy');
-        Route::post('mail/aprob_coord_proy/{id}', 'Proyeccion\ProyeccionController@aprob_coord_proy')->name('aprob_coord_proy');
-        Route::post('mail/aprob_decano_proy/{id}', 'Proyeccion\ProyeccionController@aprob_decano_proy')->name('aprob_decano_proy');
+        Route::post('mail/aprob_coord_proy/{id}', 'programacion\programacionController@aprob_coord_proy')->name('aprob_coord_proy');
+        Route::post('mail/aprob_decano_proy/{id}', 'programacion\programacionController@aprob_decano_proy')->name('aprob_decano_proy');
 
         // Route::post('mail/rechazo_coord_proy/{id}', 'Notificacion\NotificacionController@rechazo_coord_proy')->name('rechazo_coord_proy');
-        Route::post('mail/rechazo_coord_proy/{id}', 'Proyeccion\ProyeccionController@rechazo_coord_proy')->name('rechazo_coord_proy');
-        Route::post('mail/rechazo_decano_proy/{id}', 'Proyeccion\ProyeccionController@rechazo_decano_proy')->name('rechazo_decano_proy');
+        Route::post('mail/rechazo_coord_proy/{id}', 'programacion\programacionController@rechazo_coord_proy')->name('rechazo_coord_proy');
+        Route::post('mail/rechazo_decano_proy/{id}', 'programacion\programacionController@rechazo_decano_proy')->name('rechazo_decano_proy');
 
         Route::post('mail/aprob_coord_solic/{id}', 'Solicitud\SolicitudController@aprob_coord_solic')->name('aprob_coord_solic');
         // Route::post('mail/aprob_coord_solic/{id}', 'Notificacion\NotificacionController@aprob_coord_solic')->name('aprob_coord_solic');
@@ -234,8 +258,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('mail/info_solic_estudiantes/{id}', 'Solicitud\SolicitudController@info_solic_estudiantes')->name('info_solic_estudiantes');
         // Route::post('mail/info_solic_estudiantes/{id}', 'Notificacion\NotificacionController@info_solic_estudiantes')->name('info_solic_estudiantes');
         Route::post('mail/info_transp_vice/{id}', 'Notificacion\NotificacionController@info_transp_vice')->name('info_transp_vice');
-        Route::post('mail/estud_15_dias/{id}', 'Proyeccion\ProyeccionController@estud_15_dias')->name('estud_15_dias');
-        Route::post('mail/estud_8_dias/{id}', 'Proyeccion\ProyeccionController@estud_8_dias')->name('estud_8_dias');
+        Route::post('mail/estud_15_dias/{id}', 'programacion\programacionController@estud_15_dias')->name('estud_15_dias');
+        Route::post('mail/estud_8_dias/{id}', 'programacion\programacionController@estud_8_dias')->name('estud_8_dias');
         Route::post('mail/noti_transp_solic/{id}', 'Solicitud\SolicitudController@noti_transp_solic')->name('noti_transp_solic');
         // Route::post('mail/noti_transp_solic/{id}', 'Notificacion\NotificacionController@noti_transp_solic')->name('noti_transp_solic');
         Route::post('mail/pre_salida', 'Notificacion\NotificacionController@pre_salida')->name('pre_salida');

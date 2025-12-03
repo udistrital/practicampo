@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-10" style="padding-left:0;padding-right:0">
-                <button class="accPregFrec" name="accPregFrec">¿Qué son las proyecciones de las prácticas académicas de campo?</button>
+                <button class="accPregFrec" name="accPregFrec">¿Qué son las programaciones de las prácticas académicas de campo?</button>
                 <div class="panelPregFrec">
                     <p>RESOLUCIÓN N° 090 (Octubre 16 de 2018) ART.3 - DE LA PLANEACIÓN: a) Los consejos curriculares o quien haga sus veces de los diferentes programas académicos, a más tardar en la última 
                        semana del mes de julio proyectarán las posibles prácticas académicas a realizarse en el siguiente año lectivo,
@@ -33,7 +33,7 @@
 
                 <button class="accPregFrec" name="accPregFrec">¿Qué son las solicitudes de las prácticas académicas de campo?</button>
                 <div class="panelPregFrec">
-                    <p>Una vez el consejo de facultad brinde la aprobación a las proyecciones de las prácticas académicas, estas deberán contar con
+                    <p>Una vez el consejo de facultad brinde la aprobación a las programaciones de las prácticas académicas, estas deberán contar con
                         la información completa para proceder con los trámites administrativos ya estipulados por la universidad.
                     </p>
                     <p>RESOLUCIÓN N° 090 (Octubre 16 de 2018) ART.3 - DE LA PLANEACIÓN: c) El plan de prácticas académicas por facultad 
@@ -55,7 +55,7 @@
                         institucional asociado al usuario y el sistema enviará un link para restablecer la contraseña a dicho correo.</p>
                 </div>
 
-                <button class="accPregFrec" name="accPregFrec">¿Cómo verificar las fechas en las que los módulos de Proyecciones y Solicitudes están habilitados?</button>
+                <button class="accPregFrec" name="accPregFrec">¿Cómo verificar las fechas en las que los módulos de programaciones y Solicitudes están habilitados?</button>
                 <div class="panelPregFrec">
                     <p>Al iniciar sesión se puede visualizar un cuadro de Información de Interés en el cual se pueden conocer las fechas en las que los 
                         diferentes módulos del sistema web estarán inhabilitados.</p>

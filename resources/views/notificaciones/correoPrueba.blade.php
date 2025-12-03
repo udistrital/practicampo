@@ -7,9 +7,9 @@
     <title>Notificación PractiCampoUD</title>
 </head>
 <body>
-    <p>Proyección N°<?php ?></p>
+    <p>Programación N°<?php ?></p>
     <br>
-    <p>La proyección preliminar N°<?php ?> ha sido aprobada por coordinación, remitida para presentación y aprobación frente al plan de contratación a las </p>
+    <p>La Programación N°<?php ?> ha sido aprobada por coordinación, remitida para presentación y aprobación frente al plan de contratación a las </p>
     <p>áreas de vicerrectoría administrativa y financiera.</p>
     <br>
     <p>Ingrese al sistema para hacer seguimiento.</p>
@@ -24,11 +24,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-    <title>Módulo de Proyección Preliminar Activo</title>
+    <title>Módulo de Programación Activo</title>
 </head>
 <body>
     <br>
-    <p>El módulo de proyección preliminar se encuentra activo desde <?php ?> hasta <?php?>.</p>
+    <p>El módulo de Programación se encuentra activo desde <?php ?> hasta <?php?>.</p>
     <p></p>
     <br>
     <p>Ingrese al sistema para hacer seguimiento.</p>
@@ -43,11 +43,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-    <title>Módulo de Proyección Preliminar Inactivo</title>
+    <title>Módulo de Programación  Inactivo</title>
 </head>
 <body>
     <br>
-    <p>El módulo de proyección preliminar se encuentra inactivo desde <?php ?>.</p>
+    <p>El módulo de Programación  se encuentra inactivo desde <?php ?>.</p>
     <p></p>
     <br>
     {{-- <p>Ingrese al sistema para hacer seguimiento.</p> --}}
@@ -66,7 +66,7 @@
 </head>
 <body>
     <br>
-    <p>El módulo de proyección preliminar se encuentra activo desde <?php ?> hasta <?php?>.</p>
+    <p>El módulo de Programación  se encuentra activo desde <?php ?> hasta <?php?>.</p>
     <p></p>
     <br>
     {{-- <p>Ingrese al sistema para hacer seguimiento.</p> --}}
@@ -100,25 +100,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-    <title>Nueva Proyección Preliminar N°<?php echo $nueva_proyeccion->id?></title>
+    <title>Nueva Programación  N°<?php echo $nueva_programacion->id?></title>
 </head>
 <body>
-    <p>Se ha creado una nueva proyección preliminar N°<?php echo $nueva_proyeccion->id?></p>
+    <p>Se ha creado una nueva Programación  N°<?php echo $nueva_programacion->id?></p>
     <br>
     <p>DETALLES </p>
-    <p>Programa Acádemico: <?php echo $nueva_proyeccion->programa_academico?></p>
-    <p>Espacio Acádemico: <?php echo $nueva_proyeccion->codigo_espacio_academico?> - <?php echo $nueva_proyeccion->espacio_academico?></p>
-    <p>Período Acádemico: <?php echo $nueva_proyeccion->periodo_academico?></p>
-    <p>Semestre Asignatura: <?php echo $nueva_proyeccion->semestre_asignatura?></p>
-    <p>Ruta 1: <?php echo $nueva_proyeccion->destino_rp?></p>
-    <p>Ruta 2: <?php echo $nueva_proyeccion->destino_ra?></p>
+    <p>Programa Acádemico: <?php echo $nueva_programacion->programa_academico?></p>
+    <p>Espacio Acádemico: <?php echo $nueva_programacion->codigo_espacio_academico?> - <?php echo $nueva_programacion->espacio_academico?></p>
+    <p>Período Acádemico: <?php echo $nueva_programacion->periodo_academico?></p>
+    <p>Semestre Asignatura: <?php echo $nueva_programacion->semestre_asignatura?></p>
+    <p>Ruta 1: <?php echo $nueva_programacion->destino_rp?></p>
+    <p>Ruta 2: <?php echo $nueva_programacion->destino_ra?></p>
     {{-- @if(Auth::user()->coordinador()) --}}
     @if($email['role'] == 4)
-    <p>Docente Responsable: <?php echo $nueva_proyeccion->full_name?></p>
+    <p>Docente Responsable: <?php echo $nueva_programacion->full_name?></p>
     <br>
     @endif
     <br>
-    <p>La proyección preliminar se encuentra pendiente a proceso de revisión y aprobación.</p>  
+    <p>La Programación  se encuentra pendiente a proceso de revisión y aprobación.</p>  
     <br>
     <p>Ingrese al sistema para hacer seguimiento.</p>
     
@@ -171,27 +171,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-    <title>Notificación Proyección Preliminar</title>
+    <title>Notificación Programación </title>
 </head>
 <body>
-    <p>Aprobación Coordinación - Proyección Preliminar N°<?php echo $nueva_proyeccion->id?></p>
+    <p>Aprobación Coordinación - Programación  N°<?php echo $nueva_programacion->id?></p>
     <br>
     {{-- @foreach ($email as $item) --}}
     {{-- @if(Auth::user()->docente()) --}}
     @if($email['role'] == 5)
-    <p>La proyección preliminar N°<?php echo $nueva_proyeccion->id?> ha sido aprobada por coordinación, remitida para presentación y aprobación frente al plan de contratación a las áreas de </p>
+    <p>La Programación  N°<?php echo $nueva_programacion->id?> ha sido aprobada por coordinación, remitida para presentación y aprobación frente al plan de contratación a las áreas de </p>
     <p>vicerrectoría administrativa y financiera.</p>
     <p>Docente</p>
     <br>
     @endif
     @if($email['role'] == 2)
-    <p>La proyección preliminar N°<?php echo $nueva_proyeccion->id?> ha sido aprobada por coordinación para la consolidación en el plan de prácticas y presentación del plan de contratación a las áreas de </p>
+    <p>La Programación  N°<?php echo $nueva_programacion->id?> ha sido aprobada por coordinación para la consolidación en el plan de prácticas y presentación del plan de contratación a las áreas de </p>
     <p>vicerrectoría administrativa y financiera.</p>
     <p>Decano</p>
     <br>
     @endif
     @if($email['role'] == 3)
-    <p>La proyección preliminar N°<?php echo $nueva_proyeccion->id?> ha sido aprobada por coordinación para la consolidación en el plan de prácticas y presentación del plan de contratación a las áreas de </p>
+    <p>La Programación  N°<?php echo $nueva_programacion->id?> ha sido aprobada por coordinación para la consolidación en el plan de prácticas y presentación del plan de contratación a las áreas de </p>
     <p>vicerrectoría administrativa y financiera.</p>
     <p>asistente Decanatura</p>
     <br>
@@ -405,11 +405,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-    <title>Módulo de Proyección Preliminar Inactivo</title>
+    <title>Módulo de Programación  Inactivo</title>
 </head>
 <body>
     <br>
-    <p>El módulo deproyección preliminar se encuentra inactivo desde <?php ?>.</p>
+    <p>El módulo deProgramación  se encuentra inactivo desde <?php ?>.</p>
     <p></p>
     <br>
     {{-- <p>Ingrese al sistema para hacer seguimiento.</p> --}}
@@ -424,11 +424,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
-    <title>Módulo de Proyección Preliminar Inactivo</title>
+    <title>Módulo de Programación  Inactivo</title>
 </head>
 <body>
     <br>
-    <p>El módulo deproyección preliminar se encuentra inactivo desde <?php ?>.</p>
+    <p>El módulo deProgramación  se encuentra inactivo desde <?php ?>.</p>
     <p></p>
     <br>
     {{-- <p>Ingrese al sistema para hacer seguimiento.</p> --}}

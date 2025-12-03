@@ -9,8 +9,8 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    {{-- <div class="card-header">{{ __('Registro Solicitud Práctica N° ') }}<php echo $solicitud_practica->id_proyeccion_preliminar?> <php echo "\t -"?> --}}
-                        {{-- <div class="card-header">{{ __('Registro Solicitud Práctica N° ') }}<php echo $solicitud_practica->id_proyeccion_preliminar?>
+                    {{-- <div class="card-header">{{ __('Registro Solicitud Práctica N° ') }}<php echo $solicitud_practica->id_programacion_practica?> <php echo "\t -"?> --}}
+                        {{-- <div class="card-header">{{ __('Registro Solicitud Práctica N° ') }}<php echo $solicitud_practica->id_programacion_practica?>
                         {{ __('') }}</div> --}}
                         {{-- <php if($estado_doc_respon == 1){ echo $nombre_doc_resp;} elseif ($estado_doc_respon == 2){ echo "Usuario Inactivo";}?> --}}
                     

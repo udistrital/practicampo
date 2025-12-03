@@ -46,8 +46,261 @@
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
 <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- functions-->
+<script>
+    $(document).on('click', '.btnEditarRealizada', function (event) {
+
+        const modalContent = $('#modalContent')
+        const url = $(this).data('url');
+
+        modalContent.html(`
+            <div class="text-center p-4">
+                <span class="spinner-border"></span>
+            </div>
+        `);
+
+        $('#modalPracticaRealizada').modal('show');
+
+        fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                modalContent.html(html);
+            })
+            .catch(err => {
+                modalContent.html(`<div class="alert alert-danger">Error al cargar</div>`);
+            });
+    });
+    $(document).on('submit', '#formPracticaRealizada', function (event) {
+        event.preventDefault();
+
+        let form = $(this);
+        let url = form.attr('action');
+        let data = form.serialize();        
+
+        $.ajax({
+            url: url,
+            method: 'POST',
+            data: data,
+            success: function (response) {
+                $('#modalPracticaRealizada').modal('hide');
+                var id = response.id;
+                var nuevoEstado = response.estado;
+                $(".estado-" + id).text(nuevoEstado);
+
+            },
+            error: function () {
+                alert("Error al guardar. Intente nuevamente.");
+            }
+        });
+    });
+</script>
+<script>
+    $(document).on('click', '.btnTraspasarProgramacion', function (event) {
+        var id = $(this).data('id');
+
+        $.ajax({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/programaciones/cargar_docentes_traspaso/' + id,
+            type: 'POST',
+            success: function(response) {
+                var select = $('#selectDocentes');
+                select.empty();
+                if(response.docentes.length > 0){
+                    response.docentes.forEach(function(docente){
+                        var selected = (docente.id == response.id_docente_responsable) ? 'selected' : '';
+                        select.append('<option value="'+docente.id+'" '+selected+'>'+docente.full_name+'</option>')
+                    });
+                } else {
+                    select.append('<option value="">No hay docentes disponibles</option>');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                if(jqXHR.responseJSON && jqXHR.responseJSON.error){
+                    alert(jqXHR.responseJSON.error);
+                } else {
+                    alert("Ocurrió un error al cargar los docentes. Código: " + jqXHR.status);
+                }
+            }         
+        });
+        $('#formTraspasarProgramacion').attr('action', '{{ route("programacion_traspasar_update", "") }}/' + id);
+    });
+</script>
+<script>
+    $(document).on('click', '.btnTraspasarSolicitud', function (event) {
+        var id = $(this).data('id');
+
+        $.ajax({
+            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: '/solicitudes/cargar_docentes_traspaso/' + id,
+            type: 'POST',
+            success: function(response) {
+                var select = $('#selectDocentes');
+                select.empty();
+                if(response.docentes.length > 0){
+                    response.docentes.forEach(function(docente){
+                        var selected = (docente.id == response.id_docente_responsable) ? 'selected' : '';
+                        select.append('<option value="'+docente.id+'" '+selected+'>'+docente.full_name+'</option>')
+                    });
+                } else {
+                    select.append('<option value="">No hay docentes disponibles</option>');
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                if(jqXHR.responseJSON && jqXHR.responseJSON.error){
+                    alert(jqXHR.responseJSON.error);
+                } else {
+                    alert("Ocurrió un error al cargar los docentes. Código: " + jqXHR.status);
+                }
+            }         
+        });
+        $('#formTraspasarSolicitud').attr('action', '{{ route("solicitud_traspasar_update", "") }}/' + id);
+    });
+</script>
+<script>
+    $(document).on('click', '.btnActualizarPresupuestoProgramaAcademico', function () {
+        var id = $(this).data('id');
+        var id_programa_academico = $(this).data('id_programa_academico');
+        var programa_academico = $(this).data('programa_academico');
+        var presupuesto_inicial = Number($(this).data('presupuesto_inicial'))
+                                                .toLocaleString('es-CO');
+        var presupuesto_actual = Number($(this).data('presupuesto_actual'))
+                                                .toLocaleString('es-CO');
+
+        $('#id_programa_academico').val(id_programa_academico);
+        $('#programa_academico').val(programa_academico);
+        $('#presupuesto_inicial').val('$ '+presupuesto_inicial);
+        $('#presupuesto_actual').val('$ '+presupuesto_actual);
+
+        $('#formActualizarPresupuestoProgramaAcademico').attr('action', '{{ route("presupuesto_update", "") }}/' + id);
+
+    });
+</script>
+<script>
+    $(document).on('click', '.btnSumarPresupuestoProgramaAcademico', function () {
+        var id = $(this).data('id');
+        var id_programa_academico = $(this).data('id_programa_academico');
+        var programa_academico = $(this).data('programa_academico');
+        var presupuesto_inicial = Number($(this).data('presupuesto_inicial'))
+                                                .toLocaleString('es-CO');
+        var presupuesto_actual = Number($(this).data('presupuesto_actual'))
+                                                .toLocaleString('es-CO');
+
+        $('#id_programa_academico_sum').val(id_programa_academico);
+        $('#programa_academico_sum').val(programa_academico);
+        $('#presupuesto_inicial_sum').val(presupuesto_inicial);
+        $('#presupuesto_actual_sum').val(presupuesto_actual);
+
+        $('#formSumarPresupuestoProgramaAcademico').attr('action', '{{ route("presupuesto_sum", "") }}/' + id);
+
+    });
+    $('#sumar_presupuesto_programa_academico').on('input', function () {
+
+        var presupuesto_inicial = Number($('#presupuesto_inicial_sum').val().replace(/\D/g, ""));  
+        var presupuesto_actual  = Number($('#presupuesto_actual_sum').val().replace(/\D/g, ""));
+
+        var nuevo = Number($(this).val().replace(/\D/g, ""));
+
+        if (isNaN(nuevo)) nuevo = 0;
+
+        var nuevo_inicial  = Number(presupuesto_inicial + nuevo).toLocaleString('es-CO');
+        var nuevo_restante = Number(presupuesto_actual + nuevo).toLocaleString('es-CO');
+
+        $('#prev_nuevo_presupuesto_inicial').val(nuevo_inicial);
+        $('#prev_nuevo_presupuesto_actual').val(nuevo_restante);
+    });
+</script>
+<script>
+    $(document).on('click', '.btnActualizarPresupuestoTransporteMenor', function () {
+        var id = $(this).data('id');
+        var presupuesto_inicial = Number($(this).data('presupuesto_inicial_tm'))
+                                                .toLocaleString('es-CO');
+        var presupuesto_restante = Number($(this).data('presupuesto_restante_tm'))
+                                                .toLocaleString('es-CO');
+
+        $('#id_transporte_menor').val(id);
+        $('#presupuesto_inicial_tm').val('$ '+presupuesto_inicial);
+        $('#presupuesto_restante_tm').val('$ '+presupuesto_restante);
+
+        $('#formActualizarPresupuestoTransporteMenor').attr('action', '{{ route("presupuesto_update_tm", "") }}');
+
+    });
+</script>
+<script>
+    $(document).on('click', '.btnSumarPresupuestoTransporteMenor', function () {
+        var id = $(this).data('id');
+        var presupuesto_inicial = Number($(this).data('presupuesto_inicial_tm'))
+                                                .toLocaleString('es-CO');
+        var presupuesto_restante = Number($(this).data('presupuesto_restante_tm'))
+                                                .toLocaleString('es-CO');
+
+        $('#id_transporte_menor_sum').val(id);
+        $('#presupuesto_inicial_tm_sum').val(presupuesto_inicial);
+        $('#presupuesto_restante_tm_sum').val(presupuesto_restante);
+
+        $('#formSumarPresupuestoTransporteMenor').attr('action', '{{ route("presupuesto_sum_tm", "") }}/' + id);
+
+    });
+    $('#sumar_presupuesto_transporte_menor').on('input', function () {
+
+        var presupuesto_inicial = Number($('#presupuesto_inicial_tm_sum').val().replace(/\D/g, ""));  
+        var presupuesto_actual  = Number($('#presupuesto_restante_tm_sum').val().replace(/\D/g, ""));
+
+        var nuevo = Number($(this).val().replace(/\D/g, ""));
+
+        if (isNaN(nuevo)) nuevo = 0;
+
+        var nuevo_inicial  = Number(presupuesto_inicial + nuevo).toLocaleString('es-CO');
+        var nuevo_restante = Number(presupuesto_actual + nuevo).toLocaleString('es-CO');
+
+        $('#prev_nuevo_presupuesto_inicial_tm').val(nuevo_inicial);
+        $('#prev_nuevo_presupuesto_restante_tm').val(nuevo_restante);
+    });
+</script>
+<script>
+    $(document).on('click', '.btnEditarProgramaAcademico', function () {
+        var id = $(this).data('id');
+        var programa_academico = $(this).data('programa_academico');
+        var pregrado = $(this).data('pregrado');
+        $('#nombre_programa_academico_edit').val(programa_academico);
+
+        if(pregrado === 1){
+            $('#pregrado_edit_si').prop('checked', true);
+        }else{
+            $('#pregrado_edit_no').prop('checked', true);
+        }        
+        $('#formEditarProgramaAcademico').attr('action', '{{ route("update_programa_academico", "") }}/' + id);
+    });
+</script>
+<script>
+    $(document).on('click', '.btnEditarEspacioAcademico', function () {
+        var id = $(this).data('id');
+        var id_programa_academico = $(this).data('id_programa_academico');
+        var codigo_espacio_academico = $(this).data('codigo_espacio_academico');
+        var espacio_academico = $(this).data('nombre_espacio_academico');
+        var plan_estudios_1 = $(this).data('plan_estudios_1');
+        var plan_estudios_2 = $(this).data('plan_estudios_2');
+        var tipo_espacio = $(this).data('tipo_espacio');
+        var electiva = $(this).data('electiva');
+
+        $('#id_programa_academico_edit').val(id_programa_academico);
+        $('#codigo_espacio_academico_edit').val(codigo_espacio_academico);
+        $('#nombre_espacio_academico_edit').val(espacio_academico);
+        $('#plan_estudios_1_edit').val(plan_estudios_1);
+        $('#plan_estudios_2_edit').val(plan_estudios_2);
+        $('#tipo_espacio_edit').val(tipo_espacio);
+
+        if(electiva === 1){
+            $('#electiva_edit_si').prop('checked', true);
+        }else{
+            $('#electiva_edit_no').prop('checked', true);
+        }
+
+        $('#formEditarEspacioAcademico').attr('action', '{{ route("update_espacio_academico", "") }}/' + id);
+
+    });
+</script>
 <script>
     $('#importEstudForm').on('submit', function(event) {
         event.preventDefault();
@@ -75,7 +328,15 @@
             $('#myTable').DataTable();
         })   
 </script>
-
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            width: '100%',
+            placeholder: "Seleccione un docente...",
+            allowClear: true
+        });
+    });
+</script>
 <script>
 
 $(document).ready(function() {
@@ -150,78 +411,82 @@ $('input:radio[name="id_estado_usuario"]').change(
        
 });
 
-function filtrar_proyecciones(value)
+function filtrar_programaciones(value)
 {
     switch(value)
     {
         case '1':
-            href = "{!! route('proyeccion_filter','all'); !!}";
+            href = "{!! route('programacion_filter','all'); !!}";
             break;
         case '2':
-            href = "{!! route('proyeccion_filter','send'); !!}";
+            href = "{!! route('programacion_filter','send'); !!}";
             break;
         case '3':
-            href = "{!! route('proyeccion_filter','not_send'); !!}";
+            href = "{!! route('programacion_filter','not_send'); !!}";
             break;
 
         case '4':
-            href = "{!! route('proyeccion_filter','ext_mu'); !!}";
+            href = "{!! route('programacion_filter','ext_mu'); !!}";
             break;
 
         case '5':
-            href = "{!! route('proyeccion_filter','sin_pres'); !!}";
+            href = "{!! route('programacion_filter','sin_pres'); !!}";
             break;
 
         case '6':
-            href = "{!! route('proyeccion_filter','elect'); !!}";
+            href = "{!! route('programacion_filter','elect'); !!}";
             break;
         
         case '7':
-            href = "{!! route('proyeccion_filter','pend'); !!}";
+            href = "{!! route('programacion_filter','pend'); !!}";
             break;
 
         case '8':
-            href = "{!! route('proyeccion_filter','not_aprob'); !!}";
+            href = "{!! route('programacion_filter','not_aprob'); !!}";
             break;
 
         case '9':
-            href = "{!! route('proyeccion_filter','aprob'); !!}";
+            href = "{!! route('programacion_filter','aprob'); !!}";
             break;
 
         case '10':
-            href = "{!! route('proyeccion_filter','no-elect'); !!}";
+            href = "{!! route('programacion_filter','no-elect'); !!}";
             break;
 
         case '11':
-            href = "{!! route('proyeccion_filter','aprob-cons'); !!}";
+            href = "{!! route('programacion_filter','aprob-cons'); !!}";
             break;
         
         case '12':
-            href = "{!! route('proyeccion_filter','no-aprob-cons'); !!}";
+            href = "{!! route('programacion_filter','no-aprob-cons'); !!}";
             break;
 
         case '13':
-            href = "{!! route('proyeccion_filter','proy_legal'); !!}";
+            href = "{!! route('programacion_filter','proy_legal'); !!}";
             break
 
         case '14':
-            href = "{!! route('proyeccion_filter','proy_recha'); !!}";
+            href = "{!! route('programacion_filter','proy_recha'); !!}";
             break
         
         case '15':
-            href = "{!! route('proyeccion_filter','not_send_docente'); !!}";
+            href = "{!! route('programacion_filter','not_send_docente'); !!}";
             break
 
         case '16':
-            href = "{!! route('proyeccion_filter','inact'); !!}";
+            href = "{!! route('programacion_filter','inact'); !!}";
             break
         
         case '17':
-        href = "{!! route('proyeccion_filter','edit_proy'); !!}";
+        href = "{!! route('programacion_filter','edit_proy'); !!}";
         break
 
-	case '18':
-        href = "{!! route('proyeccion_filter','proy_recha_cons'); !!}";
+        case '18':
+            href = "{!! route('programacion_filter','proy_recha_cons'); !!}";
+            break
+
+        case '19':
+        href = "{!! route('programacion_filter','traspasar'); !!}";
         break
 
         default:
@@ -230,9 +495,9 @@ function filtrar_proyecciones(value)
     window.location.href = href;
 }
 
-$('input:radio[name="id_filtro_proyeccion"]').change(
+$('input:radio[name="id_filtro_programacion"]').change(
     function(){
-        filtrar_proyecciones(this.value);
+        filtrar_programaciones(this.value);
        
 });
 
@@ -354,6 +619,10 @@ function filtrar_solicitudes(value)
 
         case '24':
         href = "{!! route('solicitud_filter','edit_sol'); !!}";
+        break
+
+        case '25':
+        href = "{!! route('solicitud_filter','traspasar'); !!}";
         break
 
         default:

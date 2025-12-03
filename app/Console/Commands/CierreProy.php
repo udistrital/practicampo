@@ -25,7 +25,7 @@ class CierreProy extends Command
      *
      * @var string
      */
-    protected $description = 'Cierre Módulo Proyecciones';
+    protected $description = 'Cierre Módulo programaciones';
 
     /**
      * Create a new command instance.

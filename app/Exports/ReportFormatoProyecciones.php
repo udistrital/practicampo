@@ -5,7 +5,7 @@ namespace PractiCampoUD\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ReportFormatoProyecciones implements WithMultipleSheets
+class ReportFormatoprogramaciones implements WithMultipleSheets
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -14,8 +14,8 @@ class ReportFormatoProyecciones implements WithMultipleSheets
     {
         $sheets = [];
 
-         $sheets[] = new FormatoProyecciones();
-         $sheets[] = new InstructivoProyeccionesExport();
+         $sheets[] = new Formatoprogramaciones();
+         $sheets[] = new InstructivoprogramacionesExport();
          $sheets[] = new ProgramasAcademicosExport();
          $sheets[] = new EspaciosAcademicosExport();
          $sheets[] = new SemestreAsignaturaExport();

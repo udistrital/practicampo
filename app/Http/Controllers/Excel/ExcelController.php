@@ -5,17 +5,17 @@ namespace PractiCampoUD\Http\Controllers\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
-use PractiCampoUD\Exports\ReportProyeccionesExport;
+use PractiCampoUD\Exports\ReportprogramacionesExport;
 use PractiCampoUD\Exports\ReportSolicitudesExport;
 use PractiCampoUD\Exports\ReportUsersExport;
 use PractiCampoUD\Http\Controllers\Controller;
-use PractiCampoUD\Imports\ProyeccionesPreliminaresImport;
+use PractiCampoUD\Imports\programacionesPracticasImport;
 use PractiCampoUD\Imports\EstudiantesImport;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\Exports\FormatoEstudiantesExport;
 use PractiCampoUD\Exports\ReportFormatoEstudiantes;
 use PractiCampoUD\Exports\ReportEncuestaExport;
-use PractiCampoUD\Exports\ReportFormatoProyecciones;
+use PractiCampoUD\Exports\ReportFormatoprogramaciones;
 use PractiCampoUD\Exports\ReportFormatoUsers;
 use PractiCampoUD\Imports\ReportUsersImport;
 use PractiCampoUD\Exports\ReportSolicitudesAprobadasExport;
@@ -24,6 +24,11 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DB;
 use Exception;
+use PractiCampoUD\Exports\ReportHistoricoPresupuestosExport;
+use PractiCampoUD\Exports\ReportPlanSalidasExport;
+use PractiCampoUD\Exports\ReportProgramacionesAprobadasConsFac;
+use PractiCampoUD\Exports\ReportProgramacionesAprobadasCoord;
+use PractiCampoUD\Exports\ReportSolicitudesAprobadasCoord;
 
 /**
  * Manejador de documentos 
@@ -77,21 +82,21 @@ class ExcelController extends Controller
     }
 
     /**
-     * Exporta proyecciones preliminares
+     * Exporta programaciones practicas
      *
      * @return \Illuminate\Http\Response
      */
-    public function exportProyeccionesExcel(Request $request)
+    public function exportprogramacionesExcel(Request $request)
     {
         try
         {
-            $id = $request->get('proyeccion_list');
+            $id = $request->get('programacion_list');
             $mytime=Carbon::now('America/Bogota');
-            return Excel::download(new ReportProyeccionesExport([$id]),'poyecciones_preliminares.xls');
+            return Excel::download(new ReportprogramacionesExport([$id]),'programaciones_practicas.xls');
         }
         catch(\Exception $ex)
         {
-            return back()->withError('Falla al descargar listado de proyecciones preliminares.');
+            return back()->withError('Falla al descargar listado de programaciones.');
         }
     }
 
@@ -113,7 +118,7 @@ class ExcelController extends Controller
     }
 
     /**
-     * Exporta el formato para creación proyecciones
+     * Exporta el formato para creación programaciones
      *
      * @return \Illuminate\Http\Response
      */
@@ -121,11 +126,11 @@ class ExcelController extends Controller
     {
        try
        {
-            return Excel::download(new ReportFormatoProyecciones(), 'proyecciones_preliminares.xlsx');
+            return Excel::download(new ReportFormatoprogramaciones(), 'programaciones_practicas.xlsx');
        }
        catch(\Exception $ex)
        {
-        return back()->withError('Falla al descargar el formato de proyecciones preliminares.');
+        return back()->withError('Falla al descargar el formato de programaciones.');
        }
     }
 
@@ -147,22 +152,22 @@ class ExcelController extends Controller
     }
 
     /**
-     * Importa nuevas proyecciones
+     * Importa nuevas programaciones
      *
      * @return \Illuminate\Http\Response
      */
-    public function importProyeccionesExcel()
+    public function importprogramacionesExcel()
     {
         try
         {
-            Excel::import(new ProyeccionesPreliminaresImport,request()->file('proyecciones_preliminares'));
+            Excel::import(new programacionesPracticasImport,request()->file('programaciones_practicas'));
         }
         catch(\Exception $ex)
         {
             return back()->withError('Falla al cargar, verifique el archivo. Mensaje->'.$ex->getMessage());
         }
 
-        return Redirect::to('proyecciones/filtrar/all')->with('success', 'Creación exitosa');
+        return Redirect::to('programaciones/filtrar/all')->with('success', 'Creación exitosa');
     }
 
     /**
@@ -262,6 +267,25 @@ class ExcelController extends Controller
     }
 
     /**
+     * Exporta las programaciones para el plan de salidas de campo
+     * @param \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_programaciones_plan_salidas(Request $request){
+        try
+        {
+            $fechaInicial = $request->input('fecha_inicial');
+            $fechaFinal = $request->input('fecha_final');
+            $mytime = Carbon::now('America/Bogota')->year + 1;
+            //dd("Solicitudes Aprobadas: ",$fechaInicial,$fechaFinal);
+            return Excel::download(new ReportPlanSalidasExport($fechaInicial,$fechaFinal),'Plan_salidas_de_campo_'.$mytime.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+    /**
      * Exporta las prácticas aprobadas para la solicitud de transporte
      *
      * @return \Illuminate\Http\Response
@@ -272,12 +296,11 @@ class ExcelController extends Controller
             $fechaInicial = $request->input('fecha_inicial');
             $fechaFinal = $request->input('fecha_final');
             $mytime = Carbon::now('America/Bogota')->toDateString();
-            //dd("Solicitudes Aprobadas: ",$fechaInicial,$fechaFinal);
-            return Excel::download(new ReportSolicitudesAprobadasExport($fechaInicial,$fechaFinal),'Solicitudes_Aprobadas_'.$mytime.'.xlsx');
+            return Excel::download(new ReportSolicitudesAprobadasExport($fechaInicial,$fechaFinal),'Solicitud_Transporte_'.$mytime.'.xlsx');
         }
         catch(\Exception $ex)
         {
-            return back()->withError('Falla al descargar excel');
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
         }
     }
 
@@ -292,12 +315,87 @@ class ExcelController extends Controller
             $fechaInicial = $request->input('fecha_inicial');
             $fechaFinal = $request->input('fecha_final');
             $mytime = Carbon::now('America/Bogota')->toDateString();
-            //dd("Solicitudes Reazliadas: ",$fechaInicial,$fechaFinal);
             return Excel::download(new ReportSolicitudesRealizadasExport($fechaInicial,$fechaFinal),'Solicitudes_Realizadas_'.$mytime.'.xlsx');
         }
         catch(\Exception $ex)
         {
-            return back()->withError('Falla al descargar excel'.$ex);
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+
+    /**
+     * Exporta las programaciones aprobadas por coordinación
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_programaciones_aprobadas_coord(Request $request){
+        try
+        {
+            $anio = $request->input('anio');
+            $periodo = $request->input('periodo');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            return Excel::download(new ReportProgramacionesAprobadasCoord($anio,$periodo),'Programaciones_Aprobadas_Coordinacion_'.$anio.'-'.$periodo.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+
+    /**
+     * Exporta las programaciones aprobadas por consejo de facultad
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_programaciones_aprobadas_cons_fac(Request $request){
+        try
+        {
+            $anio = $request->input('anio');
+            $periodo = $request->input('periodo');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            return Excel::download(new ReportProgramacionesAprobadasConsFac($anio,$periodo),'Programaciones_Aprobadas_Consejo_Facultad_'.$anio.'-'.$periodo.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+
+    /**
+     * Exporta las solicitudes aprobadas por coordinación
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_solicitudes_aprobadas_coord(Request $request){
+        try
+        {
+            $anio = $request->input('anio');
+            $periodo = $request->input('periodo');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            return Excel::download(new ReportSolicitudesAprobadasCoord($anio,$periodo),'Solicitudes_Aprobadas_Coordinacion_'.$anio.'-'.$periodo.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
+        }
+    }
+
+    /**
+     * Exporta el histórico de presupuestos de programas academicos y el gasto de cada solicitud
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function excel_historico_presupuestos(Request $request){
+        try
+        {
+            $fechaInicial = $request->input('fecha_inicial');
+            $fechaFinal = $request->input('fecha_final');
+            $mytime = Carbon::now('America/Bogota')->toDateString();
+            return Excel::download(new ReportHistoricoPresupuestosExport($fechaInicial,$fechaFinal),'Historico_Presupuestos_'.$mytime.'.xlsx');
+        }
+        catch(\Exception $ex)
+        {
+            return back()->withError('Falla al descargar excel: '.$ex->getMessage());
         }
     }
 

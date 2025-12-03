@@ -41,7 +41,7 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
 
             if($t_r == null)
             {
-                $solicitudes=DB::table('proyeccion_preliminar as proy_prel')
+                $solicitudes=DB::table('programacion_practica as proy_prel')
                 ->select('proy_prel.id', 'sol_prac.id as id_solicitud','prog_aca.programa_academico', 'espa.codigo_espacio_academico','espa.espacio_academico', 'sem_asig.semestre_asignatura', 
                     'proy_prel.anio_periodo','per_aca.periodo_academico','proy_prel.id_docente_responsable',
                      DB::raw('CONCAT_WS(" ", us.primer_nombre, us.segundo_nombre, us.primer_apellido, us.segundo_apellido) as full_name'),
@@ -50,7 +50,7 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
                     'doce_prac.docente_apoyo_4','doce_prac.docente_apoyo_5','doce_prac.docente_apoyo_6','doce_prac.docente_apoyo_7','doce_prac.docente_apoyo_8',
                     'doce_prac.docente_apoyo_9','doce_prac.docente_apoyo_10','sol_prac.tipo_ruta as tipo_ruta'
                     )
-                    ->join('solicitud_practica as sol_prac','proy_prel.id','=','sol_prac.id_proyeccion_preliminar')
+                    ->join('solicitud_practica as sol_prac','proy_prel.id','=','sol_prac.id_programacion_practica')
                     ->join('espacio_academico as espa','proy_prel.id_espacio_academico','=','espa.id')
                     ->join('programa_academico as prog_aca','espa.id_programa_academico','=','prog_aca.id')
                     ->join('periodo_academico as per_aca','proy_prel.id_periodo_academico','=','per_aca.id')
@@ -58,15 +58,15 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
                     ->join('docentes_practica as doce_prac','proy_prel.id','=','doce_prac.id')
                     ->join('sedes_universidad as salida_rp','proy_prel.lugar_salida_rp','=','salida_rp.id')
                     ->join('sedes_universidad as regreso_rp','proy_prel.lugar_salida_rp','=','regreso_rp.id')
-                    ->join('transporte_proyeccion as trans_proy','proy_prel.id','=','trans_proy.id')
+                    ->join('transporte_programacion as trans_proy','proy_prel.id','=','trans_proy.id')
                     ->join('transporte_menor as trans_menor','proy_prel.id','=','trans_menor.id')
-                    ->join('materiales_herramientas_proyeccion as mate','proy_prel.id','=','mate.id')
+                    ->join('materiales_herramientas_programacion as mate','proy_prel.id','=','mate.id')
                     ->join('riesgos_amenazas_practica as riesgos','proy_prel.id','=','riesgos.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp1','trans_proy.id_tipo_transporte_rp_1','=','tip_tra_rp1.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp2','trans_proy.id_tipo_transporte_rp_2','=','tip_tra_rp2.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp3','trans_proy.id_tipo_transporte_rp_3','=','tip_tra_rp3.id')
                     ->join('users as us','proy_prel.id_docente_responsable','=','us.id')
-                    ->join('costos_proyeccion as c_proy','proy_prel.id','=','c_proy.id')
+                    ->join('costos_programacion as c_proy','proy_prel.id','=','c_proy.id')
                     ->join('estado as es_coor','proy_prel.aprobacion_coordinador','=','es_coor.id')
                     ->join('estado as es_dec','proy_prel.aprobacion_decano','=','es_dec.id')
                     ->join('estado as es_consj','proy_prel.aprobacion_consejo_facultad','=','es_consj.id')
@@ -79,7 +79,7 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
 
             if($t_r == 1)
             {
-                $solicitudes=DB::table('proyeccion_preliminar as proy_prel')
+                $solicitudes=DB::table('programacion_practica as proy_prel')
                 ->select('proy_prel.id', 'sol_prac.id as id_solicitud','prog_aca.programa_academico', 'espa.codigo_espacio_academico','espa.espacio_academico', 'sem_asig.semestre_asignatura', 
                     'proy_prel.anio_periodo','per_aca.periodo_academico','proy_prel.id_docente_responsable',
                      DB::raw('CONCAT_WS(" ", us.primer_nombre, us.segundo_nombre, us.primer_apellido, us.segundo_apellido) as full_name'),
@@ -106,7 +106,7 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
                     'sol_prac.cronograma','sol_prac.observaciones','sol_prac.justificacion','sol_prac.objetivo_general','sol_prac.metodologia_evaluacion',
                     'es_coor_sol.abrev as es_coor','es_dec_sol.abrev as es_dec'
                     )
-                    ->join('solicitud_practica as sol_prac','proy_prel.id','=','sol_prac.id_proyeccion_preliminar')
+                    ->join('solicitud_practica as sol_prac','proy_prel.id','=','sol_prac.id_programacion_practica')
                     ->join('espacio_academico as espa','proy_prel.id_espacio_academico','=','espa.id')
                     ->join('programa_academico as prog_aca','espa.id_programa_academico','=','prog_aca.id')
                     ->join('periodo_academico as per_aca','proy_prel.id_periodo_academico','=','per_aca.id')
@@ -114,15 +114,15 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
                     ->join('docentes_practica as doce_prac','proy_prel.id','=','doce_prac.id')
                     ->join('sedes_universidad as salida_rp','proy_prel.lugar_salida_rp','=','salida_rp.id')
                     ->join('sedes_universidad as regreso_rp','proy_prel.lugar_salida_rp','=','regreso_rp.id')
-                    ->join('transporte_proyeccion as trans_proy','proy_prel.id','=','trans_proy.id')
+                    ->join('transporte_programacion as trans_proy','proy_prel.id','=','trans_proy.id')
                     ->join('transporte_menor as trans_menor','proy_prel.id','=','trans_menor.id')
-                    ->join('materiales_herramientas_proyeccion as mate','proy_prel.id','=','mate.id')
+                    ->join('materiales_herramientas_programacion as mate','proy_prel.id','=','mate.id')
                     ->join('riesgos_amenazas_practica as riesgos','proy_prel.id','=','riesgos.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp1','trans_proy.id_tipo_transporte_rp_1','=','tip_tra_rp1.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp2','trans_proy.id_tipo_transporte_rp_2','=','tip_tra_rp2.id')
                     ->leftjoin('tipo_transporte as tip_tra_rp3','trans_proy.id_tipo_transporte_rp_3','=','tip_tra_rp3.id')
                     ->join('users as us','proy_prel.id_docente_responsable','=','us.id')
-                    ->join('costos_proyeccion as c_proy','proy_prel.id','=','c_proy.id')
+                    ->join('costos_programacion as c_proy','proy_prel.id','=','c_proy.id')
                     ->join('estado as es_coor','proy_prel.aprobacion_coordinador','=','es_coor.id')
                     ->join('estado as es_dec','proy_prel.aprobacion_decano','=','es_dec.id')
                     ->join('estado as es_consj','proy_prel.aprobacion_consejo_facultad','=','es_consj.id')
@@ -135,7 +135,7 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
 
             else if($t_r == 2)
             {
-                $solicitudes=DB::table('proyeccion_preliminar as proy_prel')
+                $solicitudes=DB::table('programacion_practica as proy_prel')
                 ->select('proy_prel.id', 'sol_prac.id as id_solicitud','prog_aca.programa_academico', 'espa.codigo_espacio_academico','espa.espacio_academico', 'sem_asig.semestre_asignatura', 
                     'proy_prel.anio_periodo','per_aca.periodo_academico','proy_prel.id_docente_responsable',
                      DB::raw('CONCAT_WS(" ", us.primer_nombre, us.segundo_nombre, us.primer_apellido, us.segundo_apellido) as full_name'),
@@ -162,7 +162,7 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
                     'sol_prac.cronograma','sol_prac.observaciones','sol_prac.justificacion','sol_prac.objetivo_general','sol_prac.metodologia_evaluacion',
                     'es_coor_sol.abrev as es_coor','es_dec_sol.abrev as es_dec'
                     )
-                    ->join('solicitud_practica as sol_prac','proy_prel.id','=','sol_prac.id_proyeccion_preliminar')
+                    ->join('solicitud_practica as sol_prac','proy_prel.id','=','sol_prac.id_programacion_practica')
                     ->join('espacio_academico as espa','proy_prel.id_espacio_academico','=','espa.id')
                     ->join('programa_academico as prog_aca','espa.id_programa_academico','=','prog_aca.id')
                     ->join('periodo_academico as per_aca','proy_prel.id_periodo_academico','=','per_aca.id')
@@ -170,15 +170,15 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
                     ->join('docentes_practica as doce_prac','proy_prel.id','=','doce_prac.id')
                     ->join('sedes_universidad as salida_ra','proy_prel.lugar_salida_ra','=','salida_ra.id')
                     ->join('sedes_universidad as regreso_ra','proy_prel.lugar_salida_ra','=','regreso_ra.id')
-                    ->join('transporte_proyeccion as trans_proy','proy_prel.id','=','trans_proy.id')
+                    ->join('transporte_programacion as trans_proy','proy_prel.id','=','trans_proy.id')
                     ->join('transporte_menor as trans_menor','proy_prel.id','=','trans_menor.id')
-                    ->join('materiales_herramientas_proyeccion as mate','proy_prel.id','=','mate.id')
+                    ->join('materiales_herramientas_programacion as mate','proy_prel.id','=','mate.id')
                     ->join('riesgos_amenazas_practica as riesgos','proy_prel.id','=','riesgos.id')
                     ->leftjoin('tipo_transporte as tip_tra_ra1','trans_proy.id_tipo_transporte_ra_1','=','tip_tra_ra1.id')
                     ->leftjoin('tipo_transporte as tip_tra_ra2','trans_proy.id_tipo_transporte_ra_2','=','tip_tra_ra2.id')
                     ->leftjoin('tipo_transporte as tip_tra_ra3','trans_proy.id_tipo_transporte_ra_3','=','tip_tra_ra3.id')
                     ->join('users as us','proy_prel.id_docente_responsable','=','us.id')
-                    ->join('costos_proyeccion as c_proy','proy_prel.id','=','c_proy.id')
+                    ->join('costos_programacion as c_proy','proy_prel.id','=','c_proy.id')
                     ->join('estado as es_coor','proy_prel.aprobacion_coordinador','=','es_coor.id')
                     ->join('estado as es_dec','proy_prel.aprobacion_decano','=','es_dec.id')
                     ->join('estado as es_consj','proy_prel.aprobacion_consejo_facultad','=','es_consj.id')
@@ -195,7 +195,7 @@ class SolicitudesPracticasExport implements FromCollection, WithHeadings, Should
 
     public function headings():array
     {
-        return['ID PROYECCIÓN','ID SOLICITUD','PROGRAMA ACADÉMICO', 'CÓD. ESPACIO ACADÉMICO', 'ESPACIO ACADÉMICO', 'SEM. ACA','AÑO PER.','PER. ACA',
+        return['ID Programación','ID SOLICITUD','PROGRAMA ACADÉMICO', 'CÓD. ESPACIO ACADÉMICO', 'ESPACIO ACADÉMICO', 'SEM. ACA','AÑO PER.','PER. ACA',
                 'CÉDULA','DOCENTE RESPONSABLE','GRUPO 1','GRUPO 2','GRUPO 3','GRUPO 4', 'NÚMERO DE ESTUDIANTES','NÚMERO PERSONAS APOYO',
                 'TOTAL DOCENTES APOYO',
                 'PERSONAL APOYO 1','PERSONAL APOYO 2','PERSONAL APOYO 3','PERSONAL APOYO 4','PERSONAL APOYO 5',

@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PractiCampoUD\proyeccion;
+use PractiCampoUD\programacion;
 use PractiCampoUD\solicitud;
 use PractiCampoUD\User;
 use Illuminate\Support\Facades\Crypt;
@@ -29,12 +29,12 @@ class ExcelControllerTest extends TestCase
     }
 
     /**
-     * Prueba unitaria del método exportProyeccionesExcel del controlador ExcelController
+     * Prueba unitaria del método exportprogramacionesExcel del controlador ExcelController
      */
-    public function test_excel_exportProyeccionesExcel()
+    public function test_excel_exportprogramacionesExcel()
     {
         $data = [
-            'proyeccion_list' => [974,1118,1119,1120],
+            'programacion_list' => [974,1118,1119,1120],
         ];
         $response = $this->get("exp-proyecc-list-excel", $data);
 

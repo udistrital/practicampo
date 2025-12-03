@@ -11,7 +11,7 @@
             <th style="width: 25px">Decan.</th>
             <th style="width: 25px"></th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             <td>{{ $item->id_solicitud }}</td>
             <td>{{ $item->programa_academico }}</td>
@@ -29,7 +29,7 @@
         </tr>
         @endforeach 
     </table>
-    {{$proyecciones->render()}}
+    {{$programaciones->render()}}
 @endif
 
 @if($filter == 'inact')    
@@ -45,7 +45,7 @@
             <th style="width: 25px">Decan.</th>
             <th style="width: 25px"></th>
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             <td>{{ $item->id_solicitud }}</td>
             <td>{{ $item->programa_academico }}</td>
@@ -63,5 +63,5 @@
         </tr>
         @endforeach 
     </table>
-    {{$proyecciones->render()}}
+    {{$programaciones->render()}}
 @endif

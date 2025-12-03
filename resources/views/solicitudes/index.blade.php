@@ -49,7 +49,7 @@
             {{-- <div class="form-group"> --}}
               {{-- <label for=""></label>
               <div class="row"> --}}
-                {{-- <button class="btn btn-success" name="import_proyecciones" title="Importar Archivo Excel"><i class="fas fa-file-import"></i>     CSV</button></a> --}}
+                {{-- <button class="btn btn-success" name="import_programaciones" title="Importar Archivo Excel"><i class="fas fa-file-import"></i>     CSV</button></a> --}}
               {{-- </div> --}}
             {{-- </div>
           </div> 
@@ -61,7 +61,7 @@
           <div class="form-group">
             <label for=""></label>
             <div class="row">
-              <a href="{{route('proyeccion_preliminar.pdf')}}"><button class="btn btn-success" ><i class="fas fa-download"></i>     PDF</button></a>
+              <a href="{{route('programacion_practica.pdf')}}"><button class="btn btn-success" ><i class="fas fa-download"></i>     PDF</button></a>
             </div>
         </div>
       </div> --}}
@@ -74,7 +74,7 @@
               <div class="row">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        <label for="id_filtro_proyeccion">Filtro</label>
+                        <label for="id_filtro_programacion">Filtro</label>
                         <div class="row">
                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                               <div class="form-check form-check-inline">
@@ -146,7 +146,14 @@
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'pre-proy')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="13">
-                                      <label class="form-check-label" for="">Proyecciones</label>
+                                      <label class="form-check-label" for="">programaciones</label>
+                                  </div>
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                  <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'traspasar')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="25">
+                                      <label class="form-check-label" for="">Traspasar Solicitud</label>
                                   </div>
                                 </div>
                               @endif 
@@ -167,7 +174,7 @@
                                   <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'pre-proy')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="13">
-                                        <label class="form-check-label" for="">Proyecciones</label>
+                                        <label class="form-check-label" for="">programaciones</label>
                                     </div>
                                   </div>
                                 @endif --}}
@@ -240,38 +247,35 @@
               <!-- filtro -->
 
               @if(Auth::user()->admin())
-                @include('solicitudes.tablas.index_admin',$proyecciones)
+                @include('solicitudes.tablas.index_admin',$programaciones)
               @endif  
 
               @if(Auth::user()->decano())
                 @if($filter == 'aprob_solic')
-                  @include('solicitudes.tablas.index_docpdf_descarga',$proyecciones)
+                  @include('solicitudes.tablas.index_docpdf_descarga',$programaciones)
                 @else
-                  @include('solicitudes.tablas.index_dec',$proyecciones)
+                  @include('solicitudes.tablas.index_dec',$programaciones)
                 @endif
               @endif 
 
               @if(Auth::user()->asistenteD())
-                @if($filter == 'sol_realizada')
-                  @include('solicitudes.tablas.index_sol_realizada',$proyecciones)
-                @endif
                 @if($filter == 'aprob_solic')
-                  @include('solicitudes.tablas.index_docpdf_descarga',$proyecciones)
+                  @include('solicitudes.tablas.index_docpdf_descarga',$programaciones)
                 @else
-                  @include('solicitudes.tablas.index_asisDec',$proyecciones)
+                  @include('solicitudes.tablas.index_asisDec',$programaciones)
                 @endif 
               @endif 
 
               @if(Auth::user()->coordinador())
-                @include('solicitudes.tablas.index_coord',$proyecciones)
+                @include('solicitudes.tablas.index_coord',$programaciones)
               @endif 
 
               @if(Auth::user()->docente())
-                @include('solicitudes.tablas.index_docen',$proyecciones)
+                @include('solicitudes.tablas.index_docen',$programaciones)
               @endif
 
               @if(Auth::user()->transportador())
-                @include('solicitudes.tablas.index_transp',$proyecciones)
+                @include('solicitudes.tablas.index_transp',$programaciones)
               @endif
             {{-- </form> --}}
               <br>

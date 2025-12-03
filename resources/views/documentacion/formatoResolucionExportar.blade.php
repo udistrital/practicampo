@@ -77,7 +77,7 @@
         
         <p align="justify"> <strong>ARTÍCULO PRIMERO:</strong>
             Autorizar el trámite y pago de un avance a nombre del(la) docente <?php echo mb_strtoupper($solicitud_practica[0]->full_name)?> identificado(a) con 
-            <?= $solicitud_practica[0]->tipo_identificacion?> No.<?= $solicitud_practica[0]->id_docente_responsable?> para cubrir los gastos de la práctica académica de los Proyectos Curriculares de 
+            <?= $solicitud_practica[0]->tipo_identificacion?> No.<?= $solicitud_practica[0]->id_docente_responsable?> para cubrir los gastos de la salida de campo de los Proyectos Curriculares de 
                           @php
                            $arr_proyecto = array();
                            $arr_cdp = array();

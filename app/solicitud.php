@@ -9,7 +9,7 @@ class solicitud extends Model
     protected $table = 'solicitud_practica';
 
     protected $fillable = [
-            'id_proyeccion_preliminar',
+            'id_programacion_practica',
             
     ];
 }

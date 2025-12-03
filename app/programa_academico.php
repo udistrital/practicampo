@@ -9,8 +9,11 @@ class programa_academico extends Model
     protected $table = 'programa_academico';
 
     protected $fillable = [
-    		'programa_academico'    		
+    		'programa_academico',
+            'pregrado' 	
     ];
+
+    public $timestamps = false;
 
     public function esp_academico()
     {

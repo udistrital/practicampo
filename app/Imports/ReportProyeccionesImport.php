@@ -4,20 +4,20 @@ namespace PractiCampoUD\Imports;
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class ReportProyeccionesImport implements WithMultipleSheets
+class ReportprogramacionesImport implements WithMultipleSheets
 {
     
     // public function sheets(): array
     // {
     //     return [
-    //         'Proyecciones' => $this
+    //         'programaciones' => $this
     //     ];
     // }
 
     public function sheets(): array
     {
         return [
-            new ProyeccionesPreliminaresImport()
+            new programacionesPracticasImport()
         ];
     }
 }

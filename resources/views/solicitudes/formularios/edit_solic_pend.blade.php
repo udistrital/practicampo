@@ -16,7 +16,7 @@
                         {{ __('') }}</div>
                     
                         <div class="card-body">
-                            <form method="POST" action="{{ route('up_solic_asistD',[Crypt::encrypt($proyecciones)]) }}" id="up_solicitud_asistD">
+                            <form method="POST" action="{{ route('up_solic_asistD',[Crypt::encrypt($programaciones)]) }}" id="up_solicitud_asistD">
                                 @method('PUT')
                                 @csrf
 
@@ -36,7 +36,7 @@
                                         <th style="width: 50px">Fecha Regreso</th>
                                         
                                     </thead> 
-                                    @foreach ($proyecciones as $item) 
+                                    @foreach ($programaciones as $item) 
                                     <tr>
                                         <td>{{ $item->id_solicitud }}</td>
                                         <td>{{ $item->programa_academico }}</td>

@@ -13,10 +13,10 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use PractiCampoUD\Exports\collection;
 use PractiCampoUD\categoria;
 use PractiCampoUD\formatoExportProy;
-use PractiCampoUD\proyeccion;
+use PractiCampoUD\programacion;
 use stdClass;
 
-class InstructivoProyeccionesExport implements FromCollection,  ShouldAutoSize, WithEvents, WithTitle 
+class InstructivoprogramacionesExport implements FromCollection,  ShouldAutoSize, WithEvents, WithTitle 
 {
     public function __construct()
     {
@@ -27,10 +27,10 @@ class InstructivoProyeccionesExport implements FromCollection,  ShouldAutoSize, 
     {
         return collect([
             [''],
-            ['','INSTRUCTIVO PARA DILIGENCIAR FORMATO DE PROYECCIONES PRELIMINARES'],
-            ['','RECUERDE: A LA HORA DE CARGAR EL ARCHIVO EN EL SISTEMA DEJAR SOLO LA HOJA "PROYECCIONES", YA QUE LAS OTRAS HOJAS SOLO SON GUÍAS PARA SU BUEN MANEJO.'],
+            ['','INSTRUCTIVO PARA DILIGENCIAR FORMATO DE PROGRAMACIONES PRACTICAS'],
+            ['','RECUERDE: A LA HORA DE CARGAR EL ARCHIVO EN EL SISTEMA DEJAR SOLO LA HOJA "PROGRAMACIONES", YA QUE LAS OTRAS HOJAS SOLO SON GUÍAS PARA SU BUEN MANEJO.'],
             ['','RECUERDE: NO SE DEBE CAMBIAR LA ESTRUCTURA DEL FORMATO, SI EN DADO CASO EL FORMATO REQUIERE CAMBIOS COMUNÍQUELO A DECANATURA FAMARENA.'],
-            ['','RECUERDE: NO SE DEBE CAMBIAR EL NOMBRE DEL DOCUMENTO, ESTE DEBE SER "PROYECCIONES_PRELIMINARES" EN MINÚSCULA TODO.'],
+            ['','RECUERDE: NO SE DEBE CAMBIAR EL NOMBRE DEL DOCUMENTO, ESTE DEBE SER "PROGRAMACIONES_PRACTICAS" EN MINÚSCULA TODO.'],
             [''],
             ['','CAMPO','DETALLE','FORMATO'],
             ['','ID PROGRAMA ACADÉMICO','Indique el ID del Programa Académico que corresponda','Solo números'],
@@ -155,7 +155,7 @@ class InstructivoProyeccionesExport implements FromCollection,  ShouldAutoSize, 
     // public function headings():array
     // {
     //     return[
-    //         'INSTRUCTIVO PARA DILIGENCIAR FORMATO DE PROYECCIONES PRELIMINARES', 
+    //         'INSTRUCTIVO PARA DILIGENCIAR FORMATO DE PROGRAMACIONES PRACTICAS', 
             
     //     ];
     // }

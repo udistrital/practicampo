@@ -269,7 +269,7 @@ footer{position:fixed;bottom:0cm;left:0cm;right:0cm;height:1cm;}
             <tr>
               <td class="tg-nrix" colspan="11">
                 <p style="text-align: left; font-size: 8pt"><strong>Justificación del avance y Cronograma (de acuerdo a la resolución de solicitud de avance):</strong></p>
-                <p style="text-align: justify; font-size: 8pt">@php setlocale(LC_TIME, "spanish"); @endphpEl avance cubre el auxilio de estudiantes, viáticos docentes, materiales, etc. de las prácticas académicas de @foreach ($solicitud_practica as $sol)
+                <p style="text-align: justify; font-size: 8pt">@php setlocale(LC_TIME, "spanish"); @endphpEl avance cubre el auxilio de estudiantes, viáticos docentes, materiales, etc. de las salidas de campo de @foreach ($solicitud_practica as $sol)
 {{ $sol->espacio_academico }} que se llevará a cabo del día {!! substr($sol->fecha_salida,-2) !!} al día {{ substr($sol->fecha_regreso,-2) }} del mes de {!! getMonthInSpanish($sol->fecha_regreso) !!} de {!! substr($sol->fecha_salida,0,4) !!} del proyecto curricular de {{ $sol->programa_academico }}, 
 @endforeach</p>
               </td>

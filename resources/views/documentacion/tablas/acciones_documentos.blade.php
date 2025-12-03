@@ -45,7 +45,7 @@
                                         @if($item->id == 1)
                                         <td style="text-align:center;"> 
                                             @if($docente_responsable->id_estado == 1)
-                                                <a href="{{route('giro.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}">
+                                                <a href="{{route('giro.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}">
                                                 <button class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>  PDF</button>
                                                 </a>
                                             @else
@@ -57,7 +57,7 @@
                                         @if($item->id == 2)
                                         <td style="text-align:center;"> 
                                             @if($docente_responsable->id_estado == 1)
-                                                <a href="{{route('oficio.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}">
+                                                <a href="{{route('oficio.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}">
                                                 <button class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                                 </a>
                                             @else
@@ -69,7 +69,7 @@
                                         @if($item->id == 3)
                                         <td style="text-align:center;"> 
                                             @if($docente_responsable->id_estado == 1)
-                                                <a href="{{route('resolucion.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}">
+                                                <a href="{{route('resolucion.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}">
                                                 <button class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                                 </a>
                                             @else
@@ -81,7 +81,7 @@
                                         @if($item->id == 6)
                                         <td style="text-align:center;"> 
                                             @if($docente_responsable->id_estado == 1)
-                                                <a href="{{route('transporte.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}">
+                                                <a href="{{route('transporte.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}">
                                                 <button class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                                 </a>
                                             @else
@@ -93,7 +93,7 @@
                                         @if($item->id == 4)
                                             <td style="text-align:center;"> 
                                                 @if($docente_responsable->id_estado == 1)
-                                                    <a href="{{route('avance.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}">
+                                                    <a href="{{route('avance.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}">
                                                         <button class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                                     </a>
                                                 @else
@@ -105,7 +105,7 @@
                                         @if($item->id == 5)
                                             <td style="text-align:center;">
                                                 @if($docente_responsable->id_estado == 1)
-                                                    <a href="{{route('formatoPractica.pdf',[Crypt::encrypt($solicitud->id_proyeccion_preliminar)])}}">
+                                                    <a href="{{route('formatoPractica.pdf',[Crypt::encrypt($solicitud->id_programacion_practica)])}}">
                                                         <button class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
                                                     </a>
                                                 @else

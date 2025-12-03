@@ -2,7 +2,7 @@
 
 namespace PractiCampoUD\Imports;
 
-use PractiCampoUD\proyeccion;
+use PractiCampoUD\programacion;
 use PractiCampoUD\solicitud;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -18,15 +18,15 @@ use DateTime;
 use DB;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
-use PractiCampoUD\costos_proyeccion;
+use PractiCampoUD\costos_programacion;
 use PractiCampoUD\docentes_practica;
-use PractiCampoUD\materiales_herramientas_proyeccion;
+use PractiCampoUD\materiales_herramientas_programacion;
 use PractiCampoUD\documentos_requeridos_solicitud;
 use PractiCampoUD\User;
 use PractiCampoUD\practicas_integradas;
 use PractiCampoUD\riesgos_amenazas_practica;
 use PractiCampoUD\transporte_menor;
-use PractiCampoUD\transporte_proyeccion;
+use PractiCampoUD\transporte_programacion;
 
 class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnError
 {
@@ -40,7 +40,7 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
     protected function validator($data)
     {
     
-        $rules=['id_proyeccion'=>['required','integer','digits_between:1,11'],
+        $rules=['id_programacion'=>['required','integer','digits_between:1,11'],
                 'num_ident_docente'=>['required','integer','digits_between:5,15'],
                 'docente_responsable'=>['required','string','max:50'],
                 'cant_grupos'=>['required','integer','digits:1'],
@@ -151,14 +151,14 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
             foreach($collectionValidada as $row)
             {
 
-                $id_proy = $row['id_proyeccion'];
-                $proyeccion_preliminar = proyeccion::where('id', $id_proy)->first();
-                $solicitud_practica = solicitud::where('id_proyeccion_preliminar', $id_proy)->first();
-                $transporte_proyeccion = transporte_proyeccion::where('id','=',$id_proy)->first();
+                $id_proy = $row['id_programacion'];
+                $programacion_practica = programacion::where('id', $id_proy)->first();
+                $solicitud_practica = solicitud::where('id_programacion_practica', $id_proy)->first();
+                $transporte_programacion = transporte_programacion::where('id','=',$id_proy)->first();
                 $practicas_integradas = practicas_integradas::where('id','=',$id_proy)->first();
                 $transporte_menor = transporte_menor::where('id','=',$id_proy)->first();
-                $costos_proyeccion = costos_proyeccion::where('id','=',$id_proy)->first();
-                $mater_herra_proyeccion = materiales_herramientas_proyeccion::where('id', '=', $id_proy)->first();
+                $costos_programacion = costos_programacion::where('id','=',$id_proy)->first();
+                $mater_herra_programacion = materiales_herramientas_programacion::where('id', '=', $id_proy)->first();
                 $docentes_practica = docentes_practica::where('id','=',$id_proy)->first();
                 $riesg_amen_practica = riesgos_amenazas_practica::where('id','=',$id_proy)->first();
                 $doc_req_solicitud = documentos_requeridos_solicitud::where('id','=',$solicitud_practica->id)->first();
@@ -210,11 +210,11 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                 
                 $tipo_ruta = $row['tipo_ruta'];
 
-                $proyeccion_preliminar->cantidad_grupos = $row['cant_grupos'];
-                $proyeccion_preliminar->grupo_1 = $row['grupo_1'];
-                $proyeccion_preliminar->grupo_2 = $row['grupo_2'];
-                $proyeccion_preliminar->grupo_3 = $row['grupo_3'];
-                $proyeccion_preliminar->grupo_4 = $row['grupo_4'];
+                $programacion_practica->cantidad_grupos = $row['cant_grupos'];
+                $programacion_practica->grupo_1 = $row['grupo_1'];
+                $programacion_practica->grupo_2 = $row['grupo_2'];
+                $programacion_practica->grupo_3 = $row['grupo_3'];
+                $programacion_practica->grupo_4 = $row['grupo_4'];
 
                 $solicitud_practica->num_estudiantes = $row['numero_de_estudiantes'];
                 $solicitud_practica->total_personal_apoyo = $row['cant_personal_apoyo'];
@@ -255,7 +255,7 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                 {
                     $total_doc_participantes = $row['cant_docentes_participantes'];
                     $total_docentes = $total_docentes + $total_doc_participantes;
-                    $proyeccion_preliminar->practicas_integradas = $integrada;
+                    $programacion_practica->practicas_integradas = $integrada;
                 }
 
                 if($docentes_practica->id_tipo_personal_apoyo_1 == 1)
@@ -293,8 +293,8 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
 
                 if($tipo_ruta == 1)
                 {
-                    $transporte_proyeccion->det_tipo_transporte_rp=$row['det_vehiculo'];
-                    $transporte_proyeccion->exclusiv_tiempo_rp=$row['disp_permanente_vehiculo'];
+                    $transporte_programacion->det_tipo_transporte_rp=$row['det_vehiculo'];
+                    $transporte_programacion->exclusiv_tiempo_rp=$row['disp_permanente_vehiculo'];
 
                     $transporte_menor->docente_resp_t_menor_rp=$docente_responsable->full_name;
                     $transporte_menor->cant_trans_menor_rp=$row['cant_transporte_menor'];
@@ -313,9 +313,9 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                     $transporte_menor->vlr_trans_menor_rp_3=$vlr_trans_menor_rp_3;
                     $transporte_menor->vlr_trans_menor_rp_4=$vlr_trans_menor_rp_4;
                     
-                    $mater_herra_proyeccion->det_materiales_rp = $row['materiales'];
-                    $mater_herra_proyeccion->det_otros_boletas_rp = $row['guiasbaquianos'];
-                    $mater_herra_proyeccion->det_guias_baquianos_rp = $row['boletasotros'];
+                    $mater_herra_programacion->det_materiales_rp = $row['materiales'];
+                    $mater_herra_programacion->det_otros_boletas_rp = $row['guiasbaquianos'];
+                    $mater_herra_programacion->det_guias_baquianos_rp = $row['boletasotros'];
 
                     $vlr_materiales_rp=str_replace(".","",$row['vlr_total_materiales']);
                     $vlr_materiales_rp=intval(str_replace("$","", $vlr_materiales_rp));
@@ -324,9 +324,9 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                     $vlr_otros_boletas_rp=str_replace(".","",$row['vlr_total_boletasotros']);
                     $vlr_otros_boletas_rp=intval(str_replace("$","", $vlr_otros_boletas_rp));
 
-                    $costos_proyeccion->vlr_materiales_rp = $vlr_materiales_rp;
-                    $costos_proyeccion->vlr_guias_baquianos_rp = $vlr_guias_baquianos_rp;
-                    $costos_proyeccion->vlr_otros_boletas_rp = $vlr_otros_boletas_rp;
+                    $costos_programacion->vlr_materiales_rp = $vlr_materiales_rp;
+                    $costos_programacion->vlr_guias_baquianos_rp = $vlr_guias_baquianos_rp;
+                    $costos_programacion->vlr_otros_boletas_rp = $vlr_otros_boletas_rp;
 
                     if($num_dias==1)
                     {
@@ -339,13 +339,13 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                         $viaticos_docente_rp = ($num_dias-0.5)*$vlr_docen_max*$total_docentes;
                     }
 
-                    $costos_proyeccion->viaticos_estudiantes_rp = $viaticos_estudiantes_rp;
-                    $costos_proyeccion->viaticos_docente_rp = $viaticos_docente_rp;
+                    $costos_programacion->viaticos_estudiantes_rp = $viaticos_estudiantes_rp;
+                    $costos_programacion->viaticos_docente_rp = $viaticos_docente_rp;
                     $total_otros_rp = $vlr_materiales_rp + $vlr_guias_baquianos_rp + $vlr_otros_boletas_rp;
                     $costo_total_transporte_menor_rp = $vlr_trans_menor_rp_1 + $vlr_trans_menor_rp_2 + $vlr_trans_menor_rp_3 + $vlr_trans_menor_rp_4;
 
-                    $costos_proyeccion->costo_total_transporte_menor_rp = $costo_total_transporte_menor_rp;
-                    $costos_proyeccion->total_presupuesto_rp = $viaticos_docente_rp + $viaticos_estudiantes_rp + $total_otros_rp + $costo_total_transporte_menor_rp;
+                    $costos_programacion->costo_total_transporte_menor_rp = $costo_total_transporte_menor_rp;
+                    $costos_programacion->total_presupuesto_rp = $viaticos_docente_rp + $viaticos_estudiantes_rp + $total_otros_rp + $costo_total_transporte_menor_rp;
 
                     $riesg_amen_practica->areas_acuaticas_rp= $row['areas_acuaticas'];
                     $riesg_amen_practica->alturas_rp= $row['alturas'];
@@ -355,8 +355,8 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                 }
                 else if($tipo_ruta == 2)
                 {
-                    $transporte_proyeccion->det_tipo_transporte_ra=$row['det_vehiculo'];
-                    $transporte_proyeccion->exclusiv_tiempo_ra=$row['disp_permanente_vehiculo'];
+                    $transporte_programacion->det_tipo_transporte_ra=$row['det_vehiculo'];
+                    $transporte_programacion->exclusiv_tiempo_ra=$row['disp_permanente_vehiculo'];
 
                     $transporte_menor->docente_resp_t_menor_ra=$docente_responsable->full_name;
                     $transporte_menor->cant_trans_menor_ra=$row['cant_transporte_menor'];
@@ -375,9 +375,9 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                     $transporte_menor->vlr_trans_menor_ra_3=$vlr_trans_menor_ra_3;
                     $transporte_menor->vlr_trans_menor_ra_4=$vlr_trans_menor_ra_4;
 
-                    $mater_herra_proyeccion->det_materiales_ra = $row['materiales'];
-                    $mater_herra_proyeccion->det_otros_boletas_ra = $row['guiasbaquianos'];
-                    $mater_herra_proyeccion->det_guias_baquianos_ra = $row['boletasotros'];
+                    $mater_herra_programacion->det_materiales_ra = $row['materiales'];
+                    $mater_herra_programacion->det_otros_boletas_ra = $row['guiasbaquianos'];
+                    $mater_herra_programacion->det_guias_baquianos_ra = $row['boletasotros'];
 
                     $vlr_materiales_ra=str_replace(".","",$row['vlr_total_materiales']);
                     $vlr_materiales_ra=intval(str_replace("$","", $vlr_materiales_ra));
@@ -386,9 +386,9 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                     $vlr_otros_boletas_ra=str_replace(".","",$row['vlr_total_boletasotros']);
                     $vlr_otros_boletas_ra=intval(str_replace("$","", $vlr_otros_boletas_ra));
 
-                    $costos_proyeccion->vlr_materiales_ra = $vlr_materiales_ra;
-                    $costos_proyeccion->vlr_guias_baquianos_ra = $vlr_guias_baquianos_ra;
-                    $costos_proyeccion->vlr_otros_boletas_ra = $vlr_otros_boletas_ra;
+                    $costos_programacion->vlr_materiales_ra = $vlr_materiales_ra;
+                    $costos_programacion->vlr_guias_baquianos_ra = $vlr_guias_baquianos_ra;
+                    $costos_programacion->vlr_otros_boletas_ra = $vlr_otros_boletas_ra;
 
                     if($num_dias==1)
                     {
@@ -401,13 +401,13 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                         $viaticos_docente_ra = ($num_dias-0.5)*$vlr_docen_max*$total_docentes;
                     }
 
-                    $costos_proyeccion->viaticos_estudiantes_ra = $viaticos_estudiantes_ra;
-                    $costos_proyeccion->viaticos_docente_ra = $viaticos_docente_ra;
+                    $costos_programacion->viaticos_estudiantes_ra = $viaticos_estudiantes_ra;
+                    $costos_programacion->viaticos_docente_ra = $viaticos_docente_ra;
                     $total_otros_ra = $vlr_materiales_ra + $vlr_guias_baquianos_ra + $vlr_otros_boletas_ra;
                     $costo_total_transporte_menor_ra = $vlr_trans_menor_ra_1 + $vlr_trans_menor_ra_2 + $vlr_trans_menor_ra_3 + $vlr_trans_menor_ra_4;
 
-                    $costos_proyeccion->costo_total_transporte_menor_ra = $costo_total_transporte_menor_ra;
-                    $costos_proyeccion->total_presupuesto_ra = $viaticos_docente_ra + $viaticos_estudiantes_ra + $total_otros_ra + $costo_total_transporte_menor_ra;
+                    $costos_programacion->costo_total_transporte_menor_ra = $costo_total_transporte_menor_ra;
+                    $costos_programacion->total_presupuesto_ra = $viaticos_docente_ra + $viaticos_estudiantes_ra + $total_otros_ra + $costo_total_transporte_menor_ra;
 
                     $riesg_amen_practica->areas_acuaticas_ra= $row['areas_acuaticas'];
                     $riesg_amen_practica->alturas_ra= $row['alturas'];
@@ -449,17 +449,17 @@ class InfoSolicitudesImport implements ToCollection, WithHeadingRow, SkipsOnErro
                 $solicitud_practica->aprobacion_decano= 5;
 
                 $total_asistentes = $total_estudiantes + $total_personal_apoyo + $total_doc_participantes + 1;
-                $transporte_proyeccion->total_asistentes=$total_asistentes;
+                $transporte_programacion->total_asistentes=$total_asistentes;
 
-                $costos_proyeccion->update();
+                $costos_programacion->update();
                 $docentes_practica->update();
                 $practicas_integradas->update();
                 $doc_req_solicitud->update();
-                $mater_herra_proyeccion->update();
+                $mater_herra_programacion->update();
                 $riesg_amen_practica->update();
                 $transporte_menor->update();
-                $transporte_proyeccion->update();
-                $proyeccion_preliminar->update();
+                $transporte_programacion->update();
+                $programacion_practica->update();
                 $solicitud_practica->update();
 
             }

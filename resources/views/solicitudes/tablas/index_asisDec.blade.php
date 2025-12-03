@@ -13,7 +13,7 @@
             <th style="width: 25px"></th>
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             
             <td>{{ $item->id_solicitud }}</td>
@@ -75,7 +75,7 @@
             @endif
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             
         <td>{{ $item->id_solicitud }}</td>
@@ -143,7 +143,7 @@
             <th style="width: 25px"></th>
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             
             <td>{{ $item->id_solicitud }}</td>
@@ -215,7 +215,7 @@
             <th style="width: 25px">Decan.</th>
             
         </thead> 
-        @foreach ($proyecciones as $item) 
+        @foreach ($programaciones as $item) 
         <tr>
             <td>{{ $item->id_solicitud }}</td>
             <td>{{ $item->programa_academico }}</td>
@@ -258,7 +258,7 @@
                 <th style="width: 50px">Fecha Regreso</th>
                 
             </thead> 
-            @foreach ($proyecciones as $item) 
+            @foreach ($programaciones as $item) 
             <tr>
                 <td><input type="checkbox" id="encuesta_transporte[]" name="encuesta_transporte[]" value="{{ $item->id }}"></td>
                 <td>{{ $item->id_solicitud }}</td>
@@ -302,8 +302,8 @@
             <th style="width: 25px"></th>
             
         </thead> 
-        @foreach ($proyecciones as $item) 
-        <tr>
+        @foreach ($programaciones as $item) 
+        <tr id="row-{{ $item->id_solicitud }}">
             
             <td>{{ $item->id_solicitud }}</td>
             <td>{{ $item->programa_academico }}</td>
@@ -323,23 +323,38 @@
 
             <td>{{ $item->fecha_salida_aprox_rp }}</td>
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
-            @if($item->estado_practica == 1)
-            <td>Realizada</td>
-            @elseif($item->estado_practica == 2)
-            <td>No Realizada</td>
-            @elseif($item->estado_practica == 3)
-            <td>No Validada</td>
-            @endif
+            <td class="estado-{{ $item->id_solicitud }}">
+                {{ $item->estado_practica == 1 ? 'Realizada' : ($item->estado_practica == 2 ? 'No Realizada' : 'No Validada') }}
+            </td>
             
             
             <td style="text-align: center"> 
-                <a href="{{route('practica_realizada_edit',[Crypt::encrypt($item->id_solicitud)])}}">
-                    <button class="btn-success" style="background-color: #447161; border:0">Editar</button>
-                </a> 
+                <button class="btn btn-success btnEditarRealizada" style="background-color: #447161; border:0"
+                    data-url="{{ route('practica_realizada_edit', [Crypt::encrypt($item->id_solicitud)]) }}">
+                    Editar
+                </button>
             </td> 
         </tr>
         @endforeach 
     </table>
 @endif
+<div class="modal fade" id="modalPracticaRealizada" tabindex="-1">
+    <br><br><br><br><br><br><br>
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarLabel">Información Solicitud</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modalContent">
+                <div class="text-center p-4">
+                    <span class="spinner-border"></span>
+                </div>
+            </div>
 
-{{$proyecciones->render()}}
+        </div>
+    </div>
+</div>
+{{$programaciones->render()}}
