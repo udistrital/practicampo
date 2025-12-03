@@ -1,6 +1,6 @@
 <?php
 
-namespace PractiCampoUD\Http\Controllers\programacion;
+namespace PractiCampoUD\Http\Controllers\Programacion;
 
 use Illuminate\Http\Request;
 use PractiCampoUD\Http\Controllers\Controller;
@@ -38,7 +38,7 @@ use Exception;
  * @version 1.0
  * @link http://practicampo.udistrital.edu.co
  */
-class programacionController extends Controller
+class ProgramacionController extends Controller
 {
     /**
      * Display a listing of the resource.
