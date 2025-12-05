@@ -117,6 +117,7 @@ class SolicitudController extends Controller
                 $docentes=DB::table('users')
                 ->select('users.id',DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                 ->where('id_role',5)
+                ->where('id','!=',Auth::user()->id)
                 ->orderBy('users.primer_nombre','ASC')
                 ->get();  
                 
@@ -2029,6 +2030,7 @@ class SolicitudController extends Controller
                 $docentes=DB::table('users')
                 ->select('users.id',DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
                 ->where('id_role',5)
+                ->where('id','!=',Auth::user()->id)
                 ->orderBy('users.primer_nombre','ASC')
                 ->get();  
         
