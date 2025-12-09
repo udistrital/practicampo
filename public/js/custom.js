@@ -992,6 +992,12 @@ $(document).ready(function(){
         inputCant_url_ruta_ra.disabled = true;
         inputCant_detalle_recorrido_ra.disabled = true;
 
+        if(radioSi_rp.checked || radioNo_rp.checked){
+            inputDestino_ra.disabled = false;
+            inputCant_url_ra.disabled = false;
+            inputCant_url_ruta_ra.disabled = false;
+            inputCant_detalle_recorrido_ra.disabled = false;
+        }
         const toggleInput_ra = () => {
             if (radioSi_ra.checked || radioNo_ra.checked) {
                 inputDestino_ra.disabled = false;
@@ -6233,6 +6239,12 @@ function obsInactProy(inactProy)
 function validar_realizada_bogota() {
     const realizadaBogotaRP = document.getElementsByName('realizada_bogota_rp');
     const realizadaBogotaRA = document.getElementsByName('realizada_bogota_ra');
+    const destino = document.getElementById('destino_rp');
+    const ruta = document.getElementById('ruta_principal');
+    const recorrido = document.getElementById('det_recorrido_interno_rp');
+    const destino_ra = document.getElementById('destino_ra');
+    const ruta_ra = document.getElementById('ruta_alterna');
+    const recorrido_ra = document.getElementById('det_recorrido_interno_ra');
 
     function isRadioSelected(radioGroup) {
         for (const radio of radioGroup) {
@@ -6252,7 +6264,39 @@ function validar_realizada_bogota() {
         realizadaBogotaRA[0].focus();
         return false;
     }
-    return true; 
+    if (!destino.value.trim()) {
+        alert("El campo Destino Ruta está vacío o contiene solo espacios\nEn: Ruta Principal");
+        destino.focus();
+        return false;
+    }
+    if (!ruta.value.trim()) {
+        alert("El campo URL Ruta está vacío o contiene solo espacios\nEn: Ruta de Principal");
+        ruta.focus();
+        return false;
+    }
+    if (!recorrido.value.trim()) {
+        alert("El campo Detalle Recorrido está vacío o contiene solo espacios\nEn: Ruta de Principal");
+        recorrido.focus();
+        return false;
+    }
+
+    if (!destino_ra.value.trim()) {
+        alert("El campo Destino Ruta está vacío o contiene solo espacios\nEn: Ruta de Contingencia");
+        destino_ra.focus();
+        return false;
+    }
+    if (!ruta_ra.value.trim()) {
+        alert("El campo URL Ruta está vacío o contiene solo espacios\nEn: Ruta de Contingencia");
+        ruta_ra.focus();
+        return false;
+    }
+    if (!recorrido_ra.value.trim()) {
+        alert("El campo Detalle Recorrido está vacío o contiene solo espacios\nEn: Ruta de Contingencia");
+        recorrido_ra.focus();
+        return false;
+    }
+
+    return true;
 }
 
 function confirmarGuardar(event) {
