@@ -6264,6 +6264,7 @@ function validar_realizada_bogota() {
         realizadaBogotaRA[0].focus();
         return false;
     }
+    /*
     if (!destino.value.trim()) {
         alert("El campo Destino Ruta está vacío o contiene solo espacios\nEn: Ruta Principal");
         destino.focus();
@@ -6294,7 +6295,7 @@ function validar_realizada_bogota() {
         alert("El campo Detalle Recorrido está vacío o contiene solo espacios\nEn: Ruta de Contingencia");
         recorrido_ra.focus();
         return false;
-    }
+    }*/
 
     return true;
 }
