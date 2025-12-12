@@ -83,7 +83,7 @@ return [
 
         'estudiantes' => [
             'driver' => 'eloquent',
-            'model' => PractiCampoUD\estudiantes_practica::class,
+            'model' => PractiCampoUD\estudiante::class,
         ],
     ],
 

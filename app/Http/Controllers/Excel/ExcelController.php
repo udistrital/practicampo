@@ -197,7 +197,7 @@ class ExcelController extends Controller
             }
 
             Excel::import(new EstudiantesImport($id),request()->file('listado_estudiantes'));            
-            $solicitud_practica->listado_estudiantes = 1;
+            //$solicitud_practica->listado_estudiantes = 1;
             $solicitud_practica->update();            
 
             DB::commit();
@@ -207,9 +207,7 @@ class ExcelController extends Controller
         {
             DB::rollback();
             return response()->json(['error' => 'Hubo un error al importar el archivo.'."\n".$ex->getMessage()], 500);
-            //return back()->withError('Falla al cargar, verifique el archivo. Mensaje->'.$ex->getMessage());
         }
-        //return Redirect::to('solicitudes/filtrar/proy-comp')->with('success', 'Creación exitosa');
     }
 
     /**

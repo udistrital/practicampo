@@ -30,7 +30,7 @@ class SolicitudesAprobadasExport implements ShouldAutoSize, WithTitle, FromArray
 
     public function title(): string
     {
-        $titleSheet = "Plan salidas de campo";
+        $titleSheet = "Solicitud Transporte";
         return $titleSheet;
     }
 

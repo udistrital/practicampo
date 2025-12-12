@@ -49,6 +49,245 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- functions-->
+ <script>
+    $('#importEstudForm').on('submit', function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                location.reload();
+                alert(response.message);
+            },
+            error: function(response) {
+                alert(response.responseJSON.error);
+            }
+        });
+    });
+
+    $(document).on('click', '.btnVerDocumentos', function () {
+        let email = $(this).data('email');
+        let id_solicitud = $(this).data('id_solicitud');
+        $("#nombreEstudianteDocs").text($(this).data('nombre'));
+
+        $("#listaDocumentos").empty();
+        $("#documentosLoader").show();
+
+        $.ajax({
+            url: "/ver-documentos-estudiante",
+            type: "GET",
+            data: { email: email, id: id_solicitud },
+            success: function(res) {
+                $("#documentosLoader").hide();
+                let documentos = res.documentos;
+                let html = "";
+                let hasDocs = false;
+
+                for (let key in documentos) {
+                    if (documentos[key]) {
+                        hasDocs = true;
+                        html += `
+                            <div class="mb-3">
+                                <strong>${key.replace(/_/g, " ").toUpperCase()}</strong>
+
+                                <div class="mt-2 d-flex align-items-center">
+                                    <button 
+                                        class="btn btn-success btn-sm mr-2 btnMostrarPdf" 
+                                        style="background-color: #447161; border:0"
+                                        data-target="pdf_${key}">
+                                        <i class="far fa-eye"></i>
+                                        <i class="fa fa-arrow-right"></i>
+                                        <i class="fa fa-file"></i>
+                                        Ver PDF
+                                    </button>
+                                </div>
+
+                                <!-- Contenedor oculto del PDF -->
+                                <div id="pdf_${key}" style="display:none;">
+                                    <embed src="${documentos[key].pdf}" width="100%" height="600">
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                if (!hasDocs) {
+                    html = `
+                        <div class="alert alert-warning text-center">
+                            El estudiante no ha subido ningún documento.
+                        </div>
+                    `;
+                }
+                $("#listaDocumentos").html(html);
+            },
+            error: function(err) {
+                let mensaje = err.responseJSON?.error || "Error al cargar documentos del estudiante.";
+                $("#documentosLoader").hide();
+                $("#listaDocumentos").html(`
+                    <div class="alert alert-danger text-center">
+                        ${mensaje}
+                    </div>
+                `);
+            }
+        });
+    });
+        $(document).on('click', '.btnMostrarPdf', function () {
+        let target = $(this).data('target');
+        let div = $('#' + target);
+
+        div.toggle();
+
+        if (div.is(':visible')) {
+            $(this).html(`<i class="fa fa-eye-slash"></i> Ocultar PDF`);
+        } else {
+            $(this).html(`
+                <i class="far fa-eye"></i>
+                <i class="fa fa-arrow-right"></i>
+                <i class="fa fa-file"></i>
+                Ver PDF
+            `);
+        }
+    });
+
+    $(document).on('click', '.btnEliminarEstudiante', function() {
+        let id_solicitud = $(this).data('id_solicitud');
+        let email = $(this).data('email');
+
+        if(!confirm("¿Seguro que deseas eliminar este estudiante? Esta acción no se puede deshacer.")) {
+            return;
+        }
+
+        $.ajax({
+            url: '/eliminar-estudiante',
+            type: 'POST',
+            data: {
+                id: id_solicitud,
+                email: email,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(res) {
+                alert(res.message);
+                location.reload();
+            },
+            error: function(err) {
+                alert(err.responseJSON?.error || "Ha ocurrido un error al eliminar el estudiante");
+            }
+        });
+    });
+
+    $(document).on('click', '.btnVerificarAsistenciaEstudiante', function() {
+        let id_solicitud = $(this).data('id_solicitud');
+        let email = $(this).data('email');
+        let valor = $(this).data('valor');
+        let $btn = $(this);
+        let $checkbox = $btn.closest('td').find('input[type="checkbox"]');
+
+        let fila = $(this).closest('td'); 
+        let btnGuardar = fila.find('.btnGuardarAsist');
+        let btnQuitar = fila.find('.btnQuitarAsist');
+
+        if(valor === 1){
+            if(!confirm("¿Seguro que deseas guardar la asistencia de este estudiante?")) {
+                return;
+            }
+        }else{
+            if(!confirm("¿Seguro que deseas quitar la asistencia de este estudiante?")) {
+                return;
+            }
+        }        
+
+        $.ajax({
+            url: '/verificar-asistencia-estudiante',
+            type: 'POST',
+            data: {
+                id: id_solicitud,
+                email: email,
+                valor: valor,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(res) {
+                alert(res.message);
+                
+                if(valor === 1){
+                    $checkbox.prop('checked', true);
+                    btnGuardar.prop('disabled', true);
+                    btnQuitar.prop('disabled', false);
+                }else{
+                    $checkbox.prop('checked', false);
+                    btnGuardar.prop('disabled', false);
+                    btnQuitar.prop('disabled', true);
+                }                 
+            },
+            error: function(err) {
+                console.log(err);
+                alert(err.responseJSON?.error || "Ha ocurrido un error al verificar la asistencia del estudiante");
+            }
+        });
+    });
+
+    $(document).on('click', '.btnAbrilModalCrearEstudiante', function() {
+        let id_solicitud = $(this).data('id_solicitud');
+        $("#id_solicitud_modal").val(id_solicitud);
+        $("#codigo_estudiante, #nombre_completo, #email_estudiante, #grupo_estudiante").val('');
+    });
+    $(document).on("click", "#btnCrearEstudiante", function () {
+        if(!confirm("¿Seguro que deseas añadir este estudiante a la lista?")) {
+            return;
+        }
+
+        $.ajax({
+            url: '/crear-estudiante',
+            type: 'POST',
+            data: {
+                id_solicitud: $("#id_solicitud_modal").val(),
+                codigo_estudiante: $("#codigo_estudiante").val(),
+                nombre_completo: $("#nombre_completo").val(),
+                email: $("#email_estudiante").val(),
+                grupo: $("#grupo_estudiante").val(),
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(res) {
+                alert(res.message);
+                $('#modalCrearEstudiante').modal('hide');
+                location.reload();
+            },
+            error: function(err) {
+                console.log(err);
+                alert(err.responseJSON?.error || "Ha ocurrido un error al añadir el estudiante");
+            }
+        });
+    });
+
+    $(document).on('click', '.btnEnviarSolicitudRevision', function() {
+        let id_solicitud = $(this).data('id_solicitud');
+
+        if(!confirm("¿Seguro que deseas enviar la solicitud? Asegurate de haber revisado correctamente los documentos de los estudiantes.")) {
+            return;
+        }
+
+        $.ajax({
+            url: '/enviar-solicitud-revision',
+            type: 'POST',
+            data: {
+                id: id_solicitud,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(res) {
+                alert(res.message);
+                location.href = '/solicitudes/filtrar/proy-comp';
+            },
+            error: function(err) {
+                console.log(err);
+                alert(err.responseJSON?.error || "Ha ocurrido un error al enviar la solicitud");
+            }
+        });
+    });
+</script>
 <script>
     $(document).on('click', '.btnEditarRealizada', function (event) {
 
@@ -299,28 +538,6 @@
 
         $('#formEditarEspacioAcademico').attr('action', '{{ route("update_espacio_academico", "") }}/' + id);
 
-    });
-</script>
-<script>
-    $('#importEstudForm').on('submit', function(event) {
-        event.preventDefault();
-
-        var formData = new FormData(this);
-
-        $.ajax({
-            url: $(this).attr('action'),
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                window.location.href = '/solicitudes/filtrar/proy-comp';
-                alert(response.message);
-            },
-            error: function(response) {
-                alert(response.responseJSON.error);
-            }
-        });
     });
 </script>
 <script>

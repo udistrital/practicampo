@@ -92,6 +92,7 @@ class ProgramacionesAprobadasCoordExport implements ShouldAutoSize, WithTitle, F
             ->join('espacio_academico as ea', 'ea.id', '=', 'p.id_espacio_academico')
             ->join('costos_programacion as cp', 'cp.id', '=', 'p.id')
             ->where('p.aprobacion_coordinador', '=', 7)
+            ->where('p.confirm_coord', '=', 1)
             ->where('p.id_programa_academico', '=', $usuario->id_programa_academico_coord)
             ->where('p.anio_periodo', $anio)
             ->where('p.id_periodo_academico', $periodo)

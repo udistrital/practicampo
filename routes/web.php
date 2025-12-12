@@ -48,6 +48,10 @@ Route::group(['middleware' => 'estudiante'], function () {
     Route::post('imp-doc-estudiantes/{id}/{id_sol}','EstudianteController@importDoc')->name('import_doc_estudiante.img');
     Route::get('Estudiante/filtrar/{id}','EstudianteController@filterEstudiante')->name('estudiante_filter_solicitud');
 });
+Route::get('ver-documentos-estudiante','EstudianteController@ver_documentos_estudiante')->name('ver_documentos_estudiante');
+Route::post('eliminar-estudiante','EstudianteController@eliminar_estudiante')->name('eliminar_estudiante');
+Route::post('verificar-asistencia-estudiante','EstudianteController@verificar_asistencia_estudiante')->name('verificar_asistencia_estudiante');
+Route::post('crear-estudiante','EstudianteController@crear_estudiante')->name('crear_estudiante');
 // ------> acciones estudiantes <------
 
 // ------> Usuarios Activos <------
@@ -194,6 +198,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('info_trans/{id}','Solicitud\SolicitudController@info_trans')->name('info_trans');
         Route::put('encue_trans/{id}','Solicitud\SolicitudController@encuesta_transp')->name('encue_trans');
         Route::get('estud_doc/{id}','Solicitud\SolicitudController@ver_doc_estud')->name('estud_doc');
+        Route::post('enviar-solicitud-revision','Solicitud\SolicitudController@enviar_solicitud_revision')->name('enviar_solicitud_revision');
 
         Route::get('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_edit')->name('practica_realizada_edit')->middleware('role:1,2,3');
         Route::put('practica_realizada/{id}','Solicitud\SolicitudController@practica_realizada_update')->name('practica_realizada_update')->middleware('role:1,2,3');

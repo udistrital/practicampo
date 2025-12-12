@@ -26,6 +26,7 @@ use PractiCampoUD\Mail\CodigoMail;
 use Carbon\Carbon;
 use DateTime;
 use DB;
+use Exception;
 use PractiCampoUD\presupuesto_transporte_menor;
 use stdClass;
 
@@ -3497,7 +3498,12 @@ class SolicitudController extends Controller
         {
             if($solicitud_practica->listado_estudiantes == 0)
             {
+                $estudiantes = DB::table('estudiantes_solicitud_practica as esp')
+                    ->select('e.codigo_estudiante','e.nombre_completo','e.email','esp.verificacion_asistencia')
+                    ->join('estudiante as e','e.email','=','esp.email')
+                    ->where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
                 return view('solicitudes.lista_estudiantes',['id_solicitud'=>$solicitud_practica->id,
+                                                         'estudiantes'=>$estudiantes,
                                                          'usuario'=>$usuario_log,
                                                          'control_sistema'=>$control_sistema]);
             }
@@ -5057,11 +5063,39 @@ class SolicitudController extends Controller
         
         $solicitud_practica = DB::table('solicitud_practica')
                 ->where('id_programacion_practica', '=', $id)->first();
+
+        $estudiantes = DB::table('estudiantes_solicitud_practica as esp')
+                ->select('e.codigo_estudiante','e.nombre_completo','e.email','esp.verificacion_asistencia')
+                ->join('estudiante as e','e.email','=','esp.email')
+                ->where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
         $control_sistema = DB::table('control_sistema')->first();
 
         return view('solicitudes.lista_estudiantes',['id_solicitud'=>$solicitud_practica->id,
+                                                    'estudiantes'=>$estudiantes,
                                                     'usuario'=>$usuario_log,
                                                     'control_sistema'=>$control_sistema]);
+    }
+
+    /**
+     * Envia la solicitud a revision de coordinacion
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function enviar_solicitud_revision(Request $request)
+    {
+        try {
+            $solicitud_practica = solicitud::where('id', $request->id)->first();
+            if(!$solicitud_practica){
+                throw new Exception('No se encuentra la solicitud');
+            }
+            $solicitud_practica->listado_estudiantes = 1;
+            $solicitud_practica->update();
+
+            return response()->json(['message' => '¡Solicitud Enviada Correctamente!'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Ha ocurrido un error al enviar la solicitud'.$e->getMessage()], 404);
+        }
+        
     }
 
     /**

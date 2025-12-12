@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Auth;
 use PractiCampoUD\image;
 use DB;
+use Illuminate\Support\Facades\Hash;
+use PractiCampoUD\estudiante;
 use PractiCampoUD\estudiantes_practica;
 
 /**
@@ -417,5 +419,122 @@ class EstudianteController extends Controller
         // $this->indexrr($email,$cod_est);
         // return view('auth.loginEst');
         return redirect()->action('EstudianteController@index',['email'=>$email,'cod_est'=>$cod_est]);
+    }
+
+    /**
+     * Lista los documentos subidos por un estudiante
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ver_documentos_estudiante(Request $request){
+        $rec_doc= DB::table('estudiantes_solicitud_practica')
+                    ->where('email', '=', $request->email)
+                    ->where('id_solicitud_practica','=',$request->id)->first();
+        
+        if (!$rec_doc) {
+            return response()->json(['error' => 'No se encontraron documentos'], 404);
+        }
+
+        $documentFields = [
+            'seguro_estudiantil',
+            'documento_identificacion',
+            'certificado_eps',
+            'permiso_acudiente',
+            'vacuna_fiebre_amarilla',
+            'vacuna_tetanos',
+            'certificado_adicional_1',
+            'certificado_adicional_2',
+            'certificado_adicional_3'
+        ];
+
+        $documentos = [];
+
+        foreach ($documentFields as $field) {
+            $base64 = $rec_doc->{$field};
+
+            if ($base64) {
+                $documentos[$field] = [
+                    'base64' => $base64,
+                    'pdf'    => "data:application/pdf;base64,$base64",
+                    'image'  => "data:image/png;base64,$base64",
+                ];
+            } else {
+                $documentos[$field] = null;
+            }
+        }
+
+        return response()->json([
+            'documentos' => $documentos
+        ]);
+    }
+
+    /**
+     * Crear un estudiante
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function crear_estudiante(Request $request){
+        try {
+            DB::beginTransaction();
+            $estudiante = estudiante::firstOrCreate(['email' => $request->email],
+                [
+                    'num_identificacion' => null,
+                    'codigo_estudiante' => $request->codigo_estudiante,
+                    'password' => Hash::make($request->codigo_estudiante),
+                    'nombre_completo'=> $request->nombre_completo,
+                    'fecha_nacimiento' => null,
+                    'celular' => null,
+                    'eps' => null,
+                ]
+            );
+
+            $estudiante_practica = new estudiantes_practica;
+            $estudiante_practica->id_tipo_identificacion = 1;
+            $estudiante_practica->id_solicitud_practica = $request->id_solicitud;
+            $estudiante_practica->email = $request->email;
+            $estudiante_practica->grupo = $request->grupo;
+            $estudiante_practica->save();
+            DB::commit();
+
+            return response()->json(['message' => 'Estudiante añadido correctamente'], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Ha ocurrido un error al añadir el estudiante'.$e->getMessage()], 404);
+        }
+    }
+
+    /**
+     * Eliminar un estudiante
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function eliminar_estudiante(Request $request){
+        $estudiante_practica = estudiantes_practica::where('id_solicitud_practica',$request->id)
+                    ->where('email',$request->email)->first();
+        if(!$estudiante_practica){
+            return response()->json(['error' => 'No se encontró el estudiante'], 404);
+        }
+        $estudiante_practica->delete();
+        return response()->json(['message' => 'Estudiante eliminado correctamente'], 200);
+    }
+
+    /**
+     * Verificar la asistencia de un estudiante
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function verificar_asistencia_estudiante(Request $request){
+        $estudiante_practica = estudiantes_practica::where('id_solicitud_practica',$request->id)
+                    ->where('email',$request->email)->first();
+        if(!$estudiante_practica){
+            return response()->json(['error' => 'No se encontró el estudiante'], 404);
+        }
+        $estudiante_practica->verificacion_asistencia = (int) $request->valor;
+        $estudiante_practica->update();
+        return response()->json(['message' => 'Asistencia verificada correctamente'], 200);
     }
 }

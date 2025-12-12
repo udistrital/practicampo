@@ -724,13 +724,27 @@
         <th>Nombre Estudiante</th>
         <th>Correo Institucional</th>
         <th>Grupo</th>
+        <th>Acciones</th>
     </tr>
-    @foreach($lista_estudiantes as $lista_estud)
+    @foreach($lista_estudiantes as $estudiante)
     <tr>
         <td>{{$loop->iteration}}</td>
-        <td><?php echo $lista_estud->nombre_completo ?></td>
-        <td><?php echo $lista_estud->email ?></td>
-        <td><?php echo $lista_estud->grupo ?></td>
+        <td><?php echo $estudiante->nombre_completo ?></td>
+        <td><?php echo $estudiante->email ?></td>
+        <td><?php echo $estudiante->grupo ?></td>
+        <td style="text-align: center"> 
+            <button 
+                    type="button"
+                    class="btn btn-success btnVerDocumentos"
+                    style="background-color: #447161; border:0"
+                    data-toggle="modal"
+                    data-target="#modalVerDocs"
+                    data-id_solicitud="{{ $solicitud_practica->id }}"
+                    data-email="{{ $estudiante->email }}"
+                    data-nombre="{{ $estudiante->nombre_completo }}">
+                Ver Documentos
+            </button>
+        </td>
     </tr>  
     @endforeach
      </table>
@@ -3117,4 +3131,40 @@
         <!-- 21 -->
 
     <!-- Decano -->
+    <!-- modal -->
+    <div class="modal fade" id="modalVerDocs" tabindex="-1" role="dialog" aria-labelledby="modalVerDocsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header" style="background: #447161; color: white;">
+                    <h5 class="modal-title">
+                        Documentos de <span id="nombreEstudianteDocs"></span>
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="documentosLoader" class="text-center my-4" style="display: none;">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="sr-only">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando documentos...</p>
+                    </div>
+                    <div id="listaDocumentos">
+                        <!-- Carga de documentos -->
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- modal -->
 @endif
