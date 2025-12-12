@@ -746,13 +746,12 @@ class SolicitudController extends Controller
                             DB::beginTransaction();
                             
                             $detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->first();
-                            $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
                             $solicitud_practica->id_estado_solicitud_practica = 5;
                             $solicitud_practica->aprobacion_decano = 5;
                             $solicitud_practica->confirm_asistD = 0;                            
                             $solicitud_practica->aprobacion_asistD = 5;
                             $solicitud_practica->confirm_coord = 0;
-                            $solicitud_practica->aprobacion_coordinador = 5;
+                            $solicitud_practica->aprobacion_coordinador = 4;
                             $solicitud_practica->confirm_creador = 0;
                             $solicitud_practica->confirm_docente = 0;
                             $solicitud_practica->listado_estudiantes = 0;
@@ -781,19 +780,10 @@ class SolicitudController extends Controller
                             }else{
                                 throw new \Exception('Detalle presupuesto de solicitud no encontrado.');
                             }
-                                            
-                            foreach ($lista_estudiantes as $list_estud){
-                                $list_estud->delete();
-                            }
 
                             $detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->exists();
                             if($detalle_presupuesto_programa_academico){
                                 throw new \Exception('No se ha devuelto correctamente el presupuesto.');
-                            }
-                            
-                            $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->exists();
-                            if($lista_estudiantes){
-                                throw new \Exception('No se ha eliminado correctamente la lista de estudiantes.');
                             }
                             DB::commit(); 
                         }catch(\Exception $e){
@@ -3163,15 +3153,6 @@ class SolicitudController extends Controller
                         $solicitud_practica->confirm_docente=0;
                         $solicitud_practica->confirm_coord=0;
                         $solicitud_practica->listado_estudiantes=0;
-                        $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
-                        foreach ($lista_estudiantes as $list_estud){
-                            $list_estud->delete();
-			            }
-
-			            $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->exists();
-                        if($lista_estudiantes){
-                            throw new \Exception('No se ha eliminado correctamente la lista de estudiantes.');
-                        }	
                         DB::commit(); 
                     }catch(\Exception $e){
                         DB::rollBack();
@@ -3286,11 +3267,10 @@ class SolicitudController extends Controller
                         DB::beginTransaction();
                         
                         $detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->first();
-                        $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
                         $solicitud_practica->confirm_asistD = 0;
                         $solicitud_practica->aprobacion_asistD = 5;
                         $solicitud_practica->confirm_coord = 0;
-                        $solicitud_practica->aprobacion_coordinador = 5;
+                        $solicitud_practica->aprobacion_coordinador = 4;
                         $solicitud_practica->confirm_creador = 0;
                         $solicitud_practica->confirm_docente = 0;
                         $solicitud_practica->listado_estudiantes = 0;
@@ -3319,19 +3299,10 @@ class SolicitudController extends Controller
                         }else{
                             throw new \Exception('Detalle presupuesto de solicitud no encontrado.');
                         }
-                                         
-                        foreach ($lista_estudiantes as $list_estud){
-                            $list_estud->delete();
-                        }
 
                         $detalle_presupuesto_programa_academico = detalle_presupuesto_programa_academico::where('id_solicitud', '=', $solicitud_practica->id)->exists();
                         if($detalle_presupuesto_programa_academico){
                             throw new \Exception('No se ha devuelto correctamente el presupuesto.');
-                        }
-                        
-                        $lista_estudiantes = estudiantes_practica::where('id_solicitud_practica', '=', $solicitud_practica->id)->exists();
-                        if($lista_estudiantes){
-                            throw new \Exception('No se ha eliminado correctamente la lista de estudiantes.');
                         }
                         DB::commit(); 
                     }catch(\Exception $e){
