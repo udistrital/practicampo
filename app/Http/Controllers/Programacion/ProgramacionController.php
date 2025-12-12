@@ -1680,7 +1680,7 @@ class ProgramacionController extends Controller
             $this->creacion_proy($id);
         }
 
-        return redirect('programaciones/filtrar/all');
+        return redirect('/programaciones/filtrar/not_send');
     }
 
     /**
@@ -5806,331 +5806,311 @@ class ProgramacionController extends Controller
     }
 
     /**
-     * Duplicar Programación legalizada
+     * Formulario para elegir Programación a duplicar
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function duplicar_proy($id)
+    public function duplicar_index()
+    {
+        $idUser = Auth::user()->id;
+        $usuario=DB::table('users')
+        ->where('id',$idUser)->first();
+        $control_sistema = DB::table('control_sistema')->first();
+        $programaciones=DB::table('programacion_practica as p_prel')
+        ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico',
+                'p_prel.destino_rp','p_prel.destino_ra')
+        ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
+        ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
+        ->where('id_docente_responsable','=',Auth::user()->id)
+        ->where('p_prel.id_estado','=',1)        
+        ->paginate(10000);
+        return view('programaciones.duplicar.index',['control_sistema'=>$control_sistema,
+                                    'programaciones'=>$programaciones,
+                                    'usuario'=>$usuario]);
+    }
+    /**
+     * Duplicar Programación
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function duplicar($id)
     {
         $control_sistema =DB::table('control_sistema')->first();
         $id = Crypt::decrypt($id);
         $idRole = Auth::user()->id_role;
-        $idUser = Auth::user()->id;
-        $mytime = Carbon::now('America/Bogota');
+        switch($idRole){
+            case 5:                
+                $programacion_practica = programacion::find($id);
+                // $cambios_programacion = cambios_programacion::find($id);
+                $practicas_integradas = practicas_integradas::find($id);
+                $transporte_programacion = transporte_programacion::find($id);
+                $transporte_menor = transporte_menor::find($id);
+                $docentes_practica= docentes_practica::find($id);
+                $costos_programacion = costos_programacion::find($id);
+                $mater_herra_programacion = materiales_herramientas_programacion::find($id);
+                $riesg_amen_practica = riesgos_amenazas_practica::find($id);
+                $idUser = $programacion_practica->id_docente_responsable;
+                // $idUser = Auth::user()->id;
+                $usuario=DB::table('users')
+                ->where('id','=',$idUser)->first();
 
-        /**Datos a duplicar */
-            $programacion_practica = programacion::find($id);
-            $transporte_programacion = transporte_programacion::find($id);
-            $practicas_integradas = practicas_integradas::find($id);
-            $transporte_menor = transporte_menor::find($id);
-            $docentes_practica= docentes_practica::find($id);
-            $costos_programacion = costos_programacion::find($id);
-            $mater_herra_programacion = materiales_herramientas_programacion::find($id);
-            $riesg_amen_practica = riesgos_amenazas_practica::find($id);
-            $practicas_integradas = practicas_integradas::find($id);
-            $idUser = $programacion_practica->id_docente_responsable;
-            // $idUser = Auth::user()->id;
-            $usuario=DB::table('users')
-            ->where('id','=',$idUser)->first();
+                $usuario_respon=$usuario;
 
-            $sedes = DB::table('sedes_universidad')->get();
-            $programa_academico = DB::table('programa_academico')->get();
-            $espacio_academico=DB::table('espacio_academico as esp_aca')
-            ->select('esp_aca.id', 'esp_aca.id_programa_academico', 'prog_aca.programa_academico', 'esp_aca.codigo_espacio_academico',
-                    'esp_aca.espacio_academico', 'esp_aca.plan_estudios_1', 'esp_aca.plan_estudios_2', 'esp_aca.tipo_espacio')
-            ->join('programa_academico as prog_aca','esp_aca.id_programa_academico','=','prog_aca.id')
-            ->whereIn('esp_aca.id', [$usuario->id_espacio_academico_1, $usuario->id_espacio_academico_2, $usuario->id_espacio_academico_3, 
-            $usuario->id_espacio_academico_4, $usuario->id_espacio_academico_5, $usuario->id_espacio_academico_6])->get();
-            $periodo_academico=DB::table('periodo_academico')->get();
-            $semestre_asignatura=DB::table('semestre_asignatura')->get();
-            $tipo_transporte=DB::table('tipo_transporte')->get();
+                $programa_academico = DB::table('programa_academico')->get();
+                $espacio_academico=DB::table('espacio_academico as esp_aca')
+                ->select('esp_aca.id', 'esp_aca.id_programa_academico', 'prog_aca.programa_academico', 'esp_aca.codigo_espacio_academico',
+                        'esp_aca.espacio_academico', 'esp_aca.plan_estudios_1', 'esp_aca.plan_estudios_2', 'esp_aca.tipo_espacio')
+                ->join('programa_academico as prog_aca','esp_aca.id_programa_academico','=','prog_aca.id')
+                ->whereIn('esp_aca.id', [$usuario->id_espacio_academico_1, $usuario->id_espacio_academico_2, $usuario->id_espacio_academico_3, 
+                $usuario->id_espacio_academico_4, $usuario->id_espacio_academico_5, $usuario->id_espacio_academico_6])->get();
+                $periodo_academico=DB::table('periodo_academico')->get();
+                $semestre_asignatura=DB::table('semestre_asignatura')->get();
+                $sedes=DB::table('sedes_universidad')->get();
+                $tipo_transporte=DB::table('tipo_transporte')->get();
 
-            $vlr_viaticos=DB::table('control_sistema as cs')
-                    ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
-                    'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
+                $vlr_viaticos=DB::table('control_sistema as cs')
+                        ->select('cs.vlr_estud_max_estimado', 'cs.vlr_estud_min_estimado',
+                        'cs.vlr_docen_min_estimado', 'cs.vlr_docen_max_estimado')->first();
+
+                $docentes=DB::table('users')
+                ->select('users.id',DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                ->where('id_role',5)
+                ->where('id','!=',Auth::user()->id)
+                ->orderBy('users.primer_nombre','ASC')
+                ->get(); 
+
+                /** integradas */   
+                    $docen_integ = [];
+                    $d_int_espa_aca_1 = [];
+                    $d_int_espa_aca_2 = [];
+                    $d_int_espa_aca_3 = [];
+                    $d_int_espa_aca_4 = [];
+                    $d_int_espa_aca_5 = [];
+                    $d_int_espa_aca_6 = [];
+                    $d_int_espa_aca_7 = [];
+
+                    if($practicas_integradas->id_docen_espa_aca_1 != null || $practicas_integradas->id_docen_espa_aca_1 > 0)
+                    {
+                        $d_1=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_1)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_1)->get();
+
+                        foreach($d_1 as $d_1)
+                        {
+                            $d_int_espa_aca_1[] = ['id'=>$d_1->id,'full_name'=>$d_1->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_1[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_2 != null || $practicas_integradas->id_docen_espa_aca_2 > 0)
+                    {
+                        $d_2=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_2)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_2)->get();
+
+                        foreach($d_2 as $d_2)
+                        {
+                            $d_int_espa_aca_2[] = ['id'=>$d_2->id,'full_name'=>$d_2->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_2[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_3 != null || $practicas_integradas->id_docen_espa_aca_3 > 0)
+                    {
+                        $d_3=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_3)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_3)->get();
+
+                        foreach($d_3 as $d_3)
+                        {
+                            $d_int_espa_aca_3[] = ['id'=>$d_3->id,'full_name'=>$d_3->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_3[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_4 != null || $practicas_integradas->id_docen_espa_aca_4 > 0)
+                    {
+                        $d_4=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_4)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_4)->get();
+
+                        foreach($d_4 as $d_4)
+                        {
+                            $d_int_espa_aca_4[] = ['id'=>$d_4->id,'full_name'=>$d_4->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_4[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_5 != null || $practicas_integradas->id_docen_espa_aca_5 > 0)
+                    {
+                    $d_5=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_5)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_5)->get();
+
+                        foreach($d_5 as $d_5)
+                        {
+                            $d_int_espa_aca_5[] = ['id'=>$d_5->id,'full_name'=>$d_5->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_5[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_6 != null || $practicas_integradas->id_docen_espa_aca_6 > 0)
+                    {
+                        $d_6=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_6)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_6)->get();
+
+                        foreach($d_6 as $d_6)
+                        {
+                            $d_int_espa_aca_6[] = ['id'=>$d_6->id,'full_name'=>$d_6->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_6[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+
+                    if($practicas_integradas->id_docen_espa_aca_7 != null || $practicas_integradas->id_docen_espa_aca_7 > 0)
+                    {
+                        $d_7=DB::table('users')
+                            ->select('users.id',
+                            DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                            ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_7)
+                            ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_7)->get();
+
+                        foreach($d_7 as $d_7)
+                        {
+                            $d_int_espa_aca_7[] = ['id'=>$d_7->id,'full_name'=>$d_7->full_name];
+                        }
+                    }
+                    else{
+                        $d_int_espa_aca_7[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+                    }
+                /** integradas */
+
+                $espa_aca_int = DB::table('espacio_academico as esp_aca')
+                ->select('esp_aca.id', 'esp_aca.id_programa_academico', 'prog_aca.programa_academico', 'esp_aca.codigo_espacio_academico',
+                        'esp_aca.espacio_academico', 'esp_aca.plan_estudios_1', 'esp_aca.plan_estudios_2', 'esp_aca.tipo_espacio')
+                ->join('programa_academico as prog_aca','esp_aca.id_programa_academico','=','prog_aca.id')
+                ->whereIn('esp_aca.id', [$practicas_integradas->id_espa_aca_1, $practicas_integradas->id_espa_aca_2, $practicas_integradas->id_espa_aca_3, 
+                $practicas_integradas->id_espa_aca_4, $practicas_integradas->id_espa_aca_5, $practicas_integradas->id_espa_aca_6,
+                $practicas_integradas->id_espa_aca_7])->get();
+        
+                $num_grupos_proy = 0; 
+        
+                $prog_aca_user = [];
+                $esp_aca_user = [];
             
-            $num_grupos_proy = 0; 
-            
-            $prog_aca_user = [];
-            $esp_aca_user = [];
-                
-            foreach($espacio_academico as $esp_aca)
-            {
-                $prog_aca_user[] = [
-                    'id'=>$esp_aca->id_programa_academico,
-                    'programa_academico'=>$esp_aca->programa_academico,
-                ];
-                
-            }
-
-            $estado_doc_respon =$usuario->id_estado;
-                    
-            $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
-            $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
-        /**Datos a duplicar */
-
-        /**Tabla programacion_practica */
-            $duplicado_programacion_practica = new programacion;
-            $duplicado_programacion_practica->id_estado = 1;
-            $duplicado_programacion_practica->id_programa_academico=$programacion_practica->id_programa_academico;
-            $duplicado_programacion_practica->id_espacio_academico=$programacion_practica->id_espacio_academico;
-            $duplicado_programacion_practica->practicas_integradas=$programacion_practica->practicas_integradas;
-            $duplicado_programacion_practica->id_periodo_academico=$programacion_practica->id_periodo_academico;
-            $duplicado_programacion_practica->anio_periodo=$programacion_practica->anio_periodo;
-            $duplicado_programacion_practica->id_semestre_asignatura=$programacion_practica->id_semestre_asignatura;
-            $duplicado_programacion_practica->num_estudiantes_aprox=$programacion_practica->num_estudiantes_aprox;
-            $duplicado_programacion_practica->cantidad_grupos=$programacion_practica->cantidad_grupos;
-            $duplicado_programacion_practica->grupo_1=$programacion_practica->grupo_1;
-            $duplicado_programacion_practica->grupo_2=$programacion_practica->grupo_2;
-            $duplicado_programacion_practica->grupo_3=$programacion_practica->grupo_3;
-            $duplicado_programacion_practica->grupo_4=$programacion_practica->grupo_4;
-
-            $duplicado_programacion_practica->destino_rp=$programacion_practica->destino_rp;
-            $duplicado_programacion_practica->destino_ra=$programacion_practica->destino_ra;
-            $duplicado_programacion_practica->cantidad_url_rp=$programacion_practica->cantidad_url_rp;
-            $duplicado_programacion_practica->cantidad_url_ra=$programacion_practica->cantidad_url_ra;
-            $duplicado_programacion_practica->ruta_principal=$programacion_practica->ruta_principal;
-            $duplicado_programacion_practica->ruta_principal_2=$programacion_practica->ruta_principal_2;
-            $duplicado_programacion_practica->ruta_principal_3=$programacion_practica->ruta_principal_3;
-            $duplicado_programacion_practica->ruta_principal_4=$programacion_practica->ruta_principal_4;
-            $duplicado_programacion_practica->ruta_principal_5=$programacion_practica->ruta_principal_5;
-            $duplicado_programacion_practica->ruta_principal_6=$programacion_practica->ruta_principal_6;
-            $duplicado_programacion_practica->ruta_alterna=$programacion_practica->ruta_alterna;
-            $duplicado_programacion_practica->ruta_alterna_2=$programacion_practica->ruta_alterna_2;
-            $duplicado_programacion_practica->ruta_alterna_3=$programacion_practica->ruta_alterna_3;
-            $duplicado_programacion_practica->ruta_alterna_4=$programacion_practica->ruta_alterna_4;
-            $duplicado_programacion_practica->ruta_alterna_5=$programacion_practica->ruta_alterna_5;
-            $duplicado_programacion_practica->ruta_alterna_6=$programacion_practica->ruta_alterna_6;
-            $duplicado_programacion_practica->det_recorrido_interno_rp=$programacion_practica->det_recorrido_interno_rp;
-            $duplicado_programacion_practica->det_recorrido_interno_ra=$programacion_practica->det_recorrido_interno_ra;
-            $duplicado_programacion_practica->lugar_salida_rp=$programacion_practica->lugar_salida_rp;
-            $duplicado_programacion_practica->lugar_salida_ra=$programacion_practica->lugar_salida_ra;
-            $duplicado_programacion_practica->lugar_regreso_rp=$programacion_practica->lugar_regreso_rp;
-            $duplicado_programacion_practica->lugar_regreso_ra=$programacion_practica->lugar_regreso_ra;
-            $duplicado_programacion_practica->fecha_salida_aprox_rp=$programacion_practica->fecha_salida_aprox_rp;
-            $duplicado_programacion_practica->fecha_salida_aprox_ra=$programacion_practica->fecha_salida_aprox_ra;
-            $duplicado_programacion_practica->fecha_regreso_aprox_rp=$programacion_practica->fecha_regreso_aprox_rp;
-            $duplicado_programacion_practica->fecha_regreso_aprox_ra=$programacion_practica->fecha_regreso_aprox_ra;
-            
-            $duplicado_programacion_practica->duracion_num_dias_rp=$programacion_practica->duracion_num_dias_rp;
-            $duplicado_programacion_practica->duracion_num_dias_ra=$programacion_practica->duracion_num_dias_ra;
-            $duplicado_programacion_practica->id_docente_responsable=Auth::user()->id;
-
-            $duplicado_programacion_practica->aprobacion_coordinador= 5;
-            $duplicado_programacion_practica->aprobacion_asistD= 5;
-
-            $duplicado_programacion_practica->aprobacion_decano= 5;
-            $duplicado_programacion_practica->aprobacion_consejo_facultad= 5;
-
-            if($idRole == 5 || $idRole == 1)
-            {
-                $duplicado_programacion_practica->confirm_creador= 1;
-                $duplicado_programacion_practica->id_creador_confirm = Auth::user()->id;
-                $duplicado_programacion_practica->confirm_docente= 0;
-                $duplicado_programacion_practica->confirm_coord= 0;
-                $duplicado_programacion_practica->confirm_asistD= 0;
-            }
-            else
-            {
-                $duplicado_programacion_practica->confirm_creador= 0;
-                $duplicado_programacion_practica->id_creador_confirm = Auth::user()->id;
-                $duplicado_programacion_practica->confirm_coord= 0;
-                $duplicado_programacion_practica->confirm_asistD= 0;
-                $duplicado_programacion_practica->confirm_electiva_coord= 0;
-
-                if($idRole == 4)
+                foreach($espacio_academico as $esp_aca)
                 {
-                    $duplicado_programacion_practica->confirm_creador= 1;
-                    $duplicado_programacion_practica->id_creador_confirm = Auth::user()->id;
-                    $duplicado_programacion_practica->confirm_docente= 1;
-                    $duplicado_programacion_practica->id_docente_confirm = Auth::user()->id;
+                    $prog_aca_user[] = [
+                        'id'=>$esp_aca->id_programa_academico,
+                        'programa_academico'=>$esp_aca->programa_academico,
+                    ];
+                    
                 }
-            }
-            
-            $duplicado_programacion_practica->fecha_diligenciamiento=$mytime->toDateTimeString();
 
-            $duplicado_programacion_practica->save();
-            $id_nuevo = $duplicado_programacion_practica->id;
-        /**Tabla programacion_practica */
 
-        /**Tabla practicas_integradas */
-            $duplicado_practicas_integradas= new practicas_integradas;
-            $duplicado_practicas_integradas->id=$id_nuevo;
-            $duplicado_practicas_integradas->cant_espa_aca=$practicas_integradas->cant_espa_aca;
-            $duplicado_practicas_integradas->id_espa_aca_1=$practicas_integradas->id_espa_aca_1;
-            $duplicado_practicas_integradas->id_espa_aca_2=$practicas_integradas->id_espa_aca_2;
-            $duplicado_practicas_integradas->id_espa_aca_3=$practicas_integradas->id_espa_aca_3;
-            $duplicado_practicas_integradas->id_espa_aca_4=$practicas_integradas->id_espa_aca_4;
-            $duplicado_practicas_integradas->id_espa_aca_5=$practicas_integradas->id_espa_aca_5;
-            $duplicado_practicas_integradas->id_espa_aca_6=$practicas_integradas->id_espa_aca_6;
-            $duplicado_practicas_integradas->id_espa_aca_7=$practicas_integradas->id_espa_aca_7;
-            $duplicado_practicas_integradas->id_docen_espa_aca_1=$practicas_integradas->id_docen_espa_aca_1;
-            $duplicado_practicas_integradas->id_docen_espa_aca_2=$practicas_integradas->id_docen_espa_aca_2;
-            $duplicado_practicas_integradas->id_docen_espa_aca_3=$practicas_integradas->id_docen_espa_aca_3;
-            $duplicado_practicas_integradas->id_docen_espa_aca_4=$practicas_integradas->id_docen_espa_aca_4;
-            $duplicado_practicas_integradas->id_docen_espa_aca_5=$practicas_integradas->id_docen_espa_aca_5;
-            $duplicado_practicas_integradas->id_docen_espa_aca_6=$practicas_integradas->id_docen_espa_aca_6;
-            $duplicado_practicas_integradas->id_docen_espa_aca_7=$practicas_integradas->id_docen_espa_aca_7;
+                $estado_doc_respon =$usuario->id_estado;
+                
+                $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
+                $newArray_docen_integ = array_unique($docen_integ, SORT_REGULAR);
+                $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
+                $nomb_doc_respon = $usuario_respon->primer_nombre.' '.$usuario_respon->segundo_nombre.' '.$usuario_respon->primer_apellido.' '.$usuario_respon->segundo_apellido;
 
-            $duplicado_practicas_integradas->save();
+                $sop_pers_apoyo = $docentes_practica->soporte_personal_apoyo;
+                $img_sop_pers_apoyo="data:application/pdf;base64,$sop_pers_apoyo";
+                // $img_sop_pers_apoyo="data:image/png;base64,$sop_pers_apoyo";
+        
+                return view('programaciones.duplicar.edit',["programacion_practica"=>$programacion_practica,
+                                                // "cambios_programacion"=>$cambios_programacion,
+                                                "programas_academicos"=>$programa_academico,
+                                                "all_users"=>$newArray_docen_integ,
+                                                "practicas_integradas"=>$practicas_integradas,
+                                                "espa_aca_integradas"=>$espa_aca_int,
+                                                "d_int_espa_aca_1"=>$d_int_espa_aca_1,
+                                                "d_int_espa_aca_2"=>$d_int_espa_aca_2,
+                                                "d_int_espa_aca_3"=>$d_int_espa_aca_3,
+                                                "d_int_espa_aca_4"=>$d_int_espa_aca_4,
+                                                "d_int_espa_aca_5"=>$d_int_espa_aca_5,
+                                                "d_int_espa_aca_6"=>$d_int_espa_aca_6,
+                                                "d_int_espa_aca_7"=>$d_int_espa_aca_7,
+                                                "sedes"=>$sedes,
+                                                "espacios_academicos"=>$espacio_academico,
+                                                "periodos_academicos"=>$periodo_academico,
+                                                "semestres_asignaturas"=>$semestre_asignatura,
+                                                "tipos_transportes"=>$tipo_transporte,
+                                                "programas_usuario"=>$newArray_prog,
+                                                "nombre_usuario"=>$nomb_usuario,
+                                                "nombre_doc_resp"=>$nomb_doc_respon,
+                                                "estado_doc_respon"=>$estado_doc_respon,
+                                                "transporte_programacion"=>$transporte_programacion,
+                                                "transporte_menor"=>$transporte_menor,
+                                                "docentes_practica"=>$docentes_practica,
+                                                "costos_programacion"=>$costos_programacion,
+                                                "mater_herra_programacion"=>$mater_herra_programacion,
+                                                "riesg_amen_practica"=>$riesg_amen_practica,
+                                                "usuario"=>$usuario,
+                                                "vlr_viaticos"=>$vlr_viaticos,
+                                                'control_sistema'=>$control_sistema,
+                                                'img_sop_pers_apoyo'=>$img_sop_pers_apoyo,
+                                                'docentes'=>$docentes
 
-        /**Tabla practicas_integradas */
-
-        /**Tabla docentes_practica */
-            $duplicado_docentes_practica = new docentes_practica;
-            $duplicado_docentes_practica->id = $id_nuevo;
-            $duplicado_docentes_practica->soporte_personal_apoyo=$docentes_practica->soporte_personal_apoyo;
-            $duplicado_docentes_practica->total_docentes_apoyo=$docentes_practica->total_docentes_apoyo;
-            $duplicado_docentes_practica->num_docentes_apoyo=$docentes_practica->num_docentes_apoyo;
-            $duplicado_docentes_practica->total_docentes_apoyo=$docentes_practica->total_docentes_apoyo;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_1=$docentes_practica->num_doc_docente_apoyo_1;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_2=$docentes_practica->num_doc_docente_apoyo_2;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_3=$docentes_practica->num_doc_docente_apoyo_3;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_4=$docentes_practica->num_doc_docente_apoyo_4;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_5=$docentes_practica->num_doc_docente_apoyo_5;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_6=$docentes_practica->num_doc_docente_apoyo_6;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_7=$docentes_practica->num_doc_docente_apoyo_7;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_8=$docentes_practica->num_doc_docente_apoyo_8;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_9=$docentes_practica->num_doc_docente_apoyo_9;
-            $duplicado_docentes_practica->num_doc_docente_apoyo_10= $docentes_practica->num_doc_docente_apoyo_10;
-            $duplicado_docentes_practica->docente_apoyo_1=$docentes_practica->docente_apoyo_1;
-            $duplicado_docentes_practica->docente_apoyo_2=$docentes_practica->docente_apoyo_2;
-            $duplicado_docentes_practica->docente_apoyo_3=$docentes_practica->docente_apoyo_3;
-            $duplicado_docentes_practica->docente_apoyo_4=$docentes_practica->docente_apoyo_4;
-            $duplicado_docentes_practica->docente_apoyo_5=$docentes_practica->docente_apoyo_5;
-            $duplicado_docentes_practica->docente_apoyo_6=$docentes_practica->docente_apoyo_6;
-            $duplicado_docentes_practica->docente_apoyo_7=$docentes_practica->docente_apoyo_7;
-            $duplicado_docentes_practica->docente_apoyo_8=$docentes_practica->docente_apoyo_8;
-            $duplicado_docentes_practica->docente_apoyo_9=$docentes_practica->docente_apoyo_9;
-            $duplicado_docentes_practica->docente_apoyo_10=$docentes_practica->docente_apoyo_10;
-
-            $duplicado_docentes_practica->save();
-        /**Tabla docentes_practica */
-
-        /**Tabla transporte_programacion */
-            $duplicado_transporte_programacion = new transporte_programacion;
-            $duplicado_transporte_programacion->id = $id_nuevo;
-            $duplicado_transporte_programacion->cant_transporte_rp=$transporte_programacion->cant_transporte_rp;
-            $duplicado_transporte_programacion->cant_transporte_ra=$transporte_programacion->cant_transporte_ra;
-            
-            $duplicado_transporte_programacion->id_tipo_transporte_rp_1 =$transporte_programacion->id_tipo_transporte_rp_1;
-            $duplicado_transporte_programacion->id_tipo_transporte_rp_2 =$transporte_programacion->id_tipo_transporte_rp_2;
-            $duplicado_transporte_programacion->id_tipo_transporte_rp_3 =$transporte_programacion->id_tipo_transporte_rp_3;
-            $duplicado_transporte_programacion->id_tipo_transporte_ra_1 =$transporte_programacion->id_tipo_transporte_ra_1;
-            $duplicado_transporte_programacion->id_tipo_transporte_ra_2 =$transporte_programacion->id_tipo_transporte_ra_2;
-            $duplicado_transporte_programacion->id_tipo_transporte_ra_3 =$transporte_programacion->id_tipo_transporte_ra_3;
-            $duplicado_transporte_programacion->det_tipo_transporte_rp_1=$transporte_programacion->det_tipo_transporte_rp_1;
-            $duplicado_transporte_programacion->det_tipo_transporte_rp_2=$transporte_programacion->det_tipo_transporte_rp_2;
-            $duplicado_transporte_programacion->det_tipo_transporte_rp_3=$transporte_programacion->det_tipo_transporte_rp_3;
-            $duplicado_transporte_programacion->det_tipo_transporte_ra_1=$transporte_programacion->det_tipo_transporte_ra_1;
-            $duplicado_transporte_programacion->det_tipo_transporte_ra_2=$transporte_programacion->det_tipo_transporte_ra_2;
-            $duplicado_transporte_programacion->det_tipo_transporte_ra_3=$transporte_programacion->det_tipo_transporte_ra_3;
-
-            $duplicado_transporte_programacion->docen_respo_trasnporte_rp=$transporte_programacion->docen_respo_trasnporte_rp;
-            $duplicado_transporte_programacion->docen_respo_trasnporte_ra=$transporte_programacion->docen_respo_trasnporte_ra;
-
-            $duplicado_transporte_programacion->capac_transporte_rp_1=$transporte_programacion->capac_transporte_rp_1;
-            $duplicado_transporte_programacion->capac_transporte_rp_2=$transporte_programacion->capac_transporte_rp_2;
-            $duplicado_transporte_programacion->capac_transporte_rp_3=$transporte_programacion->capac_transporte_rp_3;
-            $duplicado_transporte_programacion->capac_transporte_ra_1=$transporte_programacion->capac_transporte_ra_1;
-            $duplicado_transporte_programacion->capac_transporte_ra_2=$transporte_programacion->capac_transporte_ra_2;
-            $duplicado_transporte_programacion->capac_transporte_ra_3=$transporte_programacion->capac_transporte_ra_3;
-
-            $duplicado_transporte_programacion->exclusiv_tiempo_rp_1=$transporte_programacion->exclusiv_tiempo_rp_1;
-            $duplicado_transporte_programacion->exclusiv_tiempo_rp_2=$transporte_programacion->exclusiv_tiempo_rp_2;
-            $duplicado_transporte_programacion->exclusiv_tiempo_rp_3=$transporte_programacion->exclusiv_tiempo_rp_3;
-            $duplicado_transporte_programacion->exclusiv_tiempo_ra_1=$transporte_programacion->exclusiv_tiempo_ra_1;
-            $duplicado_transporte_programacion->exclusiv_tiempo_ra_2=$transporte_programacion->exclusiv_tiempo_ra_2;
-            $duplicado_transporte_programacion->exclusiv_tiempo_ra_3=$transporte_programacion->exclusiv_tiempo_ra_3;
-
-            $duplicado_transporte_programacion->save();
-        /**Tabla transporte_programacion */
-
-        /**Tabla transporte_menor */
-            $duplicado_transporte_menor = new transporte_menor;
-            $duplicado_transporte_menor->id=$id_nuevo;
-            $duplicado_transporte_menor->docente_resp_t_menor_rp=$transporte_menor->docente_resp_t_menor_rp;
-            $duplicado_transporte_menor->docente_resp_t_menor_ra=$transporte_menor->docente_resp_t_menor_ra;
-            $duplicado_transporte_menor->cant_trans_menor_rp=$transporte_menor->cant_trans_menor_rp;
-            $duplicado_transporte_menor->cant_trans_menor_ra=$transporte_menor->cant_trans_menor_ra;
-            $duplicado_transporte_menor->trans_menor_rp_1=$transporte_menor->trans_menor_rp_1;
-            $duplicado_transporte_menor->trans_menor_rp_2=$transporte_menor->trans_menor_rp_2;
-            $duplicado_transporte_menor->trans_menor_rp_3=$transporte_menor->trans_menor_rp_3;
-            $duplicado_transporte_menor->trans_menor_rp_4=$transporte_menor->trans_menor_rp_4;
-            $duplicado_transporte_menor->trans_menor_ra_1=$transporte_menor->trans_menor_ra_1;
-            $duplicado_transporte_menor->trans_menor_ra_2=$transporte_menor->trans_menor_ra_2;
-            $duplicado_transporte_menor->trans_menor_ra_3=$transporte_menor->trans_menor_ra_3;
-            $duplicado_transporte_menor->trans_menor_ra_4=$transporte_menor->trans_menor_ra_4;
-            $duplicado_transporte_menor->vlr_trans_menor_rp_1=$transporte_menor->vlr_trans_menor_rp_1;
-            $duplicado_transporte_menor->vlr_trans_menor_rp_2=$transporte_menor->vlr_trans_menor_rp_2;
-            $duplicado_transporte_menor->vlr_trans_menor_rp_3=$transporte_menor->vlr_trans_menor_rp_3;
-            $duplicado_transporte_menor->vlr_trans_menor_rp_4=$transporte_menor->vlr_trans_menor_rp_4;
-            $duplicado_transporte_menor->vlr_trans_menor_ra_1=$transporte_menor->vlr_trans_menor_ra_1;
-            $duplicado_transporte_menor->vlr_trans_menor_ra_2=$transporte_menor->vlr_trans_menor_ra_2;
-            $duplicado_transporte_menor->vlr_trans_menor_ra_3=$transporte_menor->vlr_trans_menor_ra_3;
-            $duplicado_transporte_menor->vlr_trans_menor_ra_4=$transporte_menor->vlr_trans_menor_ra_4;
-
-            $duplicado_transporte_menor->save();
-
-        /**Tabla transporte_menor */
-
-        /**Tabla materiales_herramientas_programacion */
-            $duplicado_mater_herra_programacion = new materiales_herramientas_programacion;
-            $duplicado_mater_herra_programacion->id = $id_nuevo;
-            $duplicado_mater_herra_programacion->det_materiales_rp=$mater_herra_programacion->det_materiales_rp;
-            $duplicado_mater_herra_programacion->det_materiales_ra=$mater_herra_programacion->det_materiales_ra;
-            $duplicado_mater_herra_programacion->det_guias_baquianos_rp=$mater_herra_programacion->det_guias_baquianos_rp;
-            $duplicado_mater_herra_programacion->det_guias_baquianos_ra=$mater_herra_programacion->det_guias_baquianos_ra;
-            $duplicado_mater_herra_programacion->det_otros_boletas_rp=$mater_herra_programacion->det_otros_boletas_rp;
-            $duplicado_mater_herra_programacion->det_otros_boletas_ra=$mater_herra_programacion->det_otros_boletas_ra;
-
-            $duplicado_mater_herra_programacion->save();
-        /**Tabla materiales_herramientas_programacion */
-
-        /**Tabla riesgos_amenazas_programacion */
-            $duplicado_riesg_amen_practica = new riesgos_amenazas_practica;
-            $duplicado_riesg_amen_practica->id = $id_nuevo;
-            $duplicado_riesg_amen_practica->areas_acuaticas_rp=$riesg_amen_practica->areas_acuaticas_rp;
-            $duplicado_riesg_amen_practica->areas_acuaticas_ra=$riesg_amen_practica->areas_acuaticas_ra;
-            $duplicado_riesg_amen_practica->alturas_rp=$riesg_amen_practica->alturas_rp;
-            $duplicado_riesg_amen_practica->alturas_ra=$riesg_amen_practica->alturas_ra;
-            $duplicado_riesg_amen_practica->riesgo_biologico_rp=$riesg_amen_practica->riesgo_biologico_rp;
-            $duplicado_riesg_amen_practica->riesgo_biologico_ra=$riesg_amen_practica->riesgo_biologico_ra;
-            $duplicado_riesg_amen_practica->espacios_confinados_rp=$riesg_amen_practica->espacios_confinados_rp;
-            $duplicado_riesg_amen_practica->espacios_confinados_ra=$riesg_amen_practica->espacios_confinados_ra;
-
-            $duplicado_riesg_amen_practica->save();
-        /**Tabla riesgos_amenazas_programacion */
-
-        /**Tabla costos_programacion */
-            $duplicado_costos_programacion = new costos_programacion;
-            $duplicado_costos_programacion->id = $id_nuevo;
-            $duplicado_costos_programacion->vlr_materiales_rp=$costos_programacion->vlr_materiales_rp;
-            $duplicado_costos_programacion->vlr_materiales_ra=$costos_programacion->vlr_materiales_ra;
-            $duplicado_costos_programacion->vlr_guias_baquianos_rp=$costos_programacion->vlr_guias_baquianos_rp;
-            $duplicado_costos_programacion->vlr_guias_baquianos_ra=$costos_programacion->vlr_guias_baquianos_ra;
-            $duplicado_costos_programacion->vlr_otros_boletas_rp=$costos_programacion->vlr_otros_boletas_rp;
-            $duplicado_costos_programacion->vlr_otros_boletas_ra=$costos_programacion->vlr_otros_boletas_ra;
-
-            $duplicado_costos_programacion->viaticos_estudiantes_rp=$costos_programacion->viaticos_estudiantes_rp;
-            $duplicado_costos_programacion->viaticos_estudiantes_ra=$costos_programacion->viaticos_estudiantes_ra;
-            $duplicado_costos_programacion->viaticos_docente_rp=$costos_programacion->viaticos_docente_rp;
-            $duplicado_costos_programacion->viaticos_docente_ra=$costos_programacion->viaticos_docente_ra;
-
-            $duplicado_costos_programacion->costo_total_transporte_menor_rp =$costos_programacion->costo_total_transporte_menor_rp;
-            $duplicado_costos_programacion->costo_total_transporte_menor_ra =$costos_programacion->costo_total_transporte_menor_ra;
-
-            $duplicado_costos_programacion->save();
-        /**Tabla costos_programacion */
-
-        if($idRole == 5 || $idRole == 4)
-        {
-            $this->creacion_proy($id_nuevo);
+        
+                ]);
+            break;
         }
-
-        return redirect('programaciones/filtrar/not_send');
-
     }
 
     /**

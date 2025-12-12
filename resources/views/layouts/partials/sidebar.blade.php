@@ -58,6 +58,7 @@
                     <a class="collapse-item" href="{{url('programaciones/filtrar/all') }}">Listar programaciones</a>
                     @if(Auth::user()->docente())
                     <a class="collapse-item" href="{{route('programacion_create')}}">Nueva Programación</a>
+                    <a class="collapse-item" href="{{route('programacion_duplicar_index')}}">Duplicar Programación</a>
                     @endif
                   </div>
                 </div>

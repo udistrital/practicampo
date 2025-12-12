@@ -164,6 +164,8 @@ Route::group(['middleware' => 'auth'], function () {
         // ------> programaciones Routes <------
         Route::get('programaciones/filtrar/{id}','Programacion\ProgramacionController@filterprogramacion')->name('programacion_filter');
         Route::get('programaciones/create','Programacion\ProgramacionController@create')->name('programacion_create')->middleware('verificar.fechas:programacion');
+        Route::get('programaciones/duplicar_index','Programacion\ProgramacionController@duplicar_index')->name('programacion_duplicar_index')->middleware('verificar.fechas:programacion');
+        Route::get('programaciones/duplicar/{id}','Programacion\ProgramacionController@duplicar')->name('programacion_duplicar')->middleware('verificar.fechas:programacion');
         Route::post('programaciones','Programacion\ProgramacionController@store')->name('programacion_store');
         Route::get('programaciones/{id}','Programacion\ProgramacionController@edit')->name('programacion_edit')->middleware('verificar.fechas:programacion');
         Route::put('programaciones/{id}','Programacion\ProgramacionController@update')->name('programacion_update')->middleware('verificar.fechas:programacion');
