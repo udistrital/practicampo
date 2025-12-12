@@ -249,42 +249,56 @@ header{position:fixed;}
                 {{-- <br> --}}
                 {{-- <br> --}}
                 <div style="margin: 0 auto;width: 100%">
-                    <table style="margin: 0 auto;width: 100%;">
+                    <table style="margin: 0 auto;width: 100%; text-align:center; table-layout: fixed;">
                         @foreach(array_chunk($docentes_responsables, 4) as $chunk)
                         <tr>
-                            @foreach($chunk as $docente_firma)
-                                <td style="width: 160px; text-align: center; vertical-align: top;">
-                                    <div style="height:45px;margin-bottom: -15px">
-                                        <img src="{{ $docente_firma['firma'] }}" 
-                                            alt="Firma de {{ $docente_firma['nombre'] }}" 
-                                            style="width: 150px; height:45px; object-fit: contain;">
-                                    </div>
-                                    <p style="font-size: 10px; margin: 0;">_______________________________</p>
-                                    <p style="font-size: 10px; margin: 0;"><strong>Docente Responsable:</strong></p>
-                                    <p style="font-size: 10px; margin: 0;"><strong>CC: {{ $docente_firma['id'] }}</strong></p>
-                                </td>
-                            @endforeach
+                            <td colspan="4" style="padding: 0;">
+                                <table style="width: 100%; table-layout: fixed; text-align: center;">
+                                    <tr>
+                                        @foreach($chunk as $docente_firma)
+                                        <td style="width: 25%; vertical-align: top; text-align: center;">
+                                            <div style="height:45px;margin-bottom: -15px;">
+                                                <img src="{{ $docente_firma['firma'] }}" 
+                                                    alt="Firma de {{ $docente_firma['nombre'] }}" 
+                                                    style="width: 150px; height:45px;">
+                                            </div>
+                                            <p style="font-size: 10px; margin: 0;">_______________________________</p>
+                                            <p style="font-size: 10px; margin: 0;"><strong>Docente Responsable:</strong></p>
+                                            <p style="font-size: 10px; margin: 0;"><strong>CC: {{ $docente_firma['id'] }}</strong></p>
+                                        </td>
+                                        @endforeach
+                                    </tr>
+                                </table>
+                            </td>
                         </tr>
                         @endforeach
                         <tr>
-                          <td style="padding-top: 10px;">
-                            <div  style="margin-bottom: -27px;text-align: center; height:45px;">
-                              <img src="{{ $firma_lito_coord }}" alt="" style="width: 150px; height:45px;">
-                            </div>
-                            <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">_______________________________</strong></span></p>
-                            <p align="JUSTIFY" style="text-align: center;font-size: 10px; margin-bottom: -10px"><strong><span class="larger">V°B° Consejo de carrera:</span></strong></p>
-                            <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">Coordinador Proyecto Curricular</span></strong></p>
-                          </td>
-                          <td style="padding-top: 10px;">
-                            <div  style="margin-bottom: -27px;text-align: center; height:45px;">
-                              <img src="{{ $firma_lito_decano }}" alt="" style="width: 150px; height:45px;">
-                            </div>
-                            <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">_______________________________</strong></span></p>
-                            <p align="JUSTIFY" style="text-align: center;font-size: 10px; margin-bottom: -10px"><strong><span class="larger">V°B° Ordenador del gasto:</span></strong></p>
-                            <p align="JUSTIFY" style="text-align: center;font-size: 10px"><strong><span class="larger">Decano de la facultad</span></strong></p>
-                          </td>
+                            <td colspan="4" style="padding-top: 10px; text-align: center;">
+
+                                <div style="display: block; text-align: center; width: 100%; margin: 0 auto;">
+                                <div style="margin-bottom: -27px; height:45px;">
+                                    <img src="{{ $firma_lito_coord }}" alt="" style="width: 150px; height:45px;">
+                                </div>
+                                <p style="font-size: 10px;"><strong>_______________________________</strong></p>
+                                <p style="font-size: 10px; margin-bottom: -10px;"><strong>V°B° Consejo de carrera:</strong></p>
+                                <p style="font-size: 10px;"><strong>Coordinador Proyecto Curricular</strong></p>
+                                </div>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td colspan="4" style="padding-top: 10px; text-align: center;">
+
+                                <div style="display: block; text-align: center; width: 100%; margin: 0 auto;">
+                                <div style="margin-bottom: -27px; height:45px;">
+                                    <img src="{{ $firma_lito_decano }}" alt="" style="width: 150px; height:45px;">
+                                </div>
+                                <p style="font-size: 10px;"><strong>_______________________________</strong></p>
+                                <p style="font-size: 10px; margin-bottom: -10px;"><strong>V°B° Ordenador del gasto:</strong></p>
+                                <p style="font-size: 10px;"><strong>Decano de la facultad</strong></p>
+                                </div>
+                            </td>
                         </tr>
-                      </table>
+                    </table>
                 </div> 
 
                 <div class="page-break"></div>
