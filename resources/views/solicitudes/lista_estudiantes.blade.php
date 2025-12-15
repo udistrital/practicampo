@@ -8,7 +8,7 @@
       @if(Auth::user()->coordinador() || Auth::user()->docente() || Auth::user()->admin())
       <div class="row justify-content-center">
         <div class="col-md-12">
-            @if(!$estudiantes)
+            @if($estudiantes->isEmpty())
             <div class="card col-md-10">
               <div class="card-header">{{ __('Subir Listado de Estudiantes Solicitud Práctica N° ') }}<?php echo $id_solicitud?></div>
 
@@ -32,6 +32,7 @@
                 </div>
             </div>
             @endif
+            @if(!$estudiantes->isEmpty())
             <br><br>
             <div class="card">
               <div class="card-header">{{ __('Ver documentos de Estudiantes Solicitud Práctica N° ') }}<?php echo $id_solicitud?></div>
@@ -104,7 +105,8 @@
               <button class="ml-3 btn btn-success btnEnviarSolicitudRevision" style="border:0"
                       data-id_solicitud="{{ $id_solicitud }}">
                   Enviar Solicitud
-              </button>          
+              </button>    
+            @endif      
             </div>
           </div>
             <br>

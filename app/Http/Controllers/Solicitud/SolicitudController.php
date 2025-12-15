@@ -5485,7 +5485,12 @@ class SolicitudController extends Controller
         if($programacion->confirm_creador == 1 && $programacion->confirm_docente == 1 && $programacion->listado_estudiantes == 0)
         {
             $solicitud_practica = solicitud::where('id_programacion_practica', '=', $programacion->id)->first();
+            $estudiantes = DB::table('estudiantes_solicitud_practica as esp')
+                    ->select('e.codigo_estudiante','e.nombre_completo','e.email','esp.verificacion_asistencia')
+                    ->join('estudiante as e','e.email','=','esp.email')
+                    ->where('id_solicitud_practica', '=', $solicitud_practica->id)->get();
             return view('solicitudes.lista_estudiantes',['id_solicitud'=>$solicitud_practica->id,
+                                                            'estudiantes'=>$estudiantes,
                                                             'usuario'=>$usuario,
                                                             'control_sistema'=>$control_sistema]);
         }
