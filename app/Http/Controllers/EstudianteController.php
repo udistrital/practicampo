@@ -517,8 +517,19 @@ class EstudianteController extends Controller
      */
     public function crear_estudiante(Request $request){
         try {
+            $email = strtolower(trim($request->email));
+
+            if (empty($email)) {
+                throw new \Exception("El correo institucional está vacío.");
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                throw new \Exception("El correo '$email' no es un correo válido.");
+            }
+            if (!str_ends_with($email, '@udistrital.edu.co')) {
+                throw new \Exception("El correo '$email' no pertenece al dominio @udistrital.edu.co.");
+            }
             DB::beginTransaction();
-            $estudiante = estudiante::firstOrCreate(['email' => $request->email],
+            $estudiante = estudiante::firstOrCreate(['email' => $email],
                 [
                     'num_identificacion' => null,
                     'codigo_estudiante' => $request->codigo_estudiante,
@@ -541,7 +552,7 @@ class EstudianteController extends Controller
             return response()->json(['message' => 'Estudiante añadido correctamente'], 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Ha ocurrido un error al añadir el estudiante'.$e->getMessage()], 404);
+            return response()->json(['error' => 'Ha ocurrido un error al añadir el estudiante '.$e->getMessage()], 404);
         }
     }
 
