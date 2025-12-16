@@ -142,14 +142,13 @@
                                   <label class="form-check-label" for="">Enviados</label>
                                 </div>
                               </div>
-            
-                              
-                              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+
+                              <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="id_filtro_programacion"  @if(isset($filter) and ($filter == 'not_send')) checked="true" @endif onclick="filtrar_programaciones(this.value)" value="3">
                                     <label class="form-check-label" for="">Sin Enviar</label>
                                 </div>
-                              </div>
+                              </div> -->
                             @endif
 
                             @if(Auth::user()->coordinador() || Auth::user()->decano() || Auth::user()->asistenteD())
@@ -186,12 +185,12 @@
                                   </div>
                                 </div> --}}
                             
-                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_programacion"  @if(isset($filter) and ($filter == 'no-elect')) checked="true" @endif onclick="filtrar_programaciones(this.value)" value="10">
                                       <label class="form-check-label" for="">Oblig. Sin Programación</label>
                                   </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                   <div class="form-check form-check-inline">
@@ -216,12 +215,12 @@
                               @endif
 
                               @if(Auth::user()->asistenteD())
-                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_programacion"  @if(isset($filter) and ($filter == 'sin_pres')) checked="true" @endif onclick="filtrar_programaciones(this.value)" value="5">
                                       <label class="form-check-label" for="">Sin Presupuesto</label>
                                   </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                   <div class="form-check form-check-inline">
@@ -240,12 +239,12 @@
                                 </div>
                               </div>
 
-                              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                              <!-- <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                 <div class="form-check form-check-inline">
                                   <input class="form-check-input" type="radio" name="id_filtro_programacion"  @if(isset($filter) and ($filter == 'proy_legal')) checked="true" @endif onclick="filtrar_programaciones(this.value)" value="13">
                                   <label class="form-check-label" for="">Legalizadas</label>
                                 </div>
-                              </div>
+                              </div> -->
 
                               <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                                 <div class="form-check form-check-inline">

@@ -47,8 +47,8 @@
             <th style="width: 75px">Destino</th>
             <th style="width: 35px">Fecha Salida</th>
             <th style="width: 35px">Fecha Regreso</th>
-            <th style="width: 25px">Coord.</th>
-            <th style="width: 25px">Dec.</th>
+            <th style="width: 25px">Resolución</th>
+            <th style="width: 50px">Declaración Responsabilidad</th>
         </thead> 
         @foreach ($programaciones as $item) 
             <tr>
@@ -58,9 +58,20 @@
                 <td>{{ $item->destino_rp }}</td>
                 <td>{{ $item->fecha_salida_aprox_rp }}</td>
                 <td>{{ $item->fecha_regreso_aprox_rp }}</td> 
-                <td>{{ $item->ap_coor }}</td> 
-                <td>{{ $item->ap_dec }}</td>
-            
+                @if($item->tiene_resolucion == 1)
+                <td style="text-align: center"> 
+                    <a href="{{route('resolucion.pdf',$item->id_solicitud)}}">
+                        <button class="btn-success" >Descargar</button>
+                    </a>
+                </td> 
+                @elseif ($item->tiene_resolucion != 1)
+                <td style="text-align: center">Sin Resolución</td> 
+                @endif
+                <td style="text-align: center"> 
+                    <a href="{{route('declaracion_resp_docente.pdf',$item->id_solicitud)}}">
+                        <button class="btn-success" >Descargar</button>
+                    </a>
+                </td>             
             </tr>
         @endforeach 
 

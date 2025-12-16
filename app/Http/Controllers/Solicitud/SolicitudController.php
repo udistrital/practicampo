@@ -4478,7 +4478,7 @@ class SolicitudController extends Controller
                                 'p_prel.destino_rp','sol_prac.fecha_salida as fecha_salida_aprox_rp','sol_prac.fecha_regreso as fecha_regreso_aprox_rp' ,'es_coor.abrev as ap_coor',
                                 'es_dec.abrev  as ap_dec','es_consj.abrev  as es_consj','p_prel.confirm_creador',
                                 'sol_prac.id as id_solicitud','es_coor_sol.abrev as ap_coor','es_dec_sol.abrev as ap_dec',
-                                'sol_prac.tipo_ruta as tipo_ruta')
+                                'sol_prac.tipo_ruta as tipo_ruta', 'sol_prac.tiene_resolucion')
                         ->join('espacio_academico as e_aca','p_prel.id_espacio_academico','=','e_aca.id')
                         ->join('programa_academico as p_aca','e_aca.id_programa_academico','=','p_aca.id')
                         ->join('estado as es_coor','p_prel.aprobacion_coordinador','=','es_coor.id')
@@ -4487,19 +4487,9 @@ class SolicitudController extends Controller
                         ->join('solicitud_practica as sol_prac','p_prel.id','=','sol_prac.id_programacion_practica')
                         ->join('estado as es_coor_sol','sol_prac.aprobacion_coordinador','=','es_coor_sol.id')
                         ->join('estado as es_dec_sol','sol_prac.aprobacion_decano','=','es_dec_sol.id')
-                        ->where('p_prel.confirm_creador','=',1)
-                        ->where('p_prel.confirm_docente','=',1)
-                        ->where('p_prel.confirm_coord','=',1)
-                        ->where('p_prel.confirm_asistD','=',1)
+                        ->where('sol_prac.aprobacion_decano','=',7)
                         ->where('p_prel.id_docente_responsable','=',$idUser)
                         ->where('p_prel.id_estado','=',1)
-                        ->where('p_prel.aprobacion_consejo_facultad','=',3)
-                        ->where('sol_prac.confirm_creador','=',1)
-                        ->where('sol_prac.confirm_docente','=',1)
-                        ->where('sol_prac.confirm_coord','=',0)
-                        ->where('sol_prac.confirm_asistD','=',0)
-                        ->where('sol_prac.id_estado_solicitud_practica','=',5)
-                        ->where('sol_prac.listado_estudiantes','=',1)
                         ->paginate(10000);
                     break;
 

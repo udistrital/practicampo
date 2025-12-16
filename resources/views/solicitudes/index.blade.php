@@ -108,12 +108,12 @@
                             @if(!Auth::user()->decano())
 
                               @if(Auth::user()->docente())
-                              <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                              <!-- <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'ejec-sol')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="16">
                                       <label class="form-check-label" for="">Ejecución</label>
                                   </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                   <div class="form-check form-check-inline">
@@ -122,26 +122,19 @@
                                   </div>
                                 </div>
 
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                <!-- <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'transp')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="19">
                                       <label class="form-check-label" for="">Transp.</label>
                                   </div>
-                                </div>
+                                </div> -->
 
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                <!-- <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                   <div class="form-check form-check-inline">
                                       <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'estud')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="22">
                                       <label class="form-check-label" for="">Estud.</label>
                                   </div>
-                                </div>
-
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
-                                  <div class="form-check form-check-inline">
-                                      <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'proy-comp')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="15">
-                                      <label class="form-check-label" for="">Solicitudes</label>
-                                  </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                   <div class="form-check form-check-inline">
@@ -150,12 +143,19 @@
                                   </div>
                                 </div>
 
-                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 ml-4">
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 ml-5">
                                   <div class="form-check form-check-inline">
-                                      <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'traspasar')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="25">
-                                      <label class="form-check-label" for="">Traspasar Solicitud</label>
+                                      <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'proy-comp')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="15">
+                                      <label class="form-check-label" for="">Documentos Solicitudes</label>
                                   </div>
                                 </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                                  <div class="form-check form-check-inline">
+                                      <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'traspasar')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="25">
+                                      <label class="form-check-label" for="">Traspasar Solicitudes</label>
+                                  </div>
+                                </div>                               
                               @endif 
 
                             @endif
@@ -180,25 +180,25 @@
                                 @endif --}}
 
                                 @if(Auth::user()->asistenteD())
-                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                  <!-- <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'pend-teso')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="17">
                                         <label class="form-check-label" for="">Tesorería</label>
                                     </div>
-                                  </div>
-                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                  </div> -->
+                                  <!-- <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'pend-cierre')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="18">
                                         <label class="form-check-label" for="">Cierres</label>
                                     </div>
-                                  </div>
+                                  </div> -->
 
-                                  <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
+                                  <!-- <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="id_filtro_solicitud"  @if(isset($filter) and ($filter == 'enc_trans')) checked="true" @endif onclick="filtrar_solicitudes(this.value)" value="21">
                                         <label class="form-check-label" for="">Encuestas</label>
                                     </div>
-                                  </div>
+                                  </div> -->
 
                                   <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
                                     <div class="form-check form-check-inline">
