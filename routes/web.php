@@ -46,6 +46,7 @@ Route::group(['middleware' => 'estudiante'], function () {
     Route::get('editEst/{id}/{email}','EstudianteController@edit')->name('doc_est_edit');
     Route::get('loginEst/{email}','EstudianteController@index')->name('doc_est_ind');
     Route::post('imp-doc-estudiantes/{id}/{id_sol}','EstudianteController@importDoc')->name('import_doc_estudiante.img');
+    Route::post('update_datos_basicos/{email}/{id_sol}','EstudianteController@update_datos_basicos')->name('update_datos_basicos');
     Route::get('Estudiante/filtrar/{id}','EstudianteController@filterEstudiante')->name('estudiante_filter_solicitud');
 });
 Route::get('ver-documentos-estudiante','EstudianteController@ver_documentos_estudiante')->name('ver_documentos_estudiante');

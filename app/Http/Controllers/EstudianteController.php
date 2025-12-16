@@ -428,6 +428,39 @@ class EstudianteController extends Controller
     }
 
     /**
+     * Actualiza los datos básicos del estudiante
+     *
+     * @param  string $email
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update_datos_basicos($email, $id_sol, Request $request)
+    {
+        try {      
+            $email=Crypt::decrypt($email);
+            $id=Crypt::decrypt($id_sol);
+
+            $estudiante = estudiante::where('email', '=', $email)->first();
+            $estudiante->id_tipo_identificacion = $request->get('id_tipo_identificacion');
+            $estudiante->num_identificacion = $request->get('num_identificacion');
+            $estudiante->fecha_nacimiento = $request->get('fecha_nacimiento');
+            $estudiante->celular = $request->get('celular');
+            $estudiante->eps = $request->get('eps'); 
+
+            $doc_estudiante= estudiantes_practica::where('email', '=', $email)
+                            ->where('id_solicitud_practica','=',$id)->first();         
+            $doc_estudiante->aprob_terminos_condiciones = 1;
+
+            $estudiante->update();
+            $doc_estudiante->update();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error al cargar los documentos' . $e->getMessage());
+        }
+        return redirect()->back();
+    }
+    /**
      * Lista los documentos subidos por un estudiante
      *
      * @param  \Illuminate\Http\Request  $request

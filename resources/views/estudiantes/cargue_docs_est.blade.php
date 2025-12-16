@@ -18,11 +18,9 @@
                     <div class="card"> --}}
                         <div class="col-md-12 card-header">{{ __('Documentación Estudiante') }}</div>
                         <div class="col-md-12 card-body" style="background-color: #f8f9fc">
-                            <form method="POST" action="{{ route('import_doc_estudiante.img',[Crypt::encrypt($estudiante->email),Crypt::encrypt($estudiante->id_solicitud_practica)]) }}"  enctype="multipart/form-data">
-                                @csrf
-
+                            <form method="POST" action="{{ route('update_datos_basicos',[Crypt::encrypt($estudiante->email),Crypt::encrypt($estudiante->id_solicitud_practica)]) }}"  enctype="multipart/form-data">
+                                @csrf    
                                 <div class="form-group row" style="border: #e3e6f0 double;margin: 0 0 1rem 0;flex: auto;background-color: #fff;">
-
                                     <div class="col-md-12" >
                                         <h4 style="text-align: center; margin-top:0.5rem">Tratamiento Datos Personales</h4>
                                     </div>
@@ -138,7 +136,13 @@
                                         </div>
                                     <!-- datos a completar -->
                                 </div>
-
+                                <div class="form-group">
+                                    <button class="btn btn-success" name="update_datos_basicos" title="">Guardar Datos Básicos</button></a>
+                                </div>
+                            </form>
+                            @if($estudiante->num_identificacion && $estudiante->aprob_terminos_condiciones == 1)
+                            <form method="POST" action="{{ route('import_doc_estudiante.img',[Crypt::encrypt($estudiante->email),Crypt::encrypt($estudiante->id_solicitud_practica)]) }}"  enctype="multipart/form-data">
+                                @csrf
                                 <hr class="divider">  
                                 <div class="mt-1 mb-2">
                                     <p class="text-danger">Importante: Todos los archivos deben ser subidos en formato PDF y pesar menos de 200 KB (se recomienda comprimir los archivos antes de subirlos).</p>
@@ -597,6 +601,7 @@
                                 </div>
                         
                             </form>
+                            @endif
                         </div>
                         
                     {{-- </div>
