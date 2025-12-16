@@ -136,7 +136,7 @@
             }
         });
     });
-        $(document).on('click', '.btnMostrarPdf', function () {
+    $(document).on('click', '.btnMostrarPdf', function () {
         let target = $(this).data('target');
         let div = $('#' + target);
 

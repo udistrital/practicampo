@@ -16,8 +16,8 @@
             <div class="row justify-content-center">
                 {{-- <div class="col-md-8">
                     <div class="card"> --}}
-                        <div class="col-md-10 card-header">{{ __('Documentación Estudiante') }}</div>
-                        <div class="col-md-10 card-body" style="background-color: #f8f9fc">
+                        <div class="col-md-12 card-header">{{ __('Documentación Estudiante') }}</div>
+                        <div class="col-md-12 card-body" style="background-color: #f8f9fc">
                             <form method="POST" action="{{ route('import_doc_estudiante.img',[Crypt::encrypt($estudiante->email),Crypt::encrypt($estudiante->id_solicitud_practica)]) }}"  enctype="multipart/form-data">
                                 @csrf
 
@@ -45,6 +45,10 @@
                                         <p style="text-align: justify; margin-top:0.5rem"> Asimismo,  usted reconoce que la información y los datos personales recogidos son veraces, exactos, vigentes y autenticos.
                                             </p>
                                     </div>
+                                    <label class="ml-2 mr-1 mt-2" for="aprob_terminos_condiciones">Aprobar términos y condiciones</label>
+                                    <span class="hs-form-required mr-1 mt-2">*</span>
+                                    <input type="checkbox" id="aprob_terminos_condiciones" name="aprob_terminos_condiciones" value="1" required
+                                        <?php if(isset($estudiante) && $estudiante->aprob_terminos_condiciones == 1) echo 'checked' ?>>
                                 </div>
 
                                 <div class="form-group row">
@@ -58,7 +62,8 @@
                                             <span class="hs-form-required">*</span>
                                             <select name="id_tipo_identificacion" class="form-control" required>
                                                 @foreach($tipos_identificaciones as $tip_ident)
-                                                    <option value="{{$tip_ident->id}}" selected>{{$tip_ident->tipo_identificacion}}</option>  
+                                                    <option value="{{$tip_ident->id}}"
+                                                    <?php if(isset($estudiante) && $tip_ident->id == $estudiante->id_tipo_identificacion) echo 'selected' ?>>{{$tip_ident->tipo_identificacion}}</option>  
                                                 @endforeach
                                             </select>
                                             @error('id_tipo_identificacion')
@@ -74,8 +79,8 @@
                                                 data-toggle="tooltip" data-placement="left" 
                                                 data-title="Indique el número de identificación" style="font-size: 0.813rem"></i> {{ __('N° Identificación') }}</label>
                                             <span class="hs-form-required">*</span>
-                                            <input id="num_identificacion"  class="form-control @error('num_identificacion') is-invalid @enderror" name="num_identificacion" value="{{ old('num_identificacion') }}" 
-                                            onkeyup="onlyNmb(this)" onchange="onlyNmb(this)"
+                                            <input id="num_identificacion"  class="form-control @error('num_identificacion') is-invalid @enderror" name="num_identificacion" value="{{ $estudiante->num_identificacion }}"
+                                            onkeyup="onlyNmb(this)" onchange="onlyNmb(this)" 
                                             required autocomplete="off" autofocus>
 
                                             @error('num_identificacion')
@@ -95,8 +100,8 @@
                                                 <div class="input-group-addon">
                                                 <i class="fa fa-calendar"></i>
                                                 </div>
-                                            <input class="inputDate form-control datetimepicker data-create" id="fecha_nacimiento" name="fecha_nacimiento" type="text" required
-                                            onchange="mayorEdad()">
+                                            <input class="inputDate form-control datetimepicker" id="fecha_nacimiento" name="fecha_nacimiento" type="text" required
+                                            onchange="mayorEdad()" value="{{ $estudiante->fecha_nacimiento }}">
                                             </div>
                                         </div>
 
@@ -106,7 +111,7 @@
                                                 data-toggle="tooltip" data-placement="left" 
                                                 data-title="Indique un número de celular" style="font-size: 0.813rem"></i> {{ __('Celular') }}</label>
                                             <span class="hs-form-required">*</span>
-                                            <input id="celular" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ old('celular') }}" 
+                                            <input id="celular" class="form-control @error('celular') is-invalid @enderror" name="celular" value="{{ $estudiante->celular }}"
                                             onkeyup="onlyNmb(this)" onchange="onlyNmb(this)"
                                             required autocomplete="off">
                                             
@@ -123,7 +128,7 @@
                                                 data-toggle="tooltip" data-placement="left" 
                                                 data-title="Indique la EPS a la que pertenece" style="font-size: 0.813rem"></i> {{ __('EPS') }}</label>
                                             <span class="hs-form-required">*</span>
-                                            <input id="eps" class="form-control @error('eps') is-invalid @enderror" name="eps" value="{{ old('eps') }}" required autocomplete="off">
+                                            <input id="eps" class="form-control @error('eps') is-invalid @enderror" name="eps" value="{{ $estudiante->eps }}" required autocomplete="off">
                                             
                                             @error('eps')
                                             <span class="invalid-feedback" role="alert">
@@ -132,64 +137,226 @@
                                             @enderror
                                         </div>
                                     <!-- datos a completar -->
-
                                 </div>
 
+                                <hr class="divider">  
+                                <div class="mt-1 mb-2">
+                                    <p class="text-danger">Importante: Todos los archivos deben ser subidos en formato PDF y pesar menos de 200 KB (se recomienda comprimir los archivos antes de subirlos).</p>
+                                </div>  
+                                <hr class="divider"> 
+                                <div class="mt-1 mb-2">
+                                    <a id="declaracion_responsabilidad_est" name="declaracion_responsabilidad_est"
+                                    href="{{ route('declaracion_resp_estudiante.pdf', [Crypt::encrypt($estudiante->email), Crypt::encrypt($estudiante->id_solicitud_practica)]) }}">
+                                    <button id="btn_declaracion_responsabilidad_est" name="btn_declaracion_responsabilidad_est" class="btn-success"
+                                            type="button" style="background-color: #447161; border:0"><i class="fas fa-download"></i>Descargar Formato Declaración Responsabilidad</button>
+                                    </a>
+                                </div> 
                                 
+                                <hr class="divider">      
+                                @error('declaracion_responsabilidad')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror                       
+                                <div class="form-group row">
+                                    <div class="col-md-5">
+                                        <label for="declaracion_responsabilidad" class="col-form-label text-md-left">
+                                            <i class="fas fa-question-circle" 
+                                            data-toggle="tooltip" data-placement="left" 
+                                            data-title="Descargue el formato declaración de responsabilidad. firmelo y subalo" style="font-size: 0.813rem"></i>
+                                            Formato Declaración de Responsabilidad</label>
+                                        <span class="hs-form-required">*</span>
+                                        @if(!empty($documentos['declaracion_responsabilidad']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_declaracion_responsabilidad" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-7">
+                                        @if(!empty($documentos['declaracion_responsabilidad']))
+                                            <div id="pdf_declaracion_responsabilidad" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['declaracion_responsabilidad']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="declaracion_responsabilidad" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['declaracion_responsabilidad']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['declaracion_responsabilidad']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                @error('seguro_estudiantil')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror  
                                 <div class="form-group row">
                                     <div class="col-md-5">
                                         <label for="seguro_estudiantil" class="col-form-label text-md-left">
-                                            <i class="fas fa-question-circle" 
-                                            data-toggle="tooltip" data-placement="left" 
-                                            data-title="Busque en su computador el certificado requerido para la 
-                                            salida de práctica académica" style="font-size: 0.813rem"></i> Seguro Estudiantil</label>
+                                            <i class="fas fa-question-circle"
+                                            data-toggle="tooltip"
+                                            data-placement="left"
+                                            data-title="Busque en su computador el certificado requerido para la salida de campo"
+                                            style="font-size: 0.813rem"></i>
+                                            Seguro Estudiantil
+                                        </label>
                                         <span class="hs-form-required">*</span>
+                                        @if(!empty($documentos['seguro_estudiantil']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_seguro_estudiantil" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="file" accept="application/pdf" name="seguro_estudiantil"  class="form-control" style="color: rgb(243, 3, 3)" required>
+                                        @if(!empty($documentos['seguro_estudiantil']))
+                                            <div id="pdf_seguro_estudiantil" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['seguro_estudiantil']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="seguro_estudiantil" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['seguro_estudiantil']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['seguro_estudiantil']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
                                     </div>
                                 </div>
+
+                                @error('documento_identificacion')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror  
                                 <div class="form-group row">
                                     <div class="col-md-5">
                                         <label for="documento_identificacion" class="col-form-label text-md-left">
-                                            <i class="fas fa-question-circle" 
-                                            data-toggle="tooltip" data-placement="left" 
-                                            data-title="Busque en su computador el certificado requerido para la 
-                                            salida de práctica académica" style="font-size: 0.813rem"></i> Documento Identificación</label>
+                                            <i class="fas fa-question-circle"
+                                            data-toggle="tooltip"
+                                            data-placement="left"
+                                            data-title="Busque en su computador el certificado requerido para la salida de campo"
+                                            style="font-size: 0.813rem"></i>
+                                            Documento Identificación
+                                        </label>
                                         <span class="hs-form-required">*</span>
+                                        @if(!empty($documentos['documento_identificacion']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_documento_identificacion" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="file" accept="application/pdf" name="documento_identificacion"  class="form-control" style="color: rgb(243, 3, 3)" required>
+                                        @if(!empty($documentos['documento_identificacion']))
+                                            <div id="pdf_documento_identificacion" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['documento_identificacion']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="documento_identificacion" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['documento_identificacion']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['documento_identificacion']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
                                     </div>
                                 </div>
+
+                                @error('certificado_eps')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror 
                                 <div class="form-group row">
                                     <div class="col-md-5">
                                         <label for="certificado_eps" class="col-form-label text-md-left">
                                             <i class="fas fa-question-circle" 
                                             data-toggle="tooltip" data-placement="left" 
                                             data-title="Busque en su computador el certificado requerido para la 
-                                            salida de práctica académica" style="font-size: 0.813rem"></i> Cert. EPS (FOSYGA o equivalente)</label>
+                                            salida de campo" style="font-size: 0.813rem"></i> Cert. EPS (FOSYGA o equivalente)</label>
                                         <span class="hs-form-required">*</span>
+                                        @if(!empty($documentos['certificado_eps']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_certificado_eps" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="file" accept="application/pdf" name="certificado_eps"  class="form-control" style="color: rgb(243, 3, 3)" required>
+                                        @if(!empty($documentos['certificado_eps']))
+                                            <div id="pdf_certificado_eps" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['certificado_eps']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="certificado_eps" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['certificado_eps']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['certificado_eps']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
                                     </div>
                                 </div>
 
-                                <div class="form-group row" id="permiso_acudiente">
+                                @error('permiso_acudiente')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror 
+                                <div class="form-group row">
                                     <div class="col-md-5">
                                         <label for="permiso_acudiente" class="col-form-label text-md-left">
                                             <i class="fas fa-question-circle" 
                                             data-toggle="tooltip" data-placement="left" 
                                             data-title="Busque en su computador el certificado requerido para la 
-                                            salida de práctica académica" style="font-size: 0.813rem"></i> Permiso Acudiente</label>
+                                            salida de campo" style="font-size: 0.813rem"></i> Permiso Acudiente</label>
+                                        @if(!empty($documentos['permiso_acudiente']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_permiso_acudiente" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="file" accept="application/pdf" name="permiso_acudiente"  class="form-control" style="color: rgb(243, 3, 3)">
+                                        @if(!empty($documentos['permiso_acudiente']))
+                                            <div id="pdf_permiso_acudiente" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['permiso_acudiente']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="permiso_acudiente" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['permiso_acudiente']) ? '' : '' }}>
+                                        @if(!empty($documentos['permiso_acudiente']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
                                     </div>
                                 </div>
 
                                 @if($doc_req_solicitud->vacuna_fiebre_amarilla == 1)
+                                @error('vacuna_fiebre_amarilla')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror 
                                 <div class="form-group row">
                                     <div class="col-md-5">
                                         <label for="vacuna_fiebre_amarilla" class="col-form-label text-md-left">
@@ -198,14 +365,39 @@
                                             data-title="Busque en su computador el certificado requerido para la 
                                             salida de práctica académica" style="font-size: 0.813rem"></i> Vacuna Fiebre Amarilla</label>
                                         <span class="hs-form-required">*</span>
+                                        @if(!empty($documentos['vacuna_fiebre_amarilla']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_vacuna_fiebre_amarilla" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="file" accept="application/pdf" name="vacuna_fiebre_amarilla"  class="form-control" style="color: rgb(243, 3, 3)" required>
+                                        @if(!empty($documentos['vacuna_fiebre_amarilla']))
+                                            <div id="pdf_vacuna_fiebre_amarilla" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['vacuna_fiebre_amarilla']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="vacuna_fiebre_amarilla" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['vacuna_fiebre_amarilla']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['vacuna_fiebre_amarilla']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
                                     </div>
                                 </div>
                                 @endif
 
                                 @if($doc_req_solicitud->vacuna_tetanos == 1)
+                                @error('vacuna_tetanos')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror 
                                 <div class="form-group row">
                                     <div class="col-md-5">
                                         <label for="vacuna_tetanos" class="col-form-label text-md-left">
@@ -214,14 +406,39 @@
                                             data-title="Busque en su computador el certificado requerido para la 
                                             salida de práctica académica" style="font-size: 0.813rem"></i> Vacuna Tetanos (Min. 2 Dósis)</label>
                                         <span class="hs-form-required">*</span>
+                                        @if(!empty($documentos['vacuna_tetanos']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_vacuna_tetanos" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="file" accept="application/pdf" name="vacuna_tetanos"  class="form-control" style="color: rgb(243, 3, 3)" required>
+                                        @if(!empty($documentos['vacuna_tetanos']))
+                                            <div id="pdf_vacuna_tetanos" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['vacuna_tetanos']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="vacuna_tetanos" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['vacuna_tetanos']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['vacuna_tetanos']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
                                     </div>
                                 </div>
                                 @endif
 
                                 @if($doc_req_solicitud->certificado_adicional_1 == 1)
+                                @error('certificado_adicional_1')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror 
                                 <div class="form-group row">
                                     <div class="col-md-5">
                                         <label for="certificado_adicional_1" class="col-form-label text-md-left">
@@ -230,9 +447,31 @@
                                             data-title="Busque en su computador el certificado requerido para la 
                                             salida de práctica académica" style="font-size: 0.813rem"></i> Certificado Adicional 1</label>
                                         <span class="hs-form-required">*</span>
+                                        @if(!empty($documentos['certificado_adicional_1']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_certificado_adicional_1" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="file" accept="application/pdf" name="certificado_adicional_1"  class="form-control" style="color: rgb(243, 3, 3)" required>
+                                        @if(!empty($documentos['certificado_adicional_1']))
+                                            <div id="pdf_certificado_adicional_1" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['certificado_adicional_1']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="certificado_adicional_1" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['certificado_adicional_1']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['certificado_adicional_1']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
                                     </div>
                                 </div>
                                 @endif
@@ -250,6 +489,9 @@
                                 @endif
 
                                 @if($doc_req_solicitud->certificado_adicional_2 == 1)
+                                @error('certificado_adicional_2')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror 
                                 <div class="form-group row">
                                     <div class="col-md-5">
                                         <label for="certificado_adicional_2" class="col-form-label text-md-left">
@@ -258,9 +500,31 @@
                                             data-title="Busque en su computador el certificado requerido para la salida
                                              de práctica académica" style="font-size: 0.813rem"></i> Certificado Adicional 2</label>
                                         <span class="hs-form-required">*</span>
+                                        @if(!empty($documentos['certificado_adicional_2']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_certificado_adicional_2" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-md-7">
-                                        <input type="file" accept="application/pdf" name="certificado_adicional_2"  class="form-control" style="color: rgb(243, 3, 3)" required>
+                                        @if(!empty($documentos['certificado_adicional_2']))
+                                            <div id="pdf_certificado_adicional_2" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['certificado_adicional_2']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="certificado_adicional_2" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['certificado_adicional_2']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['certificado_adicional_2']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
                                     </div>
                                 </div>
                                 @endif
@@ -278,6 +542,9 @@
                                 @endif
 
                                 @if($doc_req_solicitud->certificado_adicional_3 == 1)
+                                @error('certificado_adicional_3')
+                                    <span class="text-danger mb-2">{{ $message }}</span>
+                                @enderror 
                                     <div class="form-group row">
                                         <div class="col-md-5">
                                             <label for="certificado_adicional_3" class="col-form-label text-md-left">
@@ -285,10 +552,32 @@
                                                 data-toggle="tooltip" data-placement="left" 
                                                 data-title="Seleccione el tipo de identificación" style="font-size: 0.813rem"></i> Certificado Adicional 3</label>
                                             <span class="hs-form-required">*</span>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <input type="file" accept="application/pdf" name="certificado_adicional_3"  class="form-control" style="color: rgb(243, 3, 3)" required>
-                                        </div>
+                                        @if(!empty($documentos['certificado_adicional_3']))
+                                            <button class="btn btn-success btn-sm mr-2 btnMostrarPdf" style="background-color: #447161; border: 0"
+                                                    data-target="pdf_certificado_adicional_3" type="button">
+                                                <i class="far fa-eye"></i><i class="fa fa-arrow-right"></i><i class="fa fa-file"></i>
+                                                Ver PDF
+                                            </button>
+                                        @endif
+                                    </div>
+                                    <div class="col-md-7">
+                                        @if(!empty($documentos['certificado_adicional_3']))
+                                            <div id="pdf_certificado_adicional_3" style="display: none;">
+                                                <div class="mb-3 border rounded">
+                                                    <embed src="{{ $documentos['certificado_adicional_3']['pdf'] }}"
+                                                        type="application/pdf" width="100%" height="400px">
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <small class="form-text text-muted">Tamaño Máximo: 200 KB</small>
+                                        <input type="file" accept="application/pdf" name="certificado_adicional_3" class="form-control" style="color: rgb(243, 3, 3)"
+                                            {{ empty($documentos['certificado_adicional_3']) ? 'required' : '' }}>
+                                        @if(!empty($documentos['certificado_adicional_3']))
+                                        <small class="text-muted">
+                                            Si desea cambiar el archivo, seleccione uno nuevo.
+                                        </small>
+                                        @endif
+                                    </div>
                                     </div>
                                 @endif
 

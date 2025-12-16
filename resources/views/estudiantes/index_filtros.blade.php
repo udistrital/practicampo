@@ -11,7 +11,7 @@
                     <th style="width: 70px">Docente</th>
                     <th style="width: 70px">Destino</th>
                     <th style="width: 35px">Fecha Salida</th>
-                    <th style="width: 20px">Ver</th>
+                    <th style="width: 20px">Acciones</th>
                 </thead>
                 @foreach($solic_asociadas as $item)
                 <tr>
@@ -23,7 +23,7 @@
                     <td>{{$item->fecha_salida}}</td>
                     <td>
                         <a href="{{route('doc_est_edit',[Crypt::encrypt($item->id),Crypt::encrypt($estudiante->email)])}}">
-                            <button class="btn-success" style="background-color: #447161; border:0">Ir</button>
+                            <button class="btn-success" style="background-color: #447161; border:0">Ver</button>
                         </a> 
                     </td>
                 </tr>

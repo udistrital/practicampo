@@ -3728,4 +3728,88 @@ class PdfController extends Controller
                                                         "usuario"=>$usuario,
                                                         'control_sistema'=>$control_sistema]);
     }
+
+    /**
+     * Exportar formato declaración de responsabilidad para docente
+     * Formato .pdf
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public  function declaracion_resp_docente($id)
+    {
+        /*datos
+        nombre
+        cc
+        correo
+        celular
+        espacio academico
+        periodo academico
+        dia
+        mes
+        año
+        firma
+        */
+        $id=Crypt::decrypt($id);
+
+        $data = ['title' => 'Formato Declaración Responsabilidad'];
+
+        $solicitud = DB::table('solicitud_practica as s')
+        ->select('p.id_docente_responsable','ea.espacio_academico')
+        ->join('programacion_practica as p','s.id_programacion_practica','=','p.id')
+        ->join('espacio_academico as ea','ea.id','=','p.id_espacio_academico')
+        ->where('s.id',$id)->first();
+        $docente = DB::table('users')->where('id',$solicitud->id_docente_responsable)->first();
+        $firma_litografica = "data:image/png;base64,$docente->firma_litografica";
+        $fecha = Carbon::now('America/Bogota');
+        $dia   = $fecha->day;
+        $mes   = $fecha->locale('es')->isoFormat('MMMM');
+        $anio   = $fecha->year;
+
+        $pdf = PDF::LoadView('documentacion.formatoDeclaracionResponsabilidadDocente', $data,
+                                ['solicitud'=>$solicitud,
+                                'docente'=>$docente,
+                                'firma_litografica'=>$firma_litografica,
+                                'dia'=>$dia,
+                                'mes'=>$mes,
+                                'anio'=>$anio]);
+                                
+        return $pdf->download('Formato_Declaracion_Responsabilidad_Docente.pdf');
+    }
+
+    /**
+     * Exportar formato declaración de responsabilidad para estudiante
+     * Formato .pdf
+     *
+     * @param  string  $email
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public  function declaracion_resp_estudiante($email,$id)
+    {
+        $email=Crypt::decrypt($email);
+        $id=Crypt::decrypt($id);
+
+        $data = ['title' => 'Formato Declaración Responsabilidad'];
+        
+        $solicitud = DB::table('solicitud_practica as s')
+        ->select('ea.espacio_academico', 'anio_periodo', 'id_periodo_academico')
+        ->join('programacion_practica as p','s.id_programacion_practica','=','p.id')
+        ->join('espacio_academico as ea','ea.id','=','p.id_espacio_academico')
+        ->where('s.id',$id)->first();
+        $estudiante = DB::table('estudiante')->where('email',$email)->first();
+        $fecha = Carbon::now('America/Bogota');
+        $dia   = $fecha->day;
+        $mes   = $fecha->locale('es')->isoFormat('MMMM');
+        $anio   = $fecha->year;
+        
+        $pdf = PDF::LoadView('documentacion.formatoDeclaracionResponsabilidadEstudiante', $data,
+                                ['solicitud'=>$solicitud,
+                                'estudiante'=>$estudiante,
+                                'dia'=>$dia,
+                                'mes'=>$mes,
+                                'anio'=>$anio]);
+                                
+        return $pdf->download('Formato_Declaracion_Responsabilidad_Estudiante.pdf');
+    }
 }

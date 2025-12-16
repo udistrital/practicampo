@@ -52,6 +52,7 @@ Route::get('ver-documentos-estudiante','EstudianteController@ver_documentos_estu
 Route::post('eliminar-estudiante','EstudianteController@eliminar_estudiante')->name('eliminar_estudiante');
 Route::post('verificar-asistencia-estudiante','EstudianteController@verificar_asistencia_estudiante')->name('verificar_asistencia_estudiante');
 Route::post('crear-estudiante','EstudianteController@crear_estudiante')->name('crear_estudiante');
+Route::get('declaracion_resp_estudiante/{email}/{id_solicitud}','Pdf\PdfController@declaracion_resp_estudiante')->name('declaracion_resp_estudiante.pdf');
 // ------> acciones estudiantes <------
 
 // ------> Usuarios Activos <------
@@ -153,6 +154,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('oficiopdf/{id}','Pdf\PdfController@exportOficioPdf')->name('oficio.pdf');
         Route::get('giropdf/{id}','Pdf\PdfController@exportGiroPdf')->name('giro.pdf');
         Route::get('dwn_estud_doc/{id}/{email}','Pdf\PdfController@dwn_doc_estud')->name('dwn_doc_estud');
+        Route::get('declaracion_resp_docente/{id}','Pdf\PdfController@declaracion_resp_docente')->name('declaracion_resp_docente.pdf');
 
         Route::get('accionespdf/{id}','Pdf\PdfController@accionesPdf')->name('acciones.pdf');
         Route::put('consec_solic/{id}','Solicitud\SolicitudController@consec_solic')->name('consec_solic');

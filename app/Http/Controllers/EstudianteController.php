@@ -31,7 +31,7 @@ class EstudianteController extends Controller
     protected $guard ='estud';
     /**
      * Muestra formulario de documentación requerida para la
-     * Programación seleccionada
+     * Solicitud seleccionada
      *
      * @param  int  $id
      * @param  string  $email
@@ -39,84 +39,62 @@ class EstudianteController extends Controller
      */
     public function edit($id, $email)
     {
+        //cosas para hacer aca: añadir formato responsabilidad estudiante para descargar y que lo suban en pdf
+        //que todo vaya a cargue_docs_est, y hacer validaciones si el estudiante añade un nuevo archivo o no
+        //que se pueda ver el documento en caso de haber cargado uno previamente
+        //poner limite de 500kb
         $id=Crypt::decrypt($id);
         $email=Crypt::decrypt($email);
         $id_sol = $id;
-        $estudiante = DB::table('estudiantes_solicitud_practica as esp')
-                        ->where('email','=',$email)
-                        ->where('id_solicitud_practica','=',$id_sol)->first();
-        if($estudiante->verificacion_asistencia == 0){            
-            $tipo_identificacion=DB::table('tipo_identificacion')->get();
-            $doc_req_solicitud = DB::table('documentos_requeridos_solicitud as doc_req')
-                    ->select('doc_req.vacuna_fiebre_amarilla', 'doc_req.vacuna_tetanos', 'doc_req.permiso_acudiente', 
-                            'doc_req.certificado_adicional_1', 'doc_req.certificado_adicional_2', 'doc_req.certificado_adicional_3',
-                            'doc_req.detalle_certificado_adcional_1', 'doc_req.detalle_certificado_adcional_2', 'doc_req.detalle_certificado_adcional_3')
-                    ->where('id',$id_sol)->first();
-            
-            return view('estudiantes.cargue_docs_est',["estudiante"=>$estudiante,
-                                                   "tipos_identificaciones"=>$tipo_identificacion,
-                                                   "doc_req_solicitud"=>$doc_req_solicitud]);
-        }else if($estudiante->verificacion_asistencia == 1){
-            $rec_doc= DB::table('estudiantes_solicitud_practica')
-                    ->where('email', '=', $email)
-                    ->where('id_solicitud_practica','=',$id_sol)->first();
+        $estudiante = DB::table('estudiante as e')
+            ->select('e.email','esp.id_solicitud_practica','e.id_tipo_identificacion','e.num_identificacion','e.fecha_nacimiento','e.celular',
+            'e.eps','esp.aprob_terminos_condiciones')
+            ->join('estudiantes_solicitud_practica as esp','esp.email','=','e.email')
+            ->where('esp.email','=',$email)
+            ->where('esp.id_solicitud_practica','=',$id_sol)->first();         
+        $tipo_identificacion=DB::table('tipo_identificacion')->get();
+        $doc_req_solicitud = DB::table('documentos_requeridos_solicitud as doc_req')
+            ->select('doc_req.vacuna_fiebre_amarilla', 'doc_req.vacuna_tetanos', 'doc_req.permiso_acudiente', 
+                    'doc_req.certificado_adicional_1', 'doc_req.certificado_adicional_2', 'doc_req.certificado_adicional_3',
+                    'doc_req.detalle_certificado_adcional_1', 'doc_req.detalle_certificado_adcional_2', 'doc_req.detalle_certificado_adcional_3')
+            ->where('id',$id_sol)->first();        
+        
+        $rec_doc= DB::table('estudiantes_solicitud_practica')
+            ->where('email', '=', $email)
+            ->where('id_solicitud_practica','=',$id_sol)->first();
 
-            $ccc1 = $rec_doc->seguro_estudiantil;
-            $show_image1 = base64_decode($ccc1);
-            $show_pdf1="data:application/pdf;base64,$ccc1";
-            $img1="data:image/png;base64,$ccc1";
+        $documentFields = [
+            'declaracion_responsabilidad',
+            'seguro_estudiantil',
+            'documento_identificacion',
+            'certificado_eps',
+            'permiso_acudiente',
+            'vacuna_fiebre_amarilla',
+            'vacuna_tetanos',            
+            'certificado_adicional_1',
+            'certificado_adicional_2',
+            'certificado_adicional_3'
+        ];
 
-            $ccc2 = $rec_doc->documento_identificacion;
-            $show_image2 = base64_decode($ccc2);
-            $show_pdf2="data:application/pdf;base64,$ccc2";
-            $img2="data:image/png;base64,$ccc2";
+        $documentos = [];
 
-            $ccc4 = $rec_doc->certificado_eps;
-            $show_image4 = base64_decode($ccc4);
-            $show_pdf4="data:application/pdf;base64,$ccc4";
-            $img4="data:image/png;base64,$ccc4";
+        foreach ($documentFields as $field) {
+            $base64 = $rec_doc->{$field};
 
-            $ccc5 = $rec_doc->permiso_acudiente;
-            $show_image5 = base64_decode($ccc5);
-            $show_pdf5="data:application/pdf;base64,$ccc5";
-            $img5="data:image/png;base64,$ccc5";
-
-            $ccc6 = $rec_doc->vacuna_fiebre_amarilla;
-            $show_image6 = base64_decode($ccc6);
-            $show_pdf6="data:application/pdf;base64,$ccc6";
-            $img6="data:image/png;base64,$ccc6";
-
-            $ccc7 = $rec_doc->vacuna_tetanos;
-            $show_image7 = base64_decode($ccc7);
-            $show_pdf7="data:application/pdf;base64,$ccc7";
-            $img7="data:image/png;base64,$ccc7";
-            
-            $ccc9 = $rec_doc->certificado_adicional_1;
-            $show_image9 = base64_decode($ccc9);
-            $show_pdf9="data:application/pdf;base64,$ccc9";
-            $img9="data:image/png;base64,$ccc9";
-            
-            $ccc10 = $rec_doc->certificado_adicional_2;
-            $show_image10 = base64_decode($ccc10);
-            $show_pdf10="data:application/pdf;base64,$ccc10";
-            $img10="data:image/png;base64,$ccc10";
-
-            $ccc11 = $rec_doc->certificado_adicional_3;
-            $show_image11 = base64_decode($ccc11);
-            $show_pdf11="data:application/pdf;base64,$ccc11";
-            $img11="data:image/png;base64,$ccc11";
-
-            return view('estudiantes.ppp',["imagen1"=>$show_image1, "img1"=>$img1, "pdf1"=>$show_pdf1,
-                                        "imagen2"=>$show_image2, "img2"=>$img2, "pdf2"=>$show_pdf2,
-                                        "imagen4"=>$show_image4, "img4"=>$img4, "pdf4"=>$show_pdf4,
-                                        "imagen5"=>$show_image5, "img5"=>$img5, "pdf5"=>$show_pdf5,
-                                        "imagen6"=>$show_image6, "img6"=>$img6, "pdf6"=>$show_pdf6,
-                                        "imagen7"=>$show_image7, "img7"=>$img7, "pdf7"=>$show_pdf7,
-                                        "imagen9"=>$show_image9, "img9"=>$img9, "pdf9"=>$show_pdf9,
-                                        "imagen10"=>$show_image10, "img10"=>$img10, "pdf10"=>$show_pdf10,
-                                        "imagen11"=>$show_image11, "img11"=>$img11, "pdf11"=>$show_pdf11,
-                                        "rec_doc"=>$rec_doc]);
+            if ($base64) {
+                $documentos[$field] = [
+                    'base64' => $base64,
+                    'pdf'    => "data:application/pdf;base64,$base64",
+                    'image'  => "data:image/png;base64,$base64",
+                ];
+            } else {
+                $documentos[$field] = null;
+            }
         }
+        return view('estudiantes.cargue_docs_est',["estudiante"=>$estudiante,
+                                                "tipos_identificaciones"=>$tipo_identificacion,
+                                                "doc_req_solicitud"=>$doc_req_solicitud,
+                                                "documentos"=>$documentos]);
     }
 
     /**
@@ -184,7 +162,7 @@ class EstudianteController extends Controller
     {
         $details = Auth::guard('estud')->user();
         $email_estudiante =$details->email;
-        $estudiante = DB::table('estudiantes_solicitud_practica as esp')
+        $estudiante = DB::table('estudiante as esp')
                     ->where('email','=',$email_estudiante)->first();
         $id_solicitudes =DB::table('estudiantes_solicitud_practica as est_prac')
                             ->select('est_prac.id_solicitud_practica')
@@ -213,8 +191,9 @@ class EstudianteController extends Controller
                                     ->join('estudiantes_solicitud_practica as est_sol','sol_prac.id','=','est_sol.id_solicitud_practica')
                                     ->where('sol_prac.id',$id_solic->id_solicitud_practica)
                                     ->where('sol_prac.confirm_creador',1)
-                                    //->where('sol_prac.confirm_docente',0) //habilitar al finalizar, aca es paso intermedio antes de enviar a coord
+                                    ->where('sol_prac.confirm_docente',1)
                                     ->where('sol_prac.estado_practica',2)
+                                    ->where('sol_prac.listado_estudiantes',0)
                                     ->where('est_sol.habilitado',1)->first();
                         
                         if(!empty($solic) || $solic != null)
@@ -267,118 +246,145 @@ class EstudianteController extends Controller
 
     public function importDoc(Request $request, $id, $id_sol)
     {
-        $id=Crypt::decrypt($id);
-        $id_sol=Crypt::decrypt($id_sol);
+        $documentFields = [
+            'declaracion_responsabilidad',
+            'seguro_estudiantil',
+            'documento_identificacion',
+            'certificado_eps',
+            'permiso_acudiente',
+            'vacuna_fiebre_amarilla',
+            'vacuna_tetanos',            
+            'certificado_adicional_1',
+            'certificado_adicional_2',
+            'certificado_adicional_3'
+        ];
 
-        $seguro_est= $request->file('seguro_estudiantil') != Null ? base64_encode(file_get_contents($request->file('seguro_estudiantil')->path())) : Null;
-        $doc_identif= $request->file('documento_identificacion') != Null ? base64_encode(file_get_contents($request->file('documento_identificacion')->path())) : Null;
-        $cert_eps= $request->file('certificado_eps') != Null ? base64_encode(file_get_contents($request->file('certificado_eps')->path())) : Null;
-        $perm_acud= $request->file('permiso_acudiente') != Null ? base64_encode(file_get_contents($request->file('permiso_acudiente')->path())) : Null;
-        $vac_fieb_amar= $request->file('vacuna_fiebre_amarilla') != Null ? base64_encode(file_get_contents($request->file('vacuna_fiebre_amarilla')->path())) : Null;
-        $vac_tet= $request->file('vacuna_tetanos') != Null ? base64_encode(file_get_contents($request->file('vacuna_tetanos')->path())) : Null;
-        $cert_adic_1= $request->file('certificado_adicional_1') != Null ? base64_encode(file_get_contents($request->file('certificado_adicional_1')->path())) : Null;
-        $cert_adic_2= $request->file('certificado_adicional_2') != Null ? base64_encode(file_get_contents($request->file('certificado_adicional_2')->path())) : Null;
-        $cert_adic_3= $request->file('certificado_adicional_3') != Null ? base64_encode(file_get_contents($request->file('certificado_adicional_3')->path())) : Null;
-       
-        $doc_estudiante= estudiantes_practica::where('email', '=', $id)
-                        ->where('id_solicitud_practica','=',$id_sol)->first();
+        $rules = [];
+        $messages = [];
 
-        $doc_estudiante->seguro_estudiantil = $seguro_est;
-        $doc_estudiante->documento_identificacion = $doc_identif;
-        $doc_estudiante->certificado_eps = $cert_eps;
-        $doc_estudiante->permiso_acudiente = $perm_acud;
-        $doc_estudiante->vacuna_fiebre_amarilla = $vac_fieb_amar;
-        $doc_estudiante->vacuna_tetanos = $vac_tet;
-        $doc_estudiante->certificado_adicional_1 = $cert_adic_1;
-        $doc_estudiante->certificado_adicional_2 = $cert_adic_2;
-        $doc_estudiante->certificado_adicional_3 = $cert_adic_3;
-        $doc_estudiante->detalle_certificado_adicional_1 = $request->get('detalle_certificado_adicional_1');
-        $doc_estudiante->detalle_certificado_adicional_2 = $request->get('detalle_certificado_adicional_2');
-        $doc_estudiante->detalle_certificado_adicional_3 = $request->get('detalle_certificado_adicional_3');
+        foreach ($documentFields as $field) {
+            $rules[$field] = 'nullable|file|mimes:pdf|max:200';
 
-        $doc_estudiante->id_tipo_identificacion = $request->get('id_tipo_identificacion');
-        $doc_estudiante->num_identificacion = $request->get('num_identificacion');
-        $doc_estudiante->fecha_nacimiento = $request->get('fecha_nacimiento');
-        $doc_estudiante->eps = $request->get('eps');
-        $doc_estudiante->celular = $request->get('celular');
-        $doc_estudiante->aprob_terminos_condiciones = 1;
-        $doc_estudiante->verificacion_asistencia = 1;
+            $messages["$field.max"] = "El archivo $field no debe superar los 200 KB.";
+            $messages["$field.mimes"] = "El archivo $field debe ser un PDF.";
+        }
 
-        $doc_estudiante->update();
+        $request->validate($rules, $messages);
+        try {      
+            $id=Crypt::decrypt($id);
+            $id_sol=Crypt::decrypt($id_sol);
 
-        $rec_doc= DB::table('estudiantes_solicitud_practica')
-                    ->where('email', '=', $id)
-                    ->where('id_solicitud_practica','=',$id_sol)->first();
+            DB::beginTransaction();
+            $doc_estudiante= estudiantes_practica::where('email', '=', $id)
+                            ->where('id_solicitud_practica','=',$id_sol)->first();
 
-        $ccc1 = $rec_doc->seguro_estudiantil;
-        $show_image1 = base64_decode($ccc1);
-        $show_pdf1="data:application/pdf;base64,$ccc1";
-        $img1="data:image/png;base64,$ccc1";
 
-        $ccc2 = $rec_doc->documento_identificacion;
-        $show_image2 = base64_decode($ccc2);
-        $show_pdf2="data:application/pdf;base64,$ccc2";
-        $img2="data:image/png;base64,$ccc2";
+            if ($request->hasFile('declaracion_responsabilidad')) {
+                $declaracion_responsabilidad = base64_encode(file_get_contents($request->file('declaracion_responsabilidad')->path()));
+            } else {
+                $declaracion_responsabilidad = $doc_estudiante->declaracion_responsabilidad;
+            }
 
-        $ccc4 = $rec_doc->certificado_eps;
-        $show_image4 = base64_decode($ccc4);
-        $show_pdf4="data:application/pdf;base64,$ccc4";
-        $img4="data:image/png;base64,$ccc4";
+            if ($request->hasFile('seguro_estudiantil')) {
+                $seguro_est = base64_encode(file_get_contents($request->file('seguro_estudiantil')->path()));
+            } else {
+                $seguro_est = $doc_estudiante->seguro_estudiantil;
+            }
 
-        $ccc5 = $rec_doc->permiso_acudiente;
-        $show_image5 = base64_decode($ccc5);
-        $show_pdf5="data:application/pdf;base64,$ccc5";
-        $img5="data:image/png;base64,$ccc5";
+            if ($request->hasFile('documento_identificacion')) {
+                $doc_identif = base64_encode(file_get_contents($request->file('documento_identificacion')->path()));
+            } else {
+                $doc_identif = $doc_estudiante->documento_identificacion;
+            }
 
-        $ccc6 = $rec_doc->vacuna_fiebre_amarilla;
-        $show_image6 = base64_decode($ccc6);
-        $show_pdf6="data:application/pdf;base64,$ccc6";
-        $img6="data:image/png;base64,$ccc6";
+            if ($request->hasFile('certificado_eps')) {
+                $cert_eps = base64_encode(file_get_contents($request->file('certificado_eps')->path()));
+            } else {
+                $cert_eps = $doc_estudiante->certificado_eps;
+            }
 
-        $ccc7 = $rec_doc->vacuna_tetanos;
-        $show_image7 = base64_decode($ccc7);
-        $show_pdf7="data:application/pdf;base64,$ccc7";
-        $img7="data:image/png;base64,$ccc7";
-        
-        $ccc9 = $rec_doc->certificado_adicional_1;
-        $show_image9 = base64_decode($ccc9);
-        $show_pdf9="data:application/pdf;base64,$ccc9";
-        $img9="data:image/png;base64,$ccc9";
-        
-        $ccc10 = $rec_doc->certificado_adicional_2;
-        $show_image10 = base64_decode($ccc10);
-        $show_pdf10="data:application/pdf;base64,$ccc10";
-        $img10="data:image/png;base64,$ccc10";
+            if ($request->hasFile('permiso_acudiente')) {
+                $perm_acud = base64_encode(file_get_contents($request->file('permiso_acudiente')->path()));
+            } else {
+                $perm_acud = $doc_estudiante->permiso_acudiente;
+            }
 
-        $ccc11 = $rec_doc->certificado_adicional_3;
-        $show_image11 = base64_decode($ccc11);
-        $show_pdf11="data:application/pdf;base64,$ccc11";
-        $img11="data:image/png;base64,$ccc11";
+            if ($request->hasFile('vacuna_fiebre_amarilla')) {
+                $vac_fieb_amar = base64_encode(file_get_contents($request->file('vacuna_fiebre_amarilla')->path()));
+            } else {
+                $vac_fieb_amar = $doc_estudiante->vacuna_fiebre_amarilla;
+            }
 
-        return view('estudiantes.ppp',["imagen1"=>$show_image1, "img1"=>$img1, "pdf1"=>$show_pdf1,
-                                       "imagen2"=>$show_image2, "img2"=>$img2, "pdf2"=>$show_pdf2,
-                                       "imagen4"=>$show_image4, "img4"=>$img4, "pdf4"=>$show_pdf4,
-                                       "imagen5"=>$show_image5, "img5"=>$img5, "pdf5"=>$show_pdf5,
-                                       "imagen6"=>$show_image6, "img6"=>$img6, "pdf6"=>$show_pdf6,
-                                       "imagen7"=>$show_image7, "img7"=>$img7, "pdf7"=>$show_pdf7,
-                                       "imagen9"=>$show_image9, "img9"=>$img9, "pdf9"=>$show_pdf9,
-                                       "imagen10"=>$show_image10, "img10"=>$img10, "pdf10"=>$show_pdf10,
-                                       "imagen11"=>$show_image11, "img11"=>$img11, "pdf11"=>$show_pdf11,
-                                       "rec_doc"=>$rec_doc]);
-        // return view('programaciones.image',["imagen"=>$show_image, "img"=>$img]);
+            if ($request->hasFile('vacuna_tetanos')) {
+                $vac_tet = base64_encode(file_get_contents($request->file('vacuna_tetanos')->path()));
+            } else {
+                $vac_tet = $doc_estudiante->vacuna_tetanos;
+            }
+
+            if ($request->hasFile('certificado_adicional_1')) {
+                $cert_adic_1 = base64_encode(file_get_contents($request->file('certificado_adicional_1')->path()));
+            } else {
+                $cert_adic_1 = $doc_estudiante->certificado_adicional_1;
+            }
+
+            if ($request->hasFile('certificado_adicional_2')) {
+                $cert_adic_2 = base64_encode(file_get_contents($request->file('certificado_adicional_2')->path()));
+            } else {
+                $cert_adic_2 = $doc_estudiante->certificado_adicional_2;
+            }
+
+            if ($request->hasFile('certificado_adicional_3')) {
+                $cert_adic_3 = base64_encode(file_get_contents($request->file('certificado_adicional_3')->path()));
+            } else {
+                $cert_adic_3 = $doc_estudiante->certificado_adicional_3;
+            }
+            
+            $doc_estudiante->declaracion_responsabilidad = $declaracion_responsabilidad;
+            $doc_estudiante->seguro_estudiantil = $seguro_est;
+            $doc_estudiante->documento_identificacion = $doc_identif;
+            $doc_estudiante->certificado_eps = $cert_eps;
+            $doc_estudiante->permiso_acudiente = $perm_acud;
+            $doc_estudiante->vacuna_fiebre_amarilla = $vac_fieb_amar;
+            $doc_estudiante->vacuna_tetanos = $vac_tet;
+            $doc_estudiante->certificado_adicional_1 = $cert_adic_1;
+            $doc_estudiante->certificado_adicional_2 = $cert_adic_2;
+            $doc_estudiante->certificado_adicional_3 = $cert_adic_3;
+            $doc_estudiante->detalle_certificado_adicional_1 = $request->get('detalle_certificado_adicional_1');
+            $doc_estudiante->detalle_certificado_adicional_2 = $request->get('detalle_certificado_adicional_2');
+            $doc_estudiante->detalle_certificado_adicional_3 = $request->get('detalle_certificado_adicional_3');
+
+            $estudiante = estudiante::where('email', '=', $id)->first();
+            $estudiante->id_tipo_identificacion = $request->get('id_tipo_identificacion');
+            $estudiante->num_identificacion = $request->get('num_identificacion');
+            $estudiante->fecha_nacimiento = $request->get('fecha_nacimiento');
+            $estudiante->celular = $request->get('celular');
+            $estudiante->eps = $request->get('eps');            
+            $doc_estudiante->aprob_terminos_condiciones = 1;
+            $doc_estudiante->verificacion_asistencia = 1;
+
+            $estudiante->update();
+            $doc_estudiante->update();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ocurrió un error al cargar los documentos' . $e->getMessage());
+        }
+        return redirect('/Estudiante/filtrar/sol_estudiante')->with('success', 'Documentos cargados con éxito');
     }
 
     public function index($email)
     {
         $email=Crypt::decrypt($email);
 
-        $estudiante = DB::table('estudiantes_solicitud_practica as esp')
+        $estudiante = DB::table('estudiante as esp')
                         ->where('email','=',$email)->first();
 
         $id_solicitudes =DB::table('estudiantes_solicitud_practica as est_prac')
                             ->select('est_prac.id_solicitud_practica')
+                            ->join('solicitud_practica as s','s.id','=','est_prac.id_solicitud_practica')
                             ->where('aprob_terminos_condiciones',0)
-                            ->where('verificacion_asistencia',0)
+                            ->where('s.listado_estudiantes',0)
+                            //->where('verificacion_asistencia',0)
                             ->where('email',$estudiante->email)->get();
         $solic_asociadas = [];
         foreach($id_solicitudes as $id_solic)
@@ -437,12 +443,13 @@ class EstudianteController extends Controller
         }
 
         $documentFields = [
+            'declaracion_responsabilidad',
             'seguro_estudiantil',
             'documento_identificacion',
             'certificado_eps',
             'permiso_acudiente',
             'vacuna_fiebre_amarilla',
-            'vacuna_tetanos',
+            'vacuna_tetanos',            
             'certificado_adicional_1',
             'certificado_adicional_2',
             'certificado_adicional_3'
