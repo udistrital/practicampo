@@ -541,6 +541,48 @@
     });
 </script>
 <script>
+    $(document).on('click', '.btnEditarEstudiante', function () {
+        var num_identificacion = $(this).data('num_identificacion');
+        var codigo_estudiante = $(this).data('codigo_estudiante');
+        var nombre_completo = $(this).data('nombre_completo');
+        var email = $(this).data('email');
+        var fecha_nacimiento = $(this).data('fecha_nacimiento');
+        var celular = $(this).data('celular');
+        var eps = $(this).data('eps');
+
+        $('#num_identificacion_edit').val(num_identificacion);
+        $('#codigo_estudiante_edit').val(codigo_estudiante);
+        $('#nombre_completo_edit').val(nombre_completo);
+        $('#email_edit').val(email);
+        $('#fecha_nacimiento_edit').val(fecha_nacimiento);
+        $('#celular_edit').val(celular);
+        $('#eps_edit').val(eps);
+
+        $('#formEditarEstudiante').attr('action', '{{ route("estudiante_update", "") }}/' + email);
+    });
+
+    $(document).on('click', '.btnGuardarEstudiante', function () {
+        console.log('CLICK GUARDAR DISPARADO');
+        let form = $('#formEditarEstudiante');
+        let url  = form.attr('action');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function(res) {
+                alert(res.message);  
+                $('#editModal').modal('hide');
+                location.reload();             
+            },
+            error: function(err) {
+                console.log(err);
+                alert(err.responseJSON?.error || "Ha ocurrido un error al actualizar los datos del estudiante");
+            }
+        });
+
+    });
+</script>
+<script>
         $(document).ready(function() {
             $('#myTable').DataTable();
         })   
@@ -549,7 +591,7 @@
     $(document).ready(function() {
         $('.select2').select2({
             width: '100%',
-            placeholder: "Seleccione un docente...",
+            placeholder: "Seleccione...",
             allowClear: true
         });
     });

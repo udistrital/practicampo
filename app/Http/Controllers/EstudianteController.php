@@ -544,4 +544,109 @@ class EstudianteController extends Controller
         $estudiante_practica->update();
         return response()->json(['message' => 'Asistencia verificada correctamente'], 200);
     }
+
+    /**
+     * Muestra vista para listar estudiantes por solicitud
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index_listar(){
+        $idUser = Auth::user()->id;
+        $usuario=DB::table('users')
+        ->where('id',$idUser)->first();
+        $control_sistema = DB::table('control_sistema')->first();
+
+        $solicitudes=DB::table('solicitud_practica')->orderByDesc('id')->get();
+        $estudiantes=DB::table('estudiante')->where('id',0)->get();
+        return view('estudiantes.index_listar',["solicitudes"=>$solicitudes,
+                                                "estudiantes"=>$estudiantes,
+                                                "usuario"=>$usuario,
+                                                "control_sistema"=>$control_sistema]);
+    }
+
+    /**
+     * Carga los estudiantes segun el id de la solicitud
+     *
+     * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function listar_estudiantes(Request $request){
+        $idUser = Auth::user()->id;
+        $usuario=DB::table('users')
+        ->where('id',$idUser)->first();
+        $control_sistema = DB::table('control_sistema')->first();
+        
+        $solicitudes=DB::table('solicitud_practica')->orderByDesc('id')->get();
+        $estudiantes = DB::table('estudiante as e')
+            ->select('e.email','e.num_identificacion','e.codigo_estudiante','e.fecha_nacimiento','e.celular',
+            'e.eps', 'e.nombre_completo')
+            ->join('estudiantes_solicitud_practica as esp','esp.email','=','e.email')
+            ->where('esp.id_solicitud_practica','=',(int)$request->get('id_solicitud'))->get();  
+        return view('estudiantes.index_listar',["solicitudes"=>$solicitudes,
+                                                "estudiantes"=>$estudiantes,
+                                                "usuario"=>$usuario,
+                                                "control_sistema"=>$control_sistema]);
+    }
+
+    /**
+     * Actualiza los datos del estudiante
+     *
+     * @param  string email
+     * * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function update_estudiante($email, Request $request){
+        try {            
+            DB::beginTransaction();
+            $estudiante = estudiante::where('email','=',$email)->first();
+            $estudiante->num_identificacion = $request->get('num_identificacion');
+            $estudiante->codigo_estudiante = $request->get('codigo_estudiante');
+            $estudiante->password = Hash::make($request->get('codigo_estudiante')); 
+            $estudiante->nombre_completo = $request->get('nombre_completo');
+            $estudiante->email = $request->get('email');
+            $estudiante->fecha_nacimiento = $request->get('fecha_nacimiento');
+            $estudiante->celular = $request->get('celular');
+            $estudiante->eps = $request->get('eps');
+
+            $estudiante->update();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Ocurrió un error al intentar actualizar el estudiante: '.$e->getMessage());
+        }
+        
+        return response()->json(['message' => 'Estudiante actualizado correctamente'], 200);
+    }
+
+    /**
+     * Elimina los documentos de los estudiantes en un rango de fechas
+     *
+     * * @param  \Illuminate\Http\Request
+     * @return \Illuminate\Http\Response
+     */
+    public function estudiantes_delete_docs(Request $request){
+        try {        
+            $columnas = [
+                'declaracion_responsabilidad','seguro_estudiantil','documento_identificacion',
+                'documento_rh','certificado_eps','permiso_acudiente','vacuna_fiebre_amarilla','vacuna_tetanos','certificado_natacion',
+                'certificado_adicional_1','certificado_adicional_2','certificado_adicional_3'
+            ];
+            $vaciar_columnas = array_fill_keys($columnas, null);
+
+            if (!$request->get('fecha_inicial') || !$request->get('fecha_final')) {
+                return redirect()->back()->with('error', 'Las fechas son obligatorias.');
+            }
+
+            DB::beginTransaction();
+            estudiantes_practica::join('solicitud_practica as s', 's.id', '=', 'id_solicitud_practica')
+                ->whereBetween('s.fecha_salida', [$request->get('fecha_inicial'), $request->get('fecha_final')])
+                ->update($vaciar_columnas);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Ha ocurrido un error al intentar eliminar los documentos: '.$e->getMessage());
+        }
+        return redirect()->back()->with('success', 'Documentos borrados correctamente');
+    }
 }

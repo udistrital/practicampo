@@ -88,6 +88,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('users/filtrar/{id}','Users\UsersController@filterUser')->name('users_filter')->middleware('role:1,2,3');
         Route::get('perfil/{id}','Users\UsersController@ver_perfil')->name('users_perfil');
         Route::get('users/buscar/user','Users\UsersController@buscador')->name('user_buscar')->middleware('role:1,2,3');
+        Route::get('estudiantes','EstudianteController@index_listar')->name('estudiantes')->middleware('role:1,2,3');
+        Route::post('listar_estudiantes','EstudianteController@listar_estudiantes')->name('listar_estudiantes')->middleware('role:1,2,3');
+        Route::put('estudiantes/update/{email}','EstudianteController@update_estudiante')->name('estudiante_update')->middleware('role:1,2,3');
+        Route::put('estudiantes_delete_docs','EstudianteController@estudiantes_delete_docs')->name('estudiantes_delete_docs')->middleware('role:1,2,3');
         // ------> usuarios <------
 
         // ------> Documentos Generados <------
@@ -218,12 +222,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('programas_academicos','ProgramaAcademico\ProgramaAcademicoController@index')->name('edit_programa_academico')->middleware('role:1,2,3');
         Route::post('programas_academicos/create','ProgramaAcademico\ProgramaAcademicoController@create')->name('create_programa_academico')->middleware('role:1,2,3');
         Route::put('programas_academicos/update/{id}','ProgramaAcademico\ProgramaAcademicoController@update')->name('update_programa_academico')->middleware('role:1,2,3');        
+        // ------> Programas Académicos Routes <------
 
         // ------> Espacios Académicos Routes <------
         Route::get('espacios_academicos','EspacioAcademico\EspacioAcademicoController@index')->name('edit_espacio_academico')->middleware('role:1,2,3');
         Route::post('espacios_academicos/create','EspacioAcademico\EspacioAcademicoController@create')->name('create_espacio_academico')->middleware('role:1,2,3');
         Route::put('espacios_academicos/update/{id}','EspacioAcademico\EspacioAcademicoController@update')->name('update_espacio_academico')->middleware('role:1,2,3'); 
-        
+        // ------> Espacios Académicos Routes <------
+
+        // ------> Sedes Routes <------
+        Route::get('sedes','Sede\SedeController@index')->name('edit_sede')->middleware('role:1,2,3');
+        Route::post('sedes/create','Sede\SedeController@create')->name('create_sede')->middleware('role:1,2,3');
+        Route::put('sedes/update/{id}','Sede\SedeController@update')->name('update_sede')->middleware('role:1,2,3'); 
+        // ------> Sedes Routes <------
+
         // ------> Traspasar Programación/Solicitud <------
         Route::post('/programaciones/cargar_docentes_traspaso/{id}', 'Programacion\ProgramacionController@cargar_docentes_traspaso')->middleware('role:5');
         Route::put('programaciones/traspasar/update/{id}','Programacion\ProgramacionController@traspasar_update')->name('programacion_traspasar_update')->middleware('role:5');

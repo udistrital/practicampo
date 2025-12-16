@@ -22,13 +22,15 @@
             </a>
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
               <div class="bg-nav py-2 collapse-inner rounded">
-                  <a class="collapse-item" href="{{url('users/filtrar/all') }}">Listar Usuarios</a>
+                  <a class="collapse-item" href="{{url('users/filtrar/all') }}">Listar Usuarios</a>                  
                   <a class="collapse-item" href="{{url('register') }}">Nuevo Usuario</a>
+                  <a class="collapse-item" href="{{url('estudiantes') }}">Estudiantes</a>
                   <a class="collapse-item" href="{{url('ver/documento') }}">Listar Documentos</a>
                   <a class="collapse-item" href="{{url('sistema') }}">Sistema</a>
                   <a class="collapse-item" href="{{url('presupuesto') }}">Presupuestos</a>
                   <a class="collapse-item" href="{{url('programas_academicos') }}">Programas Académicos</a>
                   <a class="collapse-item" href="{{url('espacios_academicos') }}">Espacios Académicos</a>
+                  <a class="collapse-item" href="{{url('sedes') }}">Sedes</a>
                   {{-- <a class="collapse-item" href="{{url('edicion/documento') }}">Edición Documentos</a> --}}
               </div>
             </div>
