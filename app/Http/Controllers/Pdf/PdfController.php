@@ -1284,7 +1284,8 @@ class PdfController extends Controller
             $total_otros = $valor_materiales + $valor_boletas + $valor_baquianos;
 
             $estudiantes = DB::table('estudiantes_solicitud_practica as estud')
-                            ->where('estud.id_solicitud_practica','=',$id_solicitud)->get();
+                            ->where('estud.id_solicitud_practica','=',$id_solicitud)
+                            ->where('estud.verificacion_asistencia',1)->get();
                             
                         $docentes_acompaniantes = DB::table('docentes_practica as acompa')
 			                ->select('acompa.id','acompa.total_docentes_apoyo','acompa.num_doc_docente_apoyo_1','acompa.num_doc_docente_apoyo_2',

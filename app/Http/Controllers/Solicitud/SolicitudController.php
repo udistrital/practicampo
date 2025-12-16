@@ -307,7 +307,9 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
-                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')
+                ->where('id_solicitud_practica',$solicitud_practica->id)
+                ->where('verificacion_asistencia',1)->get();
                 $tipo_ruta = $solicitud_practica->tipo_ruta;
                 return view('solicitudes.formularios.cambiar_edit',["programacion_practica"=>$programacion_practica,
                                                 "sedes"=>$sedes,
@@ -1409,7 +1411,9 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
-                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')
+                ->where('id_solicitud_practica',$solicitud_practica->id)
+                ->where('verificacion_asistencia',1)->get();
         
                 return view('solicitudes.edit',["programacion_practica"=>$programacion_practica,
                                                 "sedes"=>$sedes,
@@ -1662,7 +1666,9 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
-                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')
+                ->where('id_solicitud_practica',$solicitud_practica->id)
+                ->where('verificacion_asistencia',1)->get();
         
                 return view('solicitudes.edit',["programacion_practica"=>$programacion_practica,
                                                 "practicas_integradas"=>$practicas_integradas,
@@ -1942,7 +1948,9 @@ class SolicitudController extends Controller
                 }
                 
                 $presupuesto_restante=$presupuesto_programa_academico->presupuesto_actual - $presupuesto_practica;
-                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')->where('id_solicitud_practica',$solicitud_practica->id)->get();
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')
+                ->where('id_solicitud_practica',$solicitud_practica->id)
+                ->where('verificacion_asistencia',1)->get();
 		$presupuesto_restante_transporte_menor=$presupuesto_transporte_menor->presupuesto_restante - $presupuesto_transporte_menor_practica;
 
                 return view('solicitudes.edit',["programacion_practica"=>$programacion_practica,
