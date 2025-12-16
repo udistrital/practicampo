@@ -113,21 +113,21 @@
                                                     </div>                                              
                                                 </div>
                                                 <div class="form-group row">                                                
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label>Correo</label>
                                                         <input type="email" id="email_edit" name="email" class="form-control">
                                                     </div>   
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label>Fecha de Nacimiento</label>
                                                         <input type="date" id="fecha_nacimiento_edit" name="fecha_nacimiento" class="form-control">
                                                     </div>                                             
                                                 </div>
                                                 <div class="form-group row">                                                
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label>Celular</label>
                                                         <input type="number" id="celular_edit" name="celular" class="form-control">
                                                     </div>   
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label>EPS</label>
                                                         <input type="text" id="eps_edit" name="eps" class="form-control">
                                                     </div>                                             

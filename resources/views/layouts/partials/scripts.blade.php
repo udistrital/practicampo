@@ -583,6 +583,19 @@
     });
 </script>
 <script>
+    $(document).on('click', '.btnEditarSede', function () {
+        var id = $(this).data('id');
+        var sede = $(this).data('sede');
+        var direccion = $(this).data('direccion');
+
+        $('#sede_edit').val(sede);
+        $('#direccion_edit').val(direccion);
+
+        $('#formEditarSede').attr('action', '{{ route("update_sede", "") }}/' + id);
+
+    });
+</script>
+<script>
         $(document).ready(function() {
             $('#myTable').DataTable();
         })   
