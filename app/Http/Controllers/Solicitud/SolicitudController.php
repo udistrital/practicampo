@@ -5045,15 +5045,59 @@ class SolicitudController extends Controller
     public function enviar_solicitud_revision(Request $request)
     {
         try {
+            DB::beginTransaction();
             $solicitud_practica = solicitud::where('id', $request->id)->first();
+            $control_sistema = DB::table('control_sistema')->first();
+            $programacion = programacion::where('id',$solicitud_practica->id_programacion_practica)->first();
+            $costos_programacion = costos_programacion::where('id',$solicitud_practica->id_programacion_practica)->first();
+            $asistencia_estudiantes_practica = DB::table('estudiantes_solicitud_practica')
+            ->select('verificacion_asistencia')
+            ->where('id_solicitud_practica',$request->id)->get();
+
             if(!$solicitud_practica){
                 throw new Exception('No se encuentra la solicitud');
             }
-            $solicitud_practica->listado_estudiantes = 1;
-            $solicitud_practica->update();
+                        
+            $cont_asistencia=0;
+            foreach($asistencia_estudiantes_practica as $asistencia){
+                if($asistencia->verificacion_asistencia == 1){
+                    $cont_asistencia++;
+                }                
+            }
 
+            if($solicitud_practica->tipo_ruta == 1){
+                if($costos_programacion->viaticos_estudiantes_rp > 0){
+                    if($solicitud_practica->duracion_num_dias == 1){
+                        $viaticos_estudiantes_rp = $cont_asistencia*$control_sistema->vlr_estud_min*$solicitud_practica->duracion_num_dias;
+                    }else if($solicitud_practica->duracion_num_dias > 1){
+                        $viaticos_estudiantes_rp = $cont_asistencia*$control_sistema->vlr_estud_max*$solicitud_practica->duracion_num_dias;
+                    }
+                    $costos_programacion->viaticos_estudiantes_rp = $viaticos_estudiantes_rp;
+                    $costos_programacion->update();
+                }
+                
+            }else if($solicitud_practica->tipo_ruta == 2){
+                if($costos_programacion->viaticos_estudiantes_ra > 0){
+                    if($solicitud_practica->duracion_num_dias == 1){
+                        $viaticos_estudiantes_ra = $cont_asistencia*$control_sistema->vlr_estud_min*$solicitud_practica->duracion_num_dias;
+                    }else if($solicitud_practica->duracion_num_dias > 1){
+                        $viaticos_estudiantes_ra = $cont_asistencia*$control_sistema->vlr_estud_max*$solicitud_practica->duracion_num_dias;
+                    }
+                    $costos_programacion->viaticos_estudiantes_ra = $viaticos_estudiantes_ra;
+                    $costos_programacion->update();
+                }                
+            }
+
+            $solicitud_practica->listado_estudiantes = 1;
+            $solicitud_practica->num_estudiantes = $cont_asistencia;
+            $programacion->num_estudiantes_aprox = $cont_asistencia;
+
+            $solicitud_practica->update();
+            $programacion->update();
+            DB::commit();
             return response()->json(['message' => '¡Solicitud Enviada Correctamente!'], 200);
         } catch (\Exception $e) {
+            DB::rollback();
             return response()->json(['error' => 'Ha ocurrido un error al enviar la solicitud'.$e->getMessage()], 404);
         }
         
