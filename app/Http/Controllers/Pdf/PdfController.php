@@ -3738,28 +3738,17 @@ class PdfController extends Controller
      */
     public  function declaracion_resp_docente($id)
     {
-        /*datos
-        nombre
-        cc
-        correo
-        celular
-        espacio academico
-        periodo academico
-        dia
-        mes
-        año
-        firma
-        */
-        $id=Crypt::decrypt($id);
-
         $data = ['title' => 'Formato Declaración Responsabilidad'];
 
         $solicitud = DB::table('solicitud_practica as s')
-        ->select('p.id_docente_responsable','ea.espacio_academico')
+        ->select('p.id_docente_responsable','ea.espacio_academico','p.anio_periodo','p.id_periodo_academico')
         ->join('programacion_practica as p','s.id_programacion_practica','=','p.id')
         ->join('espacio_academico as ea','ea.id','=','p.id_espacio_academico')
         ->where('s.id',$id)->first();
-        $docente = DB::table('users')->where('id',$solicitud->id_docente_responsable)->first();
+        $docente = DB::table('users')
+        ->select('id',DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as nombre_completo'),
+                'email','celular','expedicion_identificacion','firma_litografica')
+        ->where('id',$solicitud->id_docente_responsable)->first();
         $firma_litografica = "data:image/png;base64,$docente->firma_litografica";
         $fecha = Carbon::now('America/Bogota');
         $dia   = $fecha->day;

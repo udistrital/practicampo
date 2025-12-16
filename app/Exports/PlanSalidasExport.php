@@ -76,7 +76,7 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
             ->select(
                 'pa.programa_academico',
                 'ea.espacio_academico',
-                'p.destino_rp', //toca montar estos cambios en main
+                'p.destino_rp',
                 DB::raw("CONCAT(p.anio_periodo, '-', p.id_periodo_academico) as periodo_academico"),
                 'p.duracion_num_dias_rp',
                 DB::raw("COALESCE(p.num_estudiantes_aprox, 0) AS numero_estudiantes"),
@@ -94,8 +94,8 @@ class PlanSalidasExport implements ShouldAutoSize, WithTitle, FromArray, WithSty
             ->join('programa_academico as pa', 'pa.id', '=', 'p.id_programa_academico')
             ->join('espacio_academico as ea', 'ea.id', '=', 'p.id_espacio_academico')
             ->join('costos_programacion as cp', 'cp.id', '=', 'p.id')
-            //->where('p.aprobacion_decano', '=', 7)
-            //->where('p.aprobacion_consejo_facultad', '=', 3)
+            ->where('p.aprobacion_decano', '=', 7)
+            ->where('p.aprobacion_consejo_facultad', '=', 3)
             ->where('p.aprobacion_coordinador', '=', 7)
             ->where('p.confirm_coord', '=', 1)
             ->whereBetween('p.fecha_salida_aprox_rp', [$fecha_inicial, $fecha_final])

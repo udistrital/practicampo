@@ -2593,12 +2593,14 @@ function sel_solic_aprobadas()
     var btn_avance_pdf = document.getElementById("btn_avance_pdf");
     var btn_transporte_pdf = document.getElementById("btn_transporte_pdf");
     var btn_practica_pdf = document.getElementById("btn_practica_pdf");
+    var btn_declaracion_responsabilidad_pdf = document.getElementById("btn_declaracion_responsabilidad_pdf");
     var giro_pdf = document.getElementById("giro_pdf");
     var oficio_pdf = document.getElementById("oficio_pdf");
     var resolucion_pdf = document.getElementById("resolucion_pdf");
     var avance_pdf = document.getElementById("avance_pdf");
     var transporte_pdf = document.getElementById("transporte_pdf");
     var practica_pdf = document.getElementById("practica_pdf");
+    var declaracion_responsabilidad_pdf = document.getElementById("declaracion_responsabilidad_pdf");
     var num_solic_sel = 0;
     var lis_sol_sel= [];
     var value_item;
@@ -2634,6 +2636,7 @@ function sel_solic_aprobadas()
                     
                     transporte_pdf.href = transporte_pdf.origin+'/transportepdf/'+lis_sol_sel;
                     practica_pdf.href = practica_pdf.origin+'/formatoPracticapdf/'+lis_sol_sel;
+                    declaracion_responsabilidad_pdf.href = declaracion_responsabilidad_pdf.origin+'/declaracion_resp_docente/'+lis_sol_sel;
 
                     btn_transporte_pdf.disabled = true;
                     btn_transporte_pdf.style.backgroundColor= '#83bfaa';
@@ -2642,18 +2645,27 @@ function sel_solic_aprobadas()
                     btn_practica_pdf.disabled = true;
                     btn_practica_pdf.style.backgroundColor= '#83bfaa';
                     btn_practica_pdf.style.borderColor= '#83bfaa';
+
+                    btn_declaracion_responsabilidad_pdf.disabled = true;
+                    btn_practica_pdf.style.backgroundColor= '#83bfaa';
+                    btn_practica_pdf.style.borderColor= '#83bfaa';
                 }
 
                 else if(num_solic_sel > 1)
                 {
                     transporte_pdf.href = "";
                     practica_pdf.href = "";
+                    declaracion_responsabilidad_pdf.href = "";
                     
                     btn_transporte_pdf.disabled = true;
                     btn_transporte_pdf.style.backgroundColor= '#83bfaa';
                     btn_transporte_pdf.style.borderColor= '#83bfaa';
 
                     btn_practica_pdf.disabled = true;
+                    btn_practica_pdf.style.backgroundColor= '#83bfaa';
+                    btn_practica_pdf.style.borderColor= '#83bfaa';
+
+                    btn_declaracion_responsabilidad_pdf.disabled = true;
                     btn_practica_pdf.style.backgroundColor= '#83bfaa';
                     btn_practica_pdf.style.borderColor= '#83bfaa';
                 }
@@ -2665,6 +2677,7 @@ function sel_solic_aprobadas()
                     avance_pdf.href = "";
                     transporte_pdf.href = "";
                     practica_pdf.href = "";
+                    declaracion_responsabilidad_pdf.href = "";
                     fom_consec_dfama.action = "";
                 }
             }
@@ -2701,6 +2714,7 @@ function sel_solic_aprobadas()
                 {
                     transporte_pdf.href = transporte_pdf.origin+'/transportepdf/'+lis_sol_sel;
                     practica_pdf.href = practica_pdf.origin+'/formatoPracticapdf/'+lis_sol_sel;
+                    declaracion_responsabilidad_pdf.href = declaracion_responsabilidad_pdf.origin+'/declaracion_resp_docente/'+lis_sol_sel;
 
                     btn_transporte_pdf.disabled = false;
                     btn_transporte_pdf.style.backgroundColor= '#447161';
@@ -2709,11 +2723,16 @@ function sel_solic_aprobadas()
                     btn_practica_pdf.disabled = false;
                     btn_practica_pdf.style.backgroundColor= '#447161';
                     btn_practica_pdf.style.borderColor= '#447161';
+
+                    btn_declaracion_responsabilidad_pdf.disabled = false;
+                    btn_declaracion_responsabilidad_pdf.style.backgroundColor= '#447161';
+                    btn_declaracion_responsabilidad_pdf.style.borderColor= '#447161';
                 }
                 else if(num_solic_sel > 1)
                 {
                     transporte_pdf.href = "";
                     practica_pdf.href = "";
+                    declaracion_responsabilidad_pdf.href = "";
 
                     btn_transporte_pdf.disabled = true;
                     btn_transporte_pdf.style.backgroundColor= '#83bfaa';
@@ -2722,6 +2741,10 @@ function sel_solic_aprobadas()
                     btn_practica_pdf.disabled = true;
                     btn_practica_pdf.style.backgroundColor= '#83bfaa';
                     btn_practica_pdf.style.borderColor= '#83bfaa';
+
+                    btn_declaracion_responsabilidad_pdf.disabled = true;
+                    btn_declaracion_responsabilidad_pdf.style.backgroundColor= '#83bfaa';
+                    btn_declaracion_responsabilidad_pdf.style.borderColor= '#83bfaa';
                 }
                 else if(num_solic_sel == 0)
                 {
@@ -2731,6 +2754,7 @@ function sel_solic_aprobadas()
                     avance_pdf.href = "";
                     transporte_pdf.href = "";
                     practica_pdf.href = "";
+                    declaracion_responsabilidad_pdf.href = "";
                     fom_consec_dfama.action = "";
                 }
             }
@@ -2743,12 +2767,14 @@ $("input[type=checkbox]").change(function (){
     var contador=0;
     var btn_transporte_pdf = document.getElementById("btn_transporte_pdf");
     var btn_practica_pdf = document.getElementById("btn_practica_pdf");
+    var btn_declaracion_responsabilidad_pdf = document.getElementById("btn_declaracion_responsabilidad_pdf");
     var giro_pdf = document.getElementById("giro_pdf");
     var oficio_pdf = document.getElementById("oficio_pdf");
     var resolucion_pdf = document.getElementById("resolucion_pdf");
     var avance_pdf = document.getElementById("avance_pdf");
     var transporte_pdf = document.getElementById("transporte_pdf");
     var practica_pdf = document.getElementById("practica_pdf");
+    var declaracion_responsabilidad_pdf = document.getElementById("declaracion_responsabilidad_pdf");
     var consec_dfama = document.getElementById("up_consec_dfama");
     var fom_consec_dfama = document.getElementById("fom_consec_dfama");
     
@@ -2785,6 +2811,7 @@ $("input[type=checkbox]").change(function (){
         {
             transporte_pdf.href = "";
             practica_pdf.href = ""
+            declaracion_responsabilidad_pdf.href = "";
 
             btn_transporte_pdf.disabled = true;
             btn_transporte_pdf.style.backgroundColor= '#83bfaa';
@@ -2793,6 +2820,10 @@ $("input[type=checkbox]").change(function (){
             btn_practica_pdf.disabled = true;
             btn_practica_pdf.style.backgroundColor= '#83bfaa';
             btn_practica_pdf.style.borderColor= '#83bfaa';
+
+            btn_declaracion_responsabilidad_pdf.disabled = true;
+            btn_declaracion_responsabilidad_pdf.style.backgroundColor= '#83bfaa';
+            btn_declaracion_responsabilidad_pdf.style.borderColor= '#83bfaa';
             
         }
         else if(contador == 1)
@@ -2800,6 +2831,7 @@ $("input[type=checkbox]").change(function (){
 
             transporte_pdf.href = transporte_pdf.origin+'/transportepdf/'+lis_sol_sel;
             practica_pdf.href = practica_pdf.origin+'/formatoPracticapdf/'+lis_sol_sel;
+            declaracion_responsabilidad_pdf.href = declaracion_responsabilidad_pdf.origin+'/declaracion_resp_docente/'+lis_sol_sel;
 
             btn_transporte_pdf.disabled = false;
             btn_transporte_pdf.style.backgroundColor= '#447161';
@@ -2808,6 +2840,10 @@ $("input[type=checkbox]").change(function (){
             btn_practica_pdf.disabled = false;
             btn_practica_pdf.style.backgroundColor= '#447161';
             btn_practica_pdf.style.borderColor= '#447161';
+
+            btn_declaracion_responsabilidad_pdf.disabled = false;
+            btn_declaracion_responsabilidad_pdf.style.backgroundColor= '#447161';
+            btn_declaracion_responsabilidad_pdf.style.borderColor= '#447161';
         }
     }
 });

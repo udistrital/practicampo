@@ -70,7 +70,7 @@
                 @if(Auth::user()->decano() || Auth::user()->asistenteD())
                     @foreach ($documentos_sistema as $item)
                         <tr>
-                            @if($item->id == 1 || $item->id == 3 || $item->id == 4 || $item->id == 2 || $item->id == 5 || $item->id == 6)
+                            @if($item->id == 1 || $item->id == 3 || $item->id == 4 || $item->id == 2 || $item->id == 5 || $item->id == 6 || $item->id == 7)
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->tipo_documentacion }}</td>
                                 <td>{{ $item->abrev }}</td>
@@ -156,6 +156,14 @@
                                         {{-- @else
                                             Docen. Inactivo
                                         @endif --}}
+                                    </td>
+                                @endif
+
+                                @if($item->id == 7)
+                                    <td style="text-align:center;">
+                                        <a id="declaracion_responsabilidad_pdf" name="declaracion_responsabilidad_pdf" href="">
+                                            <button id="btn_declaracion_responsabilidad_pdf" name="btn_declaracion_responsabilidad_pdf" class="btn-success" style="background-color: #447161; border:0"><i class="fas fa-download"></i>   PDF</button>
+                                        </a>
                                     </td>
                                 @endif
 

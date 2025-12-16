@@ -64,22 +64,21 @@
     <table width="95%" border="0" cellpadding="0" cellspacing="0" align="center"><tr><td>
       <br>
       <p align="justify">
-        Yo, {{mb_strtoupper($estudiante->nombre_completo)}} identificado(a) con documento de identidad No. {{ $estudiante->num_identificacion }}, 
-        expedido en ___________________ en mi calidad de Estudiante del Espacio Académico {{ $solicitud->espacio_academico }} de la Facultad de 
+        Yo, {{mb_strtoupper($docente->nombre_completo)}} identificado(a) con documento de identidad No. {{ $docente->id }}, 
+        expedido en {{$docente->expedicion_identificacion}} en mi calidad de Estudiante del Espacio Académico {{ $solicitud->espacio_academico }} de la Facultad de 
         Medio Ambiente y Recursos Naturales, de la Universidad Distrital Francisco José de Caldas, declaro que:
       </p>
       <p align="justify" class="ml-2">
         <ol style="text-align: justify;">
-            <li>Me comprometo a <strong>participar activamente, de manera responsable y ética</strong> en la Salida de Campo correspondiente al Espacio Académico 
-                {{ $solicitud->espacio_academico }}, a desarrollarse durante el periodo académico {{ $solicitud->anio_periodo }}-{{ $solicitud->id_periodo_academico }}.</li>
-            <li>Asumo la <strong>responsabilidad de cumplir con las instrucciones, protocolos de seguridad y bioseguridad, y normativas institucionales</strong> 
-                establecidas para la ejecución de la Salida de Campo.</li>
-            <li>Reconozco que he sido debidamente informado(a) sobre los objetivos, actividades, riesgos, requerimientos y procedimientos inherentes a la
-                Salida de Campo, y me comprometo a acatarlos de manera estricta.</li>
-            <li>Me comprometo a <strong>respetar los espacios, equipos, materiales y normas del lugar donde se desarrollará la Salida de Campo, así como 
-                a actuar de forma colaborativa y respetuosa con los demás participantes</strong>.</li>
-            <li>Eximo a la Universidad y al docente responsable de la práctica de toda responsabilidad derivada de un <strong>incumplimiento de mis deberes 
-                o una conducta negligente</strong> por mi parte durante el desarrollo de esta.</li>
+            <li>Asumo la <strong>responsabilidad total por la planificación, desarrollo y supervisión </strong> de la Salida de Campo a realizarse con los estudiantes 
+                del Espacio Académico {{ $solicitud->espacio_academico }}, correspondiente al periodo académico {{ $solicitud->anio_periodo }}-{{ $solicitud->id_periodo_academico }}.</li>
+            <li>Me comprometo a <strong>garantizar el cumplimiento de las normas de seguridad, bioseguridad y protocolos y normativas institucionales</strong> 
+                asi como velar por el comportamiento ético y responsable de los estudiantes durante toda la ejecución de la práctica</li>
+            <li>He informado a los estudiantes sobre los <strong>objetivos, riesgos, medidas de prevención, requerimientos y procedimientos </strong> correspondientes
+                a la salida de campo, y me aseguro de que comprendan su rol y compromiso en la misma.</li>
+            <li>Declaro que la actividad se encuentra enmarcada dentro de lo estipulado en el Syllabus del Espacio Académico y cuenta con los permisos
+                requeridos por los entes correspondientes, en caso de ser necesario.</li>
+            <li>Me responsabilizo por cualquier eventualidad que surja durante el desarrollo de la Salida de Campo en el marco de mis funciones como docente.</li>
         </ol>      
       </p>
       <p align="justify">
@@ -87,14 +86,17 @@
       {{ $anio }}.
       </p>
       <br>
-      <p align="justify"><span class="larger"><strong>Firma del Estudiante:</strong></span></p>
+      <p align="justify"><span class="larger"><strong>Firma del Docente:</strong></span></p>
       <br><br><br>
+      <div  style="margin-bottom: -27px;">
+        <img src="{{ $firma_litografica }}" alt="" style="width: 200px; height:45px;">
+      </div>
       <p align="justify"><strong><span class="larger">___________________________________</strong></span></p>
       <p align="justify">
-        Nombre completo: {{mb_strtoupper($estudiante->nombre_completo)}}<br>
-        Cédula de ciudadania: {{$estudiante->num_identificacion}}<br>
-        Correo institucional: {{mb_strtolower($estudiante->email)}}<br>
-        Teléfono de contacto: {{$estudiante->celular}}<br>
+        Nombre completo: {{mb_strtoupper($docente->nombre_completo)}}<br>
+        Cédula de ciudadania: {{$docente->id}}<br>
+        Correo institucional: {{mb_strtolower($docente->email)}}<br>
+        Teléfono de contacto: {{$docente->celular}}<br>
       </p>
     </table>
     
