@@ -46,7 +46,8 @@
                                     <label class="ml-2 mr-1 mt-2" for="aprob_terminos_condiciones">Aprobar términos y condiciones</label>
                                     <span class="hs-form-required mr-1 mt-2">*</span>
                                     <input type="checkbox" id="aprob_terminos_condiciones" name="aprob_terminos_condiciones" value="1" required
-                                        <?php if(isset($estudiante) && $estudiante->aprob_terminos_condiciones == 1) echo 'checked' ?>>
+                                        <?php if(isset($estudiante) && $estudiante->aprob_terminos_condiciones == 1) echo 'checked' ?>
+                                        <?php if(isset($estudiante) && $estudiante->aprob_terminos_condiciones == 1) echo 'disabled' ?>>
                                 </div>
 
                                 <div class="form-group row">
