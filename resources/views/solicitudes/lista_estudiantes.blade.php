@@ -101,7 +101,11 @@
                   <br>                  
                 </div>
               </div> 
-              <br><br> 
+              <br><br>
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong class="text-danger">Advertencia:</strong> Verificar correctamente que los estudiantes cuenten con su asistencia, ya que una vez enviada
+                    la solicitud, el sistema recalculará los viáticos de los estudiantes que tengan su asistencia marcada.
+                </div> 
               <button class="ml-3 btn btn-success btnEnviarSolicitudRevision" style="border:0"
                       data-id_solicitud="{{ $id_solicitud }}">
                   Enviar Solicitud
