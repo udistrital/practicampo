@@ -213,6 +213,7 @@
             <th style="width: 50px">Fecha Regreso</th>
             <th style="width: 25px">Coord.</th>
             <th style="width: 25px">Decan.</th>
+            <th style="width: 25px"></th>
             
         </thead> 
         @foreach ($programaciones as $item) 
@@ -237,6 +238,11 @@
             <td>{{ $item->fecha_regreso_aprox_rp }}</td>
             <td>{{ $item->ap_coor }}</td> 
             <td>{{ $item->ap_dec }}</td>
+            <td style="text-align: center"> 
+                <a href="{{route('ver_solicitud',[Crypt::encrypt($item->id)])}}">
+                    <button class="btn-success" style="background-color: #447161; border:0">Ver</button>
+                </a> 
+            </td>
         </tr>
         @endforeach 
     </table>

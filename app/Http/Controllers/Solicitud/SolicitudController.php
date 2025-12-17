@@ -307,9 +307,11 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
-                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')
-                ->where('id_solicitud_practica',$solicitud_practica->id)
-                ->where('verificacion_asistencia',1)->get();
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica as esp')
+                    ->select('e.nombre_completo','e.email','esp.grupo')
+                    ->join('estudiante as e','e.email','=','esp.email')
+                    ->where('esp.id_solicitud_practica',$solicitud_practica->id)
+                    ->where('esp.verificacion_asistencia',1)->get();
                 $tipo_ruta = $solicitud_practica->tipo_ruta;
                 return view('solicitudes.formularios.cambiar_edit',["programacion_practica"=>$programacion_practica,
                                                 "sedes"=>$sedes,
@@ -1411,9 +1413,11 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
-                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')
-                ->where('id_solicitud_practica',$solicitud_practica->id)
-                ->where('verificacion_asistencia',1)->get();
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica as esp')
+                    ->select('e.nombre_completo','e.email','esp.grupo')
+                    ->join('estudiante as e','e.email','=','esp.email')
+                    ->where('esp.id_solicitud_practica',$solicitud_practica->id)
+                    ->where('esp.verificacion_asistencia',1)->get();
         
                 return view('solicitudes.edit',["programacion_practica"=>$programacion_practica,
                                                 "sedes"=>$sedes,
@@ -1666,9 +1670,11 @@ class SolicitudController extends Controller
                 
                 $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
                 $nomb_usuario = $usuario->primer_nombre.' '.$usuario->segundo_nombre.' '.$usuario->primer_apellido.' '.$usuario->segundo_apellido;
-                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')
-                ->where('id_solicitud_practica',$solicitud_practica->id)
-                ->where('verificacion_asistencia',1)->get();
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica as esp')
+                    ->select('e.nombre_completo','e.email','esp.grupo')
+                    ->join('estudiante as e','e.email','=','esp.email')
+                    ->where('esp.id_solicitud_practica',$solicitud_practica->id)
+                    ->where('esp.verificacion_asistencia',1)->get();
         
                 return view('solicitudes.edit',["programacion_practica"=>$programacion_practica,
                                                 "practicas_integradas"=>$practicas_integradas,
@@ -1948,9 +1954,11 @@ class SolicitudController extends Controller
                 }
                 
                 $presupuesto_restante=$presupuesto_programa_academico->presupuesto_actual - $presupuesto_practica;
-                $lista_estudiantes = DB::table('estudiantes_solicitud_practica')
-                ->where('id_solicitud_practica',$solicitud_practica->id)
-                ->where('verificacion_asistencia',1)->get();
+                $lista_estudiantes = DB::table('estudiantes_solicitud_practica as esp')
+                    ->select('e.nombre_completo','e.email','esp.grupo')
+                    ->join('estudiante as e','e.email','=','esp.email')
+                    ->where('esp.id_solicitud_practica',$solicitud_practica->id)
+                    ->where('esp.verificacion_asistencia',1)->get();
 		$presupuesto_restante_transporte_menor=$presupuesto_transporte_menor->presupuesto_restante - $presupuesto_transporte_menor_practica;
 
                 return view('solicitudes.edit',["programacion_practica"=>$programacion_practica,
@@ -6865,6 +6873,286 @@ class SolicitudController extends Controller
         return view('solicitudes.formularios.estud_doc',["estudiantes_practica"=>$es_prac,
                                                         "usuario"=>$usuario,
                                                         'control_sistema'=>$control_sistema]);
+    }
+
+    /**
+     * Muestra la información de una solicitud
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function ver_solicitud($id){
+        $id = Crypt::decrypt($id);
+        $vlr_viaticos=DB::table('control_sistema as cs')
+                        ->select('cs.vlr_estud_max', 'cs.vlr_estud_min',
+                        'cs.vlr_docen_min', 'cs.vlr_docen_max')->first();
+
+        $control_sistema =DB::table('control_sistema')->first();
+
+        $programacion_practica = programacion::find($id);
+        $costos_programacion = costos_programacion::find($id);
+        $docentes_practica = docentes_practica::find($id);
+        $mate_herra_programacion = materiales_herramientas_programacion::find($id);
+        $riesg_amen_practica = riesgos_amenazas_practica::find($id);
+        $transporte_programacion = transporte_programacion::find($id);
+        $transporte_menor = transporte_menor::find($id);
+        $practicas_integradas = practicas_integradas::find($id);
+        
+        $solicitud_practica = DB::table('solicitud_practica as sol_prac')
+        ->where('sol_prac.id_programacion_practica','=',$id)->first();
+
+        $doc_req_solic = documentos_requeridos_solicitud::find($solicitud_practica->id);
+        $idUser = $programacion_practica->id_docente_responsable;
+        $idUser_log = Auth::user()->id;
+        $usuario_log=DB::table('users')
+        ->where('id','=',$idUser_log)->first();
+
+        $usuario_respon=DB::table('users')
+        ->where('id','=',$idUser)->first();
+
+        $sedes = DB::table('sedes_universidad')->get();
+        $programa_academico = DB::table('programa_academico')->get();
+        $espacio_academico=DB::table('espacio_academico as esp_aca')
+        ->select('esp_aca.id', 'esp_aca.id_programa_academico', 'prog_aca.programa_academico', 'esp_aca.codigo_espacio_academico',
+                'esp_aca.espacio_academico', 'esp_aca.plan_estudios_1', 'esp_aca.plan_estudios_2', 'esp_aca.tipo_espacio')
+        ->join('programa_academico as prog_aca','esp_aca.id_programa_academico','=','prog_aca.id')
+        ->whereIn('esp_aca.id', [$usuario_respon->id_espacio_academico_1, $usuario_respon->id_espacio_academico_2, $usuario_respon->id_espacio_academico_3, 
+        $usuario_respon->id_espacio_academico_4, $usuario_respon->id_espacio_academico_5, $usuario_respon->id_espacio_academico_6])->get();
+        $periodo_academico=DB::table('periodo_academico')->get();
+        $semestre_asignatura=DB::table('semestre_asignatura')->get();
+        $tipo_transporte=DB::table('tipo_transporte')->get();
+
+        $num_grupos_proy = 0; 
+
+        $prog_aca_user = [];
+        $esp_aca_user = [];
+
+        /**integradas */
+            $docen_integ = [];
+            $d_int_espa_aca_1 = [];
+            $d_int_espa_aca_2 = [];
+            $d_int_espa_aca_3 = [];
+            $d_int_espa_aca_4 = [];
+            $d_int_espa_aca_5 = [];
+            $d_int_espa_aca_6 = [];
+            $d_int_espa_aca_7 = [];
+
+            if($practicas_integradas->id_docen_espa_aca_1 != null || $practicas_integradas->id_docen_espa_aca_1 > 0)
+            {
+                $d_1=DB::table('users')
+                    ->select('users.id',
+                    DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                    ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_1)
+                    ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_1)
+                    ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_1)
+                    ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_1)
+                    ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_1)
+                    ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_1)->get();
+
+                foreach($d_1 as $d_1)
+                {
+                    $d_int_espa_aca_1[] = ['id'=>$d_1->id,'full_name'=>$d_1->full_name];
+                }
+            }
+            else{
+                $d_int_espa_aca_1[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+            }
+
+            if($practicas_integradas->id_docen_espa_aca_2 != null || $practicas_integradas->id_docen_espa_aca_2 > 0)
+            {
+                $d_2=DB::table('users')
+                    ->select('users.id',
+                    DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                    ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_2)
+                    ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_2)
+                    ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_2)
+                    ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_2)
+                    ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_2)
+                    ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_2)->get();
+
+                foreach($d_2 as $d_2)
+                {
+                    $d_int_espa_aca_2[] = ['id'=>$d_2->id,'full_name'=>$d_2->full_name];
+                }
+            }
+            else{
+                $d_int_espa_aca_2[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+            }
+
+            if($practicas_integradas->id_docen_espa_aca_3 != null || $practicas_integradas->id_docen_espa_aca_3 > 0)
+            {
+                $d_3=DB::table('users')
+                    ->select('users.id',
+                    DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                    ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_3)
+                    ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_3)
+                    ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_3)
+                    ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_3)
+                    ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_3)
+                    ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_3)->get();
+
+                foreach($d_3 as $d_3)
+                {
+                    $d_int_espa_aca_3[] = ['id'=>$d_3->id,'full_name'=>$d_3->full_name];
+                }
+            }
+            else{
+                $d_int_espa_aca_3[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+            }
+
+            if($practicas_integradas->id_docen_espa_aca_4 != null || $practicas_integradas->id_docen_espa_aca_4 > 0)
+            {
+                $d_4=DB::table('users')
+                    ->select('users.id',
+                    DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                    ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_4)
+                    ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_4)
+                    ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_4)
+                    ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_4)
+                    ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_4)
+                    ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_4)->get();
+
+                foreach($d_4 as $d_4)
+                {
+                    $d_int_espa_aca_4[] = ['id'=>$d_4->id,'full_name'=>$d_4->full_name];
+                }
+            }
+            else{
+                $d_int_espa_aca_4[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+            }
+
+            if($practicas_integradas->id_docen_espa_aca_5 != null || $practicas_integradas->id_docen_espa_aca_5 > 0)
+            {
+            $d_5=DB::table('users')
+                    ->select('users.id',
+                    DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                    ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_5)
+                    ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_5)
+                    ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_5)
+                    ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_5)
+                    ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_5)
+                    ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_5)->get();
+
+                foreach($d_5 as $d_5)
+                {
+                    $d_int_espa_aca_5[] = ['id'=>$d_5->id,'full_name'=>$d_5->full_name];
+                }
+            }
+            else{
+                $d_int_espa_aca_5[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+            }
+
+            if($practicas_integradas->id_docen_espa_aca_6 != null || $practicas_integradas->id_docen_espa_aca_6 > 0)
+            {
+                $d_6=DB::table('users')
+                    ->select('users.id',
+                    DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                    ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_6)
+                    ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_6)
+                    ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_6)
+                    ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_6)
+                    ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_6)
+                    ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_6)->get();
+
+                foreach($d_6 as $d_6)
+                {
+                    $d_int_espa_aca_6[] = ['id'=>$d_6->id,'full_name'=>$d_6->full_name];
+                }
+            }
+            else{
+                $d_int_espa_aca_6[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+            }
+
+            if($practicas_integradas->id_docen_espa_aca_7 != null || $practicas_integradas->id_docen_espa_aca_7 > 0)
+            {
+                $d_7=DB::table('users')
+                    ->select('users.id',
+                    DB::raw('CONCAT_WS(" ",users.primer_nombre, users.segundo_nombre, users.primer_apellido, users.segundo_apellido) as full_name'))
+                    ->where('id_espacio_academico_1',$practicas_integradas->id_espa_aca_7)
+                    ->orWhere('id_espacio_academico_2',$practicas_integradas->id_espa_aca_7)
+                    ->orWhere('id_espacio_academico_3',$practicas_integradas->id_espa_aca_7)
+                    ->orWhere('id_espacio_academico_4',$practicas_integradas->id_espa_aca_7)
+                    ->orWhere('id_espacio_academico_5',$practicas_integradas->id_espa_aca_7)
+                    ->orWhere('id_espacio_academico_6',$practicas_integradas->id_espa_aca_7)->get();
+
+                foreach($d_7 as $d_7)
+                {
+                    $d_int_espa_aca_7[] = ['id'=>$d_7->id,'full_name'=>$d_7->full_name];
+                }
+            }
+            else{
+                $d_int_espa_aca_7[] = ['id'=>0,'full_name'=>'No hay docente registrado'];
+            }
+        /**integradas */
+
+        $espa_aca_int = DB::table('espacio_academico as esp_aca')
+        ->select('esp_aca.id', 'esp_aca.id_programa_academico', 'prog_aca.programa_academico', 'esp_aca.codigo_espacio_academico',
+                'esp_aca.espacio_academico', 'esp_aca.plan_estudios_1', 'esp_aca.plan_estudios_2', 'esp_aca.tipo_espacio')
+        ->join('programa_academico as prog_aca','esp_aca.id_programa_academico','=','prog_aca.id')
+        ->whereIn('esp_aca.id', [$practicas_integradas->id_espa_aca_1, $practicas_integradas->id_espa_aca_2, $practicas_integradas->id_espa_aca_3, 
+        $practicas_integradas->id_espa_aca_4, $practicas_integradas->id_espa_aca_5, $practicas_integradas->id_espa_aca_6,
+        $practicas_integradas->id_espa_aca_7])->get();
+    
+        foreach($espacio_academico as $esp_aca)
+        {
+            $prog_aca_user[] = [
+                'id'=>$esp_aca->id_programa_academico,
+                'programa_academico'=>$esp_aca->programa_academico,
+            ];
+            
+        }
+        
+        $estado_doc_respon =$usuario_respon->id_estado;
+
+        $newArray_prog = array_unique($prog_aca_user, SORT_REGULAR);
+        $nomb_usuario = $usuario_log->primer_nombre.' '.$usuario_log->segundo_nombre.' '.$usuario_log->primer_apellido.' '.$usuario_log->segundo_apellido;
+        $nomb_doc_respon = $usuario_respon->primer_nombre.' '.$usuario_respon->segundo_nombre.' '.$usuario_respon->primer_apellido.' '.$usuario_respon->segundo_apellido;
+        
+        $presupuesto_programa_academico= DB::table('presupuesto_programa_academico')
+        ->where('id_programa_academico',$programacion_practica->id_programa_academico)->first();
+        $lista_estudiantes = DB::table('estudiantes_solicitud_practica as esp')
+        ->select('e.nombre_completo','e.email','esp.grupo')
+        ->join('estudiante as e','e.email','=','esp.email')
+        ->where('esp.id_solicitud_practica',$solicitud_practica->id)
+        ->where('esp.verificacion_asistencia',1)->get();
+
+        return view('solicitudes.formularios.ver',["programacion_practica"=>$programacion_practica,
+                                        "espa_aca_integradas"=>$espa_aca_int,
+                                        "d_int_espa_aca_1"=>$d_int_espa_aca_1,
+                                        "d_int_espa_aca_2"=>$d_int_espa_aca_2,
+                                        "d_int_espa_aca_3"=>$d_int_espa_aca_3,
+                                        "d_int_espa_aca_4"=>$d_int_espa_aca_4,
+                                        "d_int_espa_aca_5"=>$d_int_espa_aca_5,
+                                        "d_int_espa_aca_6"=>$d_int_espa_aca_6,
+                                        "d_int_espa_aca_7"=>$d_int_espa_aca_7,
+                                        "sedes"=>$sedes,
+                                        "practicas_integradas"=>$practicas_integradas,
+                                        "programas_academicos"=>$programa_academico,
+                                        "espacios_academicos"=>$espacio_academico,
+                                        "periodos_academicos"=>$periodo_academico,
+                                        "semestres_asignaturas"=>$semestre_asignatura,
+                                        "tipos_transportes"=>$tipo_transporte,
+                                        "programas_usuario"=>$newArray_prog,
+                                        "nombre_usuario"=>$nomb_usuario,
+                                        "nombre_doc_resp"=>$nomb_doc_respon,
+                                        "usuario_log"=>$usuario_log,
+                                        "estado_doc_respon"=>$estado_doc_respon,
+                                        "solicitud_practica"=>$solicitud_practica,
+                                        "costos_programacion"=>$costos_programacion,
+                                        "docentes_practica"=>$docentes_practica,
+                                        "mate_herra_programacion"=>$mate_herra_programacion,
+                                        "riesg_amen_practica"=>$riesg_amen_practica,
+                                        "transporte_programacion"=>$transporte_programacion,
+                                        "transporte_menor"=>$transporte_menor,
+                                        "documentos_requeridos"=>$doc_req_solic,
+                                        "tipo_ruta"=>$solicitud_practica->tipo_ruta,
+                                        "usuario"=>$usuario_log,
+                                        'vlr_viaticos'=>$vlr_viaticos,
+                                        'control_sistema'=>$control_sistema,
+                                        'presupuesto_programa_academico'=>$presupuesto_programa_academico,
+                                        'lista_estudiantes'=>$lista_estudiantes,
+
+        ]);        
     }
 
 }

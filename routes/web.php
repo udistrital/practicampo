@@ -194,7 +194,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('solicitudes/{id}','Solicitud\SolicitudController@listado_sol_docen')->name('sol_docente');
         Route::get('list_solic/aprob/{id}','Solicitud\SolicitudController@listado_sol_aprob')->name('list_sol_aprob');
         Route::get('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@edit')->name('solicitud_edit')->middleware('verificar.fechas:solicitud');
-        Route::get('ver_solicitud/{id}','Solicitud\SolicitudController@ver_solicitud')->name('solicitud_ver');
+        Route::get('ver_solicitud/{id}','Solicitud\SolicitudController@ver_solicitud')->name('ver_solicitud');
         Route::get('dwn_form_solicitud/{id}','Solicitud\SolicitudController@dwn_form_solicitud')->name('dwn_form_solicitud');
         Route::put('solicitudes/{id}/{tipoRuta}','Solicitud\SolicitudController@update')->name('solicitud_update')->middleware('verificar.fechas:solicitud');
         Route::delete('solicitudes','Solicitud\SolicitudController@destroy')->name('solicitud_destroy');

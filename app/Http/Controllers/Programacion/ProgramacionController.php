@@ -1055,7 +1055,7 @@ class ProgramacionController extends Controller
             {
                 $programacion_practica->confirm_creador= 1;
                 $programacion_practica->id_creador_confirm = Auth::user()->id;
-                $programacion_practica->confirm_docente= 0;
+                $programacion_practica->confirm_docente= 1;
                 $programacion_practica->confirm_coord= 0;
                 $programacion_practica->confirm_asistD= 0;
             }
@@ -4849,6 +4849,7 @@ class ProgramacionController extends Controller
                     }
 
                     $programacion_practica->aprobacion_coordinador=5;
+                    $programacion_practica->confirm_coord=0;
 		            $programacion_practica->aprobacion_asistD=7;
                     $programacion_practica->aprobacion_decano=5;
                     $programacion_practica->confirm_asistD=1;
@@ -5521,7 +5522,7 @@ class ProgramacionController extends Controller
                     if($request->get('aprobacion_coordinador') == 4)
                     {
                         $programacion_practica->confirm_creador=1;
-                        $programacion_practica->confirm_docente=0;
+                        $programacion_practica->confirm_docente=1;
                         $programacion_practica->confirm_coord=0;
                         $programacion_practica->aprobacion_coordinador=5;
     
@@ -5539,11 +5540,14 @@ class ProgramacionController extends Controller
 
                     $programacion_practica->observ_coordinador= $request->get('observ_coordinador');
                     $programacion_practica->aprobacion_coordinador= $request->get('aprobacion_coordinador');
+                    if($programacion_practica->aprobacion_coordinador == 7){
+                        $programacion_practica->confirm_coord=1;
+                    }                    
                     $programacion_practica->id_coordinador_aprob = Auth::user()->id;
-		    $programacion_practica->aprobacion_asistD=7;
+		            $programacion_practica->aprobacion_asistD=7;
                     $programacion_practica->confirm_asistD=1;
-		    $costos_programacion->valor_estimado_transporte_rp=1;
-		    $costos_programacion->valor_estimado_transporte_ra=1;
+                    $costos_programacion->valor_estimado_transporte_rp=1;
+                    $costos_programacion->valor_estimado_transporte_ra=1;
 
 
                     

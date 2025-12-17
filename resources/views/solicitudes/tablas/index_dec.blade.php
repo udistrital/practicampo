@@ -140,6 +140,7 @@
             <th style="width: 35px">Transp. Local</th>
             <th style="width: 35px">Transporte</th>
             <th style="width: 45px">Total</th>
+            <th style="width: 25px"></th>
         </thead> 
         @foreach ($programaciones as $item) 
             <tr>
@@ -167,6 +168,11 @@
                     <td>{{ number_format($item->total_presupuesto_ra + $item->valor_estimado_transporte_ra, 0, ',','.') }}</td>  
                     {{-- <td>{{ number_format($item->total_presupuesto_ra, 0, ',','.') }}</td>  --}}
                 @endif
+                <td style="text-align: center"> 
+                    <a href="{{route('ver_solicitud',[Crypt::encrypt($item->id)])}}">
+                        <button class="btn-success" style="background-color: #447161; border:0">Ver</button>
+                    </a> 
+                </td>
             </tr>
         @endforeach 
     </table>

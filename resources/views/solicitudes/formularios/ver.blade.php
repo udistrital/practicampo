@@ -1,6 +1,13 @@
-
+@extends('layouts.app')
+<!-- end HTML HEAD -->
+@section('contenido')
+<div class="container">
 <!-- información Programación -->
     <!-- 1 -->
+    <div class="card">
+        <div class="card-header" id="" name="">{{ __('Información Solicitud Práctica N° ') }}<?php echo $solicitud_practica->id?>
+        {{ __('') }}</div>
+    <div class="card-body">
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="id_programa_academico" class="col-form-label text-md-right">{{ __('Programa Académico') }}</label>
@@ -2980,68 +2987,168 @@
 <!-- certificados -->
 
 <!-- Visualización Presupuesto Programa academico -->
-    <h4>Presupuesto Programa Académico</h4>
-    <hr class="divider">
-    <br>
-    <div class="form-group row">
-        <div class="col-md-3">
-            <label for="presupuesto_actual" class="col-form-label text-md-left">{{ __('Presupuesto Actual') }}</label>
-            <input id="presupuesto_actual" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_actual" 
-            title=""
-            value="$ {{number_format($presupuesto_programa_academico->presupuesto_actual, 0, ',','.')}}" autocomplete="off" autofocus readonly>
-        </div>
-
-        <div class="col-md-3">
-            <label for="presupuesto_práctica" class="col-form-label text-md-left"> {{__('Presupuesto Práctica N°') }} {{ $solicitud_practica->id }}</label>
-            <input id="presupuesto_práctica" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_práctica" 
-            title=""
-            value="$ {{number_format($presupuesto_practica, 0, ',','.')}}" autocomplete="off" autofocus readonly>
-        </div>
-
-        <div class="col-md-3">
-            <label for="presupuesto_restante" class="col-form-label text-md-left">{{ __('Presupuesto restante') }}</label>
-            <input id="presupuesto_restante" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_restante" 
-            title=""
-            value="$ {{number_format($presupuesto_restante, 0, ',','.')}}" autocomplete="off" autofocus readonly>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-md-12">
-            <label id="lblpractica" class="col-form-label text-md-left text-danger" hidden>{{ __('La práctica no se puede aprobar porque el presupuesto del programa no es suficiente.') }}</label>
-        </div>
-    </div>
-
 <br>
-    <h4>Presupuesto Transporte Menor</h4>
-    <hr class="divider">    
-    <div class="form-group row">
-        <div class="col-md-3">
-            <label for="presupuesto_actual_transporte_menor" class="col-form-label text-md-left" hidden>{{ __('Presupuesto Actual') }}</label>
-            <input id="presupuesto_actual_transporte_menor" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
-            name="presupuesto_actual_transporte_menor" title="" hidden
-            value="$ {{number_format($presupuesto_transporte_menor->presupuesto_restante, 0, ',','.')}}" autocomplete="off" autofocus readonly>
-        </div>
+<h4>Detalle Presupuesto</h4>
+<hr class="divider">
+<br>
 
-        <div class="col-md-5">
-            <label for="presupuesto_transporte_menor_practica" class="col-form-label text-md-left"> {{__('Presupuesto Transporte Menor Práctica N°') }} {{ $solicitud_practica->id }}</label>
-            <input id="presupuesto_transporte_menor_practica" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
-            name="presupuesto_transporte_menor_practica" title=""
-            value="$ {{number_format($presupuesto_transporte_menor_practica, 0, ',','.')}}" autocomplete="off" autofocus readonly>
-        </div>
+@if($tipo_ruta == 1)
+    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+        <thead>
+            <th style="width: 50px">Concepto</th>
+            <th style="width: 60px">N° Docen. / N° Estud.</th>
+            <th style="width: 45px">Valor Diario</th>
+            <th style="width: 30px">N° Días Pern.</th>
+            <th style="width: 70px">Total</th>
+        </thead> 
+    
+        <tr>
+        <td>Viáticos Docentes: </td>
+        <td>{{ $practicas_integradas->cant_espa_aca + $docentes_practica->num_docentes_apoyo + 1 }}</td>
+        @if($programacion_practica->duracion_num_dias_rp == 1)
+            <td>{{ number_format($control_sistema->vlr_docen_min, 0, ',','.') }}</td>
+        @elseif($programacion_practica->duracion_num_dias_rp > 1)
+            <td>{{ number_format($control_sistema->vlr_docen_max, 0, ',','.') }}</td>
+        @endif
+        <td>{{ $programacion_practica->duracion_num_dias_rp }}</td>
+        <td>{{ number_format($costos_programacion->viaticos_docente_rp, 0, ',','.') }}</td>
+        
+        </tr>
 
-        <div class="col-md-4">
-            <label for="presupuesto_restante_transporte_menor" class="col-form-label text-md-left" hidden>{{ __('Presupuesto restante transporte menor') }}</label>
-            <input id="presupuesto_restante_transporte_menor" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
-            name="presupuesto_restante_transporte_menor" title="" hidden
-            value="$ {{number_format($presupuesto_restante_transporte_menor, 0, ',','.')}}" autocomplete="off" autofocus readonly>
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-md-12">
-            <label id="lblpracticatm" class="col-form-label text-md-left text-danger" hidden>{{ __('La práctica no se puede aprobar porque el presupuesto del transporte menor no es suficiente.') }}</label>
-        </div>
-    </div>
-    <br>
+        <tr>
+            <td>Viáticos Estudiantes: </td>
+            <td>{{ $solicitud_practica->num_estudiantes }}</td>
+            @if($programacion_practica->duracion_num_dias_rp == 1)
+                <td>{{ number_format($control_sistema->vlr_estud_min, 0, ',','.') }}</td>
+            @elseif($programacion_practica->duracion_num_dias_rp > 1)
+                <td>{{ number_format($control_sistema->vlr_estud_max, 0, ',','.') }}</td>
+            @endif
+            <td>{{ $programacion_practica->duracion_num_dias_rp }}</td>
+            <td>{{ number_format($costos_programacion->viaticos_estudiantes_rp, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Materiales: </td>
+            <td colspan="3">{{$mate_herra_programacion->det_materiales_rp}}</td>
+            <td>{{ number_format($costos_programacion->vlr_materiales_rp, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Guías - Baquianos: </td>
+            <td colspan="3">{{$mate_herra_programacion->det_guias_baquianos_rp}}</td>
+            <td>{{ number_format($costos_programacion->vlr_guias_baquianos_rp, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Boletas - Otros: </td>
+            <td colspan="3">{{$mate_herra_programacion->det_otros_boletas_rp}}</td>
+            <td>{{ number_format($costos_programacion->vlr_otros_boletas_rp, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Transporte Menor: </td>
+            <td colspan="3">Nota: valor sujeto al transporte que se contrata en sitio por parte del docente responsable. </td>
+            <td>{{ number_format($costos_programacion->costo_total_transporte_menor_rp, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Servicio Transporte: </td>
+            <td colspan="3">Nota: valor sujeto a contrato suscrito entre la facultad y las empresas de transporte. Se recomienda solicitar concepto en la decanatura para establecer costos del recorrido.</td>
+            <td>0</td>
+            
+        </tr>
+
+        <tr>
+            <td colspan="4">Total Presupuesto: </td>
+            <td>{{ number_format($costos_programacion->viaticos_estudiantes_rp + $costos_programacion->viaticos_docente_rp + $costos_programacion->vlr_materiales_rp + $costos_programacion->vlr_guias_baquianos_rp + $costos_programacion->vlr_otros_boletas_rp + $costos_programacion->costo_total_transporte_menor_rp, 0, ',','.') }}</td>
+            
+        </tr>
+    </table>
+@endif
+
+@if($tipo_ruta == 2)
+    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
+        <thead>
+            <th style="width: 50px">Concepto</th>
+            <th style="width: 60px">N° Docen. / N° Estud.</th>
+            <th style="width: 45px">Valor Diario</th>
+            <th style="width: 30px">N° Días Pern.</th>
+            <th style="width: 70px">Total</th>
+        </thead> 
+    
+        <tr>
+        <td>Viáticos Docentes: </td>
+        <td>{{ $practicas_integradas->cant_espa_aca + $docentes_practica->num_docentes_apoyo + 1 }}</td>
+        @if($programacion_practica->duracion_num_dias_rp == 1)
+            <td>{{ number_format($control_sistema->vlr_docen_min, 0, ',','.') }}</td>
+        @elseif($programacion_practica->duracion_num_dias_rp > 1)
+            <td>{{ number_format($control_sistema->vlr_docen_max, 0, ',','.') }}</td>
+        @endif
+        <td>{{ $programacion_practica->duracion_num_dias_ra }}</td>
+        <td>{{ number_format($costos_programacion->viaticos_docente_ra, 0, ',','.') }}</td>
+        
+        </tr>
+
+        <tr>
+            <td>Viáticos Estudiantes: </td>
+            <td>{{ $solicitud_practica->num_estudiantes }}</td>
+            @if($programacion_practica->duracion_num_dias_rp == 1)
+                <td>{{ number_format($control_sistema->vlr_estud_min, 0, ',','.') }}</td>
+            @elseif($programacion_practica->duracion_num_dias_rp > 1)
+                <td>{{ number_format($control_sistema->vlr_estud_max, 0, ',','.') }}</td>
+            @endif
+            <td>{{ $programacion_practica->duracion_num_dias_ra }}</td>
+            <td>{{ number_format($costos_programacion->viaticos_estudiantes_ra, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Materiales: </td>
+            <td colspan="3">{{$mate_herra_programacion->det_materiales_ra}}</td>
+            <td>{{ number_format($costos_programacion->vlr_materiales_ra, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Guías - Baquianos: </td>
+            <td colspan="3">{{$mate_herra_programacion->det_guias_baquianos_ra}}</td>
+            <td>{{ number_format($costos_programacion->vlr_guias_baquianos_ra, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Boletas - Otros: </td>
+            <td colspan="3">{{$mate_herra_programacion->det_otros_boletas_ra}}</td>
+            <td>{{ number_format($costos_programacion->vlr_otros_boletas_ra, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Transporte Menor: </td>
+            <td colspan="3">Nota: valor sujeto al transporte que se contrata en sitio por parte del docente responsable.</td>
+            <td>{{ number_format($costos_programacion->costo_total_transporte_menor_ra, 0, ',','.') }}</td>
+            
+        </tr>
+
+        <tr>
+            <td>Servicio Transporte: </td>
+            <td colspan="3">Nota: valor sujeto a contrato suscrito entre la facultad y las empresas de transporte. Se recomienda solicitar concepto en la decanatura para establecer costos del recorrido.</td>
+            <td>0</td>
+            
+        </tr>
+
+        <tr>
+            <td colspan="4">Total Presupuesto: </td>
+            <td>{{ number_format($costos_programacion->viaticos_estudiantes_ra + $costos_programacion->viaticos_docente_ra + $costos_programacion->vlr_materiales_ra + $costos_programacion->vlr_guias_baquianos_ra + $costos_programacion->vlr_otros_boletas_ra + $costos_programacion->costo_total_transporte_menor_ra, 0, ',','.') }}</td>
+            
+        </tr>
+    </table>
+@endif
 <!-- Visualización Presupuesto Programa academico -->
 
 <h4>Observaciones</h4>
@@ -3055,7 +3162,7 @@
                     data-toggle="tooltip" data-placement="left" 
                     data-title="Indique las observaciones asociadas a la 
                     salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('Observaciones Coordinador') }}</label>
-                <textarea id="observ_coordinador" style="min-height:5rem;" type="text" class="form-control @error('observ_coordinador') is-invalid @enderror" name="observ_coordinador" 
+                <textarea id="observ_coordinador" style="min-height:5rem;" type="text" class="form-control @error('observ_coordinador') is-invalid @enderror" name="observ_coordinador" disabled
                 autocomplete="off" autofocus ><?php echo $programacion_practica->observ_coordinador?></textarea>
 
                 @error('observ_coordinador')
@@ -3076,11 +3183,10 @@
                 <label for="id_estado">
                     <i class="fas fa-question-circle" 
                     data-toggle="tooltip" data-placement="left" 
-                    data-title="Asigne uno de los estados a la 
-                    salida de práctica académica" style="font-size: 0.813rem"></i> Estado Área de Coordinación</label>
+                    data-title="" style="font-size: 0.813rem"></i> Estado Área de Coordinación</label>
                 <div class="row">
 
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="aprobacion_coordinador" value="5"
                         <?php if($solicitud_practica->aprobacion_coordinador == 5) echo 'checked'?>  >
@@ -3088,7 +3194,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="aprobacion_coordinador" value="7"
                         <?php if($solicitud_practica->aprobacion_coordinador == 7) echo 'checked'?>  >
@@ -3096,7 +3202,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="aprobacion_coordinador"  value="4" 
                             <?php if($solicitud_practica->aprobacion_coordinador == 4) echo 'checked'?>  >
@@ -3116,7 +3222,7 @@
                     <label for="id_estado">
                         <i class="fas fa-question-circle" 
                         data-toggle="tooltip" data-placement="left" 
-                        data-title="Asigne uno de los estados a la salida de práctica académica" style="font-size: 0.813rem"></i> Estado Asistencia Decanatura</label>
+                        data-title="" style="font-size: 0.813rem"></i> Estado Asistencia Decanatura</label>
                     <div class="row">
 
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -3131,7 +3237,7 @@
                             <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="aprobacion_asistD" value="7"
                             <?php if($solicitud_practica->aprobacion_asistD == 7) echo 'checked'?>>
-                            <label class="form-check-label" for="">Aprobado</label>
+                            <label class="form-check-label" for="">Visto Bueno</label>
                             </div>
                         </div>
 
@@ -3153,7 +3259,10 @@
             <div class="form-group row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        <label for="id_estado">Estado Decano</label>
+                        <label for="id_estado">
+                        <i class="fas fa-question-circle" 
+                        data-toggle="tooltip" data-placement="left" 
+                        data-title="" style="font-size: 0.813rem"></i> Estado Asistencia Decanatura</label>
                         <div class="row">
 
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
@@ -3187,42 +3296,45 @@
         <!-- 0 -->
     <!-- estado decano-->
     <!-- 19 -->
-<!-- modal -->
-<div class="modal fade" id="modalVerDocs" tabindex="-1" role="dialog" aria-labelledby="modalVerDocsLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+    <!-- modal -->
+    <div class="modal fade" id="modalVerDocs" tabindex="-1" role="dialog" aria-labelledby="modalVerDocsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
 
-            <div class="modal-header" style="background: #447161; color: white;">
-                <h5 class="modal-title">
-                    Documentos de <span id="nombreEstudianteDocs"></span>
-                </h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+                <div class="modal-header" style="background: #447161; color: white;">
+                    <h5 class="modal-title">
+                        Documentos de <span id="nombreEstudianteDocs"></span>
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
-            <div class="modal-body">
-                <div id="documentosLoader" class="text-center my-4" style="display: none;">
-                    <div class="spinner-border text-success" role="status">
-                        <span class="sr-only">Cargando...</span>
+                <div class="modal-body">
+                    <div id="documentosLoader" class="text-center my-4" style="display: none;">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="sr-only">Cargando...</span>
+                        </div>
+                        <p class="mt-2">Cargando documentos...</p>
                     </div>
-                    <p class="mt-2">Cargando documentos...</p>
+                    <div id="listaDocumentos">
+                        <!-- Carga de documentos -->
+                    </div>
                 </div>
-                <div id="listaDocumentos">
-                    <!-- Carga de documentos -->
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cerrar
+                    </button>
                 </div>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    Cerrar
-                </button>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
-<!-- modal -->
+    <!-- modal -->
+    </div>
+    </div>
+@endsection  
 
 
 
