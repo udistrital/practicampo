@@ -1279,7 +1279,7 @@
                                                 </div>
                                             <input class="inputDate form-control datetimepicker" name="fecha_salida_aprox_rp" id="fecha_salida_aprox_rp" type="text" required
                                             title=""
-                                            value="{{$programacion_practica->fecha_salida_aprox_rp}}"  onchange="duracion_edit_RP(this.value)">
+                                            value=""  onchange="duracion_edit_RP(this.value)">
                                             </div>
                                         </div>
 
@@ -1318,7 +1318,7 @@
                                                 </div>
                                             <input class="inputDate form-control datetimepicker" name="fecha_regreso_aprox_rp" id="fecha_regreso_aprox_rp" type="text" required
                                             title=""
-                                            value="{{$programacion_practica->fecha_regreso_aprox_rp}}" onchange="duracion_edit_RP(this.value)">
+                                            value="" onchange="duracion_edit_RP(this.value)">
                                             </div>
                                         </div>
 
@@ -2478,7 +2478,7 @@
                                                 </div>
                                             <input class="inputDate form-control datetimepicker" name="fecha_salida_aprox_ra" id="fecha_salida_aprox_ra"  type="text" required
                                             title=""
-                                            value="{{$programacion_practica->fecha_salida_aprox_ra}}" onchange="duracion_edit_RA(this.value)">
+                                            value="" onchange="duracion_edit_RA(this.value)">
                                             </div>
                                         </div>
 
@@ -2517,7 +2517,7 @@
                                                 </div>
                                             <input class="inputDate form-control datetimepicker" name="fecha_regreso_aprox_ra" id="fecha_regreso_aprox_ra"  type="text" required
                                             title=""
-                                            value="{{$programacion_practica->fecha_regreso_aprox_ra}}" onchange="duracion_edit_RA(this.value)">
+                                            value="" onchange="duracion_edit_RA(this.value)">
                                             </div>
                                         </div>
 
