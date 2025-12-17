@@ -50,7 +50,7 @@
             <div class="col-md-2">
                 <div class="input-group">
                     <label for="id_periodo_academico" class="col-form-label text-md-right">{{ __('Año - Per.') }}</label>
-                    <span class="hs-form-required" title="">*</span>
+                    <span class="hs-form-required" title="Período Asignatura">*</span>
                     <div class="row">
                         <div class="col-md-12" style="padding-left: 0;">
                             <div class="input-group">
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="col-md-7" style="padding-left: 0px;padding-right: 0px;">
                                     <select name="id_periodo_academico" class="form-control" required
-                                    title="" disabled
+                                    title="Período académico" disabled
                                     style="padding-left: 0.1rem;padding-right: 0.1rem;border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                         @foreach($periodos_academicos as $per_aca)
                                         <option <?php if($per_aca->id==$programacion_practica->id_periodo_academico) echo 'selected'?> value="{{$per_aca->id}}">{{$per_aca->periodo_academico}}</option>  
@@ -94,7 +94,7 @@
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                             <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="integrada" id="integrada" value="1" 
-                            title=""
+                            title="Con prácticas integradas"
                             <?php if($programacion_practica->practicas_integradas == 1) echo 'checked'?> disabled>
                             <label class="form-check-label" for="">Si</label>
                             </div>
@@ -103,7 +103,7 @@
                         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="integrada" id="integrada"  value="0"
-                                title=""
+                                title="Sin prácticas integradas"
                                 <?php if($programacion_practica->practicas_integradas == 0) echo 'checked'?> disabled>
                                 <label class="form-check-label" for="">No</label>
                             </div>
@@ -116,7 +116,7 @@
                 <label for="cant_espa_aca" class="col-form-label text-md-left">{{ __('Cant. Esp. Aca.') }}</label>
                 <div class="input-group">
                     <input id="cant_espa_aca" type="number" max="7" min="1" pattern="^[1-7]+" class="form-control @error('cant_espa_aca') is-invalid @enderror" name="cant_espa_aca" 
-                    title=""
+                    title="Número de espacios académicos"
                     value="{{$practicas_integradas->cant_espa_aca}}" autocomplete="off" autofocus onchange="" readonly disabled>
                     
                     @error('cant_espa_aca')
@@ -171,7 +171,7 @@
             <div class="col-md-5" id="">
                 <label for="id_espa_aca_1" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
                 <select id="id_espa_aca_1" name="id_espa_aca_1" class="form-control" required
-                title=""
+                title="Espacio académico"
                 onchange="recargarDocenEspaAca(this.value, 1)"
                 readonly disabled>
                     @foreach($espa_aca_integradas as $esp_aca)
@@ -190,7 +190,7 @@
                 <label for="id_docen_espa_aca_1" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 
                 <select id="id_docen_espa_aca_1" name="id_docen_espa_aca_1" class="form-control" required
-                title=""
+                title="Docente responsable de la práctica"
                 readonly disabled>
                     @foreach($d_int_espa_aca_1 as $d_i_1)
                         <option <?php if($d_i_1['id']==$practicas_integradas->id_docen_espa_aca_1) echo 'selected'?> value="{{$d_i_1['id']}}">{{$d_i_1['full_name']}}</option>
@@ -209,7 +209,7 @@
             <div class="col-md-5" id="">
                 <label for="id_espa_aca_2" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
                 <select id="id_espa_aca_2" name="id_espa_aca_2" class="form-control" required
-                title=""
+                title="Espacio académico"
                 onchange="recargarDocenEspaAca(this.value, 2)"
                 readonly disabled>
                     @foreach($espa_aca_integradas as $esp_aca)
@@ -227,7 +227,7 @@
             <div class="col-md-5" id="">
                 <label for="id_docen_espa_aca_2" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_2" name="id_docen_espa_aca_2" class="form-control" required
-                title=""
+                title="Docente responsable de la práctica"
                 readonly disabled>
                     @foreach($d_int_espa_aca_2 as $d_i_2)
                         <option <?php if($d_i_2['id']==$practicas_integradas->id_docen_espa_aca_2) echo 'selected'?> value="{{$d_i_2['id']}}">{{$d_i_2['full_name']}}</option>
@@ -246,7 +246,7 @@
             <div class="col-md-5" id="">
                 <label for="id_espa_aca_3" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
                 <select id="id_espa_aca_3" name="id_espa_aca_3" class="form-control" required
-                title=""
+                title="Espacio académico"
                 onchange="recargarDocenEspaAca(this.value, 3)"
                 readonly disabled>
                     @foreach($espa_aca_integradas as $esp_aca)
@@ -264,7 +264,7 @@
             <div class="col-md-5" id="">
                 <label for="id_docen_espa_aca_3" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_3" name="id_docen_espa_aca_3" class="form-control" required
-                title=""
+                title="Docente responsable de la práctica"
                 readonly disabled>
                     @foreach($d_int_espa_aca_3 as $d_i_3)
                         <option <?php if($d_i_3['id']==$practicas_integradas->id_docen_espa_aca_3) echo 'selected'?> value="{{$d_i_3['id']}}">{{$d_i_3['full_name']}}</option>
@@ -283,7 +283,7 @@
             <div class="col-md-5" id="">
                 <label for="id_espa_aca_4" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
                 <select id="id_espa_aca_4" name="id_espa_aca_4" class="form-control" required
-                title=""
+                title="Espacio académico"
                 onchange="recargarDocenEspaAca(this.value, 4)"
                 readonly disabled>
                     @foreach($espa_aca_integradas as $esp_aca)
@@ -301,7 +301,7 @@
             <div class="col-md-5" id="">
                 <label for="id_docen_espa_aca_4" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_4" name="id_docen_espa_aca_4" class="form-control" required
-                title=""
+                title="Docente responsable de la práctica"
                 readonly disabled>
                     @foreach($d_int_espa_aca_4 as $d_i_4)
                         <option <?php if($d_i_4['id']==$practicas_integradas->id_docen_espa_aca_4) echo 'selected'?> value="{{$d_i_4['id']}}">{{$d_i_4['full_name']}}</option>
@@ -320,7 +320,7 @@
             <div class="col-md-5" id="">
                 <label for="id_espa_aca_5" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
                 <select id="id_espa_aca_5" name="id_espa_aca_5" class="form-control" required
-                title=""
+                title="Espacio académico"
                 onchange="recargarDocenEspaAca(this.value, 5)"
                 readonly disabled>
                     @foreach($espa_aca_integradas as $esp_aca)
@@ -338,7 +338,7 @@
             <div class="col-md-5" id="">
                 <label for="id_docen_espa_aca_5" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_5" name="id_docen_espa_aca_5" class="form-control" required
-                title=""
+                title="Docente responsable de la práctica"
                 readonly disabled>
                     @foreach($d_int_espa_aca_5 as $d_i_5)
                         <option <?php if($d_i_5['id']==$practicas_integradas->id_docen_espa_aca_5) echo 'selected'?> value="{{$d_i_5['id']}}">{{$d_i_5['full_name']}}</option>
@@ -375,7 +375,7 @@
             <div class="col-md-5" id="">
                 <label for="id_docen_espa_aca_6" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_6" name="id_docen_espa_aca_6" class="form-control" required
-                title=""
+                title="Docente responsable de la práctica"
                 readonly disabled>
                     @foreach($d_int_espa_aca_6 as $d_i_6)
                         <option <?php if($d_i_6['id']==$practicas_integradas->id_docen_espa_aca_6) echo 'selected'?> value="{{$d_i_6['id']}}">{{$d_i_6['full_name']}}</option>
@@ -412,7 +412,7 @@
             <div class="col-md-5" id="">
                 <label for="id_docen_espa_aca_7" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <select id="id_docen_espa_aca_7" name="id_docen_espa_aca_7" class="form-control" required
-                title=""
+                title="Docente responsable de la práctica"
                 readonly disabled>
                     @foreach($d_int_espa_aca_7 as $d_i_7)
                         <option <?php if($d_i_7['id']==$practicas_integradas->id_docen_espa_aca_7) echo 'selected'?> value="{{$d_i_7['id']}}">{{$d_i_7['full_name']}}</option>
@@ -441,8 +441,8 @@
         <div  class="form-group row">
             <div class="col-md-2">
                 <label for="num_estudiantes_aprox" class="col-form-label text-md-left">{{ __('Estudiantes') }}</label>
-                <input id="num_estudiantes_aprox" type="text" pattern="[1-9][0-9]*" class="form-control @error('num_estudiantes_aprox') is-invalid @enderror" name="num_estudiantes_aprox" 
-                title=""
+                <input id="num_estudiantes_aprox" type="text" pattern="[0-9]{1,3}" class="form-control @error('num_estudiantes_aprox') is-invalid @enderror" name="num_estudiantes_aprox" 
+                title="Número de estudiantes"
                 value="{{$solicitud_practica->num_estudiantes}}" required autocomplete="off" autofocus readonly>
                 
                 @error('num_estudiantes_aprox')
@@ -456,7 +456,7 @@
                 <label for="cant_grupos" class="col-form-label text-md-left">{{ __('Cant. Grupos') }}</label>
                 <div class="input-group">
                     <input id="cant_grupos"  max="4" min="1" pattern="^[1-4]" class="form-control @error('cant_grupos') is-invalid @enderror" name="cant_grupos" 
-                    title="" readonly
+                    title="Cantidad de grupos" readonly
                     value="{{$programacion_practica->cantidad_grupos}}" autocomplete="off" autofocus readonly>
                     @error('cant_grupos')
                         <span class="invalid-feedback" role="alert">
@@ -471,8 +471,8 @@
                 <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Docentes Acompañantes') }}</label>
                 <div class="input-group">
                     <input id="num_apoyo" max="3" min="0" pattern="^[0-9]+" class="form-control @error('num_apoyo') is-invalid @enderror" name="num_apoyo" 
-                    title=""
-                    value="{{$docentes_practica->num_docentes_apoyo}}" autocomplete="off" autofocus readonly disabled>
+                    title="Número de docentes de apoyo"
+                    value="{{$docentes_practica->num_docentes_apoyo}}" autocomplete="off" autofocus readonly>
                     
                     @error('num_apoyo')
                         <span class="invalid-feedback" role="alert">
@@ -509,7 +509,7 @@
                 <label for="grupo_1" class="col-form-label text-md-left">{{ __('Gp 1') }}</label>
                 <span class="hs-form-required">*</span>
                 <input id="grupo_1" type="text" class="form-control @error('grupo_1') is-invalid @enderror" name="grupo_1" 
-                title="" onkeyup="onlyNmb(this)" 
+                title="Número de grupo 1" onkeyup="onlyNmb(this)" pattern="[0-9]{1,5}"
                 value="{{$programacion_practica->grupo_1}}" required autocomplete="off" autofocus>
                 
                 @error('grupo_1')
@@ -521,7 +521,7 @@
             <div class="col-md-2" id="gp_2_edit">
                 <label for="grupo_2" class="col-form-label text-md-left">{{ __('Gp 2') }}</label>
                 <input id="grupo_2" type="text" class="form-control @error('grupo_2') is-invalid @enderror" name="grupo_2" 
-                title="" onkeyup="onlyNmb(this)" 
+                title="Número de grupo 2" onkeyup="onlyNmb(this)" pattern="[0-9]{1,5}"
                 value="{{$programacion_practica->grupo_2}}" autocomplete="off" autofocus>
                 @error('grupo_2')
                     <span class="invalid-feedback" role="alert">
@@ -532,7 +532,7 @@
             <div class="col-md-2" id="gp_3_edit">
                 <label for="grupo_3" class="col-form-label text-md-left">{{ __('Gp 3') }}</label>
                 <input id="grupo_3" type="text" class="form-control @error('grupo_3') is-invalid @enderror" name="grupo_3" 
-                title="" onkeyup="onlyNmb(this)" 
+                title="Número de grupo 3" onkeyup="onlyNmb(this)" pattern="[0-9]{1,5}"
                 value="{{$programacion_practica->grupo_3}}" autocomplete="off" autofocus>
                 @error('grupo_3')
                     <span class="invalid-feedback" role="alert">
@@ -543,7 +543,7 @@
             <div class="col-md-2" id="gp_4_edit">
                 <label for="grupo_4" class="col-form-label text-md-left">{{ __('Gp 4') }}</label>
                 <input id="grupo_4" type="text" class="form-control @error('grupo_4') is-invalid @enderror" name="grupo_4" 
-                title="" onkeyup="onlyNmb(this)" 
+                title="Número de grupo 4" onkeyup="onlyNmb(this)" pattern="[0-9]{1,5}"
                 value="{{$programacion_practica->grupo_4}}" autocomplete="off" autofocus>
                 @error('grupo_4')
                     <span class="invalid-feedback" role="alert">
@@ -562,7 +562,7 @@
                 <label for="apoyo_1" class="col-form-label text-md-left">{{ __('Docente Acompañante 1') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="apoyo_1" type="text" class="form-control @error('apoyo_1') is-invalid @enderror" name="apoyo_1" 
-                title=""
+                title="Nombre de docente de apoyo 1"
                 value="{{$docentes_practica->docente_apoyo_1}}" autocomplete="off" autofocus readonly>
                 
                 @error('apoyo_1')
@@ -574,7 +574,7 @@
             <div class="col-md-4" id="ap_2">
                 <label for="apoyo_2" class="col-form-label text-md-left">{{ __('Docente Acompañante 2') }}</label>
                 <input id="apoyo_2" type="text" class="form-control @error('apoyo_2') is-invalid @enderror" name="apoyo_2" 
-                title=""
+                title="Nombre de docente de apoyo 2"
                 value="{{$docentes_practica->docente_apoyo_2}}" autocomplete="off" autofocus readonly>
                 @error('apoyo_2')
                     <span class="invalid-feedback" role="alert">
@@ -586,7 +586,7 @@
             <div class="col-md-4" id="ap_3">
                 <label for="apoyo_3" class="col-form-label text-md-left">{{ __('Docente Acompañante 3') }}</label>
                 <input id="apoyo_3" type="text" class="form-control @error('apoyo_3') is-invalid @enderror" name="apoyo_3" 
-                title=""
+                title="Nombre de docente de apoyo 3"
                 value="{{$docentes_practica->docente_apoyo_3}}" autocomplete="off" autofocus readonly>
                 @error('apoyo_3')
                     <span class="invalid-feedback" role="alert">
@@ -598,7 +598,7 @@
             <div class="col-md-4" id="ap_4">
                 <label for="apoyo_4" class="col-form-label text-md-left">{{ __('Docente Acompañante 4') }}</label>
                 <input id="apoyo_4" type="text" class="form-control @error('apoyo_4') is-invalid @enderror" name="apoyo_4" 
-                title=""
+                title="Nombre de docente de apoyo"
                 value="{{$docentes_practica->docente_apoyo_4}}"  autocomplete="off" autofocus readonly>
                 
                 @error('apoyo_4')
@@ -611,7 +611,7 @@
             <div class="col-md-4" id="ap_5">
                     <label for="apoyo_5" class="col-form-label text-md-left">{{ __('Docente Acompañante 5') }}</label>
                     <input id="apoyo_5" type="text" class="form-control @error('apoyo_5') is-invalid @enderror" name="apoyo_5" 
-                    title=""
+                    title="Nombre de docente de apoyo"
                     value="{{$docentes_practica->docente_apoyo_5}}" autocomplete="off" autofocus readonly>
                     @error('apoyo_5')
                         <span class="invalid-feedback" role="alert">
@@ -623,7 +623,7 @@
             <div class="col-md-4" id="ap_6">
                     <label for="apoyo_6" class="col-form-label text-md-left">{{ __('Docente Acompañante 6') }}</label>
                     <input id="apoyo_6" type="text" class="form-control @error('apoyo_6') is-invalid @enderror" name="apoyo_6" 
-                    title=""
+                    title="Nombre de docente de apoyo"
                     value="{{$docentes_practica->docente_apoyo_6}}" autocomplete="off" autofocus readonly>
                     @error('apoyo_6')
                         <span class="invalid-feedback" role="alert">
@@ -635,7 +635,7 @@
             <div class="col-md-4" id="ap_7">
                     <label for="apoyo_7" class="col-form-label text-md-left">{{ __('Docente Acompañante 7') }}</label>
                     <input id="apoyo_7" type="text" class="form-control @error('apoyo_7') is-invalid @enderror" name="apoyo_7" 
-                    title=""
+                    title="Nombre de docente de apoyo"
                     value="{{$docentes_practica->docente_apoyo_7}}"  autocomplete="off" autofocus readonly>
                     
                     @error('apoyo_7')
@@ -648,7 +648,7 @@
             <div class="col-md-4" id="ap_8">
                     <label for="apoyo_8" class="col-form-label text-md-left">{{ __('Docente Acompañante 8') }}</label>
                     <input id="apoyo_8" type="text" class="form-control @error('apoyo_8') is-invalid @enderror" name="apoyo_8" 
-                    title=""
+                    title="Nombre de docente de apoyo"
                     value="{{$docentes_practica->docente_apoyo_8}}" autocomplete="off" autofocus readonly>
                     @error('apoyo_8')
                         <span class="invalid-feedback" role="alert">
@@ -660,7 +660,7 @@
             <div class="col-md-4" id="ap_9">
                     <label for="apoyo_9" class="col-form-label text-md-left">{{ __('Docente Acompañante 9') }}</label>
                     <input id="apoyo_9" type="text" class="form-control @error('apoyo_9') is-invalid @enderror" name="apoyo_9" 
-                    title=""
+                    title="Nombre de docente de apoyo"
                     value="{{$docentes_practica->docente_apoyo_9}}" autocomplete="off" autofocu readonly>
                     @error('apoyo_9')
                         <span class="invalid-feedback" role="alert">
@@ -672,7 +672,7 @@
             <div class="col-md-4" id="ap_10">
                     <label for="apoyo_10" class="col-form-label text-md-left">{{ __('Docente Acompañante 10') }}</label>
                     <input id="apoyo_10" type="text" class="form-control @error('apoyo_10') is-invalid @enderror" name="apoyo_10" 
-                    title=""
+                    title="Nombre de docente de apoyo"
                     value="{{$docentes_practica->docente_apoyo_10}}" autocomplete="off" autofocus readonly>
                     @error('apoyo_10')
                         <span class="invalid-feedback" role="alert">
@@ -685,7 +685,7 @@
     <!-- 2.3 -->
     <!-- Visualizar lista de estudiantes -->
     <br>
-     <div class="form-group row col-md-12">
+    <div class="form-group row col-md-12">
         <h4>Ver Lista de Estudiantes</h4>
         <button class="btn btn-success btn_ver" type="button" id="btn_ver_estud" style="border: 1px solid #d1d3e2; margin-left: 5px; border-top-left-radius: 0; border-bottom-left-radius: 0"
         onclick="ver_estudiantes()"><i id="icono_ver_estud" class="far fa-eye"></i></button>
@@ -699,7 +699,7 @@
         <th>Grupo</th>
         <th>Acciones</th>
     </tr>
-    @foreach($lista_estudiantes as $lista_estud)
+    @foreach($lista_estudiantes as $estudiante)
     <tr>
         <td>{{$loop->iteration}}</td>
         <td><?php echo $estudiante->nombre_completo ?></td>
@@ -724,6 +724,7 @@
     <!-- Visualizar lista de estudiantes -->
 
 <!-- información Programación -->
+
 
 @if($tipo_ruta == 1)
 <br>
@@ -751,7 +752,7 @@
                 <label for="cant_url_rp" class="col-form-label text-md-left">{{ __('Cant. URL') }}</label>
                 <div class="input-group">
                     <input id="cant_url_rp" max="6" min="1" pattern="^[0-9]+" class="form-control @error('cant_url_rp') is-invalid @enderror" name="cant_url_rp" 
-                    title=""
+                    title="Cantidad de URL ruta principal"
                     value="{{$programacion_practica->cantidad_url_rp}}" autocomplete="off" autofocus readonly disabled>
                     
                     @error('cant_url_rp')
@@ -774,7 +775,7 @@
 
     <!-- 4 -->
         <div class="form-group row" id="rp_url_edit">
-            <div class="col-md-12" id="rp_url_1">
+            <div class="col-md-12" id="rp_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -800,7 +801,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="rp_url_2">
+            <div class="col-md-12" id="rp_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -826,7 +827,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="rp_url_3">
+            <div class="col-md-12" id="rp_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -851,7 +852,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="rp_url_4">
+            <div class="col-md-12" id="rp_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -876,7 +877,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="rp_url_5">
+            <div class="col-md-12" id="rp_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -901,7 +902,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="rp_url_6">
+            <div class="col-md-12" id="rp_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -950,7 +951,7 @@
                 <label for="lugar_salida_rp" class="col-form-label text-md-left">{{ __('Sede Salida') }}</label>
                 <div class="input-group">
                     <select id="lugar_salida_rp" name="lugar_salida_rp" class="form-control" required disabled
-                        title="" >
+                        title="Sedes Universidad" >
                         @foreach($sedes as $sede)
                             <option <?php if($sede->id==$programacion_practica->lugar_salida_rp) echo 'selected'?> value="{{$sede->id}}">{{$sede->sede}}</option>  
                         @endforeach
@@ -996,7 +997,7 @@
                 <div class="col-md-12" style="padding-right: 0;">
                     <div class="input-group">
                         <select id="lugar_regreso_rp" name="lugar_regreso_rp" class="form-control" required disabled
-                            title="" >
+                            title="Sedes Universidad" >
                             @foreach($sedes as $sede)
                                 <option <?php if($sede->id==$programacion_practica->lugar_regreso_rp) echo 'selected'?> value="{{$sede->id}}">{{$sede->sede}}</option>  
                             @endforeach
@@ -1332,7 +1333,7 @@
                 <label for="cant_trans_menor_rp" class="col-form-label text-md-left">{{ __('Cant. Vehículos') }}</label>
                 <div class="input-group">
                     <input id="cant_trans_menor_rp" type="number" max="4" min="0" pattern="^[1-4]+"  class="form-control @error('cant_trans_menor_rp') is-invalid @enderror" name="cant_trans_menor_rp" 
-                    title=""
+                    title="Cantidad de vehiculos locales requeridos"
                     value="{{$transporte_menor->cant_trans_menor_rp}}" required autocomplete="off" autofocus readonly disabled>
                     
                     @error('cant_trans_menor_rp')
@@ -1353,7 +1354,7 @@
             <div class="col-md-5" id="docente_trans_menor_rp">
                 <label for="docente_resp_t_menor_rp" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <input id="docente_resp_t_menor_rp" type="text" class="form-control @error('docente_resp_t_menor_rp') is-invalid @enderror" name="docente_resp_t_menor_rp" 
-                title=""
+                title="Docente responsable de la práctica"
                 value="{{ $nombre_usuario }}" required autocomplete="off" autofocus readonly>
                 
                 @error('docente_resp_t_menor_rp')
@@ -1374,7 +1375,7 @@
                     <div class="col-md-5">
                         <label for="trans_menor_rp_1" class="col-form-label text-md-left">{{ __('Transporte Menor 1') }}</label>
                         <input id="trans_menor_rp_1" type="text" class="form-control @error('trans_menor_rp_1') is-invalid @enderror" name="trans_menor_rp_1" 
-                        title="" readonly
+                        title="Transporte menor o local" readonly
                         value="{{$transporte_menor->trans_menor_rp_1}}"  autocomplete="off" autofocus>
             
                         @error('trans_menor_rp_1')
@@ -1387,7 +1388,7 @@
                     <div class="col-md-2">
                         <label for="vlr_trans_menor_rp_1" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
                         <input id="vlr_trans_menor_rp_1" type="text" class="form-control @error('vlr_trans_menor_rp_1') is-invalid @enderror" name="vlr_trans_menor_rp_1" 
-                        title="" readonly
+                        title="Valor transporte menor o local" readonly
                         value="{{number_format($transporte_menor->vlr_trans_menor_rp_1,'0',',','.')}}"  autocomplete="off" autofocus  onkeyup="formatVlr(this)" onchange="formatVlr(this)" >
 
                         @error('vlr_trans_menor_rp_1')
@@ -1411,7 +1412,7 @@
                     <div class="col-md-5">
                         <label for="trans_menor_rp_2" class="col-form-label text-md-left">{{ __('Transporte Menor 2') }}</label>
                         <input id="trans_menor_rp_2" type="text" class="form-control @error('trans_menor_rp_2') is-invalid @enderror" name="trans_menor_rp_2" 
-                        title="" readonly
+                        title="Transporte menor o local" readonly
                         value="{{$transporte_menor->trans_menor_rp_2}}"  autocomplete="off" autofocus>
             
                         @error('trans_menor_rp_2')
@@ -1424,7 +1425,7 @@
                     <div class="col-md-2">
                         <label for="vlr_trans_menor_rp_2" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
                         <input id="vlr_trans_menor_rp_2" type="text" class="form-control @error('vlr_trans_menor_rp_2') is-invalid @enderror" name="vlr_trans_menor_rp_2" 
-                        title="" readonly
+                        title="Valor transporte menor o local" readonly
                         value="{{number_format($transporte_menor->vlr_trans_menor_rp_2,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" redonly>
 
                         @error('vlr_trans_menor_rp_2')
@@ -1448,7 +1449,7 @@
                     <div class="col-md-5">
                         <label for="trans_menor_rp_3" class="col-form-label text-md-left">{{ __('Transporte Menor 3') }}</label>
                         <input id="trans_menor_rp_3" type="text" class="form-control @error('trans_menor_rp_3') is-invalid @enderror" name="trans_menor_rp_3" 
-                        title="" readonly
+                        title="Transporte menor o local" readonly
                         value="{{$transporte_menor->trans_menor_rp_3}}"  autocomplete="off" autofocus>
             
                         @error('trans_menor_rp_3')
@@ -1461,7 +1462,7 @@
                     <div class="col-md-2">
                         <label for="vlr_trans_menor_rp_3" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
                         <input id="vlr_trans_menor_rp_3" type="text" class="form-control @error('vlr_trans_menor_rp_3') is-invalid @enderror" name="vlr_trans_menor_rp_3" 
-                        title="" readonly
+                        title="Valor transporte menor o local" readonly
                         value="{{number_format($transporte_menor->vlr_trans_menor_rp_3,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" >
 
                         @error('vlr_trans_menor_rp_3')
@@ -1485,7 +1486,7 @@
                     <div class="col-md-5">
                         <label for="trans_menor_rp_4" class="col-form-label text-md-left">{{ __('Transporte Menor 4') }}</label>
                         <input id="trans_menor_rp_4" type="text" class="form-control @error('trans_menor_rp_4') is-invalid @enderror" name="trans_menor_rp_4" 
-                        title="" readonly
+                        title="Transporte menor o local" readonly
                         value="{{$transporte_menor->trans_menor_rp_4}}"  autocomplete="off" autofocus>
             
                         @error('trans_menor_rp_4')
@@ -1498,7 +1499,7 @@
                     <div class="col-md-2">
                         <label for="vlr_trans_menor_rp_4" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
                         <input id="vlr_trans_menor_rp_4" type="text" class="form-control @error('vlr_trans_menor_rp_4') is-invalid @enderror" name="vlr_trans_menor_rp_4" 
-                        title="" readonly
+                        title="Valor transporte menor o local" readonly
                         value="{{number_format($transporte_menor->vlr_trans_menor_rp_4,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" >
 
                         @error('vlr_trans_menor_rp_4')
@@ -1512,7 +1513,7 @@
             </div>
 
         </div>
-    <!-- 8 trans_menor_rp_4 --> 
+    <!-- 8 trans_menor_rp_4 -->   
     
     <br>
     <h4>Otros</h4>
@@ -1537,7 +1538,7 @@
                 <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="Valor Total Materiales" hidden>{{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_materiales_rp" hidden type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
-                value="{{number_format($costos_programacion->vlr_materiales_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
+                value="$ {{number_format($costos_programacion->vlr_materiales_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
                 readonly>
                 
                 @error('vlr_materiales_rp')
@@ -1694,11 +1695,11 @@
     <!-- preguntas -->
 
     <!-- viaticos -->
-        {{-- <div class="form-group row">
+        <div class="form-group row">
             <div class="col-md-3">
-                <label for="vlr_apoyo_docentes_rp" class="col-form-label text-md-left">{{ __('Valor Viáticos Docentes') }}</label>
+                <label for="vlr_apoyo_docentes_rp" class="col-form-label text-md-left" >{{ __('Valor Viáticos Docentes') }}</label>
                 <input id="vlr_apoyo_docentes_rp" type="text"  class="form-control @error('vlr_apoyo_docentes_rp') is-invalid @enderror" name="vlr_apoyo_docentes_rp" 
-                title=""
+                title="Valor de los viáticos a los docentes, equivalen a la duración de la práctica menos el 0.5"
                 value="$ {{number_format($costos_programacion->viaticos_docente_rp, 0, ',','.')}}" autocomplete="off" autofocus readonly>
                 
                 @error('vlr_apoyo_docentes_rp')
@@ -1711,7 +1712,7 @@
             <div class="col-md-3">
                 <label for="vlr_apoyo_estudiantes_rp" class="col-form-label text-md-left">{{ __('Valor Auxilio Estudiantes') }}</label>
                 <input id="vlr_apoyo_estudiantes_rp" type="text"  class="form-control @error('vlr_apoyo_estudiantes_rp') is-invalid @enderror" name="vlr_apoyo_estudiantes_rp" 
-                title=""
+                title="Valor de auxilio económico a estudiantes"
                 value="$ {{number_format($costos_programacion->viaticos_estudiantes_rp, 0, ',','.')}}" autocomplete="off" autofocus readonly>
                 
                 @error('vlr_apoyo_estudiantes_rp')
@@ -1720,9 +1721,20 @@
                     </span>
                 @enderror
             </div>
-        </div> --}}
-    <!-- viaticos -->
 
+            {{-- <div class="col-md-3">
+                <label for="trasnp_menor_rp" class="col-form-label text-md-left" title="Valor total del transporte menor">{{ __('Total Transporte Menor') }}</label>
+                <input id="trasnp_menor_rp" type="text"  class="form-control @error('trasnp_menor_rp') is-invalid @enderror" name="trasnp_menor_rp" 
+                value="" autocomplete="off" autofocus readonly>
+                
+                @error('trasnp_menor_rp')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div> --}}
+        </div>
+    <!-- viaticos -->
 
 <!-- ruta principal -->
 @endif
@@ -1738,6 +1750,7 @@
         <div class="form-group row">
             <div class="col-md-6">
                 <label for="destino_ra" class="col-form-label text-md-left">{{ __('Destino Ruta Contingencia') }}</label>
+                <span class="hs-form-required">*</span>
                 <input id="destino_ra" type="text" class="form-control @error('destino_ra') is-invalid @enderror" name="destino_ra" 
                 value="{{$programacion_practica->destino_ra}}" required autocomplete="off" autofocus readonly>
                 
@@ -1773,10 +1786,10 @@
             <!-- Cant. URL -->
         </div>
     <!-- 9 -->
-
+    
     <!-- 10 -->
         <div class="form-group row" id="ra_url_edit">
-            <div class="col-md-12" id="ra_url_1">
+            <div class="col-md-12" id="ra_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -1804,7 +1817,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="ra_url_2">
+            <div class="col-md-12" id="ra_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -1830,7 +1843,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="ra_url_3">
+            <div class="col-md-12" id="ra_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -1856,7 +1869,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="ra_url_4">
+            <div class="col-md-12" id="ra_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -1882,7 +1895,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="ra_url_5">
+            <div class="col-md-12" id="ra_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -1908,7 +1921,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12" id="ra_url_6">
+            <div class="col-md-12" id="ra_url_children">
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="row">
@@ -1940,6 +1953,7 @@
         <div class="form-group row">
             <div class="col-md-12">
                 <label for="det_recorrido_interno_ra" class="col-form-label text-md-left">{{ __('Detalle Recorrido') }}</label>
+                <span class="hs-form-required">*</span>
                 <textarea id="det_recorrido_interno_ra" style="min-height:5rem;" type="text" class="form-control @error('det_recorrido_interno_ra') is-invalid @enderror" name="det_recorrido_interno_ra" 
                 required autocomplete="off" autofocus readonly><?php echo $programacion_practica->det_recorrido_interno_ra?></textarea>
                 
@@ -2057,7 +2071,7 @@
             </div>
 
         </div>
-    <!-- 12 -->        
+    <!-- 12 -->
 
     @if($tipo_ruta == 2)
 
@@ -2134,7 +2148,7 @@
             <div class="col-md-4">
                 <label for="det_tipo_transporte_ra_[]" class="col-form-label text-md-left">{{ __('Det. Vehíc.') }}</label>
                 <input id="det_tipo_transporte_ra_[]" type="text" class="form-control @error('det_tipo_transporte_ra_[]') is-invalid @enderror" name="det_tipo_transporte_ra_[]" 
-                value="{{$transporte_programacion->det_tipo_transporte_ra_1}}"  autocomplete="off" autofocus readonly>
+                value="{{$transporte_programacion->det_tipo_transporte_ra_1}}" required autocomplete="off" autofocus readonly>
                 
                 @error('det_tipo_transporte_ra_[]')
                     <span class="invalid-feedback" role="alert">
@@ -2320,7 +2334,7 @@
                 <label for="cant_trans_menor_ra" class="col-form-label text-md-left">{{ __('Cant. Vehículos') }}</label>
                 <div class="input-group">
                     <input id="cant_trans_menor_ra" type="number" max="4" min="0" pattern="^[1-4]+"  class="form-control @error('cant_trans_menor_ra') is-invalid @enderror" name="cant_trans_menor_ra" 
-                    title=""
+                    title="Cantidad de vehiculos locales requeridos"
                     value="{{$transporte_menor->cant_trans_menor_ra}}" required autocomplete="off" autofocus readonly disabled>
                     
                     @error('cant_trans_menor_ra')
@@ -2341,7 +2355,7 @@
             <div class="col-md-5" id="docente_trans_menor_ra">
                 <label for="docente_resp_t_menor_ra" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <input id="docente_resp_t_menor_ra" type="text" class="form-control @error('docente_resp_t_menor_ra') is-invalid @enderror" name="docente_resp_t_menor_ra" 
-                title=""
+                title="Docente responsable de la práctica"
                 value="{{ $nombre_usuario }}" required autocomplete="off" autofocus readonly>
                 
                 @error('docente_resp_t_menor_ra')
@@ -2363,7 +2377,7 @@
                     <div class="col-md-5">
                         <label for="trans_menor_ra_1" class="col-form-label text-md-left">{{ __('Transporte Menor 1') }}</label>
                         <input id="trans_menor_ra_1" type="text" class="form-control @error('trans_menor_ra_1') is-invalid @enderror" name="trans_menor_ra_1" 
-                        title="" readonly
+                        title="Transporte menor o local" readonly
                         value="{{$transporte_menor->trans_menor_ra_1}}"  autocomplete="off" autofocus>
             
                         @error('trans_menor_ra_1')
@@ -2376,7 +2390,7 @@
                     <div class="col-md-2">
                         <label for="vlr_trans_menor_ra_1" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
                         <input id="vlr_trans_menor_ra_1" type="text" class="form-control @error('vlr_trans_menor_ra_1') is-invalid @enderror" name="vlr_trans_menor_ra_1" 
-                        title="" readonly
+                        title="Valor transporte menor o local" readonly
                         value="{{number_format($transporte_menor->vlr_trans_menor_ra_1,'0',',','.')}}"  autocomplete="off" autofocus  onkeyup="formatVlr(this)" onchange="formatVlr(this)" >
 
                         @error('vlr_trans_menor_ra_1')
@@ -2400,7 +2414,7 @@
                     <div class="col-md-5">
                         <label for="trans_menor_ra_2" class="col-form-label text-md-left">{{ __('Transporte Menor 2') }}</label>
                         <input id="trans_menor_ra_2" type="text" class="form-control @error('trans_menor_ra_2') is-invalid @enderror" name="trans_menor_ra_2" 
-                        title="" readonly
+                        title="Transporte menor o local" readonly
                         value="{{$transporte_menor->trans_menor_ra_2}}"  autocomplete="off" autofocus>
             
                         @error('trans_menor_ra_2')
@@ -2413,7 +2427,7 @@
                     <div class="col-md-2">
                         <label for="vlr_trans_menor_ra_2" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
                             <input id="vlr_trans_menor_ra_2" type="text" class="form-control @error('vlr_trans_menor_ra_2') is-invalid @enderror" name="vlr_trans_menor_ra_2" 
-                        title="" readonly
+                        title="Valor transporte menor o local" readonly
                         value="{{number_format($transporte_menor->vlr_trans_menor_ra_2,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" redonly>
 
                         @error('vlr_trans_menor_ra_2')
@@ -2437,7 +2451,7 @@
                     <div class="col-md-5">
                         <label for="trans_menor_ra_3" class="col-form-label text-md-left">{{ __('Transporte Menor 3') }}</label>
                         <input id="trans_menor_ra_3" type="text" class="form-control @error('trans_menor_ra_3') is-invalid @enderror" name="trans_menor_ra_3" 
-                        title=""
+                        title="Transporte menor o local"
                         value="{{$transporte_menor->trans_menor_ra_3}}"  autocomplete="off" autofocus readonly>
             
                         @error('trans_menor_ra_3')
@@ -2450,7 +2464,7 @@
                     <div class="col-md-2">
                         <label for="vlr_trans_menor_ra_3" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
                         <input id="vlr_trans_menor_ra_3" type="text" class="form-control @error('vlr_trans_menor_ra_3') is-invalid @enderror" name="vlr_trans_menor_ra_3" 
-                        title="" readonly
+                        title="Valor transporte menor o local" readonly
                         value="{{number_format($transporte_menor->vlr_trans_menor_ra_3,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" >
 
                         @error('vlr_trans_menor_ra_3')
@@ -2474,7 +2488,7 @@
                     <div class="col-md-5">
                         <label for="trans_menor_ra_4" class="col-form-label text-md-left">{{ __('Transporte Menor 4') }}</label>
                         <input id="trans_menor_ra_4" type="text" class="form-control @error('trans_menor_ra_4') is-invalid @enderror" name="trans_menor_ra_4" 
-                        title=""
+                        title="Transporte menor o local"
                         value="{{$transporte_menor->trans_menor_ra_4}}"  autocomplete="off" autofocus readonly>
             
                         @error('trans_menor_ra_4')
@@ -2487,7 +2501,7 @@
                     <div class="col-md-2">
                         <label for="vlr_trans_menor_ra_4" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
                         <input id="vlr_trans_menor_ra_4" type="text" class="form-control @error('vlr_trans_menor_ra_4') is-invalid @enderror" name="vlr_trans_menor_ra_4" 
-                        title="" readonly
+                        title="Valor transporte menor o local" readonly
                         value="{{number_format($transporte_menor->vlr_trans_menor_ra_4,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" >
 
                         @error('vlr_trans_menor_ra_4')
@@ -2510,7 +2524,7 @@
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_ra" class="col-form-label text-md-left" title="" hidden>{{ __('Materiales') }}</label>
+                <label for="det_materiales_ra" class="col-form-label text-md-left" title="Materiales" hidden>{{ __('Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="det_materiales_ra" hidden type="text"  class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
                 value="{{$mate_herra_programacion->det_materiales_ra}}" autocomplete="off" autofocus readonly>
@@ -2523,7 +2537,7 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="" hidden>{{ __('Valor Total Materiales') }}</label>
+                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="Valor Total Materiales" hidden>{{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_materiales_ra" hidden type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
                 value="$ {{number_format($costos_programacion->vlr_materiales_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
@@ -2541,12 +2555,12 @@
     <!-- guías -baquianos -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_guias_baquia_ra" class="col-form-label text-md-left" title="">{{ __('Guías y/o Baquianos') }}</label>
-                <input id="det_guias_baquia_ra" type="text"  class="form-control @error('det_guias_baquia_ra') is-invalid @enderror" name="det_guias_baquia_rp" 
-                title=""
-                value="{{$mate_herra_programacion->det_guias_baquianos_ra}}" autocomplete="off" autofocus disabled>
+                <label for="det_guias_baquia_ra" class="col-form-label text-md-left" title="Guías y/o Baquianos">{{ __('Guías y/o Baquianos') }}</label>
+                <input id="det_guias_baquia_ra" type="text"  class="form-control @error('det_guias_baquia_ra') is-invalid @enderror" name="det_guias_baquia_ra" 
+                title="Guías y/o baquianos requeridos" disabled
+                value="{{$mate_herra_programacion->det_guias_baquianos_ra}}" autocomplete="off" autofocus>
                 
-                @error('det_guias_baquia_rp')
+                @error('det_guias_baquia_ra')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
@@ -2554,10 +2568,10 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_guias_baquia_ra" class="col-form-label text-md-left" title="">{{ __('Valor Total Guías y/o Baquianos') }}</label>
+                <label for="vlr_guias_baquia_ra" class="col-form-label text-md-left" title="Valor Total Guías y/o Baquianos">{{ __('Valor Total Guías y/o Baquianos') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_guias_baquia_ra" type="text"  class="form-control @error('vlr_guias_baquias_ra') is-invalid @enderror" name="vlr_guias_baquia_ra" 
-                title="" disabled
+                title="Valor de los guías y/o baquianos" disabled
                 value="{{number_format($costos_programacion->vlr_guias_baquianos_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)">
                 
                 @error('vlr_guias_baquia_ra')
@@ -2567,7 +2581,7 @@
                 @enderror
             </div>
         </div>
-    <!-- guías -baquianos -->                        
+    <!-- guías -baquianos -->                            
 
     <!-- otros - boletas -->
         <div class="form-group row">
@@ -2575,8 +2589,8 @@
                 <label for="det_otros_bolet_ra" class="col-form-label text-md-left" title="">{{ __('Boletas y/u Otros') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="det_otros_bolet_ra" type="text"  class="form-control @error('det_otros_bolet_ra') is-invalid @enderror" name="det_otros_bolet_ra" 
-                title=""
-                value="{{$mate_herra_programacion->det_otros_boletas_ra}}" autocomplete="off" autofocus disabled>
+                title="Boletas y/u otros requeridos" disabled
+                value="{{$mate_herra_programacion->det_otros_boletas_ra}}" autocomplete="off" autofocus>
                 
                 @error('det_otros_bolet_ra')
                     <span class="invalid-feedback" role="alert">
@@ -2586,10 +2600,10 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_otros_bolet_ra" class="col-form-label text-md-left" title="">{{ __('Valor Total Boletas y/u Otros') }}</label>
+                <label for="vlr_otros_bolet_ra" class="col-form-label text-md-left" title="Valor Total Boletas y/u Otros">{{ __('Valor Total Boletas y/u Otros') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_otros_bolet_ra" type="text"  class="form-control @error('vlr_otros_bolet_ra') is-invalid @enderror" name="vlr_otros_bolet_ra" 
-                title="" disabled
+                title="Valor de las boletas y/u otros" disabled
                 value="{{number_format($costos_programacion->vlr_otros_boletas_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)">
                 
                 @error('vlr_otros_bolet_ra')
@@ -2685,11 +2699,11 @@
     <!-- preguntas -->
 
     <!-- viaticos -->
-        {{-- <div class="form-group row">
+        <div class="form-group row">
             <div class="col-md-3">
-                <label for="vlr_apoyo_docentes_ra" class="col-form-label text-md-left">{{ __('Valor Viáticos Docentes') }}</label>
+                <label for="vlr_apoyo_docentes_ra" class="col-form-label text-md-left" >{{ __('Valor Viáticos Docentes') }}</label>
                 <input id="vlr_apoyo_docentes_ra" type="text"  class="form-control @error('vlr_apoyo_docentes_ra') is-invalid @enderror" name="vlr_apoyo_docentes_ra" 
-                title=""
+                title="Valor de los viáticos a los docentes, equivalen a la duración de la práctica menos el 0.5"
                 value="$ {{number_format($costos_programacion->viaticos_docente_ra, 0, ',','.')}}" autocomplete="off" autofocus readonly>
                 
                 @error('vlr_apoyo_docentes_ra')
@@ -2702,7 +2716,7 @@
             <div class="col-md-3">
                 <label for="vlr_apoyo_estudiantes_ra" class="col-form-label text-md-left">{{ __('Valor Auxilio Estudiantes') }}</label>
                 <input id="vlr_apoyo_estudiantes_ra" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="vlr_apoyo_estudiantes_ra" 
-                title=""
+                title="Valor de auxilio económico a estudiantes"
                 value="$ {{number_format($costos_programacion->viaticos_estudiantes_ra, 0, ',','.')}}" autocomplete="off" autofocus readonly>
                 
                 @error('vlr_apoyo_estudiantes_ra')
@@ -2710,10 +2724,10 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-            </div> --}}
+            </div>
 
             {{-- <div class="col-md-3">
-                <label for="trasnp_menor_rp" class="col-form-label text-md-left" title="">{{ __('Total Transporte Menor') }}</label>
+                <label for="trasnp_menor_rp" class="col-form-label text-md-left" title="Valor total del transporte menor">{{ __('Total Transporte Menor') }}</label>
                 <input id="trasnp_menor_rp" type="text"  class="form-control @error('trasnp_menor_rp') is-invalid @enderror" name="trasnp_menor_rp" 
                 value="" autocomplete="off" autofocus readonly>
                 
@@ -2722,8 +2736,8 @@
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-            </div>
-        </div> --}}
+            </div> --}}
+        </div>
     <!-- viaticos -->
 
 <!-- ruta alterna -->
@@ -2810,369 +2824,292 @@
 <!-- metodologia_evaluacion -->
 
 <br>
-<h4>Precios Estimados Transporte</h4>
+<h4>Documentación Requerida Estudiante</h4>
 <hr class="divider">
 <br>
-
-<!-- valor estimado transporte -->
+<!-- certificados -->
     <div class="form-group row">
-        @if($tipo_ruta == 1)
-            <div class="col-md-6">
-                <label for="vlr_est_transp_rp" class="col-form-label text-md-left">
-                    <i class="fas fa-question-circle" 
-                    data-toggle="tooltip" data-placement="left" 
-                    data-title="Indique el valor estimado para el transporte requerido para la ruta principal" style="font-size: 0.813rem"></i> {{ __('Valor Estimado Transporte Ruta Principal') }}</label>
-                <span class="hs-form-required">*</span>
-                <input id="vlr_est_transp_rp" type="text" class="form-control @error('vlr_est_transp_rp') is-invalid @enderror" name="vlr_est_transp_rp" 
-                title=""
-                value="{{ number_format($costos_programacion->valor_estimado_transporte_rp,0,',','.')}}" required autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
-                <?php if($programacion_practica->aprobacion_decano == 3) echo "disabled"?>>
-
-                @error('vlr_est_transp_rp')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+        <!-- 1 -->
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="vacuna_fiebre_amarilla">{{ __('Vacuna Fiebre Amarilla') }}</label>
+                </div>
             </div>
-        @endif
-        @if($tipo_ruta == 2)
-            <div class="col-md-6">
-                <label for="vlr_est_transp_ra" class="col-form-label text-md-left">
-                    <i class="fas fa-question-circle" 
-                    data-toggle="tooltip" data-placement="left" 
-                    data-title="Indique el valor estimado para el transporte requerido para la ruta de contingencia" style="font-size: 0.813rem"></i> {{ __('Valor Estimado Transporte Ruta Contingencia') }}</label>
-                <span class="hs-form-required">*</span>
-                <input id="vlr_est_transp_ra" type="text" class="form-control @error('vlr_est_transp_ra') is-invalid @enderror" name="vlr_est_transp_ra" 
-                title=""
-                value="{{ number_format($costos_programacion->valor_estimado_transporte_ra,0,',','.')}}" required autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
-                <?php if($programacion_practica->aprobacion_decano == 3) echo "disabled"?>>
 
-                @error('vlr_estvlr_est_transp_ra_transp')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+            <div class="col-md-1">
+                <div class="form-group" style="margin-right: 15px;">
+                    <label class="switch">
+                        <input type="checkbox" name="vacuna_fiebre_amarilla" 
+                        <?php if($documentos_requeridos->vacuna_fiebre_amarilla == 1) echo 'checked'?> disabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
-        @endif
+
+            <div class="col-md-6">
+            </div>
+        <!-- 1 -->
+
+        <!-- 2 -->
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="vacuna_tetanos">{{ __('Vacuna Tétanos') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group" style="margin-right: 15px;">
+                    <label class="switch">
+                        <input type="checkbox" name="vacuna_tetanos" 
+                        <?php if($documentos_requeridos->vacuna_tetanos == 1) echo 'checked'?> disabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+            </div>
+        <!-- 2 -->
+
+        <!-- 4 -->
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="certificado_adicional_1">{{ __('Certificado Adicional N° 1') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group" style="margin-right: 15px;">
+                    <label class="switch">
+                        <input type="checkbox" name="certificado_adicional_1"
+                        <?php if($documentos_requeridos->certificado_adicional_1 == 1) echo 'checked'?> disabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row col-md-6">
+                <div class="col-md-3">
+                    <label for="certificado_adicional_1">{{ __('Cuál?') }}</label>
+                </div>
+
+                <div class="col-md-9">
+                    <input id="det_certif_adicional_1" type="text"  class="form-control @error('det_certif_adicional_1') is-invalid @enderror" name="det_certif_adicional_1" 
+                    value="{{$documentos_requeridos->detalle_certificado_adcional_1}}" autocomplete="off" autofocus disabled>
+                    
+                    @error('det_certif_adicional_1')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+        <!-- 4 -->
+
+        <!-- 5 -->
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="certificado_adicional_2">{{ __('Certificado Adicional N° 2') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group" style="margin-right: 15px;">
+                    <label class="switch">
+                        <input type="checkbox" name="certificado_adicional_2"
+                        <?php if($documentos_requeridos->certificado_adicional_2 == 1) echo 'checked'?> disabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row col-md-6">
+                <div class="col-md-3">
+                    <label for="cual_certificado_adicional_2">{{ __('Cuál?') }}</label>
+                </div>
+
+                <div class="col-md-9">
+                    <input id="det_certif_adicional_2" type="text"  class="form-control @error('det_certif_adicional_2') is-invalid @enderror" name="det_certif_adicional_2" 
+                    value="{{$documentos_requeridos->detalle_certificado_adcional_2}}" autocomplete="off" autofocus disabled>
+                    
+                    @error('det_certif_adicional_2')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+        <!-- 5 -->
+
+        <!-- 6 -->
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label for="certificado_adicional_3">{{ __('Certificado Adicional N° 3') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group" style="margin-right: 15px;">
+                    <label class="switch">
+                        <input type="checkbox" name="certificado_adicional_3"
+                        <?php if($documentos_requeridos->certificado_adicional_3 == 1) echo 'checked'?> disabled>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="row col-md-6">
+                <div class="col-md-3">
+                    <label for="cual_certificado_adicional_3">{{ __('Cuál?') }}</label>
+                </div>
+
+                <div class="col-md-9">
+                    <input id="det_certif_adicional_3" type="text"  class="form-control @error('det_certif_adicional_3') is-invalid @enderror" name="det_certif_adicional_3" 
+                    value="{{$documentos_requeridos->detalle_certificado_adcional_3}}" autocomplete="off" autofocus disabled>
+                    
+                    @error('det_certif_adicional_3')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+        <!-- 6 -->
+
+    </div>
+<!-- certificados -->
+
+<!-- Visualización Presupuesto Programa academico -->
+    <h4>Presupuesto Programa Académico</h4>
+    <hr class="divider">
+    <br>
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label for="presupuesto_actual" class="col-form-label text-md-left">{{ __('Presupuesto Actual') }}</label>
+            <input id="presupuesto_actual" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_actual" 
+            title=""
+            value="$ {{number_format($presupuesto_programa_academico->presupuesto_actual, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+
+        <div class="col-md-3">
+            <label for="presupuesto_práctica" class="col-form-label text-md-left"> {{__('Presupuesto Práctica N°') }} {{ $solicitud_practica->id }}</label>
+            <input id="presupuesto_práctica" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_práctica" 
+            title=""
+            value="$ {{number_format($presupuesto_practica, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+
+        <div class="col-md-3">
+            <label for="presupuesto_restante" class="col-form-label text-md-left">{{ __('Presupuesto restante') }}</label>
+            <input id="presupuesto_restante" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror" name="presupuesto_restante" 
+            title=""
+            value="$ {{number_format($presupuesto_restante, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label id="lblpractica" class="col-form-label text-md-left text-danger" hidden>{{ __('La práctica no se puede aprobar porque el presupuesto del programa no es suficiente.') }}</label>
+        </div>
     </div>
 
-<!-- valor estimado transporte -->
-
 <br>
-<h4>Detalle Presupuesto</h4>
+    <h4>Presupuesto Transporte Menor</h4>
+    <hr class="divider">    
+    <div class="form-group row">
+        <div class="col-md-3">
+            <label for="presupuesto_actual_transporte_menor" class="col-form-label text-md-left" hidden>{{ __('Presupuesto Actual') }}</label>
+            <input id="presupuesto_actual_transporte_menor" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
+            name="presupuesto_actual_transporte_menor" title="" hidden
+            value="$ {{number_format($presupuesto_transporte_menor->presupuesto_restante, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+
+        <div class="col-md-5">
+            <label for="presupuesto_transporte_menor_practica" class="col-form-label text-md-left"> {{__('Presupuesto Transporte Menor Práctica N°') }} {{ $solicitud_practica->id }}</label>
+            <input id="presupuesto_transporte_menor_practica" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
+            name="presupuesto_transporte_menor_practica" title=""
+            value="$ {{number_format($presupuesto_transporte_menor_practica, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+
+        <div class="col-md-4">
+            <label for="presupuesto_restante_transporte_menor" class="col-form-label text-md-left" hidden>{{ __('Presupuesto restante transporte menor') }}</label>
+            <input id="presupuesto_restante_transporte_menor" type="text"  class="form-control @error('vlr_apoyo_estudiantes_ra') is-invalid @enderror"
+            name="presupuesto_restante_transporte_menor" title="" hidden
+            value="$ {{number_format($presupuesto_restante_transporte_menor, 0, ',','.')}}" autocomplete="off" autofocus readonly>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label id="lblpracticatm" class="col-form-label text-md-left text-danger" hidden>{{ __('La práctica no se puede aprobar porque el presupuesto del transporte menor no es suficiente.') }}</label>
+        </div>
+    </div>
+    <br>
+<!-- Visualización Presupuesto Programa academico -->
+
+<h4>Observaciones</h4>
 <hr class="divider">
 <br>
-
-@if($tipo_ruta == 1)
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
-        <thead>
-            <th style="width: 50px">Concepto</th>
-            <th style="width: 60px">N° Docen. / N° Estud.</th>
-            <th style="width: 45px">Valor Diario</th>
-            <th style="width: 30px">N° Días Pern.</th>
-            <th style="width: 70px">Total</th>
-        </thead> 
-    
-        <tr>
-        <td>Viáticos Docentes: </td>
-        <td>{{ $practicas_integradas->cant_espa_aca + $docentes_practica->num_docentes_apoyo + 1 }}</td>
-        @if($programacion_practica->duracion_num_dias_rp == 1)
-            <td>{{ number_format($control_sistema->vlr_docen_min, 0, ',','.') }}</td>
-        @elseif($programacion_practica->duracion_num_dias_rp > 1)
-            <td>{{ number_format($control_sistema->vlr_docen_max, 0, ',','.') }}</td>
-        @endif
-        <td>{{ $programacion_practica->duracion_num_dias_rp }}</td>
-        <td>{{ number_format($costos_programacion->viaticos_docente_rp, 0, ',','.') }}</td>
-        
-        </tr>
-
-        <tr>
-            <td>Viáticos Estudiantes: </td>
-            <td>{{ $solicitud_practica->num_estudiantes }}</td>
-            @if($programacion_practica->duracion_num_dias_rp == 1)
-                <td>{{ number_format($control_sistema->vlr_estud_min, 0, ',','.') }}</td>
-            @elseif($programacion_practica->duracion_num_dias_rp > 1)
-                <td>{{ number_format($control_sistema->vlr_estud_max, 0, ',','.') }}</td>
-            @endif
-            <td>{{ $programacion_practica->duracion_num_dias_rp }}</td>
-            <td>{{ number_format($costos_programacion->viaticos_estudiantes_rp, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Materiales: </td>
-            <td colspan="3">{{$mate_herra_programacion->det_materiales_rp}}</td>
-            <td>{{ number_format($costos_programacion->vlr_materiales_rp, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Guías - Baquianos: </td>
-            <td colspan="3">{{$mate_herra_programacion->det_guias_baquianos_rp}}</td>
-            <td>{{ number_format($costos_programacion->vlr_guias_baquianos_rp, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Boletas - Otros: </td>
-            <td colspan="3">{{$mate_herra_programacion->det_otros_boletas_rp}}</td>
-            <td>{{ number_format($costos_programacion->vlr_otros_boletas_rp, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Transporte Menor: </td>
-            <td colspan="3">Nota: valor sujeto al transporte que se contrata en sitio por parte del docente responsable. </td>
-            <td>{{ number_format($costos_programacion->costo_total_transporte_menor_rp, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Servicio Transporte: </td>
-            <td colspan="3">Nota: valor sujeto a contrato suscrito entre la facultad y las empresas de transporte. Se recomienda solicitar concepto en la decanatura para establecer costos del recorrido.</td>
-            <td>0</td>
-            
-        </tr>
-
-        <tr>
-            <td colspan="4">Total Presupuesto: </td>
-            <td>{{ number_format($costos_programacion->viaticos_estudiantes_rp + $costos_programacion->viaticos_docente_rp + $costos_programacion->vlr_materiales_rp + $costos_programacion->vlr_guias_baquianos_rp + $costos_programacion->vlr_otros_boletas_rp + $costos_programacion->costo_total_transporte_menor_rp, 0, ',','.') }}</td>
-            
-        </tr>
-    </table>
-@endif
-
-@if($tipo_ruta == 2)
-    <table class="table table-bordered table-condensed table-hover table-sm header_table" cellspacing="0">
-        <thead>
-            <th style="width: 50px">Concepto</th>
-            <th style="width: 60px">N° Docen. / N° Estud.</th>
-            <th style="width: 45px">Valor Diario</th>
-            <th style="width: 30px">N° Días Pern.</th>
-            <th style="width: 70px">Total</th>
-        </thead> 
-    
-        <tr>
-        <td>Viáticos Docentes: </td>
-        <td>{{ $practicas_integradas->cant_espa_aca + $docentes_practica->num_docentes_apoyo + 1 }}</td>
-        @if($programacion_practica->duracion_num_dias_rp == 1)
-            <td>{{ number_format($control_sistema->vlr_docen_min, 0, ',','.') }}</td>
-        @elseif($programacion_practica->duracion_num_dias_rp > 1)
-            <td>{{ number_format($control_sistema->vlr_docen_max, 0, ',','.') }}</td>
-        @endif
-        <td>{{ $programacion_practica->duracion_num_dias_ra }}</td>
-        <td>{{ number_format($costos_programacion->viaticos_docente_ra, 0, ',','.') }}</td>
-        
-        </tr>
-
-        <tr>
-            <td>Viáticos Estudiantes: </td>
-            <td>{{ $solicitud_practica->num_estudiantes }}</td>
-            @if($programacion_practica->duracion_num_dias_rp == 1)
-                <td>{{ number_format($control_sistema->vlr_estud_min, 0, ',','.') }}</td>
-            @elseif($programacion_practica->duracion_num_dias_rp > 1)
-                <td>{{ number_format($control_sistema->vlr_estud_max, 0, ',','.') }}</td>
-            @endif
-            <td>{{ $programacion_practica->duracion_num_dias_ra }}</td>
-            <td>{{ number_format($costos_programacion->viaticos_estudiantes_ra, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Materiales: </td>
-            <td colspan="3">{{$mate_herra_programacion->det_materiales_ra}}</td>
-            <td>{{ number_format($costos_programacion->vlr_materiales_ra, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Guías - Baquianos: </td>
-            <td colspan="3">{{$mate_herra_programacion->det_guias_baquianos_ra}}</td>
-            <td>{{ number_format($costos_programacion->vlr_guias_baquianos_ra, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Boletas - Otros: </td>
-            <td colspan="3">{{$mate_herra_programacion->det_otros_boletas_ra}}</td>
-            <td>{{ number_format($costos_programacion->vlr_otros_boletas_ra, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Transporte Menor: </td>
-            <td colspan="3">Nota: valor sujeto al transporte que se contrata en sitio por parte del docente responsable.</td>
-            <td>{{ number_format($costos_programacion->costo_total_transporte_menor_ra, 0, ',','.') }}</td>
-            
-        </tr>
-
-        <tr>
-            <td>Servicio Transporte: </td>
-            <td colspan="3">Nota: valor sujeto a contrato suscrito entre la facultad y las empresas de transporte. Se recomienda solicitar concepto en la decanatura para establecer costos del recorrido.</td>
-            <td>0</td>
-            
-        </tr>
-
-        <tr>
-            <td colspan="4">Total Presupuesto: </td>
-            <td>{{ number_format($costos_programacion->viaticos_estudiantes_ra + $costos_programacion->viaticos_docente_ra + $costos_programacion->vlr_materiales_ra + $costos_programacion->vlr_guias_baquianos_ra + $costos_programacion->vlr_otros_boletas_ra + $costos_programacion->costo_total_transporte_menor_ra, 0, ',','.') }}</td>
-            
-        </tr>
-    </table>
-@endif
-
-@if($solicitud_practica->radicado_financiera == 0 && $solicitud_practica->aprobacion_asistD == 7)
-    <!-- Resolución - CDP - SiCapital-->
+    <!-- 18 -->
         <div class="form-group row">
             <div class="col-md-12">
-                <div class="row" >
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                        <div class="form-group">
-                            <label for="si_capital">
-                                <i class="fas fa-question-circle" 
-                                data-toggle="tooltip" data-placement="left" 
-                                data-title="Indique si cuenta con SiCapital" style="font-size: 0.813rem"></i> SiCapital</label>
-                            <span class="hs-form-required">*</span>
-                            <div class="row">
+                <label for="observ_coordinador" class="col-form-label text-md-left">
+                    <i class="fas fa-question-circle" 
+                    data-toggle="tooltip" data-placement="left" 
+                    data-title="Indique las observaciones asociadas a la 
+                    salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('Observaciones Coordinador') }}</label>
+                <textarea id="observ_coordinador" style="min-height:5rem;" type="text" class="form-control @error('observ_coordinador') is-invalid @enderror" name="observ_coordinador" 
+                autocomplete="off" autofocus ><?php echo $programacion_practica->observ_coordinador?></textarea>
 
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="si_capital" value="0" 
-                                    <?php if($solicitud_practica->si_capital == 0) echo 'checked'?> disabled>
-                                    <label class="form-check-label" for="">No</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-md-6 col-sm-64 col-xs-12">
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="si_capital" value="1"
-                                    <?php if($solicitud_practica->si_capital == 1) echo 'checked'?> disabled>
-                                    <label class="form-check-label" for="">Si</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="num_solicitud_necesidad" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Indique el número de solicitud de necesidad asociado a la salida de práctica académica. Ej. 7658-2021" style="font-size: 0.813rem"></i> {{ __('N° Sol. Necesidad') }}</label>
-                        <span class="hs-form-required">*</span>
-                        <input id="num_solicitud_necesidad" type="text" class="form-control @error('num_solicitud_necesidad') is-invalid @enderror" name="num_solicitud_necesidad" 
-                        value="{{$solicitud_practica->num_solicitud_necesidad}}" pattern="[0-9\-]+" required autocomplete="off" autofocus readonly>
-
-                        @error('num_solicitud_necesidad')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label for="num_resolucion" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Indique el número de resolución asociado a la salida de práctica académica. Ej. 1234" style="font-size: 0.813rem"></i> {{ __('N° Resolución') }}</label>
-                        <!-- <span class="hs-form-required">*</span> -->
-                        <input id="num_resolucion" type="text" pattern="^[0-9]+" class="form-control @error('num_resolucion') is-invalid @enderror" name="num_resolucion" 
-                        value="{{$solicitud_practica->num_resolucion}}" 
-                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)"
-                        autocomplete="off" autofocus readonly>
-
-                        @error('num_resolucion')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                        <label for="fecha_resolucion" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Seleccione la fecha de la resolución asociada a la salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('F. Resolución') }}</label>
-                        <!-- <span class="hs-form-required">*</span> -->
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                            </div>
-                        <input class="inputDate form-control datetimepicker" name="fecha_resolucion"  type="text"
-                        value="{{$solicitud_practica->fecha_resolucion}}" readonly disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                        <label for="num_cdp" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Indique el número de CDP asociado a la salida de práctica académica. Ej. 8536" style="font-size: 0.813rem"></i> {{ __('N° CDP') }}</label>
-                        <span class="hs-num_cdp-required">*</span>
-                        <input id="num_cdp" type="text" pattern="[0-9]+" class="form-control @error('num_cdp') is-invalid @enderror" name="num_cdp" 
-                        value="{{$solicitud_practica->num_cdp}}" required autocomplete="off" autofocus readonly
-                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)">
-
-                        @error('num_cdp')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-            </div>   
-            
+                @error('observ_coordinador')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
         </div>
-    <!-- Resolución - CDP - SiCapital-->
+    <!-- 18 -->
 
-    <!-- Radicado Financiera-->
+    <!-- 19 -->
+    <!-- estado coord-->
+    <!-- 0 -->
         <div class="form-group row">
-            <div class="col-md-12">
-                <div class="row" >
-                    
-                    <div class="col-md-3">
-                        <label for="num_radicado_financiera" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Indique el número de de radicado en tesorería asociado a la salida de práctica académica. Ej. 8263" style="font-size: 0.813rem"></i> {{ __('N° Radic. Tesor.') }}</label>
-                        <span class="hs-form-required">*</span>
-                        <input id="num_radicado_financiera" type="text" class="form-control @error('num_radicado_financiera') is-invalid @enderror" name="num_radicado_financiera" 
-                        value="" required autocomplete="off" autofocus
-                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group">
+                <label for="id_estado">
+                    <i class="fas fa-question-circle" 
+                    data-toggle="tooltip" data-placement="left" 
+                    data-title="Asigne uno de los estados a la 
+                    salida de práctica académica" style="font-size: 0.813rem"></i> Estado Área de Coordinación</label>
+                <div class="row">
 
-                        @error('num_radicado_financiera')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                        <label for="fecha_radicado_financiera" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Seleccione la fecha del radicado en tesorería asociado a la salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('F. Radic. Tesor.') }}</label>
-                        <span class="hs-form-required">*</span>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                            </div>
-                        <input class="inputDate form-control datetimepicker" name="fecha_radicado_financiera"  type="text" required
-                        value="" >
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="aprobacion_coordinador" value="5"
+                        <?php if($solicitud_practica->aprobacion_coordinador == 5) echo 'checked'?>  >
+                        <label class="form-check-label" for="">Pendiente</label>
                         </div>
                     </div>
 
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="aprobacion_coordinador" value="7"
+                        <?php if($solicitud_practica->aprobacion_coordinador == 7) echo 'checked'?>  >
+                        <label class="form-check-label" for="">Visto Bueno</label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="aprobacion_coordinador"  value="4" 
+                            <?php if($solicitud_practica->aprobacion_coordinador == 4) echo 'checked'?>  >
+                            <label class="form-check-label" for="">Rechazado</label>
+                        </div>
+                    </div>
                 </div>
-            </div>   
-            
+            </div>
+            </div>
         </div>
-    <!-- Radicado Financiera-->
-@endif
-
-@if($solicitud_practica->aprobacion_asistD == 5)
-
-    <!-- estado AsistD -->
+    <!-- 0 -->
+    <!-- estado coord-->
+     <!-- estado AsistD -->
     <div class="form-group row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="form-group">
@@ -3185,21 +3122,23 @@
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                             <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="aprobacion_asistD" value="5"
-                            <?php if($solicitud_practica->aprobacion_asistD == 5) echo 'checked'?> onchange="rechazo_solic_asist()">
+                            <?php if($solicitud_practica->aprobacion_asistD == 5) echo 'checked'?>>
                             <label class="form-check-label" for="">Pendiente</label>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                             <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="aprobacion_asistD" value="7" onchange="rechazo_solic_asist()">
+                            <input class="form-check-input" type="radio" name="aprobacion_asistD" value="7"
+                            <?php if($solicitud_practica->aprobacion_asistD == 7) echo 'checked'?>>
                             <label class="form-check-label" for="">Aprobado</label>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="aprobacion_asistD"  value="4" onchange="rechazo_solic_asist()">
+                                <input class="form-check-input" type="radio" name="aprobacion_asistD"  value="4"
+                                <?php if($solicitud_practica->aprobacion_asistD == 4) echo 'checked'?>>
                                 <label class="form-check-label" for="">Rechazado</label>
                             </div>
                         </div>
@@ -3209,236 +3148,81 @@
             </div>
         </div>
     <!-- estado AsistD -->
-
-    <!-- Resolución - CDP - SiCapital-->
-        <div class="form-group row">
-            <div class="col-md-12">
-                <div class="row" >
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                        <div class="form-group">
-                            <label for="si_capital">
-                                <i class="fas fa-question-circle" 
-                                data-toggle="tooltip" data-placement="left" 
-                                data-title="Indique si cuenta con SiCapital" style="font-size: 0.813rem"></i> SiCapital</label>
-                            <span class="hs-form-required">*</span>
-                            <div class="row">
-
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="si_capital" value="0" disabled onchange="si_capital_solicitud_asist()">
-                                    <label class="form-check-label" for="">No</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-md-6 col-sm-64 col-xs-12">
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="si_capital" value="1" checked disabled onchange="si_capital_solicitud_asist()">
-                                    <label class="form-check-label" for="">Si</label>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="num_solicitud_necesidad" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Indique el número de solicitud de necesidad asociado a la 
-                            salida de práctica académica. Ej. 7658-2021" style="font-size: 0.813rem"></i> {{ __('N° Sol. Necesidad') }}</label>
-                        <span class="hs-form-required">*</span>
-                        <input id="num_solicitud_necesidad" type="text" class="form-control @error('num_solicitud_necesidad') is-invalid @enderror" name="num_solicitud_necesidad" 
-                        value="{{$solicitud_practica->num_solicitud_necesidad}}" pattern="[0-9\-]+" required autocomplete="off" autofocus disabled>
-
-                        @error('num_solicitud_necesidad')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label for="num_resolucion" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Indique el número de resolución asociado a la 
-                            salida de práctica académica. Ej. 1234" style="font-size: 0.813rem"></i> {{ __('N° Resolución') }}</label>
-                        <span class="hs-form-required">*</span>
-                        <input id="num_resolucion" type="text" class="form-control @error('num_resolucion') is-invalid @enderror" name="num_resolucion" 
-                        value="{{$solicitud_practica->num_resolucion}}"  required autocomplete="off" autofocus pattern="[0-9]+"
-                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)" disabled>
-
-                        @error('num_resolucion')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                        <label for="fecha_resolucion" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Seleccione la fecha de la resolución asociada a la 
-                            salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('F. Resolución') }}</label>
-                        <span class="hs-form-required">*</span>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                            <i class="fa fa-calendar"></i>
-                            </div>
-                        <input id="fecha_resolucion" class="inputDate form-control datetimepicker" name="fecha_resolucion"  type="text" required
-                        value="{{$solicitud_practica->fecha_resolucion}}" disabled>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-                        <label for="num_cdp_resolucion" class="col-form-label text-md-left">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Indique el número de CDP asociado a la 
-                            salida de práctica académica. Ej. 8536" style="font-size: 0.813rem"></i> {{ __('N° CDP') }}</label>
-                        <span class="hs-form-required">*</span>
-                        <input id="num_cdp" type="number" class="form-control @error('num_cdp') is-invalid @enderror" name="num_cdp" 
-                        value="{{$solicitud_practica->num_cdp}}" required autocomplete="off" autofocus pattern="[0-9]+"
-                        onchange="onlyNmb(this)" onkeyup="onlyNmb(this)" disabled>
-
-                        @error('num_cdp')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    
-                </div>
-            </div>   
-            
-        </div>
-
-    <!-- Resolución - CDP - SiCapital-->
-
-    <br>
-    {{-- <h4>Precios Estimados Transporte</h4> --}}
-    <hr class="divider">
-    <br>
-
-    <!-- Aprob Consejo Facultad - Tesorería -->
-    <!-- estado Consejo Facultad-->
+     <!-- estado decano-->
         <!-- 0 -->
-
-            @if($solicitud_practica->aprobacion_decano == 3)
-                {{--<div class="form-group row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
-                        <label for="id_estado">Estado Consejo De Facultad</label>
+                        <label for="id_estado">Estado Decano</label>
                         <div class="row">
 
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="aprobacion_consejo_facultad" value="5"
-                                <php if($programacion_practica->aprobacion_consejo_facultad == 5) echo 'checked'?>>
+                                <input class="form-check-input" type="radio" name="aprobacion_decano" value="5"
+                                <?php if($solicitud_practica->aprobacion_decano == 5) echo 'checked'?>>
                                 <label class="form-check-label" for="">Pendiente</label>
                                 </div>
                             </div>
 
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="aprobacion_consejo_facultad" value="3"
-                                <php if($programacion_practica->aprobacion_consejo_facultad == 3) echo 'checked'?>>
-                                <label class="form-check-label" for="">Aprobado</label>
+                                <input class="form-check-input" type="radio" name="aprobacion_decano" value="7"
+                                <?php if($solicitud_practica->aprobacion_decano == 7) echo 'checked'?>>
+                                <label class="form-check-label" for="">Visto bueno</label>
                                 </div>
                             </div>
 
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="aprobacion_consejo_facultad"  value="4" 
-                                    <php if($programacion_practica->aprobacion_consejo_facultad == 4) echo 'checked'?>>
+                                    <input class="form-check-input" type="radio" name="aprobacion_decano"  value="4" 
+                                    <?php if($solicitud_practica->aprobacion_decano == 4) echo 'checked'?>>
                                     <label class="form-check-label" for="">Rechazado</label>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                    </div>
-                </div> --}}
-            @endif
-
+                </div>
+            </div>
         <!-- 0 -->
-    <!-- estado Consejo Facultad-->
-@endif
+    <!-- estado decano-->
+    <!-- 19 -->
+<!-- modal -->
+<div class="modal fade" id="modalVerDocs" tabindex="-1" role="dialog" aria-labelledby="modalVerDocsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
 
-<!-- Legalizar - Tesorería -->
+            <div class="modal-header" style="background: #447161; color: white;">
+                <h5 class="modal-title">
+                    Documentos de <span id="nombreEstudianteDocs"></span>
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-    <!-- estado solicitud-->
-        @if($solicitud_practica->radicado_financiera == 1)
-
-            <div class="form-group row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="form-group">
-                        <label for="legalizado_financiera">
-                            <i class="fas fa-question-circle" 
-                            data-toggle="tooltip" data-placement="left" 
-                            data-title="Asigne uno de los estados a la salida de práctica académica" style="font-size: 0.813rem"></i> Estado Solicitud</label>
-                        <div class="row">
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="legalizado_financiera" value="5"
-                                <?php if($solicitud_practica->legalizado_financiera == 0) echo 'checked'?>>
-                                <label class="form-check-label" for="">Pendiente</label>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="legalizado_financiera" value="6">
-                                <label class="form-check-label" for="">Legalizada</label>
-                                </div>
-                            </div>
-
-                        </div>
+            <div class="modal-body">
+                <div id="documentosLoader" class="text-center my-4" style="display: none;">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="sr-only">Cargando...</span>
                     </div>
+                    <p class="mt-2">Cargando documentos...</p>
+                </div>
+                <div id="listaDocumentos">
+                    <!-- Carga de documentos -->
                 </div>
             </div>
-        @endif
-    <!-- estado solicitud -->
-     <!-- modal -->
-    <div class="modal fade" id="modalVerDocs" tabindex="-1" role="dialog" aria-labelledby="modalVerDocsLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-
-                <div class="modal-header" style="background: #447161; color: white;">
-                    <h5 class="modal-title">
-                        Documentos de <span id="nombreEstudianteDocs"></span>
-                    </h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <div id="documentosLoader" class="text-center my-4" style="display: none;">
-                        <div class="spinner-border text-success" role="status">
-                            <span class="sr-only">Cargando...</span>
-                        </div>
-                        <p class="mt-2">Cargando documentos...</p>
-                    </div>
-                    <div id="listaDocumentos">
-                        <!-- Carga de documentos -->
-                    </div>
-                </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Cerrar
-                    </button>
-                </div>
-
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cerrar
+                </button>
             </div>
+
         </div>
     </div>
-    <!-- modal -->
+</div>
+<!-- modal -->
 
-<!-- Legalizar - Tesorería -->
+
 
