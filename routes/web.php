@@ -182,7 +182,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('proyecc_electiva','Programacion\ProgramacionController@validar_electivas')->name('programacion_electiva');
         // Route::get('programaciones/buscar/proy/{id_sel}','programacion\ProgramacionController@buscador')->name('programacion_buscar');
         Route::get('programaciones/buscar/proy','Programacion\ProgramacionController@buscador')->name('programacion_buscar');
-        Route::get('proyeccver/{id}','Programacion\ProgramacionController@ver_programacion')->name('proy_legalizadas');
+        Route::get('ver_programacion/{id}','Programacion\ProgramacionController@ver_programacion')->name('ver_programacion');
         Route::post('proyeccduplicar/{id}','Programacion\ProgramacionController@duplicar_proy')->name('proy_duplicar');
         Route::put('cambios_proy/{id}','Programacion\ProgramacionController@cambios_proy')->name('proy_cambios')->middleware('role:1,2,3');
         Route::get('hab_cambios_proy/{id}','Programacion\ProgramacionController@hab_cambios_proy')->name('proy_hab_cambios')->middleware('role:1,2,3');

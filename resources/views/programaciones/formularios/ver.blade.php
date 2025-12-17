@@ -1,5 +1,13 @@
+@extends('layouts.app')
+<!-- end HTML HEAD -->
+@section('contenido')
+<div class="container">
 <!-- información Programación -->
     <!-- 1 -->
+    <div class="card">
+        <div class="card-header" id="" name="">{{ __('Información Programación N° ') }}<?php echo $programacion_practica->id?>
+        {{ __('') }}</div>
+    <div class="card-body">
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="id_programa_academico" class="col-form-label text-md-right">{{ __('Programa Académico') }}</label>
@@ -49,7 +57,7 @@
             <div class="col-md-2">
                 <div class="input-group">
                     <label for="id_periodo_academico" class="col-form-label text-md-right">{{ __('Año - Per.') }}</label>
-                    <span class="hs-form-required" title="Período Asignatura">*</span>
+                    <span class="hs-form-required" title="">*</span>
                     <div class="row">
                         <div class="col-md-12" style="padding-left: 0;">
                             <div class="input-group">
@@ -61,10 +69,11 @@
                                 </div>
                                 <div class="col-md-7" style="padding-left: 0px;padding-right: 0px;">
                                     <select name="id_periodo_academico" class="form-control" required
-                                    title="Período académico" disabled
+                                    title="" disabled
                                     style="padding-left: 0.1rem;padding-right: 0.1rem;border-top-left-radius: 0; border-bottom-left-radius: 0;">
                                         @foreach($periodos_academicos as $per_aca)
-                                        <option <?php if($per_aca->id==$programacion_practica->id_periodo_academico) echo 'selected'?> value="{{$per_aca->id}}">{{$per_aca->periodo_academico}}</option>                                              
+                                        <option <?php if($per_aca->id==$programacion_practica->id_periodo_academico) echo 'selected'?> value="{{$per_aca->id}}">{{$per_aca->periodo_academico}}</option>
+                                            
                                         @endforeach
                                     </select>
                                     @error('id_periodo_academico')
@@ -82,13 +91,366 @@
         </div>
     <!-- 1 -->
 
+    <!-- Integradas -->
+        <div  class="form-group row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <div class="form-group">
+                    <label for="integrada" class="col-form-label text-md-left">{{ __('Práctica Integrada?') }}</label>
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="integrada" id="integrada" value="1" 
+                            title=""
+                            <?php if($programacion_practica->practicas_integradas == 1) echo 'checked'?> disabled>
+                            <label class="form-check-label" for="">Si</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="integrada" id="integrada"  value="0"
+                                title=""
+                                <?php if($programacion_practica->practicas_integradas == 0) echo 'checked'?> disabled>
+                                <label class="form-check-label" for="">No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2" id="c_espa_aca">
+                <label for="cant_espa_aca" class="col-form-label text-md-left">{{ __('Cant. Esp. Aca.') }}</label>
+                <div class="input-group">
+                    <input id="cant_espa_aca" type="number" max="7" min="1" pattern="^[1-7]+" class="form-control @error('cant_espa_aca') is-invalid @enderror" name="cant_espa_aca" 
+                    title=""
+                    value="{{$practicas_integradas->cant_espa_aca}}" autocomplete="off" autofocus onchange="" readonly disabled>
+                    
+                    @error('cant_espa_aca')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-success btn_ver" type="button" id="ver_integ" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ver_intg()"><i class="far fa-eye"></i></button>
+                        <button class="btn btn-success btn_ver" type="button" id="ocul_integ" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ocul_intg()"><i class="far fa-eye-slash"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            
+            <!-- viaticos -->
+            <div class="col-md-1" style="height: 1rem;">
+                <input id="vlr_estud_max" type="text"  class="form-control @error('vlr_estud_max') is-invalid @enderror" name="vlr_estud_max" 
+                value={{$vlr_viaticos->vlr_estud_max_estimado}} autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
+                
+                <input id="vlr_estud_min" type="text"  class="form-control @error('vlr_estud_min') is-invalid @enderror" name="vlr_estud_min" 
+                value={{$vlr_viaticos->vlr_estud_min_estimado}} autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
+                
+            {{-- </div> 
+
+            <div class="col-md-1"> --}}
+                <input id="vlr_docen_max" type="text"  class="form-control @error('vlr_docen_max') is-invalid @enderror" name="vlr_docen_max" 
+                value={{$vlr_viaticos->vlr_docen_max_estimado}} autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
+                
+                <input id="vlr_docen_min" type="text"  class="form-control @error('vlr_docen_min') is-invalid @enderror" name="vlr_docen_min" 
+                value={{$vlr_viaticos->vlr_docen_min_estimado}} autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
+                
+            {{-- </div>
+
+            <div class="col-md-1"> --}}
+                <input id="pregrado" type="text"  class="form-control @error('pregrado') is-invalid @enderror" name="pregrado" 
+                value="" autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
+                
+            </div> 
+        <!-- viaticos -->
+        </div>
+
+        <div class="form-group row" id="esp_aca_1">
+            <div class="col-md-12" id="">
+                <br>
+                <h4>Espacios Académicos Prácticas Integradas</h4>
+                <hr class="divider">
+            </div>
+
+            <div class="col-md-5" id="">
+                <label for="id_espa_aca_1" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
+                <select id="id_espa_aca_1" name="id_espa_aca_1" class="form-control" required
+                title=""
+                onchange="recargarDocenEspaAca(this.value, 1)"
+                readonly disabled>
+                    @foreach($espa_aca_integradas as $esp_aca)
+                        <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_1) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
+                    @endforeach
+                </select>
+                
+                @error('id_espa_aca_1')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-5" id="">
+                <label for="id_docen_espa_aca_1" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                
+                <select id="id_docen_espa_aca_1" name="id_docen_espa_aca_1" class="form-control" required
+                title=""
+                readonly disabled>
+                    @foreach($d_int_espa_aca_1 as $d_i_1)
+                        <option <?php if($d_i_1['id']==$practicas_integradas->id_docen_espa_aca_1) echo 'selected'?> value="{{$d_i_1['id']}}">{{$d_i_1['full_name']}}</option>
+                    @endforeach
+                </select>
+                
+                @error('id_docen_espa_aca_1')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group row" id="esp_aca_2">
+            <div class="col-md-5" id="">
+                <label for="id_espa_aca_2" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
+                <select id="id_espa_aca_2" name="id_espa_aca_2" class="form-control" required
+                title=""
+                onchange="recargarDocenEspaAca(this.value, 2)"
+                readonly disabled>
+                    @foreach($espa_aca_integradas as $esp_aca)
+                        <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_2) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
+                    @endforeach
+                </select>
+                
+                @error('id_espa_aca_2')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-5" id="">
+                <label for="id_docen_espa_aca_2" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                <select id="id_docen_espa_aca_2" name="id_docen_espa_aca_2" class="form-control" required
+                title=""
+                readonly disabled>
+                    @foreach($d_int_espa_aca_2 as $d_i_2)
+                        <option <?php if($d_i_2['id']==$practicas_integradas->id_docen_espa_aca_2) echo 'selected'?> value="{{$d_i_2['id']}}">{{$d_i_2['full_name']}}</option>
+                    @endforeach
+                </select>
+                
+                @error('id_docen_espa_aca_2')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group row" id="esp_aca_3">
+            <div class="col-md-5" id="">
+                <label for="id_espa_aca_3" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
+                <select id="id_espa_aca_3" name="id_espa_aca_3" class="form-control" required
+                title=""
+                onchange="recargarDocenEspaAca(this.value, 3)"
+                readonly disabled>
+                    @foreach($espa_aca_integradas as $esp_aca)
+                        <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_3) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
+                    @endforeach
+                </select>
+                
+                @error('id_espa_aca_3')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-5" id="">
+                <label for="id_docen_espa_aca_3" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                <select id="id_docen_espa_aca_3" name="id_docen_espa_aca_3" class="form-control" required
+                title=""
+                readonly disabled>
+                    @foreach($d_int_espa_aca_3 as $d_i_3)
+                        <option <?php if($d_i_3['id']==$practicas_integradas->id_docen_espa_aca_3) echo 'selected'?> value="{{$d_i_3['id']}}">{{$d_i_3['full_name']}}</option>
+                    @endforeach
+                </select>
+                
+                @error('id_docen_espa_aca_3')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group row" id="esp_aca_4">
+            <div class="col-md-5" id="">
+                <label for="id_espa_aca_4" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
+                <select id="id_espa_aca_4" name="id_espa_aca_4" class="form-control" required
+                title=""
+                onchange="recargarDocenEspaAca(this.value, 4)"
+                readonly disabled>
+                    @foreach($espa_aca_integradas as $esp_aca)
+                        <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_4) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
+                    @endforeach
+                </select>
+                
+                @error('id_espa_aca_4')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-5" id="">
+                <label for="id_docen_espa_aca_4" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                <select id="id_docen_espa_aca_4" name="id_docen_espa_aca_4" class="form-control" required
+                title=""
+                readonly disabled>
+                    @foreach($d_int_espa_aca_4 as $d_i_4)
+                        <option <?php if($d_i_4['id']==$practicas_integradas->id_docen_espa_aca_4) echo 'selected'?> value="{{$d_i_4['id']}}">{{$d_i_4['full_name']}}</option>
+                    @endforeach
+                </select>
+                
+                @error('id_docen_espa_aca_4')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group row" id="esp_aca_5">
+            <div class="col-md-5" id="">
+                <label for="id_espa_aca_5" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
+                <select id="id_espa_aca_5" name="id_espa_aca_5" class="form-control" required
+                title=""
+                onchange="recargarDocenEspaAca(this.value, 5)"
+                readonly disabled>
+                    @foreach($espa_aca_integradas as $esp_aca)
+                        <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_5) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
+                    @endforeach
+                </select>
+                
+                @error('id_espa_aca_5')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-5" id="">
+                <label for="id_docen_espa_aca_5" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                <select id="id_docen_espa_aca_5" name="id_docen_espa_aca_5" class="form-control" required
+                title=""
+                readonly disabled>
+                    @foreach($d_int_espa_aca_5 as $d_i_5)
+                        <option <?php if($d_i_5['id']==$practicas_integradas->id_docen_espa_aca_5) echo 'selected'?> value="{{$d_i_5['id']}}">{{$d_i_5['full_name']}}</option>
+                    @endforeach
+                </select>
+                
+                @error('id_docen_espa_aca_5')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group row" id="esp_aca_6">
+            <div class="col-md-5" id="">
+                <label for="id_espa_aca_6" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
+                <select id="id_espa_aca_6" name="id_espa_aca_6" class="form-control" required
+                title=""
+                onchange="recargarDocenEspaAca(this.value, 6)"
+                readonly disabled>
+                    @foreach($espa_aca_integradas as $esp_aca)
+                        <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_6) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
+                    @endforeach
+                </select>
+                
+                @error('id_espa_aca_6')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-5" id="">
+                <label for="id_docen_espa_aca_6" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                <select id="id_docen_espa_aca_6" name="id_docen_espa_aca_6" class="form-control" required
+                title=""
+                readonly disabled>
+                    @foreach($d_int_espa_aca_6 as $d_i_6)
+                        <option <?php if($d_i_6['id']==$practicas_integradas->id_docen_espa_aca_6) echo 'selected'?> value="{{$d_i_6['id']}}">{{$d_i_6['full_name']}}</option>
+                    @endforeach
+                </select>
+                
+                @error('id_docen_espa_aca_6')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group row" id="esp_aca_7">
+            <div class="col-md-5" id="">
+                <label for="id_espa_aca_7" class="col-form-label text-md-right">{{ __('Espacio Académico') }}</label>
+                <select id="id_espa_aca_7" name="id_espa_aca_7" class="form-control" required
+                title=""
+                onchange="recargarDocenEspaAca(this.value, 7)"
+                readonly disabled>
+                    @foreach($espa_aca_integradas as $esp_aca)
+                        <option <?php if($esp_aca->id==$practicas_integradas->id_espa_aca_7) echo 'selected'?> value="{{$esp_aca->id}}">{{$esp_aca->espacio_academico}}</option>  
+                    @endforeach
+                </select>
+                
+                @error('id_espa_aca_7')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-5" id="">
+                <label for="id_docen_espa_aca_7" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                <select id="id_docen_espa_aca_7" name="id_docen_espa_aca_7" class="form-control" required
+                title=""
+                readonly disabled>
+                    @foreach($d_int_espa_aca_7 as $d_i_7)
+                        <option <?php if($d_i_7['id']==$practicas_integradas->id_docen_espa_aca_7) echo 'selected'?> value="{{$d_i_7['id']}}">{{$d_i_7['full_name']}}</option>
+                    @endforeach
+                </select>
+                
+                @error('id_docen_espa_aca_7')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            
+            <div class="col-md-2" id="">
+            </div>
+
+            <div class="col-md-12" id="">
+                <br>
+                <hr class="divider">
+            </div>
+        </div>
+
+    <!-- Integradas -->
+
     <!-- 2 -->
         <div  class="form-group row">
             <div class="col-md-2">
                 <label for="num_estudiantes_aprox" class="col-form-label text-md-left">{{ __('Estudiantes') }}</label>
-                <span class="hs-form-required">*</span>
-                <input id="num_estudiantes_aprox" type="text" pattern="[1-9][0-9]*" class="form-control @error('num_estudiantes_aprox') is-invalid @enderror" name="num_estudiantes_aprox" 
-                title="Número de estudiantes"
+                <input id="num_estudiantes_aprox" type="text" pattern="[0-9]{1,3}" class="form-control @error('num_estudiantes_aprox') is-invalid @enderror" name="num_estudiantes_aprox" 
+                title=""
                 value="{{$programacion_practica->num_estudiantes_aprox}}" required autocomplete="off" autofocus readonly>
                 
                 @error('num_estudiantes_aprox')
@@ -100,10 +462,9 @@
 
             <div class="col-md-2">
                 <label for="cant_grupos" class="col-form-label text-md-left">{{ __('Cant. Grupos') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <input id="cant_grupos"  max="4" min="1" pattern="^[1-4]" class="form-control @error('cant_grupos') is-invalid @enderror" name="cant_grupos" 
-                    title="Cantidad de grupos" readonly
+                    title="" readonly
                     value="{{$programacion_practica->cantidad_grupos}}" autocomplete="off" autofocus readonly>
                     @error('cant_grupos')
                         <span class="invalid-feedback" role="alert">
@@ -114,63 +475,225 @@
                 </div>
             </div>
 
-            {{-- <div class="col-md-2">
-                <label for="num_acompaniantes" class="col-form-label text-md-left">{{ __('Acompañantes') }}</label>
-                <div class="input-group">
-                    <input id="num_acompaniantes" max="3" min="0" pattern="^[0-3]" class="form-control @error('num_acompaniantes') is-invalid @enderror" name="num_acompaniantes" 
-                    title="Número de acompañantes"
-                    value="{{$docentes_practica->total_docentes_apoyo}}" autocomplete="off" autofocus readonly>
-                    
-                    @error('num_acompaniantes')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div> --}}
-
             <div class="col-md-3">
                 <label for="num_apoyo" class="col-form-label text-md-left">{{ __('Docentes Acompañantes') }}</label>
                 <div class="input-group">
                     <input id="num_apoyo" max="3" min="0" pattern="^[0-9]+" class="form-control @error('num_apoyo') is-invalid @enderror" name="num_apoyo" 
-                    title="Número de docentes de apoyo"
-                    value="{{$docentes_practica->num_docentes_apoyo}}" autocomplete="off" autofocus readonly>
+                    title=""
+                    value="{{$docentes_practica->num_docentes_apoyo}}" autocomplete="off" autofocus readonly disabled>
                     
                     @error('num_apoyo')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
+                    <span class="input-group-btn">
+                        <button class="btn btn-success btn_ver" type="button" id="ver_apoyo" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ver_apoy()"><i class="far fa-eye"></i></button>
+                        <button class="btn btn-success btn_ver" type="button" id="ocul_apoyo" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ocul_apoy()"><i class="far fa-eye-slash"></i></button>
+                    </span>
+                    <span class="input-group-btn" id="ver_sopor_pdf">
+                        <button class="btn btn-success btn_ver" type="button" id="ver_sop_per" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ver_soporte()"><i class="far fa-eye"></i>  <i class="fa fa-arrow-right"></i>  <i class="fa fa-file"></i></button>
+                        <button class="btn btn-success btn_ver" type="button" id="ocul_sop_per" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ocul_soporte()"><i class="far fa-eye-slash"></i>  <i class="fa fa-arrow-right"></i>  <i class="fa fa-file"></i></button>
+                    </span>
                 </div>
             </div>
+        </div>
 
-            <!-- viaticos -->
-            <div class="col-md-2">
-                <input id="vlr_estud_max" type="text"  class="form-control @error('vlr_estud_max') is-invalid @enderror" name="vlr_estud_max" 
-                value={{$vlr_viaticos->vlr_estud_max_estimado}} autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
-                
-                <input id="vlr_estud_min" type="text"  class="form-control @error('vlr_estud_min') is-invalid @enderror" name="vlr_estud_min" 
-                value={{$vlr_viaticos->vlr_estud_min_estimado}} autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
-                
-            </div> 
-
-            <div class="col-md-2">
-                <input id="vlr_docen_max" type="text"  class="form-control @error('vlr_docen_max') is-invalid @enderror" name="vlr_docen_max" 
-                value={{$vlr_viaticos->vlr_docen_max_estimado}} autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
-                
-                <input id="vlr_docen_min" type="text"  class="form-control @error('vlr_docen_min') is-invalid @enderror" name="vlr_docen_min" 
-                value={{$vlr_viaticos->vlr_docen_min_estimado}} autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
-                
+        <div class="form-group row" id="soporte_pers_apoyo">
+            <div class="col-md-12">
+                <br>
+                <h4>Oficio Soporte Docente Acompañante</h4>
+                <hr class="divider">
+                <br>
+                <embed id="soporte_apoyo_pdf" src="{{$img_sop_pers_apoyo}}" alt="" width=100% height=600>
             </div>
-
-            <div class="col-md-1">
-                <input id="pregrado" type="text"  class="form-control @error('pregrado') is-invalid @enderror" name="pregrado" 
-                value="" autocomplete="off" autofocus readonly style="background-color:transparent; border-color:transparent; color:transparent !important">
-                
-            </div> 
-            <!-- viaticos -->
         </div>
     <!-- 2 -->
+
+    <!-- 2.1 -->
+        <div  class="form-group row"  id="Grupos_edit">
+            <div class="col-md-2" id="gp_1_edit">
+                <label for="grupo_1" class="col-form-label text-md-left">{{ __('Gp 1') }}</label>
+                <span class="hs-form-required">*</span>
+                <input id="grupo_1" type="text" class="form-control @error('grupo_1') is-invalid @enderror" name="grupo_1" 
+                title="" onkeyup="onlyNmb(this)" pattern="[0-9]{1,5}"
+                value="{{$programacion_practica->grupo_1}}" required autocomplete="off" autofocus>
+                
+                @error('grupo_1')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="col-md-2" id="gp_2_edit">
+                <label for="grupo_2" class="col-form-label text-md-left">{{ __('Gp 2') }}</label>
+                <input id="grupo_2" type="text" class="form-control @error('grupo_2') is-invalid @enderror" name="grupo_2" 
+                title="" onkeyup="onlyNmb(this)" pattern="[0-9]{1,5}"
+                value="{{$programacion_practica->grupo_2}}" autocomplete="off" autofocus>
+                @error('grupo_2')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="col-md-2" id="gp_3_edit">
+                <label for="grupo_3" class="col-form-label text-md-left">{{ __('Gp 3') }}</label>
+                <input id="grupo_3" type="text" class="form-control @error('grupo_3') is-invalid @enderror" name="grupo_3" 
+                title="" onkeyup="onlyNmb(this)" pattern="[0-9]{1,5}"
+                value="{{$programacion_practica->grupo_3}}" autocomplete="off" autofocus>
+                @error('grupo_3')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="col-md-2" id="gp_4_edit">
+                <label for="grupo_4" class="col-form-label text-md-left">{{ __('Gp 4') }}</label>
+                <input id="grupo_4" type="text" class="form-control @error('grupo_4') is-invalid @enderror" name="grupo_4" 
+                title="" onkeyup="onlyNmb(this)" pattern="[0-9]{1,5}"
+                value="{{$programacion_practica->grupo_4}}" autocomplete="off" autofocus>
+                @error('grupo_4')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+                
+        </div>
+    <!-- 2.1 -->
+
+    <!-- 2.3 -->
+        <div  class="form-group row"  id="apoyo">
+            
+            <div class="col-md-4" id="ap_1">
+                <label for="apoyo_1" class="col-form-label text-md-left">{{ __('Docente Acompañante 1') }}</label>
+                {{-- <span class="hs-form-required">*</span> --}}
+                <input id="apoyo_1" type="text" class="form-control @error('apoyo_1') is-invalid @enderror" name="apoyo_1" 
+                title=""
+                value="{{$docentes_practica->docente_apoyo_1}}" autocomplete="off" autofocus readonly>
+                
+                @error('apoyo_1')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+            <div class="col-md-4" id="ap_2">
+                <label for="apoyo_2" class="col-form-label text-md-left">{{ __('Docente Acompañante 2') }}</label>
+                <input id="apoyo_2" type="text" class="form-control @error('apoyo_2') is-invalid @enderror" name="apoyo_2" 
+                title=""
+                value="{{$docentes_practica->docente_apoyo_2}}" autocomplete="off" autofocus readonly>
+                @error('apoyo_2')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-4" id="ap_3">
+                <label for="apoyo_3" class="col-form-label text-md-left">{{ __('Docente Acompañante 3') }}</label>
+                <input id="apoyo_3" type="text" class="form-control @error('apoyo_3') is-invalid @enderror" name="apoyo_3" 
+                title=""
+                value="{{$docentes_practica->docente_apoyo_3}}" autocomplete="off" autofocus readonly>
+                @error('apoyo_3')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-4" id="ap_4">
+                <label for="apoyo_4" class="col-form-label text-md-left">{{ __('Docente Acompañante 4') }}</label>
+                <input id="apoyo_4" type="text" class="form-control @error('apoyo_4') is-invalid @enderror" name="apoyo_4" 
+                title=""
+                value="{{$docentes_practica->docente_apoyo_4}}"  autocomplete="off" autofocus readonly>
+                
+                @error('apoyo_4')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="col-md-4" id="ap_5">
+                    <label for="apoyo_5" class="col-form-label text-md-left">{{ __('Docente Acompañante 5') }}</label>
+                    <input id="apoyo_5" type="text" class="form-control @error('apoyo_5') is-invalid @enderror" name="apoyo_5" 
+                    title=""
+                    value="{{$docentes_practica->docente_apoyo_5}}" autocomplete="off" autofocus readonly>
+                    @error('apoyo_5')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+            </div>
+
+            <div class="col-md-4" id="ap_6">
+                    <label for="apoyo_6" class="col-form-label text-md-left">{{ __('Docente Acompañante 6') }}</label>
+                    <input id="apoyo_6" type="text" class="form-control @error('apoyo_6') is-invalid @enderror" name="apoyo_6" 
+                    title=""
+                    value="{{$docentes_practica->docente_apoyo_6}}" autocomplete="off" autofocus readonly>
+                    @error('apoyo_6')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+            </div>
+
+            <div class="col-md-4" id="ap_7">
+                    <label for="apoyo_7" class="col-form-label text-md-left">{{ __('Docente Acompañante 7') }}</label>
+                    <input id="apoyo_7" type="text" class="form-control @error('apoyo_7') is-invalid @enderror" name="apoyo_7" 
+                    title=""
+                    value="{{$docentes_practica->docente_apoyo_7}}"  autocomplete="off" autofocus readonly>
+                    
+                    @error('apoyo_7')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+            </div>
+
+            <div class="col-md-4" id="ap_8">
+                    <label for="apoyo_8" class="col-form-label text-md-left">{{ __('Docente Acompañante 8') }}</label>
+                    <input id="apoyo_8" type="text" class="form-control @error('apoyo_8') is-invalid @enderror" name="apoyo_8" 
+                    title=""
+                    value="{{$docentes_practica->docente_apoyo_8}}" autocomplete="off" autofocus readonly>
+                    @error('apoyo_8')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+            </div>
+
+            <div class="col-md-4" id="ap_9">
+                    <label for="apoyo_9" class="col-form-label text-md-left">{{ __('Docente Acompañante 9') }}</label>
+                    <input id="apoyo_9" type="text" class="form-control @error('apoyo_9') is-invalid @enderror" name="apoyo_9" 
+                    title=""
+                    value="{{$docentes_practica->docente_apoyo_9}}" autocomplete="off" autofocu readonly>
+                    @error('apoyo_9')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+            </div>
+
+            <div class="col-md-4" id="ap_10">
+                    <label for="apoyo_10" class="col-form-label text-md-left">{{ __('Docente Acompañante 10') }}</label>
+                    <input id="apoyo_10" type="text" class="form-control @error('apoyo_10') is-invalid @enderror" name="apoyo_10" 
+                    title=""
+                    value="{{$docentes_practica->docente_apoyo_10}}" autocomplete="off" autofocus readonly>
+                    @error('apoyo_10')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+            </div>
+            
+        </div>
+    <!-- 2.3 -->
 
 <!-- información Programación -->
 
@@ -178,13 +701,42 @@
 <h4>Ruta Principal (Destino para cumplir los objetivos de la práctica)</h4>
 <hr class="divider">
 <br>
+<div  class="form-group row">
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+        <div class="form-group">
+            <label for="realizada_bogota_rp" class="col-form-label text-md-left">
+                <i class="fas fa-question-circle" 
+                data-toggle="tooltip" data-placement="left" 
+                style="font-size: 0.813rem"></i> {{ __('¿La práctica se realizará en Bogotá?') }}</label>
+            <span class="hs-form-required">*</span>
+            <div class="row">
 
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="realizada_bogota_rp" id="realizada_bogota_rp" value="1"
+                    title="" disabled
+                    <?php if($programacion_practica->realizada_bogota_rp == 1) echo 'checked'?>>
+                    <label class="form-check-label" for="">Si</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="realizada_bogota_rp" id="realizada_bogota_rp"  value="0"
+                        title="" disabled
+                        <?php if($programacion_practica->realizada_bogota_rp == 0) echo 'checked'?>>
+                        <label class="form-check-label" for="">No</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- ruta principal -->
     <!-- 3 -->
         <div class="form-group row">
             <div class="col-md-6">
                 <label for="destino_rp" class="col-form-label text-md-left">{{ __('Destino Ruta Principal') }}</label>
-                <span class="hs-form-required">*</span>
                 <input id="destino_rp" type="text" class="form-control @error('destino_rp') is-invalid @enderror" name="destino_rp" 
                 value="{{$programacion_practica->destino_rp}}" required autocomplete="off" autofocus readonly>
 
@@ -200,7 +752,7 @@
                 <label for="cant_url_rp" class="col-form-label text-md-left">{{ __('Cant. URL') }}</label>
                 <div class="input-group">
                     <input id="cant_url_rp" max="6" min="1" pattern="^[0-9]+" class="form-control @error('cant_url_rp') is-invalid @enderror" name="cant_url_rp" 
-                    title="Cantidad de URL ruta principal"
+                    title=""
                     value="{{$programacion_practica->cantidad_url_rp}}" autocomplete="off" autofocus readonly disabled>
                     
                     @error('cant_url_rp')
@@ -381,7 +933,6 @@
         <div class="form-group row">
             <div class="col-md-12">
                 <label for="det_recorrido_interno_rp" class="col-form-label text-md-left">{{ __('Detalle Recorrido') }}</label>
-                <span class="hs-form-required">*</span>
                 <textarea id="det_recorrido_interno_rp" style="min-height:5rem;" type="text" class="form-control @error('det_recorrido_interno_rp') is-invalid @enderror" name="det_recorrido_interno_rp" 
                 required autocomplete="off" autofocus readonly><?php echo $programacion_practica->det_recorrido_interno_rp?></textarea>
                 
@@ -398,10 +949,9 @@
         <div class="form-group row">
             <div class="col-md-3">
                 <label for="lugar_salida_rp" class="col-form-label text-md-left">{{ __('Punto Encuentro Salida') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
-                    <select id="lugar_salida_rp" name="lugar_salida_rp" class="form-control" required disabled
-                        title="Sedes Universidad" >
+                    <select id="lugar_regreso_ra" name="lugar_regreso_ra" class="form-control" required disabled
+                        title="" >
                         @foreach($sedes as $sede)
                             <option <?php if($sede->id==$programacion_practica->lugar_salida_rp) echo 'selected'?> value="{{$sede->id}}">{{$sede->sede}}</option>  
                         @endforeach
@@ -417,10 +967,9 @@
 
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <label for="fecha_salida_aprox_rp" class="col-form-label text-md-left">{{ __('Fecha Salida') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
+                        <i class="fa fa-calendar"></i>
                     </div>
                 <input class="inputDate form-control datetimepicker" name="fecha_salida_aprox_rp"  type="text" required
                 value="{{$programacion_practica->fecha_salida_aprox_rp}}" readonly disabled>
@@ -429,10 +978,9 @@
 
             <div class="col-md-3">
                 <label for="lugar_regreso_rp" class="col-form-label text-md-left">{{ __('Punto Encuentro Regreso') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <select id="lugar_regreso_rp" name="lugar_regreso_rp" class="form-control" required disabled
-                        title="Sedes Universidad" >
+                        title="" >
                         @foreach($sedes as $sede)
                             <option <?php if($sede->id==$programacion_practica->lugar_regreso_rp) echo 'selected'?> value="{{$sede->id}}">{{$sede->sede}}</option>  
                         @endforeach
@@ -448,7 +996,6 @@
 
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <label for="fecha_regreso_aprox_rp" class="col-form-label text-md-left">{{ __('Fecha Regreso') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
@@ -460,7 +1007,6 @@
 
             <div class="col-md-2">
                 <label for="duracion_rp" class="col-form-label text-md-left">{{ __('Duración Días') }}</label>
-                {{-- <span class="hs-form-required">*</span> --}}
                 <input id="duracion_rp_" type="text" class="form-control @error('duracion_rp') is-invalid @enderror" name="duracion_rp" 
                 value="{{ $programacion_practica->duracion_num_dias_rp}}" autocomplete="off" autofocus readonly>
                 
@@ -505,7 +1051,7 @@
             <div class="col-md-5">
                 <label for="docente_resp_transp_rp" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <input id="docente_resp_transp_rp" type="text" class="form-control @error('docente_resp_transp_rp') is-invalid @enderror" name="docente_resp_transp_rp" 
-                value="{{$nombre_usuario}}" required autocomplete="off" autofocus readonly>
+                value="{{$transporte_programacion->docen_respo_trasnporte_rp}}" required autocomplete="off" autofocus readonly>
                 
                 @error('docente_resp_transp_rp')
                     <span class="invalid-feedback" role="alert">
@@ -539,7 +1085,7 @@
                     <div class="col-md-2">
                         <label for="capac_transporte_rp_[]" class="col-form-label text-md-left">{{ __('Cap. Vehíc.') }}</label>
                         <input id="capac_transporte_rp_[]" type="text" class="form-control @error('capac_transporte_rp_[]') is-invalid @enderror" name="capac_transporte_rp_[]" 
-                        value="{{$transporte_programacion->capac_transporte_rp_1}}" required autocomplete="off" autofocus readonly>
+                        value="{{$transporte_programacion->capac_transporte_rp_1}}"  autocomplete="off" autofocus readonly>
 
                         @error('capac_transporte_rp_[]')
                             <span class="invalid-feedback" role="alert">
@@ -740,16 +1286,222 @@
     <!-- 8 transporte_rp_3 -->
 
     <br>
+    <h4>Transporte Menor - Local</h4>
+    <hr class="divider">
+
+    <!-- cant t. menor -->
+        <div  class="form-group row">
+            <div class="col-md-2">
+                <label for="cant_trans_menor_rp" class="col-form-label text-md-left">{{ __('Cant. Vehículos') }}</label>
+                <div class="input-group">
+                    <input id="cant_trans_menor_rp" type="number" max="4" min="0" pattern="^[1-4]+"  class="form-control @error('cant_trans_menor_rp') is-invalid @enderror" name="cant_trans_menor_rp" 
+                    title=""
+                    value="{{$transporte_menor->cant_trans_menor_rp}}" required autocomplete="off" autofocus readonly disabled>
+                    
+                    @error('cant_trans_menor_rp')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-success btn_ver" type="button" id="ver_trans_menor_rp" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ver_t_menor_rp()"><i class="far fa-eye"></i></button>
+                        <button class="btn btn-success btn_ver" type="button" id="ocul_trans_menor_rp" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ocul_t_menor_rp()"><i class="far fa-eye-slash"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-5" id="docente_trans_menor_rp">
+                <label for="docente_resp_t_menor_rp" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                <input id="docente_resp_t_menor_rp" type="text" class="form-control @error('docente_resp_t_menor_rp') is-invalid @enderror" name="docente_resp_t_menor_rp" 
+                title=""
+                value="{{ $transporte_menor->docente_resp_t_menor_rp }}" required autocomplete="off" autofocus readonly>
+                
+                @error('docente_resp_t_menor_rp')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+        </div>
+    <!-- cant t. menor -->
+
+    <!-- 8 trans_menor_rp_1 -->
+        <div class="form-group row" id="t_menor_rp_1">
+            <div class="col-md-12" id="trans_menor_rp">
+                <div class="row" id="trans_menor_rp_children">
+
+                    <div class="col-md-5">
+                        <label for="trans_menor_rp_1" class="col-form-label text-md-left">{{ __('Transporte Menor 1') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="trans_menor_rp_1" type="text" class="form-control @error('trans_menor_rp_1') is-invalid @enderror" name="trans_menor_rp_1" 
+                        title=""
+                        value="{{$transporte_menor->trans_menor_rp_1}}"  autocomplete="off" autofocus readonly>
+            
+                        @error('trans_menor_rp_1')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="vlr_trans_menor_rp_1" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="vlr_trans_menor_rp_1" type="text" class="form-control @error('vlr_trans_menor_rp_1') is-invalid @enderror" name="vlr_trans_menor_rp_1" 
+                        title=""
+                        value="{{number_format($transporte_menor->vlr_trans_menor_rp_1,'0',',','.')}}"  autocomplete="off" autofocus  onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                        readonly>
+
+                        @error('vlr_trans_menor_rp_1')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    <!-- 8 trans_menor_rp_1 -->
+
+    <!-- 8 trans_menor_rp_2 -->
+        <div class="form-group row" id="t_menor_rp_2">
+            <div class="col-md-12" id="trans_menor_rp">
+                <div class="row" id="trans_menor_rp_children">
+
+                    <div class="col-md-5">
+                        <label for="trans_menor_rp_2" class="col-form-label text-md-left">{{ __('Transporte Menor 2') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="trans_menor_rp_2" type="text" class="form-control @error('trans_menor_rp_2') is-invalid @enderror" name="trans_menor_rp_2" 
+                        title=""
+                        value="{{$transporte_menor->trans_menor_rp_2}}"  autocomplete="off" autofocus readonly>
+            
+                        @error('trans_menor_rp_2')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="vlr_trans_menor_rp_2" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="vlr_trans_menor_rp_2" type="text" class="form-control @error('vlr_trans_menor_rp_2') is-invalid @enderror" name="vlr_trans_menor_rp_2" 
+                        title=""
+                        value="{{number_format($transporte_menor->vlr_trans_menor_rp_2,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" redonly
+                        readonly>
+
+                        @error('vlr_trans_menor_rp_2')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    <!-- 8 trans_menor_rp_2 -->
+
+    <!-- 8 trans_menor_rp_3 -->
+        <div class="form-group row" id="t_menor_rp_3">
+            <div class="col-md-12" id="trans_menor_rp">
+                <div class="row" id="trans_menor_rp_children">
+                    
+                    <div class="col-md-5">
+                        <label for="trans_menor_rp_3" class="col-form-label text-md-left">{{ __('Transporte Menor 3') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="trans_menor_rp_3" type="text" class="form-control @error('trans_menor_rp_3') is-invalid @enderror" name="trans_menor_rp_3" 
+                        title=""
+                        value="{{$transporte_menor->trans_menor_rp_3}}"  autocomplete="off" autofocus readonly>
+            
+                        @error('trans_menor_rp_3')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="vlr_trans_menor_rp_3" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="vlr_trans_menor_rp_3" type="text" class="form-control @error('vlr_trans_menor_rp_3') is-invalid @enderror" name="vlr_trans_menor_rp_3" 
+                        title=""
+                        value="{{number_format($transporte_menor->vlr_trans_menor_rp_3,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                        readonly>
+
+                        @error('vlr_trans_menor_rp_3')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    <!-- 8 trans_menor_rp_3 -->
+
+    <!-- 8 trans_menor_rp_4 -->
+        <div class="form-group row" id="t_menor_rp_4">
+            <div class="col-md-12" id="trans_menor_rp">
+                <div class="row" id="trans_menor_rp_children">
+
+                    <div class="col-md-5">
+                        <label for="trans_menor_rp_4" class="col-form-label text-md-left">{{ __('Transporte Menor 4') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="trans_menor_rp_4" type="text" class="form-control @error('trans_menor_rp_4') is-invalid @enderror" name="trans_menor_rp_4" 
+                        title=""
+                        value="{{$transporte_menor->trans_menor_rp_4}}"  autocomplete="off" autofocus readonly>
+            
+                        @error('trans_menor_rp_4')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="vlr_trans_menor_rp_4" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="vlr_trans_menor_rp_4" type="text" class="form-control @error('vlr_trans_menor_rp_4') is-invalid @enderror" name="vlr_trans_menor_rp_4" 
+                        title=""
+                        value="{{number_format($transporte_menor->vlr_trans_menor_rp_4,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                        readonly>
+
+                        @error('vlr_trans_menor_rp_4')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    <!-- 8 trans_menor_rp_4 -->
+
+    <br>
     <h4>Otros</h4>
     <hr class="divider">
 
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_rp" class="col-form-label text-md-left" title="Materiales" hidden>{{ __('Materiales') }}</label>
+                <label for="det_materiales_rp" class="col-form-label text-md-left" title="" hidden>{{ __('Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="det_materiales_rp" hidden type="text"  class="form-control @error('det_materiales_rp') is-invalid @enderror" name="det_materiales_rp" 
-                value="{{$mater_herra_programacion->det_materiales_rp}}" autocomplete="off" autofocus disabled>
+                <input id="det_materiales_rp" type="text"  class="form-control @error('det_materiales_rp') is-invalid @enderror" name="det_materiales_rp" 
+                title="" hidden
+                value="{{$mater_herra_programacion->det_materiales_rp}}" autocomplete="off" autofocus readonly>
                 
                 @error('det_materiales_rp')
                     <span class="invalid-feedback" role="alert">
@@ -759,11 +1511,12 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="Valor Total Materiales" hidden>{{ __('Valor Total Materiales') }}</label>
+                <label for="vlr_materiales_rp" class="col-form-label text-md-left" title="" hidden>{{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="vlr_materiales_rp" hidden type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
+                <input id="vlr_materiales_rp" type="text"  class="form-control @error('vlr_materiales_rp') is-invalid @enderror" name="vlr_materiales_rp" 
+                title="" hidden
                 value="{{number_format($costos_programacion->vlr_materiales_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
-                disabled>
+                readonly>
                 
                 @error('vlr_materiales_rp')
                     <span class="invalid-feedback" role="alert">
@@ -777,10 +1530,11 @@
     <!-- guías -baquianos -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_guias_baquia_rp" class="col-form-label text-md-left" title="Guías y/o Baquianos">{{ __('Guías y/o Baquianos') }}</label>
+                <label for="det_guias_baquia_rp" class="col-form-label text-md-left" title="
+                ">{{ __('Guías y/o Baquianos') }}</label>
                 <input id="det_guias_baquia_rp" type="text"  class="form-control @error('det_guias_baquia_rp') is-invalid @enderror" name="det_guias_baquia_rp" 
-                title="Guías y/o baquianos requeridos"
-                value="{{$mater_herra_programacion->det_guias_baquianos_rp}}" autocomplete="off" autofocus disabled>
+                title=""
+                value="{{$mater_herra_programacion->det_guias_baquianos_rp}}" autocomplete="off" autofocus readonly>
                 
                 @error('det_guias_baquia_rp')
                     <span class="invalid-feedback" role="alert">
@@ -790,11 +1544,12 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_guias_baquia_rp" class="col-form-label text-md-left" title="Valor Total Guías y/o Baquianos">{{ __('Valor Total Guías y/o Baquianos') }}</label>
+                <label for="vlr_guias_baquia_rp" class="col-form-label text-md-left" title="">{{ __('Valor Total Guías y/o Baquianos') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_guias_baquia_rp" type="text"  class="form-control @error('vlr_guias_baquias_rp') is-invalid @enderror" name="vlr_guias_baquia_rp" 
-                title="Valor de los guías y/o baquianos" disabled
-                value="{{number_format($costos_programacion->vlr_guias_baquianos_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)">
+                title="" 
+                value="{{number_format($costos_programacion->vlr_guias_baquianos_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
+                readonly>
                 
                 @error('vlr_guias_baquia_rp')
                     <span class="invalid-feedback" role="alert">
@@ -811,8 +1566,8 @@
                 <label for="det_otros_bolet_rp" class="col-form-label text-md-left" title="">{{ __('Boletas y/u Otros') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="det_otros_bolet_rp" type="text"  class="form-control @error('det_otros_bolet_rp') is-invalid @enderror" name="det_otros_bolet_rp" 
-                title="Boletas y/u otros requeridos"
-                value="{{$mater_herra_programacion->det_otros_boletas_rp}}" autocomplete="off" autofocus disabled>
+                title=""
+                value="{{$mater_herra_programacion->det_otros_boletas_rp}}" autocomplete="off" autofocus readonly>
                 
                 @error('det_otros_bolet_rp')
                     <span class="invalid-feedback" role="alert">
@@ -822,11 +1577,12 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_otros_bolet_rp" class="col-form-label text-md-left" title="Valor Total Boletas y/u Otros">{{ __('Valor Total Boletas y/u Otros') }}</label>
+                <label for="vlr_otros_bolet_rp" class="col-form-label text-md-left" title="">{{ __('Valor Total Boletas y/u Otros') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_otros_bolet_rp" type="text"  class="form-control @error('vlr_otros_bolet_rp') is-invalid @enderror" name="vlr_otros_bolet_rp" 
-                title="Valor de las boletas y/u otros" disabled
-                value="{{number_format($costos_programacion->vlr_otros_boletas_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)">
+                title="" 
+                value="{{number_format($costos_programacion->vlr_otros_boletas_rp,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
+                readonly>
                 
                 @error('vlr_otros_bolet_rp')
                     <span class="invalid-feedback" role="alert">
@@ -837,6 +1593,10 @@
         </div>
     <!-- otros - boletas --> 
 
+    <br>
+    <h4>Actividades de Riesgo</h4>
+    <hr class="divider">
+    
     <!-- preguntas -->
         <div class="form-group row">
             <!-- 1 -->
@@ -914,19 +1674,77 @@
         </div>
     <!-- preguntas -->
 
+    <h4>Coordinador</h4>
+    <hr class="divider">
+
+    <!-- conformidad curricularización -->
+        <div class="form-group row">
+            <!-- 1 -->
+            <div class="col-md-11">
+                <div class="form-group">
+                    <label for="conf_curricul_plan_pract_rp"><i class="fas fa-question-circle" 
+                        data-toggle="tooltip" data-placement="left" 
+                        data-title="Indique Si o No según el caso" style="font-size: 0.813rem"></i> {{ __('La duración de esta práctica presenta conformidad a la curricularización del 
+                    plan de prácticas del proyecto curricular aprobado por el consejo de facultades?') }}</label>
+                </div>
+            </div>
+
+            <div class="col-md-1">
+                <div class="form-group" style="margin-right: 15px;">
+                    <label class="switch">
+                        <input type="checkbox" name="conf_curricul_plan_pract_rp">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+            <!-- 1 -->
+
+        </div>
+    <!-- conformidad curricularización -->
+
+
 <!-- ruta principal -->
 
 <br>
 <h4>Ruta Contingencia (Destino para cumplir propósitos de práctica pero por fallas en la vía, clima o demás se adopta como ruta principal de destino)</h4>
 <hr class="divider">
 <br>
+<div  class="form-group row">
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+        <div class="form-group">
+            <label for="realizada_bogota_ra" class="col-form-label text-md-left">
+                <i class="fas fa-question-circle" 
+                data-toggle="tooltip" data-placement="left" 
+                style="font-size: 0.813rem"></i> {{ __('¿La práctica se realizará en Bogotá?') }}</label>
+            <span class="hs-form-required">*</span>
+            <div class="row">
 
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="realizada_bogota_ra" id="realizada_bogota_ra" value="1"
+                    title="" disabled
+                    <?php if($programacion_practica->realizada_bogota_ra == 1) echo 'checked'?>>
+                    <label class="form-check-label" for="">Si</label>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="realizada_bogota_ra" id="realizada_bogota_ra"  value="0"
+                        title="" disabled
+                        <?php if($programacion_practica->realizada_bogota_ra == 0) echo 'checked'?>>
+                        <label class="form-check-label" for="">No</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- ruta alterna -->
     <!-- 9 -->
         <div class="form-group row">
             <div class="col-md-6">
                 <label for="destino_ra" class="col-form-label text-md-left">{{ __('Destino Ruta Contingencia') }}</label>
-                <span class="hs-form-required">*</span>
                 <input id="destino_ra" type="text" class="form-control @error('destino_ra') is-invalid @enderror" name="destino_ra" 
                 value="{{$programacion_practica->destino_ra}}" required autocomplete="off" autofocus readonly>
                 
@@ -942,7 +1760,7 @@
                 <label for="cant_url_ra" class="col-form-label text-md-left">{{ __('Cant. URL') }}</label>
                 <div class="input-group">
                     <input id="cant_url_ra" max="6" min="1" pattern="^[0-9]+" class="form-control @error('cant_url_ra') is-invalid @enderror" name="cant_url_ra" 
-                    title="Cantidad de URL ruta principal"
+                    title=""
                     value="{{$programacion_practica->cantidad_url_ra}}" autocomplete="off" autofocus required readonly disabled>
                     
                     @error('cant_url_ra')
@@ -962,7 +1780,7 @@
             <!-- Cant. URL -->
         </div>
     <!-- 9 -->
-
+    
     <!-- 10 -->
         <div class="form-group row" id="ra_url_edit">
             <div class="col-md-12" id="ra_url_1">
@@ -973,7 +1791,7 @@
                                 <label for="ruta_alterna" class="col-form-label text-md-left">{{ __('URL Ruta') }}</label>
                                 <div class="input-group">
                                     <input id="ruta_alterna" type="text" class="form-control @error('ruta_alterna') is-invalid @enderror" name="ruta_alterna" 
-                                    title="URL tomada de google maps" onchange="verifUrl_ra(this)"
+                                    title="" onchange="verifUrl_ra(this)"
                                     value="{{$programacion_practica->ruta_alterna}}"  required autocomplete="off" autofocus readonly>
                             
                                     @error('ruta_alterna')
@@ -1001,7 +1819,7 @@
                                 <div class="input-group">
                                     <input id="ruta_alterna_2" type="text" class="form-control @error('ruta_alterna_2') is-invalid @enderror" name="ruta_alterna_2" 
                                     value="{{$programacion_practica->ruta_alterna_2}}"  required autocomplete="off" autofocus
-                                    title="URL tomada de google maps" onchange="verifUrl_ra(this)"
+                                    title="" onchange="verifUrl_ra(this)"
                                     readonly>
                             
                                     @error('ruta_alterna_2')
@@ -1027,7 +1845,7 @@
                                 <div class="input-group">
                                     <input id="ruta_alterna_3" type="text" class="form-control @error('ruta_alterna_3') is-invalid @enderror" name="ruta_alterna_3" 
                                     value="{{$programacion_practica->ruta_alterna_3}}"  required autocomplete="off" autofocus
-                                    title="URL tomada de google maps" onchange="verifUrl_ra(this)"
+                                    title="" onchange="verifUrl_ra(this)"
                                     readonly>
                             
                                     @error('ruta_alterna_3')
@@ -1053,7 +1871,7 @@
                                 <div class="input-group">
                                     <input id="ruta_alterna_4" type="text" class="form-control @error('ruta_alterna_4') is-invalid @enderror" name="ruta_alterna_4" 
                                     value="{{$programacion_practica->ruta_alterna_4}}"  required autocomplete="off" autofocus
-                                    title="URL tomada de google maps" onchange="verifUrl_ra(this)"
+                                    title="" onchange="verifUrl_ra(this)"
                                     readonly>
                             
                                     @error('ruta_alterna_4')
@@ -1079,7 +1897,7 @@
                                 <div class="input-group">
                                     <input id="ruta_alterna_5" type="text" class="form-control @error('ruta_alterna_5') is-invalid @enderror" name="ruta_alterna_5" 
                                     value="{{$programacion_practica->ruta_alterna_5}}"  required autocomplete="off" autofocus
-                                    title="URL tomada de google maps" onchange="verifUrl_ra(this)"
+                                    title="" onchange="verifUrl_ra(this)"
                                     readonly>
                             
                                     @error('ruta_alterna_5')
@@ -1105,7 +1923,7 @@
                                 <div class="input-group">
                                     <input id="ruta_alterna_6" type="text" class="form-control @error('ruta_alterna_6') is-invalid @enderror" name="ruta_alterna_6" 
                                     value="{{$programacion_practica->ruta_alterna_6}}"  required autocomplete="off" autofocus
-                                    title="URL tomada de google maps" onchange="verifUrl_ra(this)"
+                                    title="" onchange="verifUrl_ra(this)"
                                     readonly>
                             
                                     @error('ruta_alterna_6')
@@ -1129,7 +1947,6 @@
         <div class="form-group row">
             <div class="col-md-12">
                 <label for="det_recorrido_interno_ra" class="col-form-label text-md-left">{{ __('Detalle Recorrido') }}</label>
-                <span class="hs-form-required">*</span>
                 <textarea id="det_recorrido_interno_ra" style="min-height:5rem;" type="text" class="form-control @error('det_recorrido_interno_ra') is-invalid @enderror" name="det_recorrido_interno_ra" 
                 required autocomplete="off" autofocus readonly><?php echo $programacion_practica->det_recorrido_interno_ra?></textarea>
                 
@@ -1146,10 +1963,9 @@
         <div class="form-group row">
             <div class="col-md-3">
                 <label for="lugar_salida_ra" class="col-form-label text-md-left">{{ __('Punto Encuentro Salida') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
-                    <select id="lugar_salida_ra" name="lugar_salida_ra" class="form-control" required disabled
-                        title="Sedes Universidad" >
+                    <select id="lugar_regreso_ra" name="lugar_regreso_ra" class="form-control" required disabled
+                        title="" >
                         @foreach($sedes as $sede)
                             <option <?php if($sede->id==$programacion_practica->lugar_salida_ra) echo 'selected'?> value="{{$sede->id}}">{{$sede->sede}}</option>  
                         @endforeach
@@ -1165,7 +1981,6 @@
 
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <label for="fecha_salida_aprox_ra" class="col-form-label text-md-left">{{ __('Fecha Salida') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
@@ -1177,10 +1992,9 @@
 
             <div class="col-md-3">
                 <label for="lugar_regreso_ra" class="col-form-label text-md-left">{{ __('Punto Encuentro Regreso') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <select id="lugar_regreso_ra" name="lugar_regreso_ra" class="form-control" required disabled
-                        title="Sedes Universidad" >
+                        title="" >
                         @foreach($sedes as $sede)
                             <option <?php if($sede->id==$programacion_practica->lugar_regreso_ra) echo 'selected'?> value="{{$sede->id}}">{{$sede->sede}}</option>  
                         @endforeach
@@ -1196,7 +2010,6 @@
 
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
                 <label for="fecha_regreso_aprox_ra" class="col-form-label text-md-left">{{ __('Fecha Regreso') }}</label>
-                <span class="hs-form-required">*</span>
                 <div class="input-group">
                     <div class="input-group-addon">
                     <i class="fa fa-calendar"></i>
@@ -1208,7 +2021,6 @@
 
             <div class="col-md-2">
                 <label for="duracion_ra" class="col-form-label text-md-left">{{ __('Duración Días') }}</label>
-                {{-- <span class="hs-form-required">*</span> --}}
                 <input id="duracion_ra_" type="text" class="form-control @error('duracion_ra') is-invalid @enderror" name="duracion_ra" 
                 value="{{ $programacion_practica->duracion_num_dias_ra}}" autocomplete="off" autofocus readonly>
                 
@@ -1251,7 +2063,7 @@
             <div class="col-md-5">
                 <label for="docente_resp_transp_ra" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
                 <input id="docente_resp_transp_ra" type="text" class="form-control @error('docente_resp_transp_ra') is-invalid @enderror" name="docente_resp_transp_ra" 
-                value="{{$nombre_usuario}}" required autocomplete="off" autofocus readonly>
+                value="{{$transporte_programacion->docen_respo_trasnporte_ra}}" required autocomplete="off" autofocus readonly>
                 
                 @error('docente_resp_transp_ra')
                     <span class="invalid-feedback" role="alert">
@@ -1282,7 +2094,7 @@
             <div class="col-md-2">
                 <label for="capac_transporte_ra_[]" class="col-form-label text-md-left">{{ __('Cap. Vehíc.') }}</label>
                 <input id="capac_transporte_ra_[]" type="text" class="form-control @error('capac_transporte_ra_[]') is-invalid @enderror" name="capac_transporte_ra_[]" 
-                value="{{$transporte_programacion->capac_transporte_ra_1}}" required autocomplete="off" autofocus readonly>
+                value="{{$transporte_programacion->capac_transporte_ra_1}}"  autocomplete="off" autofocus readonly>
                 
                 @error('capac_transporte_ra_[]')
                     <span class="invalid-feedback" role="alert">
@@ -1469,16 +2281,222 @@
     <!-- 14 transporte_ra_3 -->
 
     <br>
+    <h4>Transporte Menor - Local</h4>
+    <hr class="divider">
+
+    <!-- cant t. menor -->
+        <div  class="form-group row">
+            <div class="col-md-2">
+                <label for="cant_trans_menor_ra" class="col-form-label text-md-left">{{ __('Cant. Vehículos') }}</label>
+                <div class="input-group">
+                    <input id="cant_trans_menor_ra" type="number" max="4" min="0" pattern="^[1-4]+"  class="form-control @error('cant_trans_menor_ra') is-invalid @enderror" name="cant_trans_menor_ra" 
+                    title=""
+                    value="{{$transporte_menor->cant_trans_menor_ra}}" required autocomplete="off" autofocus readonly disabled>
+                    
+                    @error('cant_trans_menor_ra')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-success btn_ver" type="button" id="ver_trans_menor_ra" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ver_t_menor_ra()"><i class="far fa-eye"></i></button>
+                        <button class="btn btn-success btn_ver" type="button" id="ocul_trans_menor_ra" style="border: 1px solid #d1d3e2; border-top-left-radius: 0; border-bottom-left-radius: 0"
+                        onclick="ocul_t_menor_ra()"><i class="far fa-eye-slash"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-5" id="docente_trans_menor_ra">
+                <label for="docente_resp_t_menor_ra" class="col-form-label text-md-left">{{ __('Docente Responsable') }}</label>
+                <input id="docente_resp_t_menor_ra" type="text" class="form-control @error('docente_resp_t_menor_ra') is-invalid @enderror" name="docente_resp_t_menor_ra" 
+                title=""
+                value="{{ $transporte_menor->docente_resp_t_menor_ra }}" required autocomplete="off" autofocus readonly>
+                
+                @error('docente_resp_t_menor_ra')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
+            </div>
+
+        </div>
+    <!-- cant t. menor -->                         
+
+    <!-- 8 trans_menor_ra_1 -->
+        <div class="form-group row" id="t_menor_ra_1">
+            <div class="col-md-12" id="trans_menor_ra">
+                <div class="row" id="trans_menor_ra_children">
+
+                    <div class="col-md-5">
+                        <label for="trans_menor_ra_1" class="col-form-label text-md-left">{{ __('Transporte Menor 1') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="trans_menor_ra_1" type="text" class="form-control @error('trans_menor_ra_1') is-invalid @enderror" name="trans_menor_ra_1" 
+                        title=""
+                        value="{{$transporte_menor->trans_menor_ra_1}}"  autocomplete="off" autofocus readonly>
+            
+                        @error('trans_menor_ra_1')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="vlr_trans_menor_ra_1" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="vlr_trans_menor_ra_1" type="text" class="form-control @error('vlr_trans_menor_ra_1') is-invalid @enderror" name="vlr_trans_menor_ra_1" 
+                        title="Valor transporte menor o local"
+                        value="{{number_format($transporte_menor->vlr_trans_menor_ra_1,'0',',','.')}}"  autocomplete="off" autofocus  onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                        readonly>
+
+                        @error('vlr_trans_menor_ra_1')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    <!-- 8 trans_menor_ra_1 -->                        
+
+    <!-- 8 trans_menor_ra_2 -->
+        <div class="form-group row" id="t_menor_ra_2">
+            <div class="col-md-12" id="trans_menor_ra">
+                <div class="row" id="trans_menor_ra_children">
+
+                    <div class="col-md-5">
+                        <label for="trans_menor_ra_2" class="col-form-label text-md-left">{{ __('Transporte Menor 2') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="trans_menor_ra_2" type="text" class="form-control @error('trans_menor_ra_2') is-invalid @enderror" name="trans_menor_ra_2" 
+                        title=""
+                        value="{{$transporte_menor->trans_menor_ra_2}}"  autocomplete="off" autofocus readonly>
+            
+                        @error('trans_menor_ra_2')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="vlr_trans_menor_ra_2" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="vlr_trans_menor_ra_2" type="text" class="form-control @error('vlr_trans_menor_ra_2') is-invalid @enderror" name="vlr_trans_menor_ra_2" 
+                        title=""
+                        value="{{number_format($transporte_menor->vlr_trans_menor_ra_2,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" redonly
+                        readonly>
+
+                        @error('vlr_trans_menor_ra_2')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    <!-- 8 trans_menor_ra_2 -->                        
+
+    <!-- 8 trans_menor_ra_3 -->
+        <div class="form-group row" id="t_menor_ra_3">
+            <div class="col-md-12" id="trans_menor_ra">
+                <div class="row" id="trans_menor_ra_children">
+                    
+                    <div class="col-md-5">
+                        <label for="trans_menor_ra_3" class="col-form-label text-md-left">{{ __('Transporte Menor 3') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="trans_menor_ra_3" type="text" class="form-control @error('trans_menor_ra_3') is-invalid @enderror" name="trans_menor_ra_3" 
+                        title=""
+                        value="{{$transporte_menor->trans_menor_ra_3}}"  autocomplete="off" autofocus readonly>
+            
+                        @error('trans_menor_ra_3')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="vlr_trans_menor_ra_3" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="vlr_trans_menor_ra_3" type="text" class="form-control @error('vlr_trans_menor_ra_3') is-invalid @enderror" name="vlr_trans_menor_ra_3" 
+                        title="Valor transporte menor o local"
+                        value="{{number_format($transporte_menor->vlr_trans_menor_ra_3,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                        readonly>
+
+                        @error('vlr_trans_menor_ra_3')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    <!-- 8 trans_menor_ra_3 -->                        
+
+    <!-- 8 trans_menor_ra_4 -->
+        <div class="form-group row" id="t_menor_ra_4">
+            <div class="col-md-12" id="trans_menor_ra">
+                <div class="row" id="trans_menor_ra_children">
+
+                    <div class="col-md-5">
+                        <label for="trans_menor_ra_4" class="col-form-label text-md-left">{{ __('Transporte Menor 4') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="trans_menor_ra_4" type="text" class="form-control @error('trans_menor_ra_4') is-invalid @enderror" name="trans_menor_ra_4" 
+                        title=""
+                        value="{{$transporte_menor->trans_menor_ra_4}}"  autocomplete="off" autofocus readonly>
+            
+                        @error('trans_menor_ra_4')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="vlr_trans_menor_ra_4" class="col-form-label text-md-left">{{ __('Valor Transp.') }}</label>
+                        <span class="hs-form-required">*</span>
+                        <input id="vlr_trans_menor_ra_4" type="text" class="form-control @error('vlr_trans_menor_ra_4') is-invalid @enderror" name="vlr_trans_menor_ra_4" 
+                        title=""
+                        value="{{number_format($transporte_menor->vlr_trans_menor_ra_4,'0',',','.')}}"  autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                        readonly>
+
+                        @error('vlr_trans_menor_ra_4')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    <!-- 8 trans_menor_ra_4 -->                        
+
+    <br>
     <h4>Otros</h4>
     <hr class="divider">
 
     <!-- materiales -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_materiales_ra" class="col-form-label text-md-left" title="Materiales" hidden>{{ __('Materiales') }}</label>
+                <label for="det_materiales_ra" class="col-form-label text-md-left" title="" hidden>{{ __('Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="det_materiales_ra" hidden type="text" class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
-                value="{{$mater_herra_programacion->det_materiales_ra}}" autocomplete="off" autofocus disabled>
+                <input id="det_materiales_ra" type="text"  class="form-control @error('det_materiales_ra') is-invalid @enderror" name="det_materiales_ra" 
+                title="" hidden
+                value="{{$mater_herra_programacion->det_materiales_ra}}" autocomplete="off" autofocus readonly>
                 
                 @error('det_materiales_ra')
                     <span class="invalid-feedback" role="alert">
@@ -1488,11 +2506,12 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="Valor Total Materiales" hidden>{{ __('Valor Total Materiales') }}</label>
+                <label for="vlr_materiales_ra" class="col-form-label text-md-left" title="" hidden>{{ __('Valor Total Materiales') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
-                <input id="vlr_materiales_ra" hidden type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
+                <input id="vlr_materiales_ra" type="text"  class="form-control @error('vlr_materiales_ra') is-invalid @enderror" name="vlr_materiales_ra" 
+                title="" hidden
                 value="{{number_format($costos_programacion->vlr_materiales_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
-                disabled>
+                readonly>
                 
                 @error('vlr_materiales_ra')
                     <span class="invalid-feedback" role="alert">
@@ -1506,10 +2525,10 @@
     <!-- guías -baquianos -->
         <div class="form-group row">
             <div class="col-md-8">
-                <label for="det_guias_baquia_ra" class="col-form-label text-md-left" title="Guías y/o Baquianos">{{ __('Guías y/o Baquianos') }}</label>
+                <label for="det_guias_baquia_ra" class="col-form-label text-md-left" title="">{{ __('Guías y/o Baquianos') }}</label>
                 <input id="det_guias_baquia_ra" type="text"  class="form-control @error('det_guias_baquia_ra') is-invalid @enderror" name="det_guias_baquia_ra" 
-                title="Guías y/o baquianos requeridos" disabled
-                value="{{$mater_herra_programacion->det_guias_baquianos_ra}}" autocomplete="off" autofocus>
+                title=""
+                value="{{$mater_herra_programacion->det_guias_baquianos_ra}}" autocomplete="off" autofocus readonly>
                 
                 @error('det_guias_baquia_ra')
                     <span class="invalid-feedback" role="alert">
@@ -1519,11 +2538,12 @@
             </div>
 
             <div class="col-md-4">
-                <label for="vlr_guias_baquia_ra" class="col-form-label text-md-left" title="Valor Total Guías y/o Baquianos">{{ __('Valor Total Guías y/o Baquianos') }}</label>
+                <label for="vlr_guias_baquia_ra" class="col-form-label text-md-left" title="">{{ __('Valor Total Guías y/o Baquianos') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_guias_baquia_ra" type="text"  class="form-control @error('vlr_guias_baquias_ra') is-invalid @enderror" name="vlr_guias_baquia_ra" 
-                title="Valor de los guías y/o baquianos" disabled
-                value="{{number_format($costos_programacion->vlr_guias_baquianos_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)">
+                title=""
+                value="{{number_format($costos_programacion->vlr_guias_baquianos_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)"
+                readonly>
                 
                 @error('vlr_guias_baquia_ra')
                     <span class="invalid-feedback" role="alert">
@@ -1532,7 +2552,7 @@
                 @enderror
             </div>
         </div>
-    <!-- guías -baquianos -->                            
+    <!-- guías -baquianos -->
 
     <!-- otros - boletas -->
         <div class="form-group row">
@@ -1540,23 +2560,23 @@
                 <label for="det_otros_bolet_ra" class="col-form-label text-md-left" title="">{{ __('Boletas y/u Otros') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="det_otros_bolet_ra" type="text"  class="form-control @error('det_otros_bolet_ra') is-invalid @enderror" name="det_otros_bolet_ra" 
-                title="Boletas y/u otros requeridos" disabled
-                value="{{$mater_herra_programacion->det_otros_boletas_ra}}" autocomplete="off" autofocus>
-                
+                title=""
+                value="{{$mater_herra_programacion->det_otros_boletas_ra}}" autocomplete="off" autofocus readonly>
+
                 @error('det_otros_bolet_ra')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
             </div>
-
             <div class="col-md-4">
-                <label for="vlr_otros_bolet_ra" class="col-form-label text-md-left" title="Valor Total Boletas y/u Otros">{{ __('Valor Total Boletas y/u Otros') }}</label>
+                <label for="vlr_otros_bolet_ra" class="col-form-label text-md-left" title="">{{ __('Valor Total Boletas y/u Otros') }}</label>
                 {{-- <span class="hs-form-required">*</span> --}}
                 <input id="vlr_otros_bolet_ra" type="text"  class="form-control @error('vlr_otros_bolet_ra') is-invalid @enderror" name="vlr_otros_bolet_ra" 
-                title="Valor de las boletas y/u otros" disabled
-                value="{{number_format($costos_programacion->vlr_otros_boletas_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)">
-                
+                title=""
+                value="{{number_format($costos_programacion->vlr_otros_boletas_ra,'0',',','.')}}" autocomplete="off" autofocus onkeyup="formatVlr(this)" onchange="formatVlr(this)" 
+                readonly>
+
                 @error('vlr_otros_bolet_ra')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -1564,7 +2584,11 @@
                 @enderror
             </div>
         </div>
-    <!-- otros - boletas -->  
+    <!-- otros - boletas -->
+
+    <br>
+    <h4>Actividades de Riesgo</h4>
+    <hr class="divider">
 
     <!-- preguntas -->
         <div class="form-group row">
@@ -1625,7 +2649,7 @@
             <!-- 4 -->
             <div class="col-md-11">
                 <div class="form-group">
-                    <label for="espacios_confinados_ra">{{ __('Esta sálida desarrolla actividades en espacios confinados?)') }}</label>
+                    <label for="espacios_confinados_ra">{{ __('Esta sálida desarrolla actividades en espacios confinados?') }}</label>
                 </div>
             </div>
 
@@ -1642,8 +2666,146 @@
 
         </div>
     <!-- preguntas -->
-
+    
 <!-- ruta alterna -->
 
+<h4>Observaciones</h4>
+<hr class="divider">
+<br>
+<!-- Coordinador-->
+    <!-- 18 -->
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label for="observ_coordinador" class="col-form-label text-md-left">
+                    <i class="fas fa-question-circle" 
+                    data-toggle="tooltip" data-placement="left" 
+                    data-title="Indique las observaciones asociadas a la 
+                    salida de práctica académica" style="font-size: 0.813rem"></i> {{ __('Observaciones Coordinador') }}</label>
+                <textarea id="observ_coordinador" style="min-height:5rem;" type="text" class="form-control @error('observ_coordinador') is-invalid @enderror" name="observ_coordinador" 
+                title=""
+                autocomplete="off" autofocus ><?php echo $programacion_practica->observ_coordinador?></textarea>
 
+                @error('observ_coordinador')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        </div>
+    <!-- 18 -->
 
+    <!-- 19 -->
+        <!-- estado coord-->
+        <!-- 0 -->
+            <div class="form-group row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label for="id_estado">
+                        <i class="fas fa-question-circle" 
+                        data-toggle="tooltip" data-placement="left" 
+                        data-title="Asigne uno de los estados a la 
+                        salida de práctica académica" style="font-size: 0.813rem"></i> Estado Área de Coordinación</label>
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="aprobacion_coordinador" value="5"
+                            <?php if($programacion_practica->aprobacion_coordinador == 5) echo 'checked'?>  >
+                            <label class="form-check-label" for="">Pendiente</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="aprobacion_coordinador" value="7"
+                            <?php if($programacion_practica->aprobacion_coordinador == 7) echo 'checked'?>  >
+                            <label class="form-check-label" for="">Visto Bueno</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="aprobacion_coordinador"  value="4" 
+                                <?php if($programacion_practica->aprobacion_coordinador == 4) echo 'checked'?>  >
+                                <label class="form-check-label" for="">Rechazado</label>
+                            </div>
+                        </div>
+
+                        @if($programacion_practica->aprobacion_decano == 4)
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="aprobacion_coordinador"  value="2" >
+                                    <label class="form-check-label" for="">Cerrar</label>
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+                </div>
+                </div>
+            </div>
+        <!-- 0 -->
+        <!-- estado coord-->
+    <!-- 19 -->
+    <!-- Coordinador-->
+    <!-- Decano -->
+        <!-- 20 -->
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label for="observ_decano" class="col-form-label text-md-left">{{ __('Observaciones Decano') }}</label>
+                    <textarea id="observ_decano" style="min-height:5rem;" type="text" class="form-control @error('observ_decano') is-invalid @enderror" name="observ_decano" value="{{ old('observ_decano') }}" 
+                    title="" autocomplete="off" autofocus readonly>{{$programacion_practica->observ_decano}}</textarea>
+
+                    @error('observ_decano')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+        <!-- 20 -->
+
+        <!-- 21 -->
+            <!-- estado dec-->
+                <!-- 0 -->
+                    <div class="form-group row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label for="id_estado">Estado Área de Decanatura</label>
+                            <div class="row">
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="aprobacion_decano" value="5"
+                                    <?php if($programacion_practica->aprobacion_decano == 5) echo 'checked'?>>
+                                    <label class="form-check-label" for="">Pendiente</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="aprobacion_decano" value="7"
+                                    <?php if($programacion_practica->aprobacion_decano == 7) echo 'checked'?>>
+                                    <label class="form-check-label" for="">Visto Bueno</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="aprobacion_decano"  value="4" 
+                                        <?php if($programacion_practica->aprobacion_decano == 4) echo 'checked'?>>
+                                        <label class="form-check-label" for="">Rechazado</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                <!-- 0 -->
+            <!-- estado dec-->
+        <!-- 21 -->
+    <!-- Decano -->
+    </div>
+    </div>
+@endsection

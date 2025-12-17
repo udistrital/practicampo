@@ -117,6 +117,7 @@
             <th style="width: 35px">Fecha Salida</th>
             <th style="width: 35px">Fecha Regreso</th>
             <th style="width: 25px">Coord.</th>
+            <th style="width: 25px"></th>
         </thead> 
         @foreach ($programaciones as $item) 
             <tr> 
@@ -133,6 +134,11 @@
                 <td>{{ $item->fecha_salida_aprox_rp }}</td>
                 <td>{{ $item->fecha_regreso_aprox_rp }}</td> 
                 <td>{{ $item->ab_coor }}</td> 
+                <td style="text-align: center"> 
+                    <a href="{{route('ver_programacion',Crypt::encrypt($item->id))}}">
+                        <button class="btn-success" style="background-color: #447161; border:0">Ver</button>
+                    </a> 
+                </td> 
             </tr>
         @endforeach 
     </table>

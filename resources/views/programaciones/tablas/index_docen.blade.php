@@ -152,6 +152,7 @@
             <th style="width: 25px">Coord.</th>
             <th style="width: 25px">Decan.</th>
             <th style="width: 25px">Consj.</th>
+            <th style="width: 25px"></th>
         </thead> 
         <tr>
         @foreach ($programaciones as $item) 
@@ -165,6 +166,11 @@
             <td>{{ $item->ab_coor }}</td> 
             <td>{{ $item->ab_dec }}</td>
             <td>{{ $item->es_consj }}</td> 
+            <td style="text-align: center"> 
+                <a href="{{route('ver_programacion',Crypt::encrypt($item->id))}}">
+                    <button class="btn-success" style="background-color: #447161; border:0">Ver</button>
+                </a> 
+            </td> 
         </tr>
     @endforeach 
 
