@@ -8,6 +8,7 @@ use PractiCampoUD\programacion;
 use PractiCampoUD\User;
 use Illuminate\Support\Facades\Crypt;
 use Carbon\Carbon;
+use PractiCampoUD\estudiante;
 
 class PdfControllerTest extends TestCase
 {
@@ -79,10 +80,44 @@ class PdfControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertDownload();
     }
-
+    /**
+     * Prueba unitaria del método exportTransportePdf del controlador PdfController
+     */
+    public function test_pdf_exportTransportePdf(): void{
+        $user = User::where('id_role',2)->first();
+        $this->actingAs($user);
+        $ids = '824';
+        $response = $this->get("transportepdf/{$ids}");
+        $response->assertStatus(200);
+        $response->assertDownload();
+    }
+    /**
+     * Prueba unitaria del método declaracion_resp_docente del controlador PdfController
+     */
+    public function test_pdf_declaracion_resp_docente(): void{
+        $user = User::where('id_role',5)->first();
+        $this->actingAs($user);
+        $id = 824;
+        $response = $this->get("declaracion_resp_docente/{$id}");
+        $response->assertStatus(200);
+        $response->assertDownload();
+    }
+    /**
+     * Prueba unitaria del método declaracion_resp_estudiante del controlador PdfController
+     */
+    public function test_pdf_declaracion_resp_estudiante(): void{
+        $user = estudiante::where('id_role',8)->first();
+        $this->actingAs($user);
+        $email = 'prueba@udistrital.edu.co';
+        $email = Crypt::encrypt($email);
+        $id_solicitud = 1074;
+        $id_solicitud = Crypt::encrypt($id_solicitud);
+        $response = $this->get("declaracion_resp_estudiante/{$email}/{$id_solicitud}");
+        $response->assertStatus(200);
+        $response->assertDownload();
+    }
     /*
     Métodos que no se usan:
-    exportTransportePdf
     accionesPdf
     dwn_doc_estud
     */

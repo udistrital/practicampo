@@ -1843,15 +1843,16 @@ class PdfController extends Controller
         $id=explode(",",$ids);
         $data = ['title' => 'Solicitud Transporte'];
         $total_asistentes = [];
-        
+        $sol =DB::table('solicitud_practica')->where('id',$id)->first();
+        $programacion_practica = DB::table('programacion_practica')->where('id',$sol->id_programacion_practica)->first();
         $parrafos_modificables =DB::table('resolucion')->first();
         $fecha_solicitud = Carbon::now('America/Bogota')->format('d-m-Y');
         $transporte_programacion = DB::table('transporte_programacion as transp_proy')
-        ->where('transp_proy.id','=',$id)->first();
+        ->where('transp_proy.id','=',$programacion_practica->id)->first();
         $practicas_integradas = DB::table('practicas_integradas')
-        ->where('id','=',$id)->first();
+        ->where('id','=',$programacion_practica->id)->first();
         $docentes_practica = DB::table('docentes_practica')
-        ->where('id','=',$id)->first();
+        ->where('id','=',$programacion_practica->id)->first();
         $solicitudes_practica =DB::table('solicitud_practica as sol_prac')
         // $solicitudes_practica_aprob =DB::table('solicitud_practica as sol_prac')
         ->select('p_prel.id','p_aca.programa_academico','e_aca.espacio_academico', 'e_aca.codigo_espacio_academico',
@@ -2244,47 +2245,6 @@ class PdfController extends Controller
 
         if($docentes_practica->total_docentes_apoyo > 0)
         {
-        if($docentes_practica->id_tipo_personal_apoyo_1 == 1)
-        {
-                $total_asistentes[0] = ['id_proy'=>1 + $solicitudes_practica->id,
-                                        'num_estudiantes'=>1 + $solicitudes_practica->num_estudiantes,
-                                        'num_docentes'=>1 + $practicas_integradas->cant_espa_aca];
-        }
-
-        else if($docentes_practica->id_tipo_personal_apoyo_1 == 2)
-        {
-                $total_asistentes[0] = ['id_proy'=>$solicitudes_practica->id,
-                                        'num_estudiantes'=>$solicitudes_practica->num_estudiantes,
-                                        'num_docentes'=>1 + 1 + $practicas_integradas->cant_espa_aca];
-        }
-
-        else if($docentes_practica->id_tipo_personal_apoyo_1 == 3)
-        {
-                $total_asistentes[0] = ['id_proy'=>$solicitudes_practica->id,
-                                        'num_estudiantes'=>$solicitudes_practica->num_estudiantes,
-                                        'num_docentes'=>1 + $practicas_integradas->cant_espa_aca];
-        }
-
-        if($docentes_practica->id_tipo_personal_apoyo_2 == 1)
-        {
-                $total_asistentes[0]= ['id_proy'=>$solicitudes_practica->id,
-                                        'num_estudiantes'=>1 + $solicitudes_practica->num_estudiantes,
-                                        'num_docentes'=>1 + $practicas_integradas->cant_espa_aca];
-        }
-
-        else if($docentes_practica->id_tipo_personal_apoyo_2 == 2)
-        {
-                $total_asistentes[0] = ['id_proy'=>$solicitudes_practica->id,
-                                        'num_estudiantes'=>$solicitudes_practica->num_estudiantes,
-                                        'num_docentes'=>1 + 1 + $practicas_integradas->cant_espa_aca];
-        }
-
-        else if($docentes_practica->id_tipo_personal_apoyo_2 == 3)
-        {
-                $total_asistentes[0] = ['id_proy'=>$solicitudes_practica->id,
-                                        'num_estudiantes'=>$solicitudes_practica->num_estudiantes,
-                                        'num_docentes'=>1 + $practicas_integradas->cant_espa_aca];
-        }
         }
         else if($docentes_practica->total_docentes_apoyo == 0)
         {

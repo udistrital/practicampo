@@ -351,18 +351,9 @@ class EstudianteController extends Controller
             $doc_estudiante->certificado_adicional_3 = $cert_adic_3;
             $doc_estudiante->detalle_certificado_adicional_1 = $request->get('detalle_certificado_adicional_1');
             $doc_estudiante->detalle_certificado_adicional_2 = $request->get('detalle_certificado_adicional_2');
-            $doc_estudiante->detalle_certificado_adicional_3 = $request->get('detalle_certificado_adicional_3');
-
-            $estudiante = estudiante::where('email', '=', $id)->first();
-            $estudiante->id_tipo_identificacion = $request->get('id_tipo_identificacion');
-            $estudiante->num_identificacion = $request->get('num_identificacion');
-            $estudiante->fecha_nacimiento = $request->get('fecha_nacimiento');
-            $estudiante->celular = $request->get('celular');
-            $estudiante->eps = $request->get('eps');            
+            $doc_estudiante->detalle_certificado_adicional_3 = $request->get('detalle_certificado_adicional_3');          
             $doc_estudiante->aprob_terminos_condiciones = 1;
             $doc_estudiante->verificacion_asistencia = 1;
-
-            $estudiante->update();
             $doc_estudiante->update();
             DB::commit();
         } catch (\Exception $e) {
@@ -586,7 +577,7 @@ class EstudianteController extends Controller
         }
         $estudiante_practica->verificacion_asistencia = (int) $request->valor;
         $estudiante_practica->update();
-        return response()->json(['message' => 'Asistencia verificada correctamente'], 200);
+        return response()->json(['message' => 'Asistencia actualizada correctamente'], 200);
     }
 
     /**

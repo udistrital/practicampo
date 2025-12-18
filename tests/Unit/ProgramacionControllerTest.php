@@ -9,7 +9,7 @@ use PractiCampoUD\User;
 use Illuminate\Support\Facades\Crypt;
 use Carbon\Carbon;
 
-class programacionControllerTest extends TestCase
+class ProgramacionControllerTest extends TestCase
 {
     //use RefreshDatabase;
     /**
@@ -414,10 +414,90 @@ class programacionControllerTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('programaciones/filtrar/all');
     }
+
+    /**
+     * Prueba unitaria del método duplicar_index del controlador ProgramacionController
+     */
+    public function test_programacion_duplicar_index(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $response = $this->get("programaciones/duplicar_index");
+        $response->assertStatus(200);
+        $response->assertViewIs('programaciones.duplicar.index'); 
+    }
+    /**
+     * Prueba unitaria del método duplicar del controlador ProgramacionController
+     */
+    public function test_programacion_duplicar(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
+        $response = $this->get("programaciones/duplicar/{$id}");
+        $response->assertStatus(200);
+        $response->assertViewIs('programaciones.duplicar.edit'); 
+    }
+
+    /**
+     * Prueba unitaria del método ver_programacion del controlador ProgramacionController
+     */
+    public function test_programacion_ver_programacion(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
+        $response = $this->get("ver_programacion/{$id}");
+        $response->assertStatus(200);
+        $response->assertViewIs('programaciones.formularios.ver'); 
+    }
+
+    /**
+     * Prueba unitaria del método cargar_docentes_traspaso del controlador ProgramacionController
+     */
+    public function test_programacion_cargar_docentes_traspaso(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = $programacion->id;
+        $response = $this->post("/programaciones/cargar_docentes_traspaso/{$id}");
+        $response->assertStatus(200)
+                ->assertJsonStructure([
+                    'docentes',
+                    'id_docente_responsable',
+                ]);
+    }
+
+    /**
+     * Prueba unitaria del método traspasar_update del controlador ProgramacionController
+     */
+    public function test_programacion_traspasar_update(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = $programacion->id;
+        $data = [
+            'id_docente' => 19489088,
+        ];
+        $response = $this->put("programaciones/traspasar/update/{$id}", $data);
+        $response->assertStatus(302);
+        $response->assertRedirect('programaciones/filtrar/traspasar');
+    }
+
+    /**
+     * Prueba unitaria del método hab_cambios_proy del controlador ProgramacionController
+     */
+    public function test_programacion_hab_cambios_proy(): void{
+        $user = User::where('id_role',2)->first();
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
+        $response = $this->get("hab_cambios_proy/{$id}");
+        $response->assertStatus(200);
+        $response->assertViewIs('programaciones.formularios.cambiar_edit');
+    }
     
     /*
     Métodos que no se usan:
-    duplicar_proy
     sendProy
     vbProy
     validar_electivas

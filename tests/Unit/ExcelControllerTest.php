@@ -134,4 +134,69 @@ class ExcelControllerTest extends TestCase
 
         $response->assertStatus(302);
     }
+    /**
+     * Prueba unitaria del método excel_programaciones_plan_salidas del controlador ExcelController
+     */
+    public function test_excel_programaciones_plan_salidas()
+    {
+        $data = [
+            'fecha_inicial' => '2025-01-01',
+            'fecha_final' => '2025-12-31',
+        ];
+        $response = $this->get("excel_programaciones_plan_salidas", $data);
+
+        $response->assertStatus(302);
+    }
+    /**
+     * Prueba unitaria del método excel_programaciones_aprobadas_coord del controlador ExcelController
+     */
+    public function test_excel_programaciones_aprobadas_coord()
+    {
+        $data = [
+            'anio' => 2025,
+            'periodo' => 1,
+        ];
+        $response = $this->get("excel_programaciones_aprobadas_coord", $data);
+
+        $response->assertStatus(302);
+    }
+    /**
+     * Prueba unitaria del método excel_programaciones_aprobadas_cons_fac del controlador ExcelController
+     */
+    public function test_excel_programaciones_aprobadas_cons_fac()
+    {
+        $data = [
+            'anio' => 2025,
+            'periodo' => 1,
+        ];
+        $response = $this->get("excel_programaciones_aprobadas_cons_fac", $data);
+
+        $response->assertStatus(302);
+    }
+    /**
+     * Prueba unitaria del método excel_solicitudes_aprobadas_coord del controlador ExcelController
+     */
+    public function test_excel_solicitudes_aprobadas_coord()
+    {
+        $data = [
+            'anio' => 2025,
+            'periodo' => 1,
+        ];
+        $response = $this->get("excel_solicitudes_aprobadas_coord", $data);
+
+        $response->assertStatus(302);
+    }
+    /**
+     * Prueba unitaria del método excel_historico_presupuestos del controlador ExcelController
+     */
+    public function test_excel_historico_presupuestos()
+    {
+        $data = [
+            'fecha_inicial' => '2025-01-01',
+            'fecha_final' => '2025-12-31',
+        ];
+        $response = $this->get("excel_historico_presupuestos", $data);
+
+        $response->assertStatus(302);
+    }
 }

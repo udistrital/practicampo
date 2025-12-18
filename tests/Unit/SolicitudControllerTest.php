@@ -354,6 +354,63 @@ class SolicitudControllerTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('solicitudes/filtrar/sol_realizadas');
     }
+    /**
+     * Prueba unitaria del método ver_solicitud del controlador SolicitudController
+     */
+    public function test_solicitud_ver_solicitud(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
+        $response = $this->get("ver_solicitud/{$id}");
+        $response->assertStatus(200);
+        $response->assertViewIs('solicitudes.formularios.ver'); 
+    }
+
+    /**
+     * Prueba unitaria del método cargar_docentes_traspaso del controlador SolicitudController
+     */
+    public function test_solicitud_cargar_docentes_traspaso(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = $programacion->id;
+        $response = $this->post("/solicitudes/cargar_docentes_traspaso/{$id}");
+        $response->assertStatus(200)
+                ->assertJsonStructure([
+                    'docentes',
+                    'id_docente_responsable',
+                ]);
+    }
+
+    /**
+     * Prueba unitaria del método traspasar_update del controlador SolicitudController
+     */
+    public function test_solicitud_traspasar_update(): void{
+        $user = User::find(79794356);
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = $programacion->id;
+        $data = [
+            'id_docente' => 19489088,
+        ];
+        $response = $this->put("solicitudes/traspasar/update/{$id}", $data);
+        $response->assertStatus(302);
+        $response->assertRedirect('solicitudes/filtrar/traspasar');
+    }
+
+    /**
+     * Prueba unitaria del método hab_cambios_sol del controlador SolicitudController
+     */
+    public function test_solicitud_hab_cambios_sol(): void{
+        $user = User::where('id_role',2)->first();
+        $this->actingAs($user);
+        $programacion = programacion::find(1170);
+        $id = Crypt::encrypt($programacion->id);
+        $response = $this->get("hab_cambios_sol/{$id}");
+        $response->assertStatus(200);
+        $response->assertViewIs('solicitudes.formularios.cambiar_edit');
+    }
     /*
     Métodos que no se usan:
     duplicar_proy

@@ -877,7 +877,7 @@ class SolicitudController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Ocurrió un error al actualizar el docente responsable de la programación. Intentalo nuevamente. ' . $e->getMessage());
         }
-        return redirect('programaciones/filtrar/traspasar');        
+        return redirect('solicitudes/filtrar/traspasar');        
     }
     
     /**
