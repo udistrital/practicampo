@@ -33,6 +33,8 @@ fi
 
 # Parte por validar que funcione: crontab para que se ejecute todas las horas
 # chmod +x /home/decpracti/practicampo/backup.sh
+# Para ejecutar manualmente antes de hacer el cron, si falla usar bash -x para revisar
+    # /home/decpracti/practicampo/backup.sh
 # systemctl status cron
     # (si no está activo)
     # sudo systemctl enable --now cron
